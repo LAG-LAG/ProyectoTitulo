@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "405354780218",
+    "firebase_url": "https://swapdrobe-93869.firebaseio.com",
+    "project_id": "swapdrobe-93869",
+    "storage_bucket": "swapdrobe-93869.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:405354780218:android:f2abde974c00850eba8703",
+        "android_client_info": {
+          "package_name": "com.example.proyectotitulo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "405354780218-ijsc2k4iepnj4ehlcugdi2ebquqd9ceh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDu8kFJriMTvXxGqF4xAVAdvs6fz6TwNr0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "405354780218-ijsc2k4iepnj4ehlcugdi2ebquqd9ceh.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
