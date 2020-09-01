@@ -16,10 +16,9 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-public class Login extends AppCompatActivity {
+public class Registration extends AppCompatActivity {
 
-    private Button mIngresarBtn;
-    private Button mRregistrarBtn;
+    private Button mRegister;
     private EditText mEmail;
     private EditText mPassword;
 
@@ -29,12 +28,11 @@ public class Login extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.login);
+        setContentView(R.layout.activity_registration);
 
-        mIngresarBtn = (Button) findViewById(R.id.ingresarBtn);
-        mRregistrarBtn = (Button) findViewById(R.id.registrarBtn);
-        mPassword = (EditText) findViewById(R.id.passwordInput);
-        mEmail = (EditText) findViewById(R.id.emailInput);
+        mRegister = (Button) findViewById(R.id.registroBtn);
+        mPassword = (EditText) findViewById(R.id.passwordInputRegis);
+        mEmail = (EditText) findViewById(R.id.emailInputRegis);
 
         mAuth = FirebaseAuth.getInstance();
         firebaseAuthStateListener = new FirebaseAuth.AuthStateListener() {
@@ -42,7 +40,7 @@ public class Login extends AppCompatActivity {
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                 if (user != null){
-                    Intent intent = new Intent(Login.this, PaginaPrincipal.class);
+                    Intent intent = new Intent(Registration.this, PaginaPrincipal.class);
                     startActivity(intent);
                     finish();
                     return;
@@ -50,30 +48,19 @@ public class Login extends AppCompatActivity {
             }
         };
 
-        mIngresarBtn.setOnClickListener(new View.OnClickListener(){
+        mRegister.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
                 final String email = mEmail.getText().toString();
                 final String password = mPassword.getText().toString();
-                mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(Login.this, new OnCompleteListener<AuthResult>() {
+                mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(Registration.this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if(!task.isSuccessful()){
-                            Toast.makeText(Login.this, "Error en el ingreso", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(Registration.this, "Error en el registro", Toast.LENGTH_SHORT).show();
                         }
-
                     }
                 });
-            }
-        });
-
-        mRregistrarBtn.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view){
-                Intent intent = new Intent(Login.this, Registration.class);
-                startActivity(intent);
-                finish();
-                return;
             }
         });
     }
@@ -89,5 +76,4 @@ public class Login extends AppCompatActivity {
         super.onStop();
         mAuth.addAuthStateListener(firebaseAuthStateListener);
     }
-
 }
