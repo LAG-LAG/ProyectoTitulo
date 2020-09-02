@@ -2,6 +2,7 @@ package com.example.proyectotitulo;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -18,6 +19,11 @@ import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
@@ -33,13 +39,14 @@ public class Login extends AppCompatActivity {
     private Button mIngresarBtn;
     private Button mRregistrarBtn;
     private ImageView mFacebookBtn;
+    private ImageView mGoogleBtn;
     private CallbackManager callbackManager = CallbackManager.Factory.create();
     private EditText mEmail;
     private EditText mPassword;
-
+    int RC_SIGN_IN = 0;
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener firebaseAuthStateListener;
-
+    private GoogleSignInClient mGoogleSignInClient;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,9 +54,17 @@ public class Login extends AppCompatActivity {
         mIngresarBtn = (Button) findViewById(R.id.ingresarBtn);
         mRregistrarBtn = (Button) findViewById(R.id.registrarBtn);
         mFacebookBtn = (ImageView) findViewById(R.id.FacebookBtn);
-
+        mGoogleBtn = (ImageView) findViewById(R.id.GoogleBtn);
         mPassword = (EditText) findViewById(R.id.passwordInput);
         mEmail = (EditText) findViewById(R.id.emailInput);
+
+        //Login de google
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestEmail()
+                .build();
+        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
+
 
         mAuth = FirebaseAuth.getInstance();
         firebaseAuthStateListener = new FirebaseAuth.AuthStateListener() {
@@ -92,7 +107,21 @@ public class Login extends AppCompatActivity {
             }
         });
 
-        //Presionar imagen de fb
+        //Presionar imagen de google
+        mGoogleBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                switch (view.getId()) {
+                    case R.id.GoogleBtn:
+                        signIn();
+                        break;
+                }
+            }
+        });
+
+
+
+            //Presionar imagen de fb
         mFacebookBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -120,7 +149,13 @@ public class Login extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        callbackManager.onActivityResult(requestCode,resultCode,data);
+        if (requestCode == RC_SIGN_IN) { //SI ESTA LOGUEANDO CON GOOGLE.
+            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
+            handleSignInResult(task);
+        }
+        else { //SI ESTA LOGUEANDO CON FACEBOOK
+            callbackManager.onActivityResult(requestCode, resultCode, data);
+        }
     }
 
     private void handleFacebookAccessToken(AccessToken token) {
@@ -150,4 +185,30 @@ public class Login extends AppCompatActivity {
         mAuth.addAuthStateListener(firebaseAuthStateListener);
     }
 
+    //sign in de facebook
+    private void signIn() {
+        Intent signInIntent = mGoogleSignInClient.getSignInIntent();
+        startActivityForResult(signInIntent, RC_SIGN_IN);
+    }
+/*
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+// Result returned from launching the Intent from GoogleSignInClient.getSignInIntent(...);
+
+    }
+*/
+    private void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
+        try {
+            GoogleSignInAccount account = completedTask.getResult(ApiException.class);
+
+            // Signed in successfully, show authenticated UI.
+            Intent intent = new Intent(Login.this,PaginaPrincipal.class);
+            startActivity(intent);
+        } catch (ApiException e) {
+            // The ApiException status code indicates the detailed failure reason.
+            // Please refer to the GoogleSignInStatusCodes class reference for more information.
+            Log.w("Error", "signInResult:failed code=" + e.getStatusCode());
+        }
+    }
 }

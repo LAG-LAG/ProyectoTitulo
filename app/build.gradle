@@ -30,6 +30,10 @@ dependencies {
     implementation 'com.lorentzos.swipecards:library:X.X.X@aar'
     implementation 'com.squareup.picasso:picasso:2.71828'
 
+    //libreria para login google
+    implementation 'com.google.android.gms:play-services-auth:18.1.0'
+
+
     //Librerias de Firebase
     implementation 'com.google.firebase:firebase-core:17.0.0'
     implementation 'com.google.firebase:firebase-database:18.0.0'
