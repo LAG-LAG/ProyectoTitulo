@@ -1,13 +1,18 @@
 package com.example.proyectotitulo;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.lorentzos.flingswipe.SwipeFlingAdapterView;
 
 import java.util.ArrayList;
@@ -16,12 +21,17 @@ public class PaginaPrincipal extends AppCompatActivity {
     private ArrayList<String> al;
     private ArrayAdapter<String> arrayAdapter;
     private SwipeFlingAdapterView flingContainer;
+    private FirebaseAuth mAuth;
+    private DatabaseReference usersDb;
+
     private int i;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pagina_principal);
+        usersDb = FirebaseDatabase.getInstance().getReference().child("Users"); //esto obtiene todos los usuarios de la bd
 
+        mAuth = FirebaseAuth.getInstance();
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -82,5 +92,14 @@ public class PaginaPrincipal extends AppCompatActivity {
             }
         });
 
+    }
+
+    public void logoutUser(View view) {
+        mAuth.signOut(); //desconecta
+        //las lineas de abajo mandan de la ventana actual(mainactiviy) a la de chooseloginregistration que es la de antes de estar loguado.
+        Intent intent = new Intent(PaginaPrincipal.this,Login.class);
+        startActivity(intent);
+        finish();
+        return;
     }
 }
