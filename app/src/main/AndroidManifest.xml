@@ -11,9 +11,12 @@ package="com.example.proyectotitulo">
     android:roundIcon="@mipmap/ic_launcher_round"
     android:supportsRtl="true"
     android:theme="@style/Theme.AppCompat.NoActionBar">
-    <activity android:name=".Registration"></activity>
-    <activity android:name=".PaginaPrincipal" />
-    <activity android:name=".Login">
+    <activity android:name=".Registration"
+        android:screenOrientation="portrait"/>
+    <activity android:name=".PaginaPrincipal"
+        android:screenOrientation="portrait"/>
+    <activity android:name=".Login"
+        android:screenOrientation="portrait">
         <intent-filter>
             <action android:name="android.intent.action.MAIN" />
 
