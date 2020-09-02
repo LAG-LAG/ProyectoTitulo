@@ -5,11 +5,11 @@
 
     <gradient
         android:angle="0"
-        android:startColor="#ff8e6e"
-        android:centerColor="#ff7a55"
-        android:endColor="#ff8e6e"
+        android:startColor="@color/btnColor1"
+        android:centerColor="@color/btnColor2"
+        android:endColor="@color/btnColor1"
         android:type="linear" />
 
-    <stroke android:width="5px" android:color="#ffffff" />
+    <stroke android:width="5px" android:color="@color/btnBorderColor" />
 
 </shape>
