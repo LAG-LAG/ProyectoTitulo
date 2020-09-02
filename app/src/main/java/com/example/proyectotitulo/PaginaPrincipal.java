@@ -3,6 +3,8 @@ package com.example.proyectotitulo;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Toast;
@@ -101,5 +103,12 @@ public class PaginaPrincipal extends AppCompatActivity {
         startActivity(intent);
         finish();
         return;
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu, menu);
+        return true;
     }
 }

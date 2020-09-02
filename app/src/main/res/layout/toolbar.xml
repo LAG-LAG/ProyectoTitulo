@@ -5,5 +5,4 @@
     android:background="@color/colorPrimary"
     android:elevation="4dp">
 
-
 </androidx.appcompat.widget.Toolbar>

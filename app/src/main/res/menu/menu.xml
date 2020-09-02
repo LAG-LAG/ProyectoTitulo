@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:title="account"
+        android:icon="@drawable/add_24dp"
+        android:id="@+id/addBtn"
+        app:showAsAction="always"/>
+
+    <item
+        android:title="chat"
+        android:icon="@drawable/chat_24dp"
+        android:id="@+id/chatBtn"
+        app:showAsAction="always"/>
+
+    <item
+        android:title="add"
+        android:icon="@drawable/account_24dp"
+        android:id="@+id/accountBtn"
+        app:showAsAction="always"/>
+
+</menu>

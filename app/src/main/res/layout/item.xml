@@ -10,7 +10,8 @@
     android:paddingTop="20sp"
     android:paddingBottom="20sp"
     android:outlineProvider="bounds"
-    android:clipToPadding="false">
+    android:clipToPadding="false"
+    android:background="@color/btnColor1">
 <androidx.cardview.widget.CardView
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
@@ -32,7 +33,7 @@
         android:id="@+id/name"
         android:textSize="30sp"
         android:paddingLeft="20sp"
-        android:textColor="@android:color/black"
+        android:textColor="@android:color/white"
         android:gravity="center|left"
         tools:text="Name"
         android:layout_width="match_parent"
