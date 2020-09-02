@@ -34,8 +34,13 @@ public class PaginaPrincipal extends AppCompatActivity {
         usersDb = FirebaseDatabase.getInstance().getReference().child("Users"); //esto obtiene todos los usuarios de la bd
 
         mAuth = FirebaseAuth.getInstance();
+
+        //Toolbar Menu
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setTitle("UwU");
+        }
 
         //swipecards
 
