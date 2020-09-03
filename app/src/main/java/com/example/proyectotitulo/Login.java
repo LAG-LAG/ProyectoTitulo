@@ -165,6 +165,7 @@ public class Login extends AppCompatActivity {
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if(task.isSuccessful()){
                     Toast.makeText(Login.this, "Ingreso Correctamente.",Toast.LENGTH_SHORT).show();
+
                 }
                 else{
                     Toast.makeText(Login.this, "No puede ingresar con esta cuenta.",Toast.LENGTH_SHORT).show();
