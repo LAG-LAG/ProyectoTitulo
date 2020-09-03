@@ -5,10 +5,12 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
@@ -34,8 +36,13 @@ public class PaginaPrincipal extends AppCompatActivity {
         usersDb = FirebaseDatabase.getInstance().getReference().child("Users"); //esto obtiene todos los usuarios de la bd
 
         mAuth = FirebaseAuth.getInstance();
+
+        //Toolbar Menu
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setTitle("UwU");
+        }
 
         //swipecards
 
@@ -105,10 +112,52 @@ public class PaginaPrincipal extends AppCompatActivity {
         return;
     }
 
+    //Crea el menu en la toolbar
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu, menu);
         return true;
+    }
+
+    //Controla los botones del menu
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.accountBtn:
+                Toast.makeText(getApplicationContext(), "Account", Toast.LENGTH_SHORT).show();
+                Intent intentAccount = new Intent(PaginaPrincipal.this, Account.class);
+                startActivity(intentAccount);
+                finish();
+                break;
+
+            case R.id.chatBtn:
+                Toast.makeText(getApplicationContext(), "Chat", Toast.LENGTH_SHORT).show();
+                Intent intentChat = new Intent(PaginaPrincipal.this, Chat.class);
+                startActivity(intentChat);
+                finish();
+                break;
+
+            case R.id.addBtn:
+                Toast.makeText(getApplicationContext(), "Add", Toast.LENGTH_SHORT).show();
+                Intent intentAdd = new Intent(PaginaPrincipal.this, AddPublicaciones.class);
+                startActivity(intentAdd);
+                finish();
+                break;
+
+            case R.id.likeBtn:
+                Toast.makeText(getApplicationContext(), "Like", Toast.LENGTH_SHORT).show();
+                Intent intentLike = new Intent(PaginaPrincipal.this, Favorites.class);
+                startActivity(intentLike);
+                finish();
+                break;
+
+            case R.id.publicacionesBtn:
+                Toast.makeText(getApplicationContext(), "Publicaciones", Toast.LENGTH_SHORT).show();
+                //En este caso el boton lleva a la misma pantalla
+                break;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 }

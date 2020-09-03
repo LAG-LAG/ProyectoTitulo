@@ -3,20 +3,32 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:title="account"
-        android:icon="@drawable/add_24dp"
+        android:title="publicaciones"
+        android:icon="@drawable/search_48dp"
+        android:id="@+id/publicacionesBtn"
+        app:showAsAction="always"/>
+
+    <item
+        android:title="add"
+        android:icon="@drawable/like_48dp"
+        android:id="@+id/likeBtn"
+        app:showAsAction="always"/>
+
+    <item
+        android:title="add"
+        android:icon="@drawable/add_48dp"
         android:id="@+id/addBtn"
         app:showAsAction="always"/>
 
     <item
         android:title="chat"
-        android:icon="@drawable/chat_24dp"
+        android:icon="@drawable/chat_48dp"
         android:id="@+id/chatBtn"
         app:showAsAction="always"/>
 
     <item
-        android:title="add"
-        android:icon="@drawable/account_24dp"
+        android:title="account"
+        android:icon="@drawable/account_48dp"
         android:id="@+id/accountBtn"
         app:showAsAction="always"/>
 
