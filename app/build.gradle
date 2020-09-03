@@ -32,7 +32,7 @@ dependencies {
 
     //libreria para login google
     implementation 'com.google.android.gms:play-services-auth:18.1.0'
-
+    implementation 'com.google.firebase:firebase-auth:19.3.2'
 
     //Librerias de Firebase
     implementation 'com.google.firebase:firebase-core:17.0.0'
