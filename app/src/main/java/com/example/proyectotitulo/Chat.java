@@ -12,7 +12,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
-public class Account extends AppCompatActivity {
+public class Chat extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,13 +23,13 @@ public class Account extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) {
-            getSupportActionBar().setTitle("Cuenta");
+            getSupportActionBar().setTitle("Chat");
         }
 
     }
 
     public void back(View view) {
-        Intent intent = new Intent(Account.this, PaginaPrincipal.class);
+        Intent intent = new Intent(Chat.this, PaginaPrincipal.class);
         startActivity(intent);
         finish();
         return;
@@ -70,5 +70,4 @@ public class Account extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
-
 }
