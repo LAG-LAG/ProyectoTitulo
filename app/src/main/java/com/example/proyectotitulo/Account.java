@@ -15,14 +15,20 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.Map;
 
 public class Account extends AppCompatActivity {
-
+    private DatabaseReference mCustomerDatabase;
     private FirebaseAuth mAuth;
     private Button mAplicar;
     private EditText mNombre;
+    private String nombreUsuario;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,8 +37,6 @@ public class Account extends AppCompatActivity {
         mAplicar = (Button) findViewById(R.id.aplicar);
         mNombre = (EditText) findViewById(R.id.name);
 
-        mAuth = FirebaseAuth.getInstance();
-
         //Toolbar Menu
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -40,19 +44,44 @@ public class Account extends AppCompatActivity {
             getSupportActionBar().setTitle("Cuenta");
         }
 
+        mAuth = FirebaseAuth.getInstance();
+        String userId = mAuth.getCurrentUser().getUid(); //aca obtiene el uid de la cuenta, para la ropa abria que hacer esto, cada ropa tiene su uid y linkearla de alguna forma.
+        mCustomerDatabase = FirebaseDatabase.getInstance().getReference().child("Users").child(userId);
+        getUserInfo();
+
         
         mAplicar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String userId = mAuth.getCurrentUser().getUid(); //aca obtiene el uid de la cuenta, para la ropa abria que hacer esto, cada ropa tiene su uid y linkearla de alguna forma.
+                String userId = mAuth.getCurrentUser().getUid();
                 DatabaseReference currentUserDb = FirebaseDatabase.getInstance().getReference().child("Users").child(userId).child("addressUser"); //busca al usuario que va a crear y lo guarda como una variable que se le agregan las cosas y se manda al a db de nuevo
                 DatabaseReference currentUserDbDos = FirebaseDatabase.getInstance().getReference().child("Users").child(userId).child("nameUser"); //busca al usuario que va a crear y lo guarda como una variable que se le agregan las cosas y se manda al a db de nuevo
                 currentUserDbDos.setValue(mNombre.getText().toString()); //Aca va y le asigna el nombre al User.
             }
+
         });
 
     }
 
+    private void getUserInfo() {
+        mCustomerDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists() && dataSnapshot.getChildrenCount() > 0) { //si existe y tiene algo ya guardado dentro lo muestra, para eso lo trae y lo castea al mapa.a
+                    Map<String, Object> map = (Map<String, Object>) dataSnapshot.getValue();
+                    if (map.get("nameUser") != null) {
+                        nombreUsuario = map.get("nameUser").toString();
+                        mNombre.setText(nombreUsuario);
+                    }
+                }
+            }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+        }
 
 
     public void back(View view) {
