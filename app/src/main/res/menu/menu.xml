@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:title="account"
+        android:title="publicaciones"
         android:icon="@drawable/search_48dp"
         android:id="@+id/publicacionesBtn"
         app:showAsAction="always"/>
