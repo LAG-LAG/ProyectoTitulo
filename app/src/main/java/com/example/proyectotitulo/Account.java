@@ -22,7 +22,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.Map;
-
 public class Account extends AppCompatActivity {
     private DatabaseReference mCustomerDatabase;
     private FirebaseAuth mAuth;
@@ -36,7 +35,22 @@ public class Account extends AppCompatActivity {
 
         mAplicar = (Button) findViewById(R.id.aplicar);
         mNombre = (EditText) findViewById(R.id.name);
+/*
+        //////////
+        String jsonFileString = Utils.getJsonFromAssets(getApplicationContext(), "cities.json");
+        Log.i("data", jsonFileString);
 
+        Gson gson = new Gson();
+        Type listUserType = new TypeToken<List<cities>>() { }.getType();
+
+        List<cities> cities = gson.fromJson(jsonFileString, listUserType);
+        for (int i = 0; i < cities.size(); i++) {
+            Log.i("data", "> Item " + i + "\n" + cities.get(i));
+        }
+
+        ///////////
+
+ */
         //Toolbar Menu
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
