@@ -7,6 +7,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -75,6 +76,48 @@ public class Account extends AppCompatActivity {
 
         });
 
+        mRegionesSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+                String nombreRegion = mRegionesSpinner.getSelectedItem().toString();
+
+                //txt_region.setText(nombreRegion);
+
+                String jsonFileString = Utils.getJsonFromAssets(getApplicationContext(), "cities.json");
+                Log.i("data", jsonFileString);
+
+                Gson gson = new Gson();
+                Type listUserType = new TypeToken<List<cities>>() { }.getType();
+
+                List<cities> cities = gson.fromJson(jsonFileString, listUserType);
+
+                List<String> list = new ArrayList<String>();
+
+                list.add("Seleccione weaaaa");
+                mComunasSpinner = (Spinner) findViewById(R.id.comunasSpinner);
+                if(position!=0) {
+                    List<String> comunas = cities.get(position - 1).getComunas();
+                    ArrayAdapter<String> adapter = new ArrayAdapter<String>(view.getContext(), android.R.layout.simple_spinner_item, comunas);
+                    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    mComunasSpinner.setAdapter(adapter);
+                }
+                else{
+                    List<String> listVacia = new ArrayList<String>();
+                    listVacia.add("Seleccione Región");
+                    ArrayAdapter<String> adapter = new ArrayAdapter<String>(view.getContext(), android.R.layout.simple_spinner_item, listVacia);
+                    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    mComunasSpinner.setAdapter(adapter);
+                }
+
+            }
+
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                //aca hay que añadir que cuando no seleccione nada, se borre el spinner de comunas y solo deje seleccione comuna.
+            }
+        });
 
     }
 
