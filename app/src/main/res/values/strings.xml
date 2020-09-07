@@ -2,4 +2,11 @@
     <string name="app_name">ProyectoTitulo</string>
     <string name="facebook_app_id">973126683132442</string>
     <string name="fb_login_protocol_scheme">fb973126683132442</string>
+    <string-array name="regiones">
+        <item>Seleccione Region</item>
+    </string-array>
+    <string-array name="comunas">
+        <item>Seleccione Comuna</item>
+    </string-array>
+
 </resources>

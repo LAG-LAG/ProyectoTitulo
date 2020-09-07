@@ -49,4 +49,32 @@
         app:layout_constraintTop_toBottomOf="@+id/name"
         app:layout_constraintVertical_bias="0.401" />
 
+    <Spinner
+        android:id="@+id/regionesSpinner"
+        android:entries="@array/regiones"
+        android:layout_width="251dp"
+        android:layout_height="25dp"
+        android:visibility="visible"
+        app:layout_constraintBottom_toTopOf="@+id/aplicar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/name"
+        app:layout_constraintVertical_bias="0.296"
+        tools:visibility="visible"
+        />
+
+    <Spinner
+        android:id="@+id/comunasSpinner"
+        android:layout_width="251dp"
+        android:layout_height="25dp"
+        android:layout_marginBottom="28dp"
+        android:entries="@array/comunas"
+        android:visibility="visible"
+        app:layout_constraintBottom_toTopOf="@+id/aplicar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/name"
+        app:layout_constraintVertical_bias="0.854"
+        tools:visibility="visible" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

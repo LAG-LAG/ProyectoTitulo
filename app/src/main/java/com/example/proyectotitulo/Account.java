@@ -2,12 +2,15 @@ package com.example.proyectotitulo;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -20,7 +23,12 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 public class Account extends AppCompatActivity {
     private DatabaseReference mCustomerDatabase;
@@ -28,6 +36,8 @@ public class Account extends AppCompatActivity {
     private Button mAplicar;
     private EditText mNombre;
     private String nombreUsuario;
+    private Spinner mRegionesSpinner;
+    private Spinner mComunasSpinner;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,23 +45,13 @@ public class Account extends AppCompatActivity {
 
         mAplicar = (Button) findViewById(R.id.aplicar);
         mNombre = (EditText) findViewById(R.id.name);
-/*
+
         //////////
-        String jsonFileString = Utils.getJsonFromAssets(getApplicationContext(), "cities.json");
-        Log.i("data", jsonFileString);
-
-        Gson gson = new Gson();
-        Type listUserType = new TypeToken<List<cities>>() { }.getType();
-
-        List<cities> cities = gson.fromJson(jsonFileString, listUserType);
-        for (int i = 0; i < cities.size(); i++) {
-            Log.i("data", "> Item " + i + "\n" + cities.get(i));
-        }
 
         ///////////
-
- */
         //Toolbar Menu
+
+        llenarComboBoxRegiones();
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) {
@@ -75,7 +75,35 @@ public class Account extends AppCompatActivity {
 
         });
 
+
     }
+
+    private void llenarComboBoxRegiones() {
+        String jsonFileString = Utils.getJsonFromAssets(getApplicationContext(), "cities.json");
+        Log.i("data", jsonFileString);
+
+        Gson gson = new Gson();
+        Type listUserType = new TypeToken<List<cities>>() { }.getType();
+
+        List<cities> cities = gson.fromJson(jsonFileString, listUserType);
+        for (int i = 0; i < cities.size(); i++) {
+            Log.i("data", "> Item " + i + "\n" + cities.get(i));
+        }
+
+        mRegionesSpinner = (Spinner) findViewById(R.id.regionesSpinner);
+        List<String> list = new ArrayList<String>();
+        list.add("Seleccione Región");
+        for (int i = 0; i < cities.size(); i++) {
+            list.add(cities.get(i).region);
+        }
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_spinner_item, list);
+        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        mRegionesSpinner.setAdapter(dataAdapter);
+    }
+
+
+
 
     private void getUserInfo() {
         mCustomerDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
