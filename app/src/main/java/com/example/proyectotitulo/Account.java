@@ -261,7 +261,7 @@ public class Account extends AppCompatActivity {
         for (int i = 0; i < cities.size(); i++) {
             list.add(cities.get(i).region);
             if (cities.get(i).region.equals(regionAnterior)) {
-            posicionRegion = i;
+            posicionRegion = i+1;
             }
         }
         //Toast.makeText(this, regionAnterior,Toast.LENGTH_LONG).show();
@@ -289,12 +289,54 @@ public class Account extends AppCompatActivity {
 
                     if (map.get("region") != null) {
                         regionAnterior = map.get("region").toString();
-                    }
-
-                    if (map.get("comuna") != null) {
                         comunaAnterior = map.get("comuna").toString();
+                        ArrayList<String> regiones = new ArrayList<>();
+                        regiones.add(regionAnterior);
 
+                        String jsonFileString = Utils.getJsonFromAssets(getApplicationContext(), "cities.json");
+                        Log.i("data", jsonFileString);
+                        int posicionRegion = 0;
+                        Gson gson = new Gson();
+                        Type listUserType = new TypeToken<List<cities>>() {
+                        }.getType();
+
+                        List<cities> cities = gson.fromJson(jsonFileString, listUserType);
+
+                        List<String> list = new ArrayList<String>();
+                        list.add("Seleccione Región");
+                        for (int i = 0; i < cities.size(); i++) {
+                            list.add(cities.get(i).region);
+                            if (cities.get(i).region.equals(regionAnterior)) {
+                                posicionRegion = i+1;
+                            }
+                        }
+                        //Toast.makeText(this, regionAnterior,Toast.LENGTH_LONG).show();
+                        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(Account.this, android.R.layout.simple_expandable_list_item_1,list);
+                        mRegionesSpinner.setAdapter(arrayAdapter);
+                        mRegionesSpinner.setSelection(posicionRegion);
+
+                        //aca ve las comunas/////////////////
+
+
+                        int posicionComuna=0;
+                        List<String> comunas = cities.get(posicionRegion-1).getComunas(); //esto esta bien, lo revise con toast y posicionregion-1 corresponde a lo que buscamos.
+                        //Toast.makeText(Account.this,cities.get(posicionRegion-1).region,Toast.LENGTH_SHORT).show();
+
+                        for (int x = 0; x < comunas.size(); x++) {
+                            if(comunas.get(x) == comunaAnterior){
+                                posicionComuna = x;
+                                break;
+                            }
+                        }
+
+                        ArrayAdapter<String> arrayAdapterComunas = new ArrayAdapter<>(Account.this, android.R.layout.simple_expandable_list_item_1,comunas);
+                        arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                        mComunasSpinner.setAdapter(arrayAdapterComunas);
+                        mComunasSpinner.setSelection(posicionComuna);
                     }
+
+
+//esto de aca es para cargar la foto de perfil del usuario
                     Glide.with(getApplication()).clear(mProfileImage);
                     if(map.get("profileImageUrl")!=null){
                         profileImageUrl = map.get("profileImageUrl").toString();
