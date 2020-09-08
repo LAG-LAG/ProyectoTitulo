@@ -26,6 +26,18 @@
         app:layout_constraintVertical_bias="0.072"
         tools:ignore="MissingConstraints" />
 
+    <ImageView
+        android:id="@+id/profileImageUrl"
+        android:layout_width="121dp"
+        android:layout_height="119dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintBottom_toTopOf="@+id/name"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/button2"
+        app:layout_constraintVertical_bias="0.181"
+        tools:srcCompat="@tools:sample/avatars"></ImageView>
+
     <EditText
         android:id="@+id/name"
         android:layout_width="341dp"
@@ -36,32 +48,29 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/button2"
-        app:layout_constraintVertical_bias="0.071" />
+        app:layout_constraintVertical_bias="0.227" />
 
     <Button
         android:id="@+id/aplicar"
         android:layout_width="291dp"
         android:layout_height="55dp"
+        android:layout_marginBottom="196dp"
         android:text="Aplicar"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/name"
-        app:layout_constraintVertical_bias="0.401" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Spinner
         android:id="@+id/regionesSpinner"
-        android:entries="@array/regiones"
         android:layout_width="251dp"
         android:layout_height="25dp"
+        android:layout_marginTop="36dp"
+        android:entries="@array/regiones"
         android:visibility="visible"
-        app:layout_constraintBottom_toTopOf="@+id/aplicar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/name"
-        app:layout_constraintVertical_bias="0.296"
-        tools:visibility="visible"
-        />
+        tools:visibility="visible" />
 
     <Spinner
         android:id="@+id/comunasSpinner"
@@ -73,8 +82,10 @@
         app:layout_constraintBottom_toTopOf="@+id/aplicar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/name"
+        app:layout_constraintTop_toBottomOf="@+id/regionesSpinner"
         app:layout_constraintVertical_bias="0.854"
         tools:visibility="visible" />
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
