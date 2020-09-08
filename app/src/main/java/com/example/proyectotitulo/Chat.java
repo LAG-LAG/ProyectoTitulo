@@ -17,7 +17,7 @@ public class Chat extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_account);
+        setContentView(R.layout.activity_chat);
 
         //Toolbar Menu
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -48,23 +48,27 @@ public class Chat extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()){
             case R.id.accountBtn:
-                Toast.makeText(getApplicationContext(), "Account", Toast.LENGTH_SHORT).show();
-                break;
-
-            case R.id.chatBtn:
-                Toast.makeText(getApplicationContext(), "Chat", Toast.LENGTH_SHORT).show();
+                Intent intentAccount = new Intent(Chat.this, Account.class);
+                startActivity(intentAccount);
+                finish();
                 break;
 
             case R.id.addBtn:
-                Toast.makeText(getApplicationContext(), "Add", Toast.LENGTH_SHORT).show();
+                Intent intentAdd = new Intent(Chat.this, AddPublicaciones.class);
+                startActivity(intentAdd);
+                finish();
                 break;
 
             case R.id.likeBtn:
-                Toast.makeText(getApplicationContext(), "Like", Toast.LENGTH_SHORT).show();
+                Intent intentLike = new Intent(Chat.this, Favorites.class);
+                startActivity(intentLike);
+                finish();
                 break;
 
             case R.id.publicacionesBtn:
-                Toast.makeText(getApplicationContext(), "Publicaciones", Toast.LENGTH_SHORT).show();
+                Intent intentPublicaciones = new Intent(Chat.this, PaginaPrincipal.class);
+                startActivity(intentPublicaciones);
+                finish();
                 break;
         }
 

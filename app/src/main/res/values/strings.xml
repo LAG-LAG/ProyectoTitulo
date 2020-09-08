@@ -9,4 +9,17 @@
         <item>Seleccione Comuna</item>
     </string-array>
 
+    <string-array name="tipoPrenda">
+        <item>Seleccione tipo de prenda</item>
+    </string-array>
+    <string-array name="talla">
+        <item>Seleccione talla</item>
+    </string-array>
+    <string-array name="marca">
+        <item>Seleccione marca</item>
+    </string-array>
+    <string-array name="color">
+        <item>Seleccione color</item>
+    </string-array>
+
 </resources>

@@ -10,29 +10,38 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+
 public class AddPublicaciones extends AppCompatActivity {
+    private DatabaseReference mCustomerDatabase;
+    private FirebaseAuth mAuth;
+    private Button mAplicar;
+    private EditText mTitulo;
+    private EditText mValor;
+    private Spinner mTipoPrendaSpinner;
+    private Spinner mTallaSpinner;
+    private Spinner mMarcaSpinner;
+    private Spinner mColorSpinner;
+    private EditText mDescripcion;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_account);
+        setContentView(R.layout.activity_add_publicaciones);
 
         //Toolbar Menu
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) {
-            getSupportActionBar().setTitle("AddPublicacion");
+            getSupportActionBar().setTitle("Añadir publicacion");
         }
 
-    }
-
-    public void back(View view) {
-        Intent intent = new Intent(AddPublicaciones.this, PaginaPrincipal.class);
-        startActivity(intent);
-        finish();
-        return;
     }
 
     //Crea el menu en la toolbar
@@ -48,23 +57,27 @@ public class AddPublicaciones extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()){
             case R.id.accountBtn:
-                Toast.makeText(getApplicationContext(), "Account", Toast.LENGTH_SHORT).show();
+                Intent intentAccount = new Intent(AddPublicaciones.this, Account.class);
+                startActivity(intentAccount);
+                finish();
                 break;
 
             case R.id.chatBtn:
-                Toast.makeText(getApplicationContext(), "Chat", Toast.LENGTH_SHORT).show();
-                break;
-
-            case R.id.addBtn:
-                Toast.makeText(getApplicationContext(), "Add", Toast.LENGTH_SHORT).show();
+                Intent intentChat = new Intent(AddPublicaciones.this, Chat.class);
+                startActivity(intentChat);
+                finish();
                 break;
 
             case R.id.likeBtn:
-                Toast.makeText(getApplicationContext(), "Like", Toast.LENGTH_SHORT).show();
+                Intent intentLike = new Intent(AddPublicaciones.this, Favorites.class);
+                startActivity(intentLike);
+                finish();
                 break;
 
             case R.id.publicacionesBtn:
-                Toast.makeText(getApplicationContext(), "Publicaciones", Toast.LENGTH_SHORT).show();
+                Intent intentPublicaciones = new Intent(AddPublicaciones.this, PaginaPrincipal.class);
+                startActivity(intentPublicaciones);
+                finish();
                 break;
         }
 
