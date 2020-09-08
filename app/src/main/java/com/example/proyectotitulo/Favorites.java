@@ -5,7 +5,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.content.Intent;
+import android.nfc.Tag;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -17,7 +19,7 @@ public class Favorites extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_account);
+        setContentView(R.layout.activity_favorites);
 
         //Toolbar Menu
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -48,23 +50,27 @@ public class Favorites extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()){
             case R.id.accountBtn:
-                Toast.makeText(getApplicationContext(), "Account", Toast.LENGTH_SHORT).show();
+                Intent intentAccount = new Intent(Favorites.this, Account.class);
+                startActivity(intentAccount);
+                finish();
                 break;
 
             case R.id.chatBtn:
-                Toast.makeText(getApplicationContext(), "Chat", Toast.LENGTH_SHORT).show();
+                Intent intentChat = new Intent(Favorites.this, Chat.class);
+                startActivity(intentChat);
+                finish();
                 break;
 
             case R.id.addBtn:
-                Toast.makeText(getApplicationContext(), "Add", Toast.LENGTH_SHORT).show();
-                break;
-
-            case R.id.likeBtn:
-                Toast.makeText(getApplicationContext(), "Like", Toast.LENGTH_SHORT).show();
+                Intent intentAdd = new Intent(Favorites.this, AddPublicaciones.class);
+                startActivity(intentAdd);
+                finish();
                 break;
 
             case R.id.publicacionesBtn:
-                Toast.makeText(getApplicationContext(), "Publicaciones", Toast.LENGTH_SHORT).show();
+                Intent intentPublicaciones = new Intent(Favorites.this, PaginaPrincipal.class);
+                startActivity(intentPublicaciones);
+                finish();
                 break;
         }
 

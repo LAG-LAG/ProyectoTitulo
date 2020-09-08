@@ -41,7 +41,7 @@ public class PaginaPrincipal extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) {
-            getSupportActionBar().setTitle("UwU");
+            getSupportActionBar().setTitle("Publicaciones");
         }
 
         //swipecards
@@ -125,36 +125,27 @@ public class PaginaPrincipal extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()){
             case R.id.accountBtn:
-                Toast.makeText(getApplicationContext(), "Account", Toast.LENGTH_SHORT).show();
                 Intent intentAccount = new Intent(PaginaPrincipal.this, Account.class);
                 startActivity(intentAccount);
                 finish();
                 break;
 
             case R.id.chatBtn:
-                Toast.makeText(getApplicationContext(), "Chat", Toast.LENGTH_SHORT).show();
                 Intent intentChat = new Intent(PaginaPrincipal.this, Chat.class);
                 startActivity(intentChat);
                 finish();
                 break;
 
             case R.id.addBtn:
-                Toast.makeText(getApplicationContext(), "Add", Toast.LENGTH_SHORT).show();
                 Intent intentAdd = new Intent(PaginaPrincipal.this, AddPublicaciones.class);
                 startActivity(intentAdd);
                 finish();
                 break;
 
             case R.id.likeBtn:
-                Toast.makeText(getApplicationContext(), "Like", Toast.LENGTH_SHORT).show();
                 Intent intentLike = new Intent(PaginaPrincipal.this, Favorites.class);
                 startActivity(intentLike);
                 finish();
-                break;
-
-            case R.id.publicacionesBtn:
-                Toast.makeText(getApplicationContext(), "Publicaciones", Toast.LENGTH_SHORT).show();
-                //En este caso el boton lleva a la misma pantalla
                 break;
         }
 

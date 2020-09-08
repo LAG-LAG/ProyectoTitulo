@@ -47,12 +47,9 @@ public class Account extends AppCompatActivity {
         mAplicar = (Button) findViewById(R.id.aplicar);
         mNombre = (EditText) findViewById(R.id.name);
 
-        //////////
-
-        ///////////
-        //Toolbar Menu
-
         llenarComboBoxRegiones();
+
+        //Toolbar Menu
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) {
@@ -188,24 +185,28 @@ public class Account extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()){
-            case R.id.accountBtn:
-                Toast.makeText(getApplicationContext(), "Account", Toast.LENGTH_SHORT).show();
-                break;
-
             case R.id.chatBtn:
-                Toast.makeText(getApplicationContext(), "Chat", Toast.LENGTH_SHORT).show();
+                Intent intentChat = new Intent(Account.this, Chat.class);
+                startActivity(intentChat);
+                finish();
                 break;
 
             case R.id.addBtn:
-                Toast.makeText(getApplicationContext(), "Add", Toast.LENGTH_SHORT).show();
+                Intent intentAdd = new Intent(Account.this, AddPublicaciones.class);
+                startActivity(intentAdd);
+                finish();
                 break;
 
             case R.id.likeBtn:
-                Toast.makeText(getApplicationContext(), "Like", Toast.LENGTH_SHORT).show();
+                Intent intentLike = new Intent(Account.this, Favorites.class);
+                startActivity(intentLike);
+                finish();
                 break;
 
             case R.id.publicacionesBtn:
-                Toast.makeText(getApplicationContext(), "Publicaciones", Toast.LENGTH_SHORT).show();
+                Intent intentAccount = new Intent(Account.this, PaginaPrincipal.class);
+                startActivity(intentAccount);
+                finish();
                 break;
         }
 
