@@ -31,6 +31,8 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CountDownLatch;
+
 public class Account extends AppCompatActivity {
     private DatabaseReference mCustomerDatabase;
     private FirebaseAuth mAuth;
@@ -38,6 +40,8 @@ public class Account extends AppCompatActivity {
     private EditText mNombre;
     private String nombreUsuario;
     private Spinner mRegionesSpinner;
+    private String comunaAnterior;
+    private String regionAnterior;
     private Spinner mComunasSpinner;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,7 +51,7 @@ public class Account extends AppCompatActivity {
         mAplicar = (Button) findViewById(R.id.aplicar);
         mNombre = (EditText) findViewById(R.id.name);
 
-        llenarComboBoxRegiones();
+
 
         //Toolbar Menu
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -61,14 +65,29 @@ public class Account extends AppCompatActivity {
         mCustomerDatabase = FirebaseDatabase.getInstance().getReference().child("Users").child(userId);
         getUserInfo();
 
-        
+        llenarComboBoxRegiones();
+
+
+
         mAplicar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 String userId = mAuth.getCurrentUser().getUid();
-                DatabaseReference currentUserDb = FirebaseDatabase.getInstance().getReference().child("Users").child(userId).child("addressUser"); //busca al usuario que va a crear y lo guarda como una variable que se le agregan las cosas y se manda al a db de nuevo
-                DatabaseReference currentUserDbDos = FirebaseDatabase.getInstance().getReference().child("Users").child(userId).child("nameUser"); //busca al usuario que va a crear y lo guarda como una variable que se le agregan las cosas y se manda al a db de nuevo
-                currentUserDbDos.setValue(mNombre.getText().toString()); //Aca va y le asigna el nombre al User.
+                String regionGuardar = String.valueOf(mRegionesSpinner.getSelectedItem());
+                String comunaGuardar = String.valueOf(mComunasSpinner.getSelectedItem());
+
+                DatabaseReference currentUserName = FirebaseDatabase.getInstance().getReference().child("Users").child(userId).child("nameUser"); //busca al usuario que va a crear y lo guarda como una variable que se le agregan las cosas y se manda al a db de nuevo
+                //mRegionesSpinner.getSelectedItem();
+                if(regionGuardar != "Seleccione Región" && comunaGuardar != "Seleccione Comuna" && mNombre.getText().toString() != ""){
+                    DatabaseReference currentUserRegion = FirebaseDatabase.getInstance().getReference().child("Users").child(userId).child("region"); //busca al usuario que va a crear y lo guarda como una variable que se le agregan las cosas y se manda al a db de nuevo
+                    currentUserRegion.setValue(regionGuardar);
+                    DatabaseReference currentUserComuna = FirebaseDatabase.getInstance().getReference().child("Users").child(userId).child("comuna");
+                    currentUserComuna.setValue(comunaGuardar);
+                    currentUserName.setValue(mNombre.getText().toString()); //Aca va y le asigna el nombre al User.
+                }
+                else{
+                    Toast.makeText(Account.this, "Datos Incorrectos.", Toast.LENGTH_SHORT).show();
+                }
             }
 
         });
@@ -78,7 +97,8 @@ public class Account extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
                 String nombreRegion = mRegionesSpinner.getSelectedItem().toString();
-
+                final String comunaAnterior;
+                final String regionAnterior;
                 //txt_region.setText(nombreRegion);
 
                 String jsonFileString = Utils.getJsonFromAssets(getApplicationContext(), "cities.json");
@@ -91,8 +111,8 @@ public class Account extends AppCompatActivity {
 
                 List<String> list = new ArrayList<String>();
 
-                list.add("Seleccione weaaaa");
                 mComunasSpinner = (Spinner) findViewById(R.id.comunasSpinner);
+
                 if(position!=0) {
                     List<String> comunas = cities.get(position - 1).getComunas();
                     ArrayAdapter<String> adapter = new ArrayAdapter<String>(view.getContext(), android.R.layout.simple_spinner_item, comunas);
@@ -101,9 +121,11 @@ public class Account extends AppCompatActivity {
                 }
                 else{
                     List<String> listVacia = new ArrayList<String>();
-                    listVacia.add("Seleccione Región");
+                    listVacia.add("Seleccione Comuna");
                     ArrayAdapter<String> adapter = new ArrayAdapter<String>(view.getContext(), android.R.layout.simple_spinner_item, listVacia);
                     adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+
                     mComunasSpinner.setAdapter(adapter);
                 }
 
@@ -121,40 +143,56 @@ public class Account extends AppCompatActivity {
     private void llenarComboBoxRegiones() {
         String jsonFileString = Utils.getJsonFromAssets(getApplicationContext(), "cities.json");
         Log.i("data", jsonFileString);
-
+        int posicionRegion = 0;
         Gson gson = new Gson();
-        Type listUserType = new TypeToken<List<cities>>() { }.getType();
+        Type listUserType = new TypeToken<List<cities>>() {
+        }.getType();
 
         List<cities> cities = gson.fromJson(jsonFileString, listUserType);
-        for (int i = 0; i < cities.size(); i++) {
-            Log.i("data", "> Item " + i + "\n" + cities.get(i));
-        }
 
         mRegionesSpinner = (Spinner) findViewById(R.id.regionesSpinner);
         List<String> list = new ArrayList<String>();
         list.add("Seleccione Región");
         for (int i = 0; i < cities.size(); i++) {
             list.add(cities.get(i).region);
+            //if (cities.get(i).region.equals(regionAnterior)) {
+            posicionRegion = i;
+
+            //}
         }
+        Toast.makeText(this, regionAnterior,Toast.LENGTH_LONG).show();
+
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_spinner_item, list);
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mRegionesSpinner.setAdapter(dataAdapter);
-    }
+        mRegionesSpinner.setSelection(posicionRegion);
 
 
-
+        }
 
     private void getUserInfo() {
         mCustomerDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                CountDownLatch done = new CountDownLatch(1);
                 if (dataSnapshot.exists() && dataSnapshot.getChildrenCount() > 0) { //si existe y tiene algo ya guardado dentro lo muestra, para eso lo trae y lo castea al mapa.a
                     Map<String, Object> map = (Map<String, Object>) dataSnapshot.getValue();
                     if (map.get("nameUser") != null) {
                         nombreUsuario = map.get("nameUser").toString();
                         mNombre.setText(nombreUsuario);
                     }
+
+                    if (map.get("region") != null) {
+                        regionAnterior = map.get("region").toString();
+                    }
+
+                    if (map.get("comuna") != null) {
+                        comunaAnterior = map.get("comuna").toString();
+
+                    }
+                    done.countDown();
+
                 }
             }
 
@@ -163,6 +201,8 @@ public class Account extends AppCompatActivity {
 
                 }
             });
+
+
         }
 
 
