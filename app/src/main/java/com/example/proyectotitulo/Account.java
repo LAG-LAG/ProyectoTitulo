@@ -70,7 +70,6 @@ public class Account extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_account);
-
         mAplicar = (Button) findViewById(R.id.aplicar);
         mNombre = (EditText) findViewById(R.id.name);
         mProfileImage = (ImageView) findViewById(R.id.profileImageUrl);
@@ -248,7 +247,7 @@ public class Account extends AppCompatActivity {
 
 
         }else{
-            finish();
+
         }
     }
 
@@ -390,10 +389,10 @@ public class Account extends AppCompatActivity {
 
     }
 
-    /*
+/*
 
 
-     */
+ */
     public void back(View view) {
         Intent intent = new Intent(Account.this, PaginaPrincipal.class);
         startActivity(intent);
