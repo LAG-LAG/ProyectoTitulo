@@ -65,7 +65,7 @@ public class Account extends AppCompatActivity {
     private String regionAnterior;
     private Spinner mComunasSpinner;
     private Uri resultUri;
-
+    private int estadoComunas;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -76,7 +76,7 @@ public class Account extends AppCompatActivity {
         mProfileImage = (ImageView) findViewById(R.id.profileImageUrl);
         mRegionesSpinner = (Spinner) findViewById(R.id.regionesSpinner);
         mComunasSpinner = (Spinner) findViewById(R.id.comunasSpinner);
-
+        estadoComunas = 0;
 
 
         //Toolbar Menu
@@ -122,7 +122,6 @@ public class Account extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
                 String nombreRegion = mRegionesSpinner.getSelectedItem().toString();
-                final String comunaAnterior;
                 final String regionAnterior;
                 //txt_region.setText(nombreRegion);
 
@@ -136,13 +135,31 @@ public class Account extends AppCompatActivity {
 
                 List<String> list = new ArrayList<String>();
 
+                if(estadoComunas==1){
+                    int posicionComuna=0;
+                    List<String> comunas = cities.get(position-1).getComunas(); //esto esta bien, lo revise con toast y posicionregion-1 corresponde a lo que buscamos.
+                    //Toast.makeText(Account.this,cities.get(posicionRegion-1).region,Toast.LENGTH_SHORT).show();
 
-                if(position!=0) {
+                    for (int x = 0; x < comunas.size(); x++) {
+                        if(comunas.get(x).equals(comunaAnterior)){
+                            posicionComuna = x;
+                            break;
+                        }
+                    }
+
+                    //Toast.makeText(Account.this, posicionComuna, Toast.LENGTH_SHORT).show();
+                    ArrayAdapter<String> arrayAdapterComunas = new ArrayAdapter<>(Account.this, android.R.layout.simple_expandable_list_item_1,comunas);
+                    arrayAdapterComunas.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    mComunasSpinner.setAdapter(arrayAdapterComunas);
+                    mComunasSpinner.setSelection(posicionComuna);
+                }
+                else if(position!=0) {
                     List<String> comunas = cities.get(position - 1).getComunas();
                     ArrayAdapter<String> adapter = new ArrayAdapter<String>(view.getContext(), android.R.layout.simple_spinner_item, comunas);
                     adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                     mComunasSpinner.setAdapter(adapter);
                 }
+
                 else{
                     List<String> listVacia = new ArrayList<String>();
                     listVacia.add("Seleccione Comuna");
@@ -261,7 +278,7 @@ public class Account extends AppCompatActivity {
         for (int i = 0; i < cities.size(); i++) {
             list.add(cities.get(i).region);
             if (cities.get(i).region.equals(regionAnterior)) {
-            posicionRegion = i+1;
+                posicionRegion = i+1;
             }
         }
         //Toast.makeText(this, regionAnterior,Toast.LENGTH_LONG).show();
@@ -273,7 +290,7 @@ public class Account extends AppCompatActivity {
         mRegionesSpinner.setSelection(posicionRegion);
 
 
-        }
+    }
 
     private void getUserInfo() {
         mCustomerDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -317,22 +334,26 @@ public class Account extends AppCompatActivity {
 
                         //aca ve las comunas/////////////////
 
-
+/*
                         int posicionComuna=0;
                         List<String> comunas = cities.get(posicionRegion-1).getComunas(); //esto esta bien, lo revise con toast y posicionregion-1 corresponde a lo que buscamos.
                         //Toast.makeText(Account.this,cities.get(posicionRegion-1).region,Toast.LENGTH_SHORT).show();
 
                         for (int x = 0; x < comunas.size(); x++) {
-                            if(comunas.get(x) == comunaAnterior){
+                            if(comunas.get(x).equals(comunaAnterior)){
                                 posicionComuna = x;
                                 break;
                             }
                         }
 
+                        //Toast.makeText(Account.this, posicionComuna, Toast.LENGTH_SHORT).show();
                         ArrayAdapter<String> arrayAdapterComunas = new ArrayAdapter<>(Account.this, android.R.layout.simple_expandable_list_item_1,comunas);
-                        arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                        //arrayAdapterComunas.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                         mComunasSpinner.setAdapter(arrayAdapterComunas);
-                        mComunasSpinner.setSelection(posicionComuna);
+                        mComunasSpinner.setSelection(4);
+                        */
+
+                        estadoComunas=1;
                     }
 
 
@@ -360,16 +381,19 @@ public class Account extends AppCompatActivity {
                 }
             }
 
-                @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
 
-                }
-            });
-
-
-        }
+            }
+        });
 
 
+    }
+
+    /*
+
+
+     */
     public void back(View view) {
         Intent intent = new Intent(Account.this, PaginaPrincipal.class);
         startActivity(intent);

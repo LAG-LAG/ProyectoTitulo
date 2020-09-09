@@ -16,7 +16,9 @@
         <activity android:name=".Favorites"></activity>
         <activity android:name=".AddPublicaciones" />
         <activity android:name=".Chat" />
-        <activity android:name=".Account" />
+        <activity android:name=".Account"
+            android:screenOrientation="portrait"/>
+
         <activity
             android:name=".Registration"
             android:screenOrientation="portrait" />
