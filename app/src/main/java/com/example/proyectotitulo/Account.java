@@ -77,7 +77,6 @@ public class Account extends AppCompatActivity {
         mComunasSpinner = (Spinner) findViewById(R.id.comunasSpinner);
         estadoComunas = 0;
 
-
         //Toolbar Menu
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);

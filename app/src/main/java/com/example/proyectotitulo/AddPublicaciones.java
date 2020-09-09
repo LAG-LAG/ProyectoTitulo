@@ -58,11 +58,14 @@ public class AddPublicaciones extends AppCompatActivity {
     private DatabaseReference mClothesDatabase;
 
     private ImageView mPublicacionImage1;
+    private ImageView mPublicacionImage1Aux;
+
     private ImageView mPublicacionImage2;
     private ImageView mPublicacionImage3;
     private ImageView mPublicacionImage4;
     private ImageView mPublicacionImage5;
     private ImageView mPublicacionImage6;
+    private ImageView mBorrarPublicacion1;
     private int publicacion1,publicacion2,publicacion3,publicacion4,publicacion5,publicacion6;
 
 
@@ -79,13 +82,16 @@ public class AddPublicaciones extends AppCompatActivity {
         mAplicar = (Button) findViewById(R.id.publicarBtn);
 
         mPublicacionImage1 = (ImageView) findViewById(R.id.publicacionImageCrear1);
+        mPublicacionImage1Aux = (ImageView) findViewById(R.id.publicacionImageCrear1);
         mPublicacionImage2 = (ImageView) findViewById(R.id.publicacionImageCrear2);
         mPublicacionImage3 = (ImageView) findViewById(R.id.publicacionImageCrear3);
         mPublicacionImage4 = (ImageView) findViewById(R.id.publicacionImageCrear4);
         mPublicacionImage5 = (ImageView) findViewById(R.id.publicacionImageCrear5);
         mPublicacionImage6 = (ImageView) findViewById(R.id.publicacionImageCrear6);
 
+        mBorrarPublicacion1 = (ImageView)findViewById(R.id.borrarPublicacionCrear1);
 
+        //if x ispressed then resulturi correspondiente = null y se
         mAuth = FirebaseAuth.getInstance();
         //Toolbar Menu
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -94,6 +100,19 @@ public class AddPublicaciones extends AppCompatActivity {
             getSupportActionBar().setTitle("Añadir publicacion");
         }
 
+
+        mBorrarPublicacion1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                final Uri imageUri = null ;
+               // final Uri imageUri = Uri.parse("android.resource://ProyectoTitulo/drawable/image_name");
+                resultUri = imageUri;
+                mPublicacionImage1.setImageURI(resultUri);
+                mPublicacionImage1.setImageResource(R.drawable.ic_launcher_foreground);
+                //mPublicacionImage1.setI
+               // mPublicacionImage1 = mPublicacionImage1Aux;
+            }
+        });
 
         mPublicacionImage1.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -208,6 +227,8 @@ public class AddPublicaciones extends AppCompatActivity {
         String tallaPrenda = String.valueOf(mTallaSpinner.getSelectedItem());
         String colorPrenda = String.valueOf(mColorSpinner.getSelectedItem());
         String descripcionPrenda = mDescripcion.getText().toString();
+        //DatabaseReference dueño = FirebaseDatabase.getInstance().getReference().child("Users").child(userId).child("clothes").child(id).child("idDueño");
+        //dueño.setValue(userId);
 
         //mRegionesSpinner.getSelectedItem();
         if(titulo != "" && valor != "" && tipoPrenda != "Seleccione tipo de prenda" && tallaPrenda != "Seleccione talla" && colorPrenda != "Seleccione color"){
