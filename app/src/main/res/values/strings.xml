@@ -11,15 +11,35 @@
 
     <string-array name="tipoPrenda">
         <item>Seleccione tipo de prenda</item>
+        <item>Chaqueta</item>
+        <item>Pantalone</item>
+        <item>Polera</item>
+        <item>Poleron</item>
+        <item></item>
     </string-array>
+
     <string-array name="talla">
         <item>Seleccione talla</item>
+        <item>XS</item>
+        <item>S</item>
+        <item>M</item>
+        <item>L</item>
+        <item>XL</item>
+        <item>XXL</item>
     </string-array>
-    <string-array name="marca">
-        <item>Seleccione marca</item>
-    </string-array>
+
     <string-array name="color">
         <item>Seleccione color</item>
+        <item>Amarillo</item>
+        <item>Azul</item>
+        <item>Blanco</item>
+        <item>Cafe</item>
+        <item>Naranjo</item>
+        <item>Negro</item>
+        <item>Rojo</item>
+        <item>Rosa</item>
+        <item>Verde</item>
+        <item>Violeta</item>
     </string-array>
 
 </resources>
