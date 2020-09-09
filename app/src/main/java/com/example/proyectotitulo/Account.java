@@ -50,7 +50,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.CountDownLatch;
 
 public class Account extends AppCompatActivity {
     private static final int PICK_FROM_GALLERY = 1;
@@ -58,14 +57,14 @@ public class Account extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private Button mAplicar;
     private EditText mNombre;
-    private ImageView mProfileImage;
+    private ImageView mProfileImage,mborrarFotoPerfil;
     private String nombreUsuario;
     private Spinner mRegionesSpinner;
     private String comunaAnterior,profileImageUrl;
     private String regionAnterior;
     private Spinner mComunasSpinner;
     private Uri resultUri;
-    private int estadoComunas;
+    private int estadoComunas,existeFotoPerfil;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,9 +72,13 @@ public class Account extends AppCompatActivity {
         mAplicar = (Button) findViewById(R.id.aplicar);
         mNombre = (EditText) findViewById(R.id.name);
         mProfileImage = (ImageView) findViewById(R.id.profileImageUrl);
+        mborrarFotoPerfil = (ImageView) findViewById(R.id.borrarFotoPerfil);
         mRegionesSpinner = (Spinner) findViewById(R.id.regionesSpinner);
         mComunasSpinner = (Spinner) findViewById(R.id.comunasSpinner);
         estadoComunas = 0;
+        existeFotoPerfil=0;
+        mborrarFotoPerfil.setVisibility(View.INVISIBLE);
+
 
         //Toolbar Menu
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -91,6 +94,22 @@ public class Account extends AppCompatActivity {
 
         llenarComboBoxRegiones();
 
+        mborrarFotoPerfil.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(resultUri!=null) {
+                    final Uri imageUri = null;
+                    resultUri = imageUri;
+                    mProfileImage.setImageResource(R.drawable.ic_launcher_foreground);
+                    mborrarFotoPerfil.setVisibility(View.INVISIBLE);
+                }
+                if(existeFotoPerfil==1){
+                    mProfileImage.setImageResource(R.drawable.ic_launcher_foreground);
+                    mborrarFotoPerfil.setVisibility(View.INVISIBLE);
+                }
+            }
+        });
+
 
         mProfileImage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -102,6 +121,8 @@ public class Account extends AppCompatActivity {
                     intent.setType("image/*");
                     startActivityForResult(intent, 1);
                 }
+                mborrarFotoPerfil.setVisibility(View.VISIBLE);
+
             }
         });
 
@@ -241,10 +262,26 @@ public class Account extends AppCompatActivity {
                     });
                 }
             });
+        }
+        else { //este if significa que no subio nada, entonces ve si antes era nulo, si lo era lo borra.
+            mCustomerDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    if (dataSnapshot.exists() && dataSnapshot.getChildrenCount() > 0) { //si existe y tiene algo ya guardado dentro lo muestra, para eso lo trae y lo castea al mapa.
+                        Map<String, Object> map = (Map<String, Object>) dataSnapshot.getValue();
+                        if (map.get("profileImages") == null) {
+                            String userId = mAuth.getCurrentUser().getUid();
+                            FirebaseDatabase.getInstance().getReference().child("Users").child(userId).child("profileImageUrl").removeValue();
+                            FirebaseStorage.getInstance().getReference().child("profileImages").child(userId).child(map.get("profilesImages").toString()).delete();
+                        }
+                    }
+                }
 
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
 
-
-
+                }
+            });
         }
     }
 
@@ -255,7 +292,6 @@ public class Account extends AppCompatActivity {
             final Uri imageUri = data.getData();
             resultUri = imageUri;
             mProfileImage.setImageURI(resultUri);
-
         }
     }
 
@@ -292,7 +328,6 @@ public class Account extends AppCompatActivity {
         mCustomerDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                CountDownLatch done = new CountDownLatch(1);
                 if (dataSnapshot.exists() && dataSnapshot.getChildrenCount() > 0) { //si existe y tiene algo ya guardado dentro lo muestra, para eso lo trae y lo castea al mapa.a
                     Map<String, Object> map = (Map<String, Object>) dataSnapshot.getValue();
                     if (map.get("nameUser") != null) {
@@ -334,6 +369,7 @@ public class Account extends AppCompatActivity {
 //esto de aca es para cargar la foto de perfil del usuario
                     Glide.with(getApplication()).clear(mProfileImage);
                     if(map.get("profileImageUrl")!=null){
+                        mborrarFotoPerfil.setVisibility(View.VISIBLE);
                         profileImageUrl = map.get("profileImageUrl").toString();
                         switch(profileImageUrl){
                             case "default":
@@ -351,6 +387,7 @@ public class Account extends AppCompatActivity {
                         Picasso.get().setLoggingEnabled(true);
                         //Glide.with(getApplication()).load(profileImageUrl).into(mProfileImage);
                         Picasso.get().load(profileImageUrl).into(mProfileImage);
+                        existeFotoPerfil =1;
                     }
                 }
             }
@@ -360,6 +397,8 @@ public class Account extends AppCompatActivity {
 
             }
         });
+
+
 
 
     }
