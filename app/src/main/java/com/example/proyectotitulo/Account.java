@@ -246,8 +246,6 @@ public class Account extends AppCompatActivity {
 
 
 
-        }else{
-
         }
     }
 
@@ -330,28 +328,6 @@ public class Account extends AppCompatActivity {
                         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(Account.this, android.R.layout.simple_expandable_list_item_1,list);
                         mRegionesSpinner.setAdapter(arrayAdapter);
                         mRegionesSpinner.setSelection(posicionRegion);
-
-                        //aca ve las comunas/////////////////
-
-/*
-                        int posicionComuna=0;
-                        List<String> comunas = cities.get(posicionRegion-1).getComunas(); //esto esta bien, lo revise con toast y posicionregion-1 corresponde a lo que buscamos.
-                        //Toast.makeText(Account.this,cities.get(posicionRegion-1).region,Toast.LENGTH_SHORT).show();
-
-                        for (int x = 0; x < comunas.size(); x++) {
-                            if(comunas.get(x).equals(comunaAnterior)){
-                                posicionComuna = x;
-                                break;
-                            }
-                        }
-
-                        //Toast.makeText(Account.this, posicionComuna, Toast.LENGTH_SHORT).show();
-                        ArrayAdapter<String> arrayAdapterComunas = new ArrayAdapter<>(Account.this, android.R.layout.simple_expandable_list_item_1,comunas);
-                        //arrayAdapterComunas.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                        mComunasSpinner.setAdapter(arrayAdapterComunas);
-                        mComunasSpinner.setSelection(4);
-                        */
-
                         estadoComunas=1;
                     }
 
