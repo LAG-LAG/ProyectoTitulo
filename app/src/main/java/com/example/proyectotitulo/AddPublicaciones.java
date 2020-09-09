@@ -7,11 +7,13 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.provider.MediaStore;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -29,9 +31,15 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.List;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -47,7 +55,6 @@ public class AddPublicaciones extends AppCompatActivity {
     private EditText mValor;
     private Spinner mTipoPrendaSpinner;
     private Spinner mTallaSpinner;
-    private Spinner mMarcaSpinner;
     private Spinner mColorSpinner;
     private EditText mDescripcion;
     private Uri resultUri;
@@ -72,6 +79,11 @@ public class AddPublicaciones extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_publicaciones);
         mTitulo = (EditText) findViewById(R.id.editTextTitulo);
+        mValor = (EditText) findViewById(R.id.editTextValor);
+        mTipoPrendaSpinner = (Spinner) findViewById(R.id.TipoPrendaSpinner);
+        mTallaSpinner = (Spinner) findViewById(R.id.TallaSpinner);
+        mColorSpinner = (Spinner) findViewById(R.id.ColorSpinner);
+        mDescripcion = (EditText) findViewById(R.id.editTextDescripcion);
         mAplicar = (Button) findViewById(R.id.publicarBtn);
 
         mPublicacionImage1 = (ImageView) findViewById(R.id.publicacionImageCrear1);
@@ -198,9 +210,30 @@ public class AddPublicaciones extends AppCompatActivity {
         String userId = mAuth.getCurrentUser().getUid();
         String id = FirebaseDatabase.getInstance().getReference().child("Users").child(userId).child("clothes").push().getKey();
         DatabaseReference currentUserNamePrenda = FirebaseDatabase.getInstance().getReference().child("Users").child(userId).child("clothes").child(id).child("tituloPublicacion"); //busca al usuario que va a crear y lo guarda como una variable que se le agregan las cosas y se manda al a db de nuevo
+        String titulo = mTitulo.getText().toString();
+        String valor = mValor.getText().toString();
+        String tipoPrenda = String.valueOf(mTipoPrendaSpinner.getSelectedItem());
+        String tallaPrenda = String.valueOf(mTallaSpinner.getSelectedItem());
+        String colorPrenda = String.valueOf(mColorSpinner.getSelectedItem());
+        String descripcionPrenda = mDescripcion.getText().toString();
+
+        DatabaseReference currentUserNamePrenda = FirebaseDatabase.getInstance().getReference().child("Users").child(userId).child("clothes").child(titulo); //busca al usuario que va a crear y lo guarda como una variable que se le agregan las cosas y se manda al a db de nuevo
+
         //mRegionesSpinner.getSelectedItem();
-        if(mTitulo.getText().toString() != ""){
+        if(titulo != "" && valor != "" && tipoPrenda != "Seleccione tipo de prenda" && tallaPrenda != "Seleccione talla" && colorPrenda != "Seleccione color"){
             currentUserNamePrenda.setValue(mTitulo.getText().toString()); //Aca va y le asigna el nombre al User.
+
+            DatabaseReference currentUserValorPrenda = FirebaseDatabase.getInstance().getReference().child("Users").child(userId).child("clothes").child(titulo).child("ValorPrenda");
+            currentUserValorPrenda.setValue(valor);
+            DatabaseReference currentUserTipoPrenda = FirebaseDatabase.getInstance().getReference().child("Users").child(userId).child("clothes").child(titulo).child("TipoPrenda");
+            currentUserTipoPrenda.setValue(tipoPrenda);
+            DatabaseReference currentUserTallaPrenda = FirebaseDatabase.getInstance().getReference().child("Users").child(userId).child("clothes").child(titulo).child("TallaPrenda");
+            currentUserTallaPrenda.setValue(tallaPrenda);
+            DatabaseReference currentUserColorPrenda = FirebaseDatabase.getInstance().getReference().child("Users").child(userId).child("clothes").child(titulo).child("ColorPrenda");
+            currentUserColorPrenda.setValue(colorPrenda);
+            DatabaseReference currentUserDescripcionPrenda = FirebaseDatabase.getInstance().getReference().child("Users").child(userId).child("clothes").child(titulo).child("DescripcionPrenda");
+            currentUserDescripcionPrenda.setValue(descripcionPrenda);
+
         }
         else{
             Toast.makeText(AddPublicaciones.this, "Datos Incorrectos.", Toast.LENGTH_SHORT).show();
@@ -211,7 +244,6 @@ public class AddPublicaciones extends AppCompatActivity {
         guardarImagen(resultUri4,userId,"4",id);
         guardarImagen(resultUri5,userId,"5",id);
         guardarImagen(resultUri6,userId,"6",id);
-
 
     }
 

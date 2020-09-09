@@ -275,7 +275,7 @@ public class Account extends AppCompatActivity {
         for (int i = 0; i < cities.size(); i++) {
             list.add(cities.get(i).region);
             if (cities.get(i).region.equals(regionAnterior)) {
-            posicionRegion = i+1;
+                posicionRegion = i+1;
             }
         }
         //Toast.makeText(this, regionAnterior,Toast.LENGTH_LONG).show();
@@ -287,7 +287,7 @@ public class Account extends AppCompatActivity {
         mRegionesSpinner.setSelection(posicionRegion);
 
 
-        }
+    }
 
     private void getUserInfo() {
         mCustomerDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -356,14 +356,14 @@ public class Account extends AppCompatActivity {
                 }
             }
 
-                @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
 
-                }
-            });
+            }
+        });
 
 
-        }
+    }
 
 /*
 
