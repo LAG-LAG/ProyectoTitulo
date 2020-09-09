@@ -58,14 +58,13 @@ public class AddPublicaciones extends AppCompatActivity {
     private DatabaseReference mClothesDatabase;
 
     private ImageView mPublicacionImage1;
-    private ImageView mPublicacionImage1Aux;
 
     private ImageView mPublicacionImage2;
     private ImageView mPublicacionImage3;
     private ImageView mPublicacionImage4;
     private ImageView mPublicacionImage5;
     private ImageView mPublicacionImage6;
-    private ImageView mBorrarPublicacion1;
+    private ImageView mBorrarPublicacion1,mBorrarPublicacion2,mBorrarPublicacion3,mBorrarPublicacion4,mBorrarPublicacion5,mBorrarPublicacion6;
     private int publicacion1,publicacion2,publicacion3,publicacion4,publicacion5,publicacion6;
 
 
@@ -82,7 +81,6 @@ public class AddPublicaciones extends AppCompatActivity {
         mAplicar = (Button) findViewById(R.id.publicarBtn);
 
         mPublicacionImage1 = (ImageView) findViewById(R.id.publicacionImageCrear1);
-        mPublicacionImage1Aux = (ImageView) findViewById(R.id.publicacionImageCrear1);
         mPublicacionImage2 = (ImageView) findViewById(R.id.publicacionImageCrear2);
         mPublicacionImage3 = (ImageView) findViewById(R.id.publicacionImageCrear3);
         mPublicacionImage4 = (ImageView) findViewById(R.id.publicacionImageCrear4);
@@ -90,6 +88,19 @@ public class AddPublicaciones extends AppCompatActivity {
         mPublicacionImage6 = (ImageView) findViewById(R.id.publicacionImageCrear6);
 
         mBorrarPublicacion1 = (ImageView)findViewById(R.id.borrarPublicacionCrear1);
+        mBorrarPublicacion2 = (ImageView)findViewById(R.id.borrarPublicacionCrear2);
+        mBorrarPublicacion3 = (ImageView)findViewById(R.id.borrarPublicacionCrear3);
+        mBorrarPublicacion4 = (ImageView)findViewById(R.id.borrarPublicacionCrear4);
+        mBorrarPublicacion5 = (ImageView)findViewById(R.id.borrarPublicacionCrear5);
+        mBorrarPublicacion6 = (ImageView)findViewById(R.id.borrarPublicacionCrear6);
+
+        mBorrarPublicacion1.setVisibility(View.INVISIBLE);
+        mBorrarPublicacion2.setVisibility(View.INVISIBLE);
+        mBorrarPublicacion3.setVisibility(View.INVISIBLE);
+        mBorrarPublicacion4.setVisibility(View.INVISIBLE);
+        mBorrarPublicacion5.setVisibility(View.INVISIBLE);
+        mBorrarPublicacion6.setVisibility(View.INVISIBLE);
+
 
         //if x ispressed then resulturi correspondiente = null y se
         mAuth = FirebaseAuth.getInstance();
@@ -104,13 +115,78 @@ public class AddPublicaciones extends AppCompatActivity {
         mBorrarPublicacion1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                final Uri imageUri = null ;
-               // final Uri imageUri = Uri.parse("android.resource://ProyectoTitulo/drawable/image_name");
-                resultUri = imageUri;
-                mPublicacionImage1.setImageURI(resultUri);
-                mPublicacionImage1.setImageResource(R.drawable.ic_launcher_foreground);
-                //mPublicacionImage1.setI
-               // mPublicacionImage1 = mPublicacionImage1Aux;
+                if(resultUri!=null) {
+                    final Uri imageUri = null;
+                    // final Uri imageUri = Uri.parse("android.resource://ProyectoTitulo/drawable/image_name");
+                    resultUri = imageUri;
+                    mPublicacionImage1.setImageResource(R.drawable.ic_launcher_foreground);
+                    mBorrarPublicacion1.setVisibility(View.INVISIBLE);
+                }
+            }
+        });
+
+        mBorrarPublicacion2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(resultUri2!=null) {
+                    final Uri imageUri = null;
+                    // final Uri imageUri = Uri.parse("android.resource://ProyectoTitulo/drawable/image_name");
+                    resultUri2 = imageUri;
+                    mPublicacionImage2.setImageResource(R.drawable.ic_launcher_foreground);
+                    mBorrarPublicacion2.setVisibility(View.INVISIBLE);
+                }
+            }
+        });
+
+        mBorrarPublicacion3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(resultUri3!=null) {
+                    final Uri imageUri = null;
+                    // final Uri imageUri = Uri.parse("android.resource://ProyectoTitulo/drawable/image_name");
+                    resultUri3 = imageUri;
+                    mPublicacionImage3.setImageResource(R.drawable.ic_launcher_foreground);
+                    mBorrarPublicacion3.setVisibility(View.INVISIBLE);
+                }
+            }
+        });
+
+        mBorrarPublicacion4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(resultUri4!=null) {
+                    final Uri imageUri = null;
+                    // final Uri imageUri = Uri.parse("android.resource://ProyectoTitulo/drawable/image_name");
+                    resultUri4 = imageUri;
+                    mPublicacionImage4.setImageResource(R.drawable.ic_launcher_foreground);
+                    mBorrarPublicacion4.setVisibility(View.INVISIBLE);
+                }
+            }
+        });
+
+        mBorrarPublicacion5.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(resultUri5!=null) {
+                    final Uri imageUri = null;
+                    // final Uri imageUri = Uri.parse("android.resource://ProyectoTitulo/drawable/image_name");
+                    resultUri5 = imageUri;
+                    mPublicacionImage5.setImageResource(R.drawable.ic_launcher_foreground);
+                    mBorrarPublicacion5.setVisibility(View.INVISIBLE);
+                }
+            }
+        });
+
+        mBorrarPublicacion6.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(resultUri6!=null) {
+                    final Uri imageUri = null;
+                    // final Uri imageUri = Uri.parse("android.resource://ProyectoTitulo/drawable/image_name");
+                    resultUri6 = imageUri;
+                    mPublicacionImage6.setImageResource(R.drawable.ic_launcher_foreground);
+                    mBorrarPublicacion6.setVisibility(View.INVISIBLE);
+                }
             }
         });
 
@@ -119,6 +195,7 @@ public class AddPublicaciones extends AppCompatActivity {
             public void onClick(View view) {
                 publicacion1=1;
                 comprobarImagen();
+                mBorrarPublicacion1.setVisibility(View.VISIBLE);
             }
         });
         mPublicacionImage2.setOnClickListener(new View.OnClickListener() {
@@ -126,6 +203,7 @@ public class AddPublicaciones extends AppCompatActivity {
             public void onClick(View view) {
                 publicacion2=1;
                 comprobarImagen();
+                mBorrarPublicacion2.setVisibility(View.VISIBLE);
             }
         });
         mPublicacionImage3.setOnClickListener(new View.OnClickListener() {
@@ -133,6 +211,7 @@ public class AddPublicaciones extends AppCompatActivity {
             public void onClick(View view) {
                 publicacion3=1;
                 comprobarImagen();
+                mBorrarPublicacion3.setVisibility(View.VISIBLE);
             }
         });
         mPublicacionImage4.setOnClickListener(new View.OnClickListener() {
@@ -140,6 +219,7 @@ public class AddPublicaciones extends AppCompatActivity {
             public void onClick(View view) {
                 publicacion4=1;
                 comprobarImagen();
+                mBorrarPublicacion4.setVisibility(View.VISIBLE);
             }
         });
         mPublicacionImage5.setOnClickListener(new View.OnClickListener() {
@@ -147,6 +227,7 @@ public class AddPublicaciones extends AppCompatActivity {
             public void onClick(View view) {
                 publicacion5=1;
                 comprobarImagen();
+                mBorrarPublicacion5.setVisibility(View.VISIBLE);
             }
         });
         mPublicacionImage6.setOnClickListener(new View.OnClickListener() {
@@ -154,6 +235,7 @@ public class AddPublicaciones extends AppCompatActivity {
             public void onClick(View view) {
                 publicacion6=1;
                 comprobarImagen();
+                mBorrarPublicacion6.setVisibility(View.VISIBLE);
             }
         });
         mAplicar.setOnClickListener(new View.OnClickListener() {
