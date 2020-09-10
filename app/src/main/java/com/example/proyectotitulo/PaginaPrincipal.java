@@ -7,26 +7,32 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.lorentzos.flingswipe.SwipeFlingAdapterView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class PaginaPrincipal extends AppCompatActivity {
     private ArrayList<String> al;
-    private ArrayAdapter<String> arrayAdapter;
+   // private ArrayAdapter<String> arrayAdapter;
+    private arrayAdaptor arrayAdapter;
     private SwipeFlingAdapterView flingContainer;
     private FirebaseAuth mAuth;
     private DatabaseReference usersDb;
+    List<cards> rowItems;
 
     private int i;
     @Override
@@ -45,15 +51,26 @@ public class PaginaPrincipal extends AppCompatActivity {
         }
 
         //swipecards
-
         SwipeFlingAdapterView flingContainer = (SwipeFlingAdapterView) findViewById(R.id.frame);
-
         al = new ArrayList<String>();
+        obtenerPublicaciones();
+/*
         al.add("php");
         al.add("c");
         al.add("python");
         al.add("java");
-        arrayAdapter = new ArrayAdapter<>(this, R.layout.item, R.id.name, al );
+*/
+
+//        arrayAdapter = new ArrayAdapter<>(this, R.layout.item, R.id.name, al );
+
+
+        rowItems = new ArrayList<cards>();/*
+
+         */
+        //crea el arrayadapter y le manda los rowitems que es donde se guardaran todas las cartas y le envia el item que es donde se mostraran las cartas.
+         arrayAdapter = new arrayAdaptor(this, R.layout.item, rowItems );
+        //el r.id.frame es donde se mostrara el item en el mainactivity.
+
 
         flingContainer.setAdapter(arrayAdapter);
         flingContainer.setFlingListener(new SwipeFlingAdapterView.onFlingListener() {
@@ -101,6 +118,52 @@ public class PaginaPrincipal extends AppCompatActivity {
             }
         });
 
+    }
+
+    private void obtenerPublicaciones() {
+        usersDb.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                if(dataSnapshot.exists()){
+                    Log.d("primero","primero");
+                    //al.add(dataSnapshot.child("nameUser").getValue().toString());
+                    if(dataSnapshot.exists() ){
+                        //                    rowItems.add(dataSnapshot.child("name").getValue().toString()); //aca añade la persona a la tarjetita.
+                        String profileImageUrl;
+                        if(dataSnapshot.hasChild("profileImageUrl")){
+                            profileImageUrl= dataSnapshot.child("profileImageUrl").getValue().toString();
+                        }
+                        else{
+                            profileImageUrl = "default";
+                        }
+                        cards Item = new cards(dataSnapshot.getKey(),dataSnapshot.child("nameUser").getValue().toString(),profileImageUrl); //aca se puebla la card con un constructor
+                        //cards Item = new cards(dataSnapshot.getKey(),dataSnapshot.child("name").getValue().toString(),dataSnapshot.child("profileImageUrl").getValue().toString()); //aca se puebla la card con un constructor
+                        rowItems.add(Item); //aca añade la persona a la tarjetita.
+                        arrayAdapter.notifyDataSetChanged(); //esto se usa cad vez que se añade o se quita un elemetno del arraylist de los items.
+                    }
+                }
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
 
     public void logoutUser(View view) {
