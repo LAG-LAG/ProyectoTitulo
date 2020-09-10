@@ -24,6 +24,7 @@ import com.lorentzos.flingswipe.SwipeFlingAdapterView;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class PaginaPrincipal extends AppCompatActivity {
     private ArrayList<String> al;
@@ -33,7 +34,10 @@ public class PaginaPrincipal extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private DatabaseReference usersDb;
     private DatabaseReference clothesDb;
+    private String currentUId, clothesCurrentUid;
+    private int puedeMostrarCard;
     List<cards> rowItems;
+    private Map<String, Object> mapAux;
 
     private int i;
     @Override
@@ -43,7 +47,7 @@ public class PaginaPrincipal extends AppCompatActivity {
         usersDb = FirebaseDatabase.getInstance().getReference().child("Users"); //esto obtiene todos los usuarios de la bd
 
         mAuth = FirebaseAuth.getInstance();
-
+        puedeMostrarCard=1;
         //Toolbar Menu
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -86,16 +90,16 @@ public class PaginaPrincipal extends AppCompatActivity {
             @Override
             public void onLeftCardExit(Object dataObject) {
                 cards obj = (cards) dataObject;
-                String userId = obj.getUserId();
-                usersDb.child(userId).child("connections").child("publicacionesRechazadas").child(mAuth.getCurrentUser().getUid()).setValue(true); //esto significa que no le gusto y le dio a la izq
+                String idClothes = obj.getUserId();
+                usersDb.child(mAuth.getCurrentUser().getUid()).child("connections").child("publicacionesRechazadas").child(idClothes).setValue(true); //esto significa que no le gusto y le dio a la izq
                 Toast.makeText(PaginaPrincipal.this,"left", Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onRightCardExit(Object dataObject) {
                 cards obj = (cards) dataObject;
-                String userId = obj.getUserId();
-                usersDb.child(userId).child("connections").child("publicacionesGuardadas").child(mAuth.getCurrentUser().getUid()).setValue(true); //esto significa que le gusto y le dio a la der
+                String idClothes = obj.getUserId();
+                usersDb.child(mAuth.getCurrentUser().getUid()).child("connections").child("publicacionesGuardadas").child(idClothes).setValue(true); //esto significa que le gusto y le dio a la der
                 //aca hay que crear el chat dentro de publicaciones guardadas.
                 Toast.makeText(PaginaPrincipal.this,"right", Toast.LENGTH_SHORT).show();
             }
@@ -138,21 +142,23 @@ public class PaginaPrincipal extends AppCompatActivity {
                         @Override
                         public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                             Log.d("primero","tercero");
-                            String fotoPublicacion;
-                            if(dataSnapshot.child("clothesPhotos").hasChild("photoId1")){
-                                Log.d("primero","cuarto");
-                                fotoPublicacion= dataSnapshot.child("clothesPhotos").child("photoId1").getValue().toString();
-                            }
-                            else{
-                                fotoPublicacion = "default";
-                            }
-                            Log.d("primero","quinto");
+                            currentUId = mAuth.getCurrentUser().getUid();
+                            clothesCurrentUid = dataSnapshot.getKey();
+                            //Toast.makeText(PaginaPrincipal.this, clothesCurrentUid, Toast.LENGTH_SHORT).show();
+                                String fotoPublicacion;
+                                if (dataSnapshot.child("clothesPhotos").hasChild("photoId1")) {
+                                    Log.d("primero", "cuarto");
+                                    fotoPublicacion = dataSnapshot.child("clothesPhotos").child("photoId1").getValue().toString();
+                                } else {
+                                    fotoPublicacion = "default";
+                                }
+                                Log.d("primero", "quinto");
 
-                            cards Item = new cards(dataSnapshot.getKey(),dataSnapshot.child("tituloPublicacion").getValue().toString(),fotoPublicacion); //aca se puebla la card con un constructor
-                            //cards Item = new cards(dataSnapshot.getKey(),dataSnapshot.child("name").getValue().toString(),dataSnapshot.child("profileImageUrl").getValue().toString()); //aca se puebla la card con un constructor
-                            rowItems.add(Item); //aca añade la persona a la tarjetita.
-                            Log.d("primero","sexto");
-                            arrayAdapter.notifyDataSetChanged(); //esto se usa cad vez que se añade o se quita un elemetno del arraylist de los items.
+                                cards Item = new cards(dataSnapshot.getKey(), dataSnapshot.child("tituloPublicacion").getValue().toString(), fotoPublicacion); //aca se puebla la card con un constructor
+                                //cards Item = new cards(dataSnapshot.getKey(),dataSnapshot.child("name").getValue().toString(),dataSnapshot.child("profileImageUrl").getValue().toString()); //aca se puebla la card con un constructor
+                                rowItems.add(Item); //aca añade la persona a la tarjetita.
+                                Log.d("primero", "sexto");
+                                arrayAdapter.notifyDataSetChanged(); //esto se usa cad vez que se añade o se quita un elemetno del arraylist de los items.
                         }
 
                         @Override
