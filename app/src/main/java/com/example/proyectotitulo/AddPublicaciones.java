@@ -48,6 +48,7 @@ public class AddPublicaciones extends AppCompatActivity {
     private Spinner mTipoPrendaSpinner;
     private Spinner mTallaSpinner;
     private Spinner mColorSpinner;
+    private Spinner mEstadoPrendaSpinner;
     private EditText mDescripcion;
     private Uri resultUri;
     private Uri resultUri2;
@@ -77,6 +78,7 @@ public class AddPublicaciones extends AppCompatActivity {
         mTipoPrendaSpinner = (Spinner) findViewById(R.id.TipoPrendaSpinner);
         mTallaSpinner = (Spinner) findViewById(R.id.TallaSpinner);
         mColorSpinner = (Spinner) findViewById(R.id.ColorSpinner);
+        mEstadoPrendaSpinner = (Spinner) findViewById(R.id.estadoPrendaSpinner);
         mDescripcion = (EditText) findViewById(R.id.editTextDescripcion);
         mAplicar = (Button) findViewById(R.id.publicarBtn);
 
@@ -308,12 +310,13 @@ public class AddPublicaciones extends AppCompatActivity {
         String tipoPrenda = String.valueOf(mTipoPrendaSpinner.getSelectedItem());
         String tallaPrenda = String.valueOf(mTallaSpinner.getSelectedItem());
         String colorPrenda = String.valueOf(mColorSpinner.getSelectedItem());
+        String estadoPrenda = String.valueOf(mEstadoPrendaSpinner.getSelectedItem());
         String descripcionPrenda = mDescripcion.getText().toString();
         //DatabaseReference dueño = FirebaseDatabase.getInstance().getReference().child("Users").child(userId).child("clothes").child(id).child("idDueño");
         //dueño.setValue(userId);
 
         //mRegionesSpinner.getSelectedItem();
-        if(titulo != "" && valor != "" && tipoPrenda != "Seleccione tipo de prenda" && tallaPrenda != "Seleccione talla" && colorPrenda != "Seleccione color"){
+        if(titulo != "" && valor != "" && tipoPrenda != "Seleccione tipo de prenda" && tallaPrenda != "Seleccione talla" && colorPrenda != "Seleccione color" && estadoPrenda != "Seleccione estado"){
             currentUserNamePrenda.setValue(mTitulo.getText().toString()); //Aca va y le asigna el nombre al User.
 
             DatabaseReference currentUserValorPrenda = FirebaseDatabase.getInstance().getReference().child("Users").child(userId).child("clothes").child(id).child("ValorPrenda");
@@ -324,6 +327,8 @@ public class AddPublicaciones extends AppCompatActivity {
             currentUserTallaPrenda.setValue(tallaPrenda);
             DatabaseReference currentUserColorPrenda = FirebaseDatabase.getInstance().getReference().child("Users").child(userId).child("clothes").child(id).child("ColorPrenda");
             currentUserColorPrenda.setValue(colorPrenda);
+            DatabaseReference currentUserEstadoPrenda = FirebaseDatabase.getInstance().getReference().child("Users").child(userId).child("clothes").child(id).child("EstadoPrenda");
+            currentUserEstadoPrenda.setValue(estadoPrenda);
             DatabaseReference currentUserDescripcionPrenda = FirebaseDatabase.getInstance().getReference().child("Users").child(userId).child("clothes").child(id).child("DescripcionPrenda");
             currentUserDescripcionPrenda.setValue(descripcionPrenda);
 

@@ -40,6 +40,7 @@
         android:hint="Título"
         android:inputType="textPersonName"
         android:textColorHint="#FFFFFF"
+        android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -107,6 +108,21 @@
         app:layout_constraintTop_toBottomOf="@+id/TallaSpinner"
         tools:visibility="visible" />
 
+    <Spinner
+        android:id="@+id/estadoPrendaSpinner"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="32dp"
+        android:entries="@array/estado"
+        android:visibility="visible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ColorSpinner"
+        tools:visibility="visible" />
+
     <EditText
         android:id="@+id/editTextDescripcion"
         android:layout_width="match_parent"
@@ -120,8 +136,9 @@
         android:inputType="textPersonName"
         android:textColorHint="#FFFFFF"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ColorSpinner" />
+        app:layout_constraintTop_toBottomOf="@+id/estadoPrendaSpinner" />
 
     <ImageView
         android:id="@+id/publicacionImageCrear1"
