@@ -98,5 +98,15 @@
         app:layout_constraintVertical_bias="1.0"
         tools:visibility="visible" />
 
+    <Button
+        android:id="@+id/ubicacionButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="56dp"
+        android:layout_marginEnd="160dp"
+        android:text="Setear Ubicacion"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/aplicar" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
