@@ -149,12 +149,12 @@
         android:id="@+id/publicacionImageCrear5"
         android:layout_width="77dp"
         android:layout_height="68dp"
-        android:layout_marginEnd="48dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
         android:layout_marginBottom="16dp"
         android:src="@mipmap/ic_launcher"
         app:layout_constraintBottom_toTopOf="@+id/editTextTitulo"
         app:layout_constraintEnd_toStartOf="@+id/publicacionImageCrear6"
-        app:layout_constraintHorizontal_bias="0.961"
         app:layout_constraintStart_toEndOf="@+id/publicacionImageCrear4" />
 
     <ImageView
