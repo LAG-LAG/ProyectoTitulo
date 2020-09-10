@@ -32,6 +32,7 @@ public class PaginaPrincipal extends AppCompatActivity {
     private SwipeFlingAdapterView flingContainer;
     private FirebaseAuth mAuth;
     private DatabaseReference usersDb;
+    private DatabaseReference clothesDb;
     List<cards> rowItems;
 
     private int i;
@@ -78,30 +79,34 @@ public class PaginaPrincipal extends AppCompatActivity {
             public void removeFirstObjectInAdapter() {
                 // this is the simplest way to delete an object from the Adapter (/AdapterView)
                 Log.d("LIST", "removed object!");
-                al.remove(0);
+                rowItems.remove(0);
                 arrayAdapter.notifyDataSetChanged();
             }
 
             @Override
             public void onLeftCardExit(Object dataObject) {
-                //Do something on the left!
-                //You also have access to the original object.
-                //If you want to use it just cast it (String) dataObject
+                cards obj = (cards) dataObject;
+                String userId = obj.getUserId();
+                usersDb.child(userId).child("connections").child("publicacionesRechazadas").child(mAuth.getCurrentUser().getUid()).setValue(true); //esto significa que no le gusto y le dio a la izq
                 Toast.makeText(PaginaPrincipal.this,"left", Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onRightCardExit(Object dataObject) {
+                cards obj = (cards) dataObject;
+                String userId = obj.getUserId();
+                usersDb.child(userId).child("connections").child("publicacionesGuardadas").child(mAuth.getCurrentUser().getUid()).setValue(true); //esto significa que le gusto y le dio a la der
+                //aca hay que crear el chat dentro de publicaciones guardadas.
                 Toast.makeText(PaginaPrincipal.this,"right", Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onAdapterAboutToEmpty(int itemsInAdapter) {
-                // Ask for more data here
-                al.add("XML ".concat(String.valueOf(i)));
+                // Ask for more data here/
+            /*al.add("XML ".concat(String.valueOf(i)));
                 arrayAdapter.notifyDataSetChanged();
                 Log.d("LIST", "notified");
-                i++;
+                i++;*/
             }
 
             @Override
@@ -124,23 +129,54 @@ public class PaginaPrincipal extends AppCompatActivity {
         usersDb.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                if(dataSnapshot.exists()){
-                    Log.d("primero","primero");
-                    //al.add(dataSnapshot.child("nameUser").getValue().toString());
-                    if(dataSnapshot.exists() ){
-                        //                    rowItems.add(dataSnapshot.child("name").getValue().toString()); //aca añade la persona a la tarjetita.
-                        String profileImageUrl;
-                        if(dataSnapshot.hasChild("profileImageUrl")){
-                            profileImageUrl= dataSnapshot.child("profileImageUrl").getValue().toString();
+                if(dataSnapshot.exists() && dataSnapshot.hasChild("clothes") && dataSnapshot.child("comuna").getValue().toString().equals("Quillota")){
+                    Log.d("primero","segundo");
+                    String key = dataSnapshot.getKey();
+                    Log.d("primero",key);
+                    clothesDb = usersDb.child(key).child("clothes");
+                    clothesDb.addChildEventListener(new ChildEventListener() {
+                        @Override
+                        public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                            Log.d("primero","tercero");
+                            String fotoPublicacion;
+                            if(dataSnapshot.child("clothesPhotos").hasChild("photoId1")){
+                                Log.d("primero","cuarto");
+                                fotoPublicacion= dataSnapshot.child("clothesPhotos").child("photoId1").getValue().toString();
+                            }
+                            else{
+                                fotoPublicacion = "default";
+                            }
+                            Log.d("primero","quinto");
+
+                            cards Item = new cards(dataSnapshot.getKey(),dataSnapshot.child("tituloPublicacion").getValue().toString(),fotoPublicacion); //aca se puebla la card con un constructor
+                            //cards Item = new cards(dataSnapshot.getKey(),dataSnapshot.child("name").getValue().toString(),dataSnapshot.child("profileImageUrl").getValue().toString()); //aca se puebla la card con un constructor
+                            rowItems.add(Item); //aca añade la persona a la tarjetita.
+                            Log.d("primero","sexto");
+                            arrayAdapter.notifyDataSetChanged(); //esto se usa cad vez que se añade o se quita un elemetno del arraylist de los items.
                         }
-                        else{
-                            profileImageUrl = "default";
+
+                        @Override
+                        public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
                         }
-                        cards Item = new cards(dataSnapshot.getKey(),dataSnapshot.child("nameUser").getValue().toString(),profileImageUrl); //aca se puebla la card con un constructor
-                        //cards Item = new cards(dataSnapshot.getKey(),dataSnapshot.child("name").getValue().toString(),dataSnapshot.child("profileImageUrl").getValue().toString()); //aca se puebla la card con un constructor
-                        rowItems.add(Item); //aca añade la persona a la tarjetita.
-                        arrayAdapter.notifyDataSetChanged(); //esto se usa cad vez que se añade o se quita un elemetno del arraylist de los items.
-                    }
+
+                        @Override
+                        public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+                        }
+
+                        @Override
+                        public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+                    });
+
+
                 }
             }
 
