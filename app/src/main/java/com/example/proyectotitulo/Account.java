@@ -5,6 +5,9 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.location.Address;
+import android.location.Geocoder;
+import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -28,8 +31,12 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 
 import com.bumptech.glide.Glide;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -49,22 +56,26 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 public class Account extends AppCompatActivity {
     private static final int PICK_FROM_GALLERY = 1;
     private DatabaseReference mCustomerDatabase;
     private FirebaseAuth mAuth;
-    private Button mAplicar;
+    private Button mAplicar, mUbicacion;
     private EditText mNombre;
-    private ImageView mProfileImage,mborrarFotoPerfil;
+    private ImageView mProfileImage, mborrarFotoPerfil;
     private String nombreUsuario;
     private Spinner mRegionesSpinner;
-    private String comunaAnterior,profileImageUrl;
+    private String comunaAnterior, profileImageUrl;
     private String regionAnterior;
     private Spinner mComunasSpinner;
     private Uri resultUri;
-    private int estadoComunas,existeFotoPerfil;
+    private int estadoComunas, existeFotoPerfil, longitudLatitudEstado;
+    private double latitude, longitude;
+    private FusedLocationProviderClient fusedLocationProviderClient;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -76,9 +87,10 @@ public class Account extends AppCompatActivity {
         mRegionesSpinner = (Spinner) findViewById(R.id.regionesSpinner);
         mComunasSpinner = (Spinner) findViewById(R.id.comunasSpinner);
         estadoComunas = 0;
-        existeFotoPerfil=0;
+        existeFotoPerfil = 0;
         mborrarFotoPerfil.setVisibility(View.INVISIBLE);
-
+        longitudLatitudEstado = 0;
+        mUbicacion = (Button) findViewById(R.id.ubicacionButton);
 
         //Toolbar Menu
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -93,17 +105,31 @@ public class Account extends AppCompatActivity {
         getUserInfo();
 
         llenarComboBoxRegiones();
+        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
+
+        mUbicacion.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (ActivityCompat.checkSelfPermission(Account.this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                    getLocation();
+                } else {
+                    ActivityCompat.requestPermissions(Account.this, new String[]{
+                            Manifest.permission.ACCESS_FINE_LOCATION}, 44);
+                }
+            }
+        });
+
 
         mborrarFotoPerfil.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(resultUri!=null) {
+                if (resultUri != null) {
                     final Uri imageUri = null;
                     resultUri = imageUri;
                     mProfileImage.setImageResource(R.drawable.ic_launcher_foreground);
                     mborrarFotoPerfil.setVisibility(View.INVISIBLE);
                 }
-                if(existeFotoPerfil==1){
+                if (existeFotoPerfil == 1) {
                     mProfileImage.setImageResource(R.drawable.ic_launcher_foreground);
                     mborrarFotoPerfil.setVisibility(View.INVISIBLE);
                 }
@@ -116,7 +142,7 @@ public class Account extends AppCompatActivity {
             public void onClick(View view) {
                 if (ActivityCompat.checkSelfPermission(Account.this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
                     ActivityCompat.requestPermissions(Account.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE}, PICK_FROM_GALLERY);
-                }else {
+                } else {
                     Intent intent = new Intent(Intent.ACTION_PICK);
                     intent.setType("image/*");
                     startActivityForResult(intent, 1);
@@ -148,38 +174,36 @@ public class Account extends AppCompatActivity {
                 Log.i("data", jsonFileString);
 
                 Gson gson = new Gson();
-                Type listUserType = new TypeToken<List<cities>>() { }.getType();
+                Type listUserType = new TypeToken<List<cities>>() {
+                }.getType();
 
                 List<cities> cities = gson.fromJson(jsonFileString, listUserType);
 
                 List<String> list = new ArrayList<String>();
 
-                if(estadoComunas==1){
-                    int posicionComuna=0;
-                    List<String> comunas = cities.get(position-1).getComunas(); //esto esta bien, lo revise con toast y posicionregion-1 corresponde a lo que buscamos.
+                if (estadoComunas == 1) {
+                    int posicionComuna = 0;
+                    List<String> comunas = cities.get(position - 1).getComunas(); //esto esta bien, lo revise con toast y posicionregion-1 corresponde a lo que buscamos.
                     //Toast.makeText(Account.this,cities.get(posicionRegion-1).region,Toast.LENGTH_SHORT).show();
 
                     for (int x = 0; x < comunas.size(); x++) {
-                        if(comunas.get(x).equals(comunaAnterior)){
+                        if (comunas.get(x).equals(comunaAnterior)) {
                             posicionComuna = x;
                             break;
                         }
                     }
 
                     //Toast.makeText(Account.this, posicionComuna, Toast.LENGTH_SHORT).show();
-                    ArrayAdapter<String> arrayAdapterComunas = new ArrayAdapter<>(Account.this, android.R.layout.simple_expandable_list_item_1,comunas);
+                    ArrayAdapter<String> arrayAdapterComunas = new ArrayAdapter<>(Account.this, android.R.layout.simple_expandable_list_item_1, comunas);
                     arrayAdapterComunas.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                     mComunasSpinner.setAdapter(arrayAdapterComunas);
                     mComunasSpinner.setSelection(posicionComuna);
-                }
-                else if(position!=0) {
+                } else if (position != 0) {
                     List<String> comunas = cities.get(position - 1).getComunas();
                     ArrayAdapter<String> adapter = new ArrayAdapter<String>(view.getContext(), android.R.layout.simple_spinner_item, comunas);
                     adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                     mComunasSpinner.setAdapter(adapter);
-                }
-
-                else{
+                } else {
                     List<String> listVacia = new ArrayList<String>();
                     listVacia.add("Seleccione Comuna");
                     ArrayAdapter<String> adapter = new ArrayAdapter<String>(view.getContext(), android.R.layout.simple_spinner_item, listVacia);
@@ -200,6 +224,37 @@ public class Account extends AppCompatActivity {
 
     }
 
+    private void getLocation() {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
+        fusedLocationProviderClient.getLastLocation().addOnCompleteListener(new OnCompleteListener<Location>() {
+            @Override
+            public void onComplete(@NonNull Task<Location> task) {
+                Location location = task.getResult();
+                if (location != null) {
+                    Geocoder geocoder = new Geocoder(Account.this, Locale.getDefault());
+                    try {
+                        List<Address> addresses = geocoder.getFromLocation(location.getLatitude(), location.getLatitude(), 1);
+                        latitude = addresses.get(0).getLatitude();
+                        longitude = addresses.get(0).getLongitude();
+                        longitudLatitudEstado=1;
+                    }
+                    catch(IOException e){
+                        e.printStackTrace();
+                    }
+                }
+            }
+        });
+    }
+
     private void saveUserInfo() {
         String userId = mAuth.getCurrentUser().getUid();
         String regionGuardar = String.valueOf(mRegionesSpinner.getSelectedItem());
@@ -213,6 +268,13 @@ public class Account extends AppCompatActivity {
             DatabaseReference currentUserComuna = FirebaseDatabase.getInstance().getReference().child("Users").child(userId).child("comuna");
             currentUserComuna.setValue(comunaGuardar);
             currentUserName.setValue(mNombre.getText().toString()); //Aca va y le asigna el nombre al User.
+            //aca guarda la latitud y longitud.
+            if(longitudLatitudEstado==1) {
+                DatabaseReference currentUserLatitude = FirebaseDatabase.getInstance().getReference().child("Users").child(userId).child("latitude");
+                currentUserLatitude.setValue(latitude);
+                DatabaseReference currentUserLongitude = FirebaseDatabase.getInstance().getReference().child("Users").child(userId).child("longitude");
+                currentUserLongitude.setValue(longitude);
+            }
         }
         else{
             Toast.makeText(Account.this, "Datos Incorrectos.", Toast.LENGTH_SHORT).show();
@@ -333,6 +395,16 @@ public class Account extends AppCompatActivity {
                     if (map.get("nameUser") != null) {
                         nombreUsuario = map.get("nameUser").toString();
                         mNombre.setText(nombreUsuario);
+                    }
+
+                    if (map.get("latitud") != null) {
+                        latitude = Double.parseDouble(map.get("latitud").toString());
+                        longitudLatitudEstado =0;
+                    }
+
+                    if (map.get("longitud") != null) {
+                        longitude = Double.parseDouble(map.get("longitud").toString());
+                        longitudLatitudEstado =0;
                     }
 
                     if (map.get("region") != null) {
