@@ -12,7 +12,7 @@
     <string-array name="tipoPrenda">
         <item>Seleccione tipo de prenda</item>
         <item>Chaqueta</item>
-        <item>Pantalone</item>
+        <item>Pantalones</item>
         <item>Polera</item>
         <item>Poleron</item>
         <item></item>
@@ -40,6 +40,12 @@
         <item>Rosa</item>
         <item>Verde</item>
         <item>Violeta</item>
+    </string-array>
+
+    <string-array name="estado">
+        <item>Seleccione estado</item>
+        <item>Nuevo</item>
+        <item>Usado</item>
     </string-array>
 
 </resources>
