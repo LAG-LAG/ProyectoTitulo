@@ -15,6 +15,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -35,9 +36,11 @@ public class PaginaPrincipal extends AppCompatActivity {
     private DatabaseReference usersDb;
     private DatabaseReference clothesDb;
     private String currentUId, clothesCurrentUid;
+    private Map<String, Object> map;
+    private String userId;
     private int puedeMostrarCard;
     List<cards> rowItems;
-    private Map<String, Object> mapAux;
+
 
     private int i;
     @Override
@@ -47,6 +50,9 @@ public class PaginaPrincipal extends AppCompatActivity {
         usersDb = FirebaseDatabase.getInstance().getReference().child("Users"); //esto obtiene todos los usuarios de la bd
 
         mAuth = FirebaseAuth.getInstance();
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        currentUId = user.getUid();
+        Log.d("weawea",currentUId);
         puedeMostrarCard=1;
         //Toolbar Menu
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -55,8 +61,10 @@ public class PaginaPrincipal extends AppCompatActivity {
             getSupportActionBar().setTitle("Publicaciones");
         }
 
+
         //swipecards
         SwipeFlingAdapterView flingContainer = (SwipeFlingAdapterView) findViewById(R.id.frame);
+        obtenerPublicacionesAceptadasyRechazadas();
         al = new ArrayList<String>();
         obtenerPublicaciones();
 /*
@@ -130,6 +138,7 @@ public class PaginaPrincipal extends AppCompatActivity {
     }
 
     private void obtenerPublicaciones() {
+
         usersDb.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
@@ -144,7 +153,10 @@ public class PaginaPrincipal extends AppCompatActivity {
                             Log.d("primero","tercero");
                             currentUId = mAuth.getCurrentUser().getUid();
                             clothesCurrentUid = dataSnapshot.getKey();
+                            Log.d("weawea",clothesCurrentUid);
                             //Toast.makeText(PaginaPrincipal.this, clothesCurrentUid, Toast.LENGTH_SHORT).show();
+                            if(!verSiSeEncuentraEnArrayList(clothesCurrentUid)) {
+
                                 String fotoPublicacion;
                                 if (dataSnapshot.child("clothesPhotos").hasChild("photoId1")) {
                                     Log.d("primero", "cuarto");
@@ -157,8 +169,10 @@ public class PaginaPrincipal extends AppCompatActivity {
                                 cards Item = new cards(dataSnapshot.getKey(), dataSnapshot.child("tituloPublicacion").getValue().toString(), fotoPublicacion); //aca se puebla la card con un constructor
                                 //cards Item = new cards(dataSnapshot.getKey(),dataSnapshot.child("name").getValue().toString(),dataSnapshot.child("profileImageUrl").getValue().toString()); //aca se puebla la card con un constructor
                                 rowItems.add(Item); //aca añade la persona a la tarjetita.
+
                                 Log.d("primero", "sexto");
                                 arrayAdapter.notifyDataSetChanged(); //esto se usa cad vez que se añade o se quita un elemetno del arraylist de los items.
+                            }
                         }
 
                         @Override
@@ -183,6 +197,83 @@ public class PaginaPrincipal extends AppCompatActivity {
                     });
 
 
+                }
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    private boolean verSiSeEncuentraEnArrayList(String clothesCurrentUid) {
+
+        for(int i=0;i<al.size();i++){
+            Log.d("weawea","funcaono");
+            Log.d("weawea","keykey "+al.get(i));
+            if(al.get(i).equals(clothesCurrentUid)){
+                Log.d("weawea","gungagigna");
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private void obtenerPublicacionesAceptadasyRechazadas() {
+
+        usersDb.child(currentUId).child("connections").child("publicacionesGuardadas").addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                //Log.d("weawea","cmasdasd"+dataSnapshot.getKey());
+                if (dataSnapshot.exists()) { //si existe y tiene algo ya guardado dentro lo muestra, para eso lo trae y lo castea al mapa.
+                    al.add(dataSnapshot.getKey().toString());
+                    Log.d("weawea","guardada");
+                }
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+        usersDb.child(currentUId).child("connections").child("publicacionesRechazadas").addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                if (dataSnapshot.exists()) { //si existe y tiene algo ya guardado dentro lo muestra, para eso lo trae y lo castea al mapa.
+                    al.add(dataSnapshot.getKey().toString());
+                    Log.d("weawea","gunga ginga"+ dataSnapshot.getKey().toString());
+                    Log.d("weawea","Rechazada");
                 }
             }
 
