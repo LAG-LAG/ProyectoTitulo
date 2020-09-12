@@ -15,7 +15,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.NoActionBar">
-        <activity android:name=".DatosPublicacion"></activity>
+        <activity android:name=".VerMiCuenta"></activity>
+        <activity android:name=".MisPublicaciones" />
+        <activity android:name=".DatosPublicacion" />
         <activity android:name=".Favorites" />
         <activity
             android:name=".AddPublicaciones"

@@ -10,12 +10,6 @@
 
     <item
         android:title="add"
-        android:icon="@drawable/like_48dp"
-        android:id="@+id/likeBtn"
-        app:showAsAction="always"/>
-
-    <item
-        android:title="add"
         android:icon="@drawable/add_48dp"
         android:id="@+id/addBtn"
         app:showAsAction="always"/>

@@ -405,7 +405,7 @@ public class AddPublicaciones extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()){
             case R.id.accountBtn:
-                Intent intentAccount = new Intent(AddPublicaciones.this, Account.class);
+                Intent intentAccount = new Intent(AddPublicaciones.this, VerMiCuenta.class);
                 startActivity(intentAccount);
                 finish();
                 break;
@@ -413,12 +413,6 @@ public class AddPublicaciones extends AppCompatActivity {
             case R.id.chatBtn:
                 Intent intentChat = new Intent(AddPublicaciones.this, Chat.class);
                 startActivity(intentChat);
-                finish();
-                break;
-
-            case R.id.likeBtn:
-                Intent intentLike = new Intent(AddPublicaciones.this, Favorites.class);
-                startActivity(intentLike);
                 finish();
                 break;
 

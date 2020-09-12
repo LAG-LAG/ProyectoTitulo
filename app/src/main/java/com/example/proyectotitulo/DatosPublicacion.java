@@ -10,13 +10,32 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
+import android.widget.Spinner;
+import android.widget.TextView;
 
 public class DatosPublicacion extends AppCompatActivity {
+
+    private TextView mTitulo;
+    private TextView mValor;
+    private TextView mTipoPrenda;
+    private TextView mTalla;
+    private TextView mColor;
+    private TextView mEstadoPrenda;
+    private TextView mDescripcion;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_datos_publicacion);
+        mTitulo = (TextView) findViewById(R.id.TextViewTitulo);
+        mValor = (TextView) findViewById(R.id.TextViewValor);
+        mTipoPrenda = (TextView) findViewById(R.id.TextViewTipo);
+        mTalla = (TextView) findViewById(R.id.TextViewTalla);
+        mColor = (TextView) findViewById(R.id.TextViewColor);
+        mEstadoPrenda = (TextView) findViewById(R.id.TextViewEstado);
+        mDescripcion = (TextView) findViewById(R.id.editTextDescripcion);
+
         //Toolbar Menu
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -46,7 +65,7 @@ public class DatosPublicacion extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()){
             case R.id.accountBtn:
-                Intent intentAccount = new Intent(DatosPublicacion.this, Account.class);
+                Intent intentAccount = new Intent(DatosPublicacion.this, VerMiCuenta.class);
                 startActivity(intentAccount);
                 finish();
                 break;
@@ -54,12 +73,6 @@ public class DatosPublicacion extends AppCompatActivity {
             case R.id.addBtn:
                 Intent intentAdd = new Intent(DatosPublicacion.this, AddPublicaciones.class);
                 startActivity(intentAdd);
-                finish();
-                break;
-
-            case R.id.likeBtn:
-                Intent intentLike = new Intent(DatosPublicacion.this, Favorites.class);
-                startActivity(intentLike);
                 finish();
                 break;
 
