@@ -35,7 +35,7 @@ public class PaginaPrincipal extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private DatabaseReference usersDb;
     private DatabaseReference clothesDb;
-    private String currentUId, clothesCurrentUid;
+    private String currentUId, clothesCurrentUid, currentOwnerUid;
     private Map<String, Object> map;
     private String userId;
     private int puedeMostrarCard;
@@ -98,7 +98,7 @@ public class PaginaPrincipal extends AppCompatActivity {
             @Override
             public void onLeftCardExit(Object dataObject) {
                 cards obj = (cards) dataObject;
-                String idClothes = obj.getUserId();
+                String idClothes = obj.getClothesId();
                 usersDb.child(mAuth.getCurrentUser().getUid()).child("connections").child("publicacionesRechazadas").child(idClothes).setValue(true); //esto significa que no le gusto y le dio a la izq
                 Toast.makeText(PaginaPrincipal.this,"left", Toast.LENGTH_SHORT).show();
             }
@@ -106,7 +106,7 @@ public class PaginaPrincipal extends AppCompatActivity {
             @Override
             public void onRightCardExit(Object dataObject) {
                 cards obj = (cards) dataObject;
-                String idClothes = obj.getUserId();
+                String idClothes = obj.getClothesId();
                 usersDb.child(mAuth.getCurrentUser().getUid()).child("connections").child("publicacionesGuardadas").child(idClothes).setValue(true); //esto significa que le gusto y le dio a la der
                 //aca hay que crear el chat dentro de publicaciones guardadas.
                 Toast.makeText(PaginaPrincipal.this,"right", Toast.LENGTH_SHORT).show();
@@ -131,8 +131,13 @@ public class PaginaPrincipal extends AppCompatActivity {
         flingContainer.setOnItemClickListener(new SwipeFlingAdapterView.OnItemClickListener() {
             @Override
             public void onItemClicked(int itemPosition, Object dataObject) {
+                cards obj = (cards) dataObject;
+                String idClothes = obj.getClothesId();
+                String idOwner = obj.getOwnerId();
                 Toast.makeText(PaginaPrincipal.this,"click", Toast.LENGTH_SHORT).show();
                 Intent intentDetalle = new Intent(PaginaPrincipal.this, detallePublicacion.class);
+                intentDetalle.putExtra("idClothes",idClothes);
+                intentDetalle.putExtra("idOwner",idOwner);
                 startActivity(intentDetalle);
                 finish();
             }
@@ -147,7 +152,9 @@ public class PaginaPrincipal extends AppCompatActivity {
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                 if(dataSnapshot.exists() && dataSnapshot.hasChild("clothes") && dataSnapshot.child("comuna").getValue().toString().equals("Quillota")){
                     Log.d("primero","segundo");
+
                     String key = dataSnapshot.getKey();
+                    currentOwnerUid = key;
                     Log.d("primero",key);
                     clothesDb = usersDb.child(key).child("clothes");
                     clothesDb.addChildEventListener(new ChildEventListener() {
@@ -169,7 +176,7 @@ public class PaginaPrincipal extends AppCompatActivity {
                                 }
                                 Log.d("primero", "quinto");
 
-                                cards Item = new cards(dataSnapshot.getKey(), dataSnapshot.child("tituloPublicacion").getValue().toString(), fotoPublicacion); //aca se puebla la card con un constructor
+                                cards Item = new cards(dataSnapshot.getKey(), dataSnapshot.child("tituloPublicacion").getValue().toString(), fotoPublicacion, currentOwnerUid); //aca se puebla la card con un constructor
                                 //cards Item = new cards(dataSnapshot.getKey(),dataSnapshot.child("name").getValue().toString(),dataSnapshot.child("profileImageUrl").getValue().toString()); //aca se puebla la card con un constructor
                                 rowItems.add(Item); //aca añade la persona a la tarjetita.
 

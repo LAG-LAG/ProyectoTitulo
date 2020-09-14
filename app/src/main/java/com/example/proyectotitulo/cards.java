@@ -1,22 +1,32 @@
 package com.example.proyectotitulo;
 
 public class cards {
-    private String userId;
+    private String clothesId;
     private String name;
     private String profileImageUrl;
+    private String ownerId;
 
-    public cards (String userId, String name, String profileImageUrl){
-        this.userId = userId;
+    public cards (String clothesId, String name, String profileImageUrl,String ownerId){
+        this.clothesId = clothesId;
         this.name = name;
         this.profileImageUrl = profileImageUrl;
+        this.ownerId = ownerId;
     }
 
-    public String getUserId(){
-        return userId;
+    public String getClothesId(){
+        return clothesId;
     }
 
-    public void setUserId(String userId){
-        this.userId = userId;
+    public String getOwnerId() {
+        return ownerId;
+    }
+
+    public void setOwnerId(String ownerId) {
+        this.ownerId = ownerId;
+    }
+
+    public void setClothesId(String clothesId){
+        this.clothesId = clothesId;
     }
 
     public String getName(){
