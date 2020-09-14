@@ -377,14 +377,14 @@ public class AddPublicaciones extends AppCompatActivity {
                             Map newImage = new HashMap();
                             newImage.put("photoId" + idPrenda, uri.toString());
                             mClothesDatabase.updateChildren(newImage);
-                            finish();
-                            return;
+                            //finish();
+                            //return;
                         }
                     }).addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception exception) {
-                            finish();
-                            return;
+                            //finish();
+                            //return;
                         }
                     });
                 }
