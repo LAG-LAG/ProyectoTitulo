@@ -12,6 +12,8 @@
         <activity android:name=".detallePublicacion"></activity>
         <activity android:name=".DatosPublicacion" />
         <activity android:name=".Favorites" />
+        <activity android:name=".VerMiCuenta"></activity>
+        <activity android:name=".MisPublicaciones" />
         <activity
             android:name=".AddPublicaciones"
             android:screenOrientation="portrait" />

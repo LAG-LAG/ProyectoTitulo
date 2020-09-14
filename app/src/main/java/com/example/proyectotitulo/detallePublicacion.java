@@ -81,7 +81,9 @@ public class detallePublicacion extends AppCompatActivity {
                 public void onClick(View view) {
                     Log.d("weaweawea","tamaño "+tamanoUrlImagenes);
                     Log.d("weaweawea","indice "+indiceFotoActual);
-                    mostrarFoto(urlImagenes.get(indiceFotoActual));
+                    if(tamanoUrlImagenes-1!=0) {
+                        mostrarFoto(urlImagenes.get(indiceFotoActual));
+                    }
                     if(indiceFotoActual>=tamanoUrlImagenes-1){
                         Log.d("weaweawea","uno");
                         indiceFotoActual=0;
@@ -97,7 +99,9 @@ public class detallePublicacion extends AppCompatActivity {
             public void onClick(View view) {
 
                 Log.d("weaweawea","indice "+indiceFotoActual);
-                mostrarFoto(urlImagenes.get(indiceFotoActual));
+                if(tamanoUrlImagenes-1!=0) {
+                    mostrarFoto(urlImagenes.get(indiceFotoActual));
+                }
                 if(indiceFotoActual<=0){
                     Log.d("weaweawea","uno");
                     indiceFotoActual=tamanoUrlImagenes-1;
