@@ -48,7 +48,7 @@ public class Chat extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()){
             case R.id.accountBtn:
-                Intent intentAccount = new Intent(Chat.this, Account.class);
+                Intent intentAccount = new Intent(Chat.this, VerMiCuenta.class);
                 startActivity(intentAccount);
                 finish();
                 break;
@@ -56,12 +56,6 @@ public class Chat extends AppCompatActivity {
             case R.id.addBtn:
                 Intent intentAdd = new Intent(Chat.this, AddPublicaciones.class);
                 startActivity(intentAdd);
-                finish();
-                break;
-
-            case R.id.likeBtn:
-                Intent intentLike = new Intent(Chat.this, Favorites.class);
-                startActivity(intentLike);
                 finish();
                 break;
 

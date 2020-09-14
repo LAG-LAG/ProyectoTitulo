@@ -511,12 +511,6 @@ public class Account extends AppCompatActivity {
                 finish();
                 break;
 
-            case R.id.likeBtn:
-                Intent intentLike = new Intent(Account.this, Favorites.class);
-                startActivity(intentLike);
-                finish();
-                break;
-
             case R.id.publicacionesBtn:
                 Intent intentAccount = new Intent(Account.this, PaginaPrincipal.class);
                 startActivity(intentAccount);

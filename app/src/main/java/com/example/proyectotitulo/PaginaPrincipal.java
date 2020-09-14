@@ -324,7 +324,7 @@ public class PaginaPrincipal extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()){
             case R.id.accountBtn:
-                Intent intentAccount = new Intent(PaginaPrincipal.this, Account.class);
+                Intent intentAccount = new Intent(PaginaPrincipal.this, VerMiCuenta.class);
                 startActivity(intentAccount);
                 finish();
                 break;
@@ -341,11 +341,6 @@ public class PaginaPrincipal extends AppCompatActivity {
                 finish();
                 break;
 
-            case R.id.likeBtn:
-                Intent intentLike = new Intent(PaginaPrincipal.this, Favorites.class);
-                startActivity(intentLike);
-                finish();
-                break;
         }
 
         return super.onOptionsItemSelected(item);
