@@ -132,6 +132,9 @@ public class PaginaPrincipal extends AppCompatActivity {
             @Override
             public void onItemClicked(int itemPosition, Object dataObject) {
                 Toast.makeText(PaginaPrincipal.this,"click", Toast.LENGTH_SHORT).show();
+                Intent intentDetalle = new Intent(PaginaPrincipal.this, detallePublicacion.class);
+                startActivity(intentDetalle);
+                finish();
             }
         });
 
