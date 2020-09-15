@@ -1,0 +1,53 @@
+package com.example.proyectotitulo;
+
+import android.content.ClipData;
+import android.content.Context;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.BaseAdapter;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import org.w3c.dom.Text;
+
+import java.util.ArrayList;
+
+public class publicacionAdapter extends BaseAdapter{
+    private Context context;
+    private ArrayList<publicacion> listItems;
+
+    public publicacionAdapter(Context context, ArrayList<publicacion> listItems) {
+        this.context = context;
+        this.listItems = listItems;
+    }
+
+    @Override
+    public int getCount() {
+        return listItems.size();
+    }
+
+    @Override
+    public Object getItem(int position) {
+        return listItems.get(position);
+    }
+
+    @Override
+    public long getItemId(int position) {
+        return 0;
+    }
+
+    @Override
+    public View getView(int position, View convertView, ViewGroup parent) {
+        publicacion item = (publicacion) getItem(position);
+
+        convertView = LayoutInflater.from(context).inflate(R.layout.item_publicacion, null);
+        ImageView imgPublicacion = (ImageView) convertView.findViewById(R.id.imgPublicacion);
+        TextView tituloPublicacion = (TextView) convertView.findViewById(R.id.tituloPublicacion);
+
+        //imgPublicacion.setImageResource(item.get);
+        tituloPublicacion.setText(item.getUserId());
+
+        return convertView;
+    }
+}
