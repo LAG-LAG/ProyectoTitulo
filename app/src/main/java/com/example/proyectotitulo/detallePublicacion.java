@@ -14,6 +14,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import com.bumptech.glide.Glide;
+import com.denzcoskun.imageslider.ImageSlider;
+import com.denzcoskun.imageslider.constants.ScaleTypes;
+import com.denzcoskun.imageslider.interfaces.ItemClickListener;
+import com.denzcoskun.imageslider.models.SlideModel;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -35,6 +39,8 @@ public class detallePublicacion extends AppCompatActivity {
     private Button mGuardar, mRechazar;
     private int indiceFotoActual, tamanoUrlImagenes;
     private ArrayList<String> urlImagenes;
+    private ImageSlider mSlider;
+    private ArrayList<SlideModel> imageList;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,14 +54,16 @@ public class detallePublicacion extends AppCompatActivity {
         if (getSupportActionBar() != null) {
             getSupportActionBar().setTitle("Publicaciones");
         }
-        mAdelanteButton = (ImageView) findViewById(R.id.adelanteDetalleButton);
-        mAtrasButton = (ImageView) findViewById(R.id.atrasDetalleButton);
+        //mAdelanteButton = (ImageView) findViewById(R.id.adelanteDetalleButton);
+        //mAtrasButton = (ImageView) findViewById(R.id.atrasDetalleButton);
 
         mGuardar = (Button) findViewById(R.id.guardarPublicacionDetalle);
         mRechazar = (Button) findViewById(R.id.descartarPublicacionDetalle);
+  //      mAdelanteButton.setVisibility(View.INVISIBLE);
+//        mAtrasButton.setVisibility(View.INVISIBLE);
 
         urlImagenes = new ArrayList<String>();
-        mFotoActual = (ImageView) findViewById(R.id.fotoDetallePublicacion);
+        //mFotoActual = (ImageView) findViewById(R.id.fotoDetallePublicacion);
 
         mTitulo = (TextView) findViewById(R.id.tituloDetallePublicacion);
         mtipoPrenda = (TextView) findViewById(R.id.tipoPrendaDetalle);
@@ -65,8 +73,13 @@ public class detallePublicacion extends AppCompatActivity {
         mColor = (TextView) findViewById(R.id.colorPrendaDetalle);
         mTalla = (TextView) findViewById(R.id.tallaPrendaDetalle);
         indiceFotoActual=0;
+        mSlider = (ImageSlider) findViewById(R.id.fotoDetallePublicacion);
+        imageList = new ArrayList<SlideModel>();
+        Log.d("weaweawea","1si");
         obtenerDatosPublicacion();
         mAuth = FirebaseAuth.getInstance();
+
+
 
         usersDb = FirebaseDatabase.getInstance().getReference().child("Users"); //esto obtiene todos los usuarios de la bd
 
@@ -74,6 +87,7 @@ public class detallePublicacion extends AppCompatActivity {
 
 //        if(indiceFotoActual<tamañoUrlImagenes){
             //indiceFotoActual++;
+        /*
             mAdelanteButton.setVisibility(View.VISIBLE);
             Log.d("weaweawea","xd "+tamanoUrlImagenes);
             mAdelanteButton.setOnClickListener(new View.OnClickListener() {
@@ -112,7 +126,13 @@ public class detallePublicacion extends AppCompatActivity {
                 }
             }
         });
+*/
+        mSlider.setItemClickListener(new ItemClickListener() {
+            @Override
+            public void onItemSelected(int i) {
 
+            }
+        });
         mGuardar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -205,8 +225,11 @@ public class detallePublicacion extends AppCompatActivity {
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                 if(dataSnapshot.exists()){
                     urlImagenes.add(dataSnapshot.getValue().toString());
+                    SlideModel aux = new SlideModel(dataSnapshot.getValue().toString(),ScaleTypes.FIT);
+                    imageList.add(aux);
+                    mSlider.setImageList(imageList,ScaleTypes.FIT);
                     if(indiceFotoActual==0) {
-                        mostrarFoto(urlImagenes.get(0));
+                     //   mostrarFoto(urlImagenes.get(0));
                         indiceFotoActual++;
                     }
                     tamanoUrlImagenes++;

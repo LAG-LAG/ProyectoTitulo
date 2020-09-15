@@ -11,13 +11,16 @@
         android:id="@+id/toolbar"
         layout="@layout/toolbar"/>
 
-    <ImageView
+
+    <com.denzcoskun.imageslider.ImageSlider
         android:id="@+id/fotoDetallePublicacion"
-        android:layout_width="354dp"
-        android:layout_height="267dp"
-        android:layout_marginTop="28dp"
+        android:layout_width="403dp"
+        android:layout_height="283dp"
+        android:layout_marginTop="8dp"
+        app:iss_error_image="@mipmap/ic_launcher"
+        app:iss_placeholder="@mipmap/ic_launcher"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.491"
+        app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbar"
         app:srcCompat="@mipmap/ic_launcher" />
@@ -140,27 +143,5 @@
         android:text="Descartar"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
-
-    <ImageView
-        android:id="@+id/adelanteDetalleButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        app:layout_constraintBottom_toBottomOf="@+id/fotoDetallePublicacion"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/fotoDetallePublicacion"
-        app:layout_constraintVertical_bias="0.506"
-        app:srcCompat="@android:mipmap/sym_def_app_icon" />
-
-    <ImageView
-        android:id="@+id/atrasDetalleButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="12dp"
-        app:layout_constraintBottom_toBottomOf="@+id/fotoDetallePublicacion"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/fotoDetallePublicacion"
-        app:layout_constraintVertical_bias="0.506"
-        app:srcCompat="@android:mipmap/sym_def_app_icon" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
