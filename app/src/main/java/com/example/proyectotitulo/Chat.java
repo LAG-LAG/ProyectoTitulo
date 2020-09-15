@@ -28,13 +28,6 @@ public class Chat extends AppCompatActivity {
 
     }
 
-    public void back(View view) {
-        Intent intent = new Intent(Chat.this, PaginaPrincipal.class);
-        startActivity(intent);
-        finish();
-        return;
-    }
-
     //Crea el menu en la toolbar
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

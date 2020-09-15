@@ -96,8 +96,11 @@ public class Account extends AppCompatActivity {
         //Toolbar Menu
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+
         if (getSupportActionBar() != null) {
-            getSupportActionBar().setTitle("Cuenta");
+            getSupportActionBar().setTitle("Editar cuenta");
         }
 
         mAuth = FirebaseAuth.getInstance();
@@ -471,54 +474,13 @@ public class Account extends AppCompatActivity {
             }
         });
 
-
-
-
     }
 
-/*
-
-
- */
-    public void back(View view) {
-        Intent intent = new Intent(Account.this, PaginaPrincipal.class);
-        startActivity(intent);
-        finish();
-        return;
-    }
-
-    //Crea el menu en la toolbar
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu, menu);
+    //toolbar
+    public boolean onOptionsItemSelected(MenuItem item){
+        Intent myIntent = new Intent(getApplicationContext(), VerMiCuenta.class);
+        startActivityForResult(myIntent, 0);
         return true;
-    }
-
-    //Controla los botones del menu
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()){
-            case R.id.chatBtn:
-                Intent intentChat = new Intent(Account.this, Chat.class);
-                startActivity(intentChat);
-                finish();
-                break;
-
-            case R.id.addBtn:
-                Intent intentAdd = new Intent(Account.this, AddPublicaciones.class);
-                startActivity(intentAdd);
-                finish();
-                break;
-
-            case R.id.publicacionesBtn:
-                Intent intentAccount = new Intent(Account.this, PaginaPrincipal.class);
-                startActivity(intentAccount);
-                finish();
-                break;
-        }
-
-        return super.onOptionsItemSelected(item);
     }
 
 }

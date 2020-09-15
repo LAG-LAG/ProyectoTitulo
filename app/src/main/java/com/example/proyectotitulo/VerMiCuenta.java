@@ -81,6 +81,24 @@ public class VerMiCuenta extends AppCompatActivity {
                 finish();
             }
         });
+
+        misPublicacionesBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(VerMiCuenta.this, MisPublicaciones.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+
+        misFavoritosBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(VerMiCuenta.this, MisFavoritos.class);
+                startActivity(intent);
+                finish();
+            }
+        });
     }
 
     private void getUserInfo() {
