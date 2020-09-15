@@ -52,7 +52,7 @@ public class PaginaPrincipal extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         currentUId = user.getUid();
-        Log.d("weawea",currentUId);
+        //Log.d("weawea",currentUId);
         puedeMostrarCard=1;
         //Toolbar Menu
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
