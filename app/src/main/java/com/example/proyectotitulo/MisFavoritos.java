@@ -1,18 +1,22 @@
 package com.example.proyectotitulo;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 
-public class MisPublicaciones extends AppCompatActivity {
+public class MisFavoritos extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_mis_publicaciones);
+        setContentView(R.layout.activity_mis_favoritos);
 
         //Toolbar Menu
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -20,7 +24,7 @@ public class MisPublicaciones extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         if (getSupportActionBar() != null) {
-            getSupportActionBar().setTitle("Mis publicaciones");
+            getSupportActionBar().setTitle("Mis favoritos");
         }
 
     }

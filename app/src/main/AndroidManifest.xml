@@ -9,18 +9,24 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.NoActionBar">
-        <activity android:name=".detallePublicacion"></activity>
-        <activity android:name=".DatosPublicacion" />
-        <activity android:name=".Favorites" />
-        <activity android:name=".VerMiCuenta"></activity>
-        <activity android:name=".MisPublicaciones" />
+        <activity android:name=".detallePublicacion"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".DatosPublicacion"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".MisFavoritos"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".VerMiCuenta"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".MisPublicaciones"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".AddPublicaciones"
             android:screenOrientation="portrait" />
-        <activity android:name=".Chat" />
+
         <activity
             android:name=".Account"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"/>
+
         <activity
             android:name=".Registration"
             android:screenOrientation="portrait" />
