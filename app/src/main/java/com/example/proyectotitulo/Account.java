@@ -67,6 +67,7 @@ public class Account extends AppCompatActivity {
     private EditText mNombre;
     private ImageView mProfileImage, mborrarFotoPerfil;
     private String nombreUsuario;
+
     private Spinner mRegionesSpinner;
     private String comunaAnterior, profileImageUrl;
     private String regionAnterior;
