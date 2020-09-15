@@ -9,12 +9,14 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -24,9 +26,10 @@ import java.util.List;
 
 public class Filtros extends AppCompatActivity {
     private DatabaseReference mCustomerDatabase;
-
+    private FirebaseAuth mAuth;
+    private DatabaseReference usersDb;
     private Spinner mRegionesSpinner,mComunasSpinner,mTalla,mTipoPrenda,mEstado;
-    private String comunaBusqueda, tallaBusqueda, estadoBusqueda, tipoPrendaBusqueda,regionBusqueda;
+    private String comunaBusqueda, tallaBusqueda, estadoBusqueda, tipoPrendaBusqueda,regionBusqueda,currentUId;
     private int estadoComunas;
     private Button mAplicar;
     @Override
@@ -34,6 +37,10 @@ public class Filtros extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_filtros);
+        mAuth = FirebaseAuth.getInstance();
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        currentUId = user.getUid();
+        usersDb = FirebaseDatabase.getInstance().getReference().child("Users"); //esto obtiene todos los usuarios de la bd
         mRegionesSpinner = (Spinner) findViewById(R.id.regionesSpinnerFiltros);
         mComunasSpinner = (Spinner) findViewById(R.id.comunasSpinnerFiltros);
         mTalla = (Spinner) findViewById(R.id.TallaSpinnerFiltrar);
@@ -118,41 +125,10 @@ public class Filtros extends AppCompatActivity {
                 //aca hay que añadir que cuando no seleccione nada, se borre el spinner de comunas y solo deje seleccione comuna.
             }
         });
-/*
-        mAplicar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String regionGuardar = String.valueOf(mRegionesSpinner.getSelectedItem());
-                String comunaGuardar = String.valueOf(mComunasSpinner.getSelectedItem());
-                String tipoPrendaAnterior = String.valueOf(mTipoPrenda.getSelectedItem());
-                String estadoAnterior = String.valueOf(mEstado.getSelectedItem());
-                String tallaAnterior = String.valueOf(mTalla.getSelectedItem());
-                if(tipoPrendaAnterior.equals("Seleccione tipo de prenda")){
-                    tipoPrendaAnterior = "";
-                }
-                if(estadoAnterior.equals("Seleccione estado")){
-                    estadoAnterior = "";
-                }
-                if(tallaAnterior.equals("Seleccione talla")){
-                    estadoAnterior = "";
-                }
-                Intent intentPaginaPrincipal = new Intent(Filtros.this, PaginaPrincipal.class);
-                intentPaginaPrincipal.putExtra("comunaAnterior",comunaGuardar);
-                intentPaginaPrincipal.putExtra("regionAnterior",regionGuardar);
-                intentPaginaPrincipal.putExtra("tipoPrendaAnterior",tipoPrendaAnterior);
-                intentPaginaPrincipal.putExtra("estadoAnterior",estadoAnterior);
-                intentPaginaPrincipal.putExtra("tallaAnterior",tallaAnterior);
-                startActivity(intentPaginaPrincipal);
-                finish();
-                return;
-            }
-        });
-*/
 
                 mAplicar.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        Toast.makeText(Filtros.this, "xd", Toast.LENGTH_SHORT).show();
                         String regionGuardar = String.valueOf(mRegionesSpinner.getSelectedItem());
                         String comunaGuardar = String.valueOf(mComunasSpinner.getSelectedItem());
                         String tipoPrendaAnterior = String.valueOf(mTipoPrenda.getSelectedItem());
@@ -165,14 +141,21 @@ public class Filtros extends AppCompatActivity {
                             estadoAnterior = "";
                         }
                         if(tallaAnterior.equals("Seleccione talla")){
-                            estadoAnterior = "";
+                            tallaAnterior = "";
                         }
-                        Intent intentPaginaPrincipal = new Intent(Filtros.this, PaginaPrincipal.class);
+                        usersDb.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("filtros").child("comunaAnterior").setValue(comunaGuardar);
+                        usersDb.child(mAuth.getCurrentUser().getUid()).child("filtros").child("regionAnterior").setValue(regionGuardar);
+                        usersDb.child(mAuth.getCurrentUser().getUid()).child("filtros").child("tipoPrendaAnterior").setValue(tipoPrendaAnterior);
+                        usersDb.child(mAuth.getCurrentUser().getUid()).child("filtros").child("estadoAnterior").setValue(estadoAnterior);
+                        usersDb.child(mAuth.getCurrentUser().getUid()).child("filtros").child("tallaAnterior").setValue(tallaAnterior);
+                        Intent intentPaginaPrincipal = new Intent(Filtros.this, PaginaPrincipal.class);/*
                         intentPaginaPrincipal.putExtra("comunaAnterior",comunaGuardar);
                         intentPaginaPrincipal.putExtra("regionAnterior",regionGuardar);
                         intentPaginaPrincipal.putExtra("tipoPrendaAnterior",tipoPrendaAnterior);
                         intentPaginaPrincipal.putExtra("estadoAnterior",estadoAnterior);
-                        intentPaginaPrincipal.putExtra("tallaAnterior",tallaAnterior);
+                        intentPaginaPrincipal.putExtra("tallaAnterior",tallaAnterior);*/
+
+
                         startActivity(intentPaginaPrincipal);
                         finish();
                         return;
@@ -190,13 +173,13 @@ public class Filtros extends AppCompatActivity {
         }.getType();
         List<cities> cities = gson.fromJson(jsonFileString, listUserType);
         List<String> list = new ArrayList<String>();
-        if(!regionBusqueda.equals("")){
+        //if(!regionBusqueda.equals("")){
            for (int i = 0; i < cities.size(); i++) {
                 list.add(cities.get(i).region);
                 if (cities.get(i).region.equals(regionBusqueda)) {
                     posicionRegion = i ;
                 }
-            }
+          //  }
         }
 
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(Filtros.this, android.R.layout.simple_spinner_item, list);
@@ -229,6 +212,26 @@ public class Filtros extends AppCompatActivity {
             ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(Filtros.this, android.R.layout.simple_expandable_list_item_1,list);
             mRegionesSpinner.setAdapter(arrayAdapter);
             mRegionesSpinner.setSelection(posicionRegion);
+            estadoComunas=1;
+        }
+        else{
+            ArrayList<String> regiones = new ArrayList<>();
+            //regiones.add(regionBusqueda);
+            String jsonFileString = Utils.getJsonFromAssets(getApplicationContext(), "cities.json");
+            Log.i("data", jsonFileString);
+            Gson gson = new Gson();
+            Type listUserType = new TypeToken<List<cities>>() {
+            }.getType();
+            List<cities> cities = gson.fromJson(jsonFileString, listUserType);
+            List<String> list = new ArrayList<String>();
+            list.add("Seleccione Región");
+            for (int i = 0; i < cities.size(); i++) {
+                list.add(cities.get(i).region);
+            }
+            //Toast.makeText(this, regionAnterior,Toast.LENGTH_LONG).show();
+            ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(Filtros.this, android.R.layout.simple_expandable_list_item_1,list);
+            mRegionesSpinner.setAdapter(arrayAdapter);
+            mRegionesSpinner.setSelection(1);
             estadoComunas=1;
         }
     }

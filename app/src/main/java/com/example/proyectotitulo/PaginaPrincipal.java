@@ -64,16 +64,36 @@ public class PaginaPrincipal extends AppCompatActivity {
         if (getSupportActionBar() != null) {
             getSupportActionBar().setTitle("Publicaciones");
         }
+
         //swipecards
-        regionBusqueda = "Valparaíso";
-        comunaBusqueda = "Quillota";
-        tipoPrendaBusqueda = "Pantalones";
-        estadoBusqueda = "Nuevo";
-        tallaBusqueda = "XS";
+        if(regionBusqueda==null) {
+            regionBusqueda = "";
+        }
+        if(comunaBusqueda==null) {
+            comunaBusqueda = "";
+        }
+        if(tipoPrendaBusqueda==null) {
+            tipoPrendaBusqueda = "";
+        }
+        if(estadoBusqueda==null) {
+            estadoBusqueda = "";
+        }
+        if(tallaBusqueda==null) {
+            tallaBusqueda = "";
+        }
+
+        //regionBusqueda = "Valparaíso";
+        //comunaBusqueda = "Quillota";
+        //tipoPrendaBusqueda = "Pantalones";
+        //estadoBusqueda = "Nuevo";
+        //tallaBusqueda = "XS";
+        obtenerFiltros();
+        Toast.makeText(this, comunaBusqueda, Toast.LENGTH_SHORT).show();
         SwipeFlingAdapterView flingContainer = (SwipeFlingAdapterView) findViewById(R.id.frame);
         obtenerPublicacionesAceptadasyRechazadas();
         al = new ArrayList<String>();
         obtenerPublicaciones();
+
         rowItems = new ArrayList<cards>();/*
 
          */
@@ -152,6 +172,44 @@ public class PaginaPrincipal extends AppCompatActivity {
                 startActivity(intentFiltros);
                 finish();
                 return;
+            }
+        });
+    }
+
+    private void obtenerFiltros() {
+        currentUId = mAuth.getCurrentUser().getUid();
+        usersDb.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                if(dataSnapshot.exists() && dataSnapshot.getKey().equals(currentUId) && dataSnapshot.hasChild("filtros")){
+                    //Toast.makeText(PaginaPrincipal.this, dataSnapshot.getKey().toString(), Toast.LENGTH_SHORT).show();
+                    comunaBusqueda = dataSnapshot.child("filtros").child("comunaAnterior").getValue().toString();
+                    Toast.makeText(PaginaPrincipal.this, comunaBusqueda, Toast.LENGTH_SHORT).show();
+                    regionBusqueda = dataSnapshot.child("filtros").child("regionAnterior").getValue().toString();
+                    tipoPrendaBusqueda = dataSnapshot.child("filtros").child("tipoPrendaAnterior").getValue().toString();
+                    estadoBusqueda = dataSnapshot.child("filtros").child("estadoAnterior").getValue().toString();
+                    tallaBusqueda = dataSnapshot.child("filtros").child("tallaAnterior").getValue().toString();
+                }
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
             }
         });
     }
