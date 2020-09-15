@@ -7,6 +7,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -39,7 +40,8 @@ public class PaginaPrincipal extends AppCompatActivity {
     private Map<String, Object> map;
     private String userId;
     private int puedeMostrarCard;
-    private String comunaBusqueda, tallaBusqueda, estadoBusqueda, tipoPrendaBusqueda;
+    private String comunaBusqueda, tallaBusqueda, estadoBusqueda, tipoPrendaBusqueda,regionBusqueda;
+    private Button mFiltros;
     List<cards> rowItems;
 
 
@@ -54,6 +56,7 @@ public class PaginaPrincipal extends AppCompatActivity {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         currentUId = user.getUid();
         Log.d("weawea",currentUId);
+        mFiltros = (Button) findViewById(R.id.filtrosBtn);
         puedeMostrarCard=1;
         //Toolbar Menu
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -62,6 +65,7 @@ public class PaginaPrincipal extends AppCompatActivity {
             getSupportActionBar().setTitle("Publicaciones");
         }
         //swipecards
+        regionBusqueda = "Valparaíso";
         comunaBusqueda = "Quillota";
         tipoPrendaBusqueda = "Pantalones";
         estadoBusqueda = "Nuevo";
@@ -136,6 +140,20 @@ public class PaginaPrincipal extends AppCompatActivity {
             }
         });
 
+        mFiltros.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intentFiltros = new Intent(PaginaPrincipal.this, Filtros.class);
+                intentFiltros.putExtra("comunaAnterior",comunaBusqueda);
+                intentFiltros.putExtra("regionAnterior",regionBusqueda);
+                intentFiltros.putExtra("tipoPrendaAnterior",tipoPrendaBusqueda);
+                intentFiltros.putExtra("estadoAnterior",estadoBusqueda);
+                intentFiltros.putExtra("tallaAnterior",tallaBusqueda);
+                startActivity(intentFiltros);
+                finish();
+                return;
+            }
+        });
     }
 
     private void obtenerPublicaciones() {
@@ -302,8 +320,6 @@ public class PaginaPrincipal extends AppCompatActivity {
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                 if (dataSnapshot.exists()) { //si existe y tiene algo ya guardado dentro lo muestra, para eso lo trae y lo castea al mapa.
                     al.add(dataSnapshot.getKey().toString());
-                    Log.d("weawea","gunga ginga"+ dataSnapshot.getKey().toString());
-                    Log.d("weawea","Rechazada");
                 }
             }
 
@@ -350,6 +366,7 @@ public class PaginaPrincipal extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()){
+
             case R.id.accountBtn:
                 Intent intentAccount = new Intent(PaginaPrincipal.this, VerMiCuenta.class);
                 startActivity(intentAccount);
@@ -372,4 +389,6 @@ public class PaginaPrincipal extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
+
 }

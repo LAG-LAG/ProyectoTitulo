@@ -9,24 +9,28 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.NoActionBar">
-        <activity android:name=".detallePublicacion"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".DatosPublicacion"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".MisFavoritos"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".VerMiCuenta"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".MisPublicaciones"
-            android:screenOrientation="portrait"/>
+        <activity android:name=".Filtros"></activity>
+        <activity
+            android:name=".detallePublicacion"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".DatosPublicacion"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".MisFavoritos"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".VerMiCuenta"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".MisPublicaciones"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".AddPublicaciones"
             android:screenOrientation="portrait" />
-
         <activity
             android:name=".Account"
-            android:screenOrientation="portrait"/>
-
+            android:screenOrientation="portrait" />
         <activity
             android:name=".Registration"
             android:screenOrientation="portrait" />
@@ -42,12 +46,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name="com.facebook.FacebookActivity"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
             android:label="@string/app_name" />
-
         <activity
             android:name="com.facebook.CustomTabActivity"
             android:exported="true">
@@ -60,15 +62,16 @@
                 <data android:scheme="@string/fb_login_protocol_scheme" />
             </intent-filter>
         </activity>
+
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id" />
     </application>
-    <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+
+    <uses-permission android:name="android.permission.INTERNET" />
 
 </manifest>
