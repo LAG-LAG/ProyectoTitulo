@@ -39,6 +39,7 @@ public class PaginaPrincipal extends AppCompatActivity {
     private Map<String, Object> map;
     private String userId;
     private int puedeMostrarCard;
+    private String comunaBusqueda, tallaBusqueda, estadoBusqueda, tipoPrendaBusqueda;
     List<cards> rowItems;
 
 
@@ -60,9 +61,11 @@ public class PaginaPrincipal extends AppCompatActivity {
         if (getSupportActionBar() != null) {
             getSupportActionBar().setTitle("Publicaciones");
         }
-
-
         //swipecards
+        comunaBusqueda = "Quillota";
+        tipoPrendaBusqueda = "";
+        estadoBusqueda = "";
+        tallaBusqueda = "";
         SwipeFlingAdapterView flingContainer = (SwipeFlingAdapterView) findViewById(R.id.frame);
         obtenerPublicacionesAceptadasyRechazadas();
         al = new ArrayList<String>();
@@ -146,27 +149,21 @@ public class PaginaPrincipal extends AppCompatActivity {
     }
 
     private void obtenerPublicaciones() {
-
+        currentUId = mAuth.getCurrentUser().getUid();
         usersDb.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                if(dataSnapshot.exists() && dataSnapshot.hasChild("clothes") && dataSnapshot.child("comuna").getValue().toString().equals("Quillota")){
-                    Log.d("primero","segundo");
-
+                if(dataSnapshot.exists() && dataSnapshot.hasChild("clothes") && dataSnapshot.child("comuna").getValue().toString().equals(comunaBusqueda)
+                && !dataSnapshot.getKey().equals(currentUId)){
                     String key = dataSnapshot.getKey();
                     currentOwnerUid = key;
-                    Log.d("primero",key);
                     clothesDb = usersDb.child(key).child("clothes");
                     clothesDb.addChildEventListener(new ChildEventListener() {
                         @Override
                         public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                            Log.d("primero","tercero");
                             currentUId = mAuth.getCurrentUser().getUid();
                             clothesCurrentUid = dataSnapshot.getKey();
-                            Log.d("weawea",clothesCurrentUid);
-                            //Toast.makeText(PaginaPrincipal.this, clothesCurrentUid, Toast.LENGTH_SHORT).show();
                             if(!verSiSeEncuentraEnArrayList(clothesCurrentUid)) {
-
                                 String fotoPublicacion;
                                 if (dataSnapshot.child("clothesPhotos").hasChild("photoId1")) {
                                     Log.d("primero", "cuarto");
