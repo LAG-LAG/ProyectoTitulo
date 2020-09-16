@@ -9,6 +9,8 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
+
 import org.w3c.dom.Text;
 
 import java.util.ArrayList;
@@ -45,7 +47,7 @@ public class publicacionAdapter extends BaseAdapter{
         ImageView imgPublicacion = (ImageView) convertView.findViewById(R.id.imgPublicacion);
         TextView tituloPublicacion = (TextView) convertView.findViewById(R.id.tituloPublicacion);
 
-        //imgPublicacion.setImageResource(item.get);
+        Picasso.get().load(item.getProfileImageUrl()).into(imgPublicacion);
         tituloPublicacion.setText(item.getUserId());
 
         return convertView;

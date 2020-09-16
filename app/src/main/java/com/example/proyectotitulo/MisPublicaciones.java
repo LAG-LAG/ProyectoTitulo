@@ -77,7 +77,15 @@ public class MisPublicaciones extends AppCompatActivity {
                             clothesCurrentUid = dataSnapshot.getKey();
                             Log.d("MisPublicaciones",clothesCurrentUid);
 
-                            publicacion item = new publicacion(dataSnapshot.child("tituloPublicacion").getValue().toString());
+                            String fotoPublicacion;
+                            if (dataSnapshot.child("clothesPhotos").hasChild("photoId1")) {
+                                Log.d("primero", "cuarto");
+                                fotoPublicacion = dataSnapshot.child("clothesPhotos").child("photoId1").getValue().toString();
+                            } else {
+                                fotoPublicacion = "default";
+                            }
+
+                            publicacion item = new publicacion(dataSnapshot.child("tituloPublicacion").getValue().toString(), fotoPublicacion);
                             listItems.add(item);
                             adapter.notifyDataSetChanged(); //esto se usa cad vez que se añade o se quita un elemetno del arraylist de los items.
                         }
