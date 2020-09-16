@@ -64,7 +64,7 @@ public class MisPublicaciones extends AppCompatActivity {
         usersDb.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                if(dataSnapshot.exists() && dataSnapshot.hasChild("clothes")){
+                if(dataSnapshot.exists() && dataSnapshot.hasChild("clothes") && dataSnapshot.getKey().equals(mAuth.getCurrentUser().getUid()) ){
                     String key = dataSnapshot.getKey();
                     currentOwnerUid = key;
                     Log.d("MisPublicaciones",key);
