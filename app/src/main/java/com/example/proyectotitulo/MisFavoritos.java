@@ -3,6 +3,8 @@ package com.example.proyectotitulo;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import androidx.annotation.NonNull;
@@ -58,6 +60,19 @@ public class MisFavoritos extends AppCompatActivity {
         lvItems = (ListView) findViewById(R.id.lvMisFavoritos);
         adapter = new publicacionAdapter(this, listItems);
         lvItems.setAdapter(adapter);
+
+        lvItems.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                publicacion AuxPublicacion = (publicacion)lvItems.getAdapter().getItem(position);
+                String idClothes = AuxPublicacion.getIdClothes();
+                Intent intentDetalle = new Intent(MisFavoritos.this, MisFavoritosDetalle.class);
+                intentDetalle.putExtra("idClothes",idClothes);
+                intentDetalle.putExtra("idUser",mAuth.getCurrentUser().getUid());
+                startActivity(intentDetalle);
+                finish();
+            }
+        });
 
     }
 
