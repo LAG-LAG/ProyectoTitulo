@@ -1,0 +1,286 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background_color"
+    tools:context=".EditarPublicacion">
+
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/toolbar" />
+
+    <Button
+        android:id="@+id/publicarBtnEditar"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginBottom="32dp"
+        android:background="@drawable/button_rounded"
+        android:text="Editar Publicación"
+        android:textColor="#FFFFFF"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextDescripcionEditar" />
+
+    <EditText
+        android:id="@+id/editTextTituloEditar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="264dp"
+        android:layout_marginEnd="32dp"
+        android:backgroundTint="#FFFFFF"
+        android:ems="10"
+        android:hint="Título"
+        android:inputType="textPersonName"
+        android:textColorHint="#FFFFFF"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/editTextValorEditar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="32dp"
+        android:backgroundTint="#FFFFFF"
+        android:ems="10"
+        android:hint="Precio ($)"
+        android:inputType="number"
+        android:textColorHint="#FFFFFF"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextTituloEditar" />
+
+    <Spinner
+        android:id="@+id/TipoPrendaSpinnerEditar"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="32dp"
+        android:entries="@array/tipoPrenda"
+        android:visibility="visible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextValorEditar"
+        tools:visibility="visible" />
+
+    <Spinner
+        android:id="@+id/TallaSpinnerEditar"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="32dp"
+        android:entries="@array/talla"
+        android:visibility="visible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/TipoPrendaSpinnerEditar"
+        tools:visibility="visible" />
+
+    <Spinner
+        android:id="@+id/ColorSpinnerEditar"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="32dp"
+        android:entries="@array/color"
+        android:visibility="visible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/TallaSpinnerEditar"
+        tools:visibility="visible" />
+
+    <Spinner
+        android:id="@+id/estadoPrendaSpinnerEditar"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="32dp"
+        android:entries="@array/estado"
+        android:visibility="visible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ColorSpinnerEditar"
+        tools:visibility="visible" />
+
+    <EditText
+        android:id="@+id/editTextDescripcionEditar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="32dp"
+        android:backgroundTint="#FFFFFF"
+        android:ems="10"
+        android:hint="Descripción"
+        android:inputType="textPersonName"
+        android:textColorHint="#FFFFFF"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/estadoPrendaSpinnerEditar" />
+
+    <ImageView
+        android:id="@+id/publicacionImageCrear1Editar"
+        android:layout_width="77dp"
+        android:layout_height="68dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="8dp"
+        android:src="@mipmap/ic_launcher"
+        app:layout_constraintBottom_toTopOf="@+id/publicacionImageCrear4Editar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <ImageView
+        android:id="@+id/publicacionImageCrear4Editar"
+        android:layout_width="77dp"
+        android:layout_height="68dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginBottom="16dp"
+        android:src="@mipmap/ic_launcher"
+        app:layout_constraintBottom_toTopOf="@+id/editTextTituloEditar"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <ImageView
+        android:id="@+id/publicacionImageCrear5Editar"
+        android:layout_width="77dp"
+        android:layout_height="68dp"
+        android:layout_marginBottom="16dp"
+        android:src="@mipmap/ic_launcher"
+        app:layout_constraintBottom_toTopOf="@+id/editTextTituloEditar"
+        app:layout_constraintEnd_toStartOf="@+id/publicacionImageCrear6Editar"
+        app:layout_constraintStart_toEndOf="@+id/publicacionImageCrear4Editar" />
+
+    <ImageView
+        android:id="@+id/publicacionImageCrear6Editar"
+        android:layout_width="77dp"
+        android:layout_height="68dp"
+        android:layout_marginEnd="40dp"
+        android:layout_marginBottom="16dp"
+        android:src="@mipmap/ic_launcher"
+        app:layout_constraintBottom_toTopOf="@+id/editTextTituloEditar"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <ImageView
+        android:id="@+id/publicacionImageCrear2Editar"
+        android:layout_width="77dp"
+        android:layout_height="68dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="20dp"
+        android:src="@mipmap/ic_launcher"
+        app:layout_constraintBottom_toTopOf="@+id/publicacionImageCrear5Editar"
+        app:layout_constraintEnd_toStartOf="@+id/publicacionImageCrear3Editar"
+        app:layout_constraintStart_toEndOf="@+id/publicacionImageCrear1Editar"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar"
+        app:layout_constraintVertical_bias="0.0" />
+
+
+
+    <ImageView
+        android:id="@+id/publicacionImageCrear3Editar"
+        android:layout_width="77dp"
+        android:layout_height="68dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="40dp"
+        android:src="@mipmap/ic_launcher"
+        app:layout_constraintBottom_toTopOf="@+id/publicacionImageCrear6Editar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <ImageView
+        android:id="@+id/borrarPublicacionCrear1Editar"
+        android:layout_width="31dp"
+        android:layout_height="25dp"
+        app:layout_constraintBottom_toBottomOf="@+id/publicacionImageCrear1Editar"
+        app:layout_constraintEnd_toEndOf="@+id/publicacionImageCrear1Editar"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="@+id/publicacionImageCrear1Editar"
+        app:layout_constraintTop_toTopOf="@+id/publicacionImageCrear1Editar"
+        app:layout_constraintVertical_bias="0.0"
+        app:srcCompat="@android:mipmap/sym_def_app_icon" />
+
+    <ImageView
+        android:id="@+id/borrarPublicacionCrear2Editar"
+        android:layout_width="31dp"
+        android:layout_height="25dp"
+        app:layout_constraintBottom_toBottomOf="@+id/publicacionImageCrear2Editar"
+        app:layout_constraintEnd_toEndOf="@+id/publicacionImageCrear2Editar"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="@+id/publicacionImageCrear2Editar"
+        app:layout_constraintTop_toTopOf="@+id/publicacionImageCrear2Editar"
+        app:layout_constraintVertical_bias="0.0"
+        app:srcCompat="@android:mipmap/sym_def_app_icon" />
+
+    <ImageView
+        android:id="@+id/borrarPublicacionCrear4Editar"
+        android:layout_width="31dp"
+        android:layout_height="25dp"
+        app:layout_constraintBottom_toBottomOf="@+id/publicacionImageCrear4Editar"
+        app:layout_constraintEnd_toEndOf="@+id/publicacionImageCrear4Editar"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="@+id/publicacionImageCrear4Editar"
+        app:layout_constraintTop_toTopOf="@+id/publicacionImageCrear4Editar"
+        app:layout_constraintVertical_bias="0.0"
+        app:srcCompat="@android:mipmap/sym_def_app_icon" />
+
+    <ImageView
+        android:id="@+id/borrarPublicacionCrear3Editar"
+        android:layout_width="31dp"
+        android:layout_height="25dp"
+        app:layout_constraintBottom_toBottomOf="@+id/publicacionImageCrear3Editar"
+        app:layout_constraintEnd_toEndOf="@+id/publicacionImageCrear3Editar"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="@+id/publicacionImageCrear3Editar"
+        app:layout_constraintTop_toTopOf="@+id/publicacionImageCrear3Editar"
+        app:layout_constraintVertical_bias="0.0"
+        app:srcCompat="@android:mipmap/sym_def_app_icon" />
+
+    <ImageView
+        android:id="@+id/borrarPublicacionCrear5Editar"
+        android:layout_width="31dp"
+        android:layout_height="25dp"
+        app:layout_constraintBottom_toBottomOf="@+id/publicacionImageCrear5Editar"
+        app:layout_constraintEnd_toEndOf="@+id/publicacionImageCrear5Editar"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="@+id/publicacionImageCrear5Editar"
+        app:layout_constraintTop_toTopOf="@+id/publicacionImageCrear5Editar"
+        app:layout_constraintVertical_bias="0.0"
+        app:srcCompat="@android:mipmap/sym_def_app_icon" />
+
+    <ImageView
+        android:id="@+id/borrarPublicacionCrear6Editar"
+        android:layout_width="31dp"
+        android:layout_height="25dp"
+        app:layout_constraintBottom_toBottomOf="@+id/publicacionImageCrear6Editar"
+        app:layout_constraintEnd_toEndOf="@+id/publicacionImageCrear6Editar"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="@+id/publicacionImageCrear6Editar"
+        app:layout_constraintTop_toTopOf="@+id/publicacionImageCrear6Editar"
+        app:layout_constraintVertical_bias="0.0"
+        app:srcCompat="@android:mipmap/sym_def_app_icon" />
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
