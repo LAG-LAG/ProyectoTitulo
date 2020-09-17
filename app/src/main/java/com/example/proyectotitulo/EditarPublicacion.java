@@ -37,6 +37,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.squareup.picasso.Picasso;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -64,6 +65,7 @@ public class EditarPublicacion extends AppCompatActivity {
     private String currentUId;
     private DatabaseReference mClothesDatabase;
     private DatabaseReference usersDb;
+    private DatabaseReference photosDb;
     private ImageView mPublicacionImage1;
 
     private ImageView mPublicacionImage2;
@@ -73,6 +75,7 @@ public class EditarPublicacion extends AppCompatActivity {
     private ImageView mPublicacionImage6;
     private ImageView mBorrarPublicacion1,mBorrarPublicacion2,mBorrarPublicacion3,mBorrarPublicacion4,mBorrarPublicacion5,mBorrarPublicacion6;
     private int publicacion1,publicacion2,publicacion3,publicacion4,publicacion5,publicacion6;
+    private int existoFoto1,existoFoto2,existoFoto3,existoFoto4,existoFoto5,existoFoto6;
 
 
     @Override
@@ -109,6 +112,12 @@ public class EditarPublicacion extends AppCompatActivity {
         mBorrarPublicacion5.setVisibility(View.INVISIBLE);
         mBorrarPublicacion6.setVisibility(View.INVISIBLE);
 
+        existoFoto1 = 0;
+        existoFoto2 = 0;
+        existoFoto3 = 0;
+        existoFoto4 = 0;
+        existoFoto5 = 0;
+        existoFoto6 = 0;
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         currentUId = user.getUid();
 
@@ -134,6 +143,10 @@ public class EditarPublicacion extends AppCompatActivity {
                     mPublicacionImage1.setImageResource(R.drawable.ic_launcher_foreground);
                     mBorrarPublicacion1.setVisibility(View.INVISIBLE);
                 }
+                if(existoFoto1==1){
+                    mPublicacionImage1.setImageResource(R.drawable.ic_launcher_foreground);
+                    mBorrarPublicacion1.setVisibility(View.INVISIBLE);
+                }
             }
         });
 
@@ -144,6 +157,10 @@ public class EditarPublicacion extends AppCompatActivity {
                     final Uri imageUri = null;
                     // final Uri imageUri = Uri.parse("android.resource://ProyectoTitulo/drawable/image_name");
                     resultUri2 = imageUri;
+                    mPublicacionImage2.setImageResource(R.drawable.ic_launcher_foreground);
+                    mBorrarPublicacion2.setVisibility(View.INVISIBLE);
+                }
+                if(existoFoto2==1){
                     mPublicacionImage2.setImageResource(R.drawable.ic_launcher_foreground);
                     mBorrarPublicacion2.setVisibility(View.INVISIBLE);
                 }
@@ -160,6 +177,10 @@ public class EditarPublicacion extends AppCompatActivity {
                     mPublicacionImage3.setImageResource(R.drawable.ic_launcher_foreground);
                     mBorrarPublicacion3.setVisibility(View.INVISIBLE);
                 }
+                if(existoFoto3==1){
+                    mPublicacionImage3.setImageResource(R.drawable.ic_launcher_foreground);
+                    mBorrarPublicacion3.setVisibility(View.INVISIBLE);
+                }
             }
         });
 
@@ -170,6 +191,10 @@ public class EditarPublicacion extends AppCompatActivity {
                     final Uri imageUri = null;
                     // final Uri imageUri = Uri.parse("android.resource://ProyectoTitulo/drawable/image_name");
                     resultUri4 = imageUri;
+                    mPublicacionImage4.setImageResource(R.drawable.ic_launcher_foreground);
+                    mBorrarPublicacion4.setVisibility(View.INVISIBLE);
+                }
+                if(existoFoto4==1){
                     mPublicacionImage4.setImageResource(R.drawable.ic_launcher_foreground);
                     mBorrarPublicacion4.setVisibility(View.INVISIBLE);
                 }
@@ -186,6 +211,10 @@ public class EditarPublicacion extends AppCompatActivity {
                     mPublicacionImage5.setImageResource(R.drawable.ic_launcher_foreground);
                     mBorrarPublicacion5.setVisibility(View.INVISIBLE);
                 }
+                if(existoFoto5==1){
+                    mPublicacionImage5.setImageResource(R.drawable.ic_launcher_foreground);
+                    mBorrarPublicacion5.setVisibility(View.INVISIBLE);
+                }
             }
         });
 
@@ -196,6 +225,10 @@ public class EditarPublicacion extends AppCompatActivity {
                     final Uri imageUri = null;
                     // final Uri imageUri = Uri.parse("android.resource://ProyectoTitulo/drawable/image_name");
                     resultUri6 = imageUri;
+                    mPublicacionImage6.setImageResource(R.drawable.ic_launcher_foreground);
+                    mBorrarPublicacion6.setVisibility(View.INVISIBLE);
+                }
+                if(existoFoto6==1){
                     mPublicacionImage6.setImageResource(R.drawable.ic_launcher_foreground);
                     mBorrarPublicacion6.setVisibility(View.INVISIBLE);
                 }
@@ -305,6 +338,71 @@ public class EditarPublicacion extends AppCompatActivity {
                             mTipoPrendaSpinner.setSelection(i);
                         }
                     }
+                    photosDb = FirebaseDatabase.getInstance().getReference().child("Users").child(currentUId).child("clothes").child(dataSnapshot.getKey()).child("clothesPhotos"); //esto obtiene todos los usuarios de la bd
+                    photosDb.addChildEventListener(new ChildEventListener() {
+                        @Override
+                        public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                            if(dataSnapshot.exists()){
+
+                                if(dataSnapshot.getKey().equals("photoId1")){
+                                    mBorrarPublicacion1.setVisibility(View.VISIBLE);
+                                    asignarFoto(dataSnapshot.getValue().toString(), mPublicacionImage1);
+                                    publicacion1=1;
+                                    existoFoto1=1;
+                                }
+                                if(dataSnapshot.getKey().equals("photoId2")){
+                                    mBorrarPublicacion2.setVisibility(View.VISIBLE);
+                                    asignarFoto(dataSnapshot.getValue().toString(), mPublicacionImage2);
+                                    publicacion2=1;
+                                    existoFoto2=1;
+                                }
+                                if(dataSnapshot.getKey().equals("photoId3")){
+                                    mBorrarPublicacion3.setVisibility(View.VISIBLE);
+                                    asignarFoto(dataSnapshot.getValue().toString(),mPublicacionImage3);
+                                    publicacion3=1;
+                                    existoFoto3=1;
+                                }
+                                if(dataSnapshot.getKey().equals("photoId4")){
+                                    mBorrarPublicacion4.setVisibility(View.VISIBLE);
+                                    asignarFoto(dataSnapshot.getValue().toString(), mPublicacionImage4);
+                                    publicacion4=1;
+                                    existoFoto4=1;
+                                }
+                                if(dataSnapshot.getKey().equals("photoId5")){
+                                    mBorrarPublicacion5.setVisibility(View.VISIBLE);
+                                    asignarFoto(dataSnapshot.getValue().toString(), mPublicacionImage5);
+                                    publicacion5=1;
+                                    existoFoto5=1;
+                                }
+                                if(dataSnapshot.getKey().equals("photoId6")){
+                                    mBorrarPublicacion6.setVisibility(View.VISIBLE);
+                                    asignarFoto(dataSnapshot.getValue().toString(), mPublicacionImage6);
+                                    publicacion6=1;
+                                    existoFoto6=1;
+                                }
+                            }
+                        }
+
+                        @Override
+                        public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+                        }
+
+                        @Override
+                        public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+                        }
+
+                        @Override
+                        public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+                    });
                 }
             }
 
@@ -330,6 +428,26 @@ public class EditarPublicacion extends AppCompatActivity {
         });
 
     }
+
+    private void asignarFoto(String photoId1, ImageView mPublicacionImage1) {
+        switch(photoId1) {
+            case "default":
+                Picasso.get().setLoggingEnabled(true);
+                //Glide.with(getApplication()).load(card_item.getProfileImageUrl()).into(image);
+                Picasso.get().load(R.mipmap.ic_launcher).into(mPublicacionImage1);
+                break;
+            default:
+                Picasso.get().setLoggingEnabled(true);
+                //Glide.with(getApplication()).load(card_item.getProfileImageUrl()).into(image);
+                Picasso.get().load(photoId1).into(mPublicacionImage1);
+                break;
+        }
+
+        Picasso.get().setLoggingEnabled(true);
+        //Glide.with(getApplication()).load(profileImageUrl).into(mProfileImage);
+        Picasso.get().load(photoId1).into(mPublicacionImage1);
+    }
+
 
     private void comprobarImagen() {
         if (ActivityCompat.checkSelfPermission(EditarPublicacion.this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
