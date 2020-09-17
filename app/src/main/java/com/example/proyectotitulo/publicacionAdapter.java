@@ -1,6 +1,5 @@
 package com.example.proyectotitulo;
 
-import android.content.ClipData;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,8 +9,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
@@ -38,6 +35,8 @@ public class publicacionAdapter extends BaseAdapter{
     public long getItemId(int position) {
         return 0;
     }
+
+
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {

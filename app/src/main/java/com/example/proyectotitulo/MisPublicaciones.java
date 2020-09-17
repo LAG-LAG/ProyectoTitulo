@@ -1,15 +1,17 @@
 package com.example.proyectotitulo;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -20,7 +22,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class MisPublicaciones extends AppCompatActivity {
     private ListView lvItems;
@@ -57,6 +58,22 @@ public class MisPublicaciones extends AppCompatActivity {
         adapter = new publicacionAdapter(this, listItems);
         lvItems.setAdapter(adapter);
 
+
+
+        lvItems.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                publicacion AuxPublicacion = (publicacion)lvItems.getAdapter().getItem(position);
+                String idClothes = AuxPublicacion.getIdClothes();
+                Intent intentDetalle = new Intent(MisPublicaciones.this, MiPublicacionDetalle.class);
+                intentDetalle.putExtra("idClothes",idClothes);
+                intentDetalle.putExtra("idUser",mAuth.getCurrentUser().getUid());
+                startActivity(intentDetalle);
+                finish();
+            }
+        });
+
+
     }
 
     private void obtenerPublicaciones(){
@@ -80,7 +97,7 @@ public class MisPublicaciones extends AppCompatActivity {
                                 fotoPublicacion = "default";
                             }
 
-                            publicacion item = new publicacion(dataSnapshot.child("tituloPublicacion").getValue().toString(), fotoPublicacion);
+                            publicacion item = new publicacion(dataSnapshot.child("tituloPublicacion").getValue().toString(), fotoPublicacion,clothesCurrentUid);
                             listItems.add(item);
                             adapter.notifyDataSetChanged(); //esto se usa cad vez que se añade o se quita un elemetno del arraylist de los items.
                         }
@@ -131,6 +148,17 @@ public class MisPublicaciones extends AppCompatActivity {
             }
         });
     }
+
+
+
+    /*private ArrayList<publicacion> GetArrayItems(){
+        ArrayList<publicacion> listItems = new ArrayList<>();
+        listItems.add(new publicacion("wea"));
+        listItems.add(new publicacion("wea"));
+        listItems.add(new publicacion("wea"));
+
+        return listItems;
+    }*/
 
     //toolbar
     public boolean onOptionsItemSelected(MenuItem item){

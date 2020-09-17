@@ -28,7 +28,7 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
-public class detallePublicacion extends AppCompatActivity {
+public class MiPublicacionDetalle extends AppCompatActivity {
 
     private TextView mTitulo,mPrecio,mDescripcion,mColor,mTalla,mtipoPrenda;
     private FirebaseAuth mAuth;
@@ -36,7 +36,7 @@ public class detallePublicacion extends AppCompatActivity {
     private ImageView mAdelanteButton,mAtrasButton;
     private ImageView mFotoActual;
     private String idOwner,idClothes;
-    private Button mEditar, mRechazar;
+    private Button mGuardar, mRechazar;
     private int indiceFotoActual, tamanoUrlImagenes;
     private ArrayList<String> urlImagenes;
     private ImageSlider mSlider;
@@ -44,8 +44,8 @@ public class detallePublicacion extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_detalle_publicacion);
-        idOwner = getIntent().getExtras().getString("idOwner");
+        setContentView(R.layout.activity_mi_publicacion_detalle);
+        idOwner = getIntent().getExtras().getString("idUser");
         idClothes = getIntent().getExtras().getString("idClothes");
 
         tamanoUrlImagenes = 0;
@@ -57,23 +57,23 @@ public class detallePublicacion extends AppCompatActivity {
         //mAdelanteButton = (ImageView) findViewById(R.id.adelanteDetalleButton);
         //mAtrasButton = (ImageView) findViewById(R.id.atrasDetalleButton);
 
-        mEditar = (Button) findViewById(R.id.guardarPublicacionDetalle);
-        mRechazar = (Button) findViewById(R.id.descartarPublicacionDetalle);
-  //      mAdelanteButton.setVisibility(View.INVISIBLE);
+        mGuardar = (Button) findViewById(R.id.guardarPublicacionDetallePropia);
+        mRechazar = (Button) findViewById(R.id.descartarPublicacionDetallePropia);
+        //      mAdelanteButton.setVisibility(View.INVISIBLE);
 //        mAtrasButton.setVisibility(View.INVISIBLE);
 
         urlImagenes = new ArrayList<String>();
         //mFotoActual = (ImageView) findViewById(R.id.fotoDetallePublicacion);
 
-        mTitulo = (TextView) findViewById(R.id.tituloDetallePublicacion);
-        mtipoPrenda = (TextView) findViewById(R.id.tipoPrendaDetalle);
+        mTitulo = (TextView) findViewById(R.id.tituloDetallePublicacionPropia);
+        mtipoPrenda = (TextView) findViewById(R.id.tipoPrendaDetallePropia);
 
-        mPrecio = (TextView) findViewById(R.id.precioDetallePublicacion);
-        mDescripcion = (TextView) findViewById(R.id.descripcionPrendaDetalle);
-        mColor = (TextView) findViewById(R.id.colorPrendaDetalle);
-        mTalla = (TextView) findViewById(R.id.tallaPrendaDetalle);
+        mPrecio = (TextView) findViewById(R.id.precioDetallePublicacionPropia);
+        mDescripcion = (TextView) findViewById(R.id.descripcionPrendaDetallePropia);
+        mColor = (TextView) findViewById(R.id.colorPrendaDetallePropia);
+        mTalla = (TextView) findViewById(R.id.tallaPrendaDetallePropia);
         indiceFotoActual=0;
-        mSlider = (ImageSlider) findViewById(R.id.fotoDetallePublicacion);
+        mSlider = (ImageSlider) findViewById(R.id.fotoDetallePublicacionPropia);
         imageList = new ArrayList<SlideModel>();
         Log.d("weaweawea","1si");
         obtenerDatosPublicacion();
@@ -86,7 +86,7 @@ public class detallePublicacion extends AppCompatActivity {
         //mAdelanteButton.setVisibility(View.INVISIBLE);
 
 //        if(indiceFotoActual<tamañoUrlImagenes){
-            //indiceFotoActual++;
+        //indiceFotoActual++;
         /*
             mAdelanteButton.setVisibility(View.VISIBLE);
             Log.d("weaweawea","xd "+tamanoUrlImagenes);
@@ -133,26 +133,26 @@ public class detallePublicacion extends AppCompatActivity {
 
             }
         });
-        mEditar.setOnClickListener(new View.OnClickListener() {
+        mGuardar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                usersDb.child(mAuth.getCurrentUser().getUid()).child("connections").child("publicacionesGuardadas").child(idClothes).setValue(true);
-                Intent intent = new Intent(detallePublicacion.this,PaginaPrincipal.class);
+                //usersDb.child(mAuth.getCurrentUser().getUid()).child("connections").child("publicacionesGuardadas").child(idClothes).setValue(true);
+                Intent intent = new Intent(MiPublicacionDetalle.this,PaginaPrincipal.class);
                 startActivity(intent);
             }
         });
         mRechazar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                usersDb.child(mAuth.getCurrentUser().getUid()).child("connections").child("publicacionesRechazadas").child(idClothes).setValue(true);
-                Intent intent = new Intent(detallePublicacion.this,PaginaPrincipal.class);
+                //usersDb.child(mAuth.getCurrentUser().getUid()).child("connections").child("publicacionesRechazadas").child(idClothes).setValue(true);
+                Intent intent = new Intent(MiPublicacionDetalle.this,PaginaPrincipal.class);
                 startActivity(intent);
             }
         });
 
-            //hacer boton derecha visible.
-            //el onclick del boton y que se cambie la foto
-  //      }
+        //hacer boton derecha visible.
+        //el onclick del boton y que se cambie la foto
+        //      }
 
     }
 
@@ -197,21 +197,21 @@ public class detallePublicacion extends AppCompatActivity {
 
     private void mostrarFoto(String urlFotoActual) {
         Glide.with(getApplication()).clear(mFotoActual);
-            switch(urlFotoActual){
-                case "default":
-                    Picasso.get().setLoggingEnabled(true);
-                    //Glide.with(getApplication()).load(card_item.getProfileImageUrl()).into(image);
-                    Picasso.get().load(R.mipmap.ic_launcher).into(mFotoActual);
-                    break;
-                default:
-                    Picasso.get().setLoggingEnabled(true);
-                    //Glide.with(getApplication()).load(card_item.getProfileImageUrl()).into(image);
-                    Picasso.get().load(urlFotoActual).into(mFotoActual);
-                    break;
+        switch(urlFotoActual){
+            case "default":
+                Picasso.get().setLoggingEnabled(true);
+                //Glide.with(getApplication()).load(card_item.getProfileImageUrl()).into(image);
+                Picasso.get().load(R.mipmap.ic_launcher).into(mFotoActual);
+                break;
+            default:
+                Picasso.get().setLoggingEnabled(true);
+                //Glide.with(getApplication()).load(card_item.getProfileImageUrl()).into(image);
+                Picasso.get().load(urlFotoActual).into(mFotoActual);
+                break;
 
-            }
-            Picasso.get().setLoggingEnabled(true);
-            //Glide.with(getApplication()).load(profileImageUrl).into(mProfileImage);
+        }
+        Picasso.get().setLoggingEnabled(true);
+        //Glide.with(getApplication()).load(profileImageUrl).into(mProfileImage);
         Picasso.get().load(urlFotoActual).into(mFotoActual);
     }
 
@@ -229,7 +229,7 @@ public class detallePublicacion extends AppCompatActivity {
                     imageList.add(aux);
                     mSlider.setImageList(imageList,ScaleTypes.FIT);
                     if(indiceFotoActual==0) {
-                     //   mostrarFoto(urlImagenes.get(0));
+                        //   mostrarFoto(urlImagenes.get(0));
                         indiceFotoActual++;
                     }
                     tamanoUrlImagenes++;
