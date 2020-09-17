@@ -57,7 +57,6 @@ public class MisPublicaciones extends AppCompatActivity {
         adapter = new publicacionAdapter(this, listItems);
         lvItems.setAdapter(adapter);
 
-
     }
 
     private void obtenerPublicaciones(){
@@ -67,19 +66,15 @@ public class MisPublicaciones extends AppCompatActivity {
                 if(dataSnapshot.exists() && dataSnapshot.hasChild("clothes") && dataSnapshot.getKey().equals(mAuth.getCurrentUser().getUid()) ){
                     String key = dataSnapshot.getKey();
                     currentOwnerUid = key;
-                    Log.d("MisPublicaciones",key);
                     clothesDb = usersDb.child(key).child("clothes");
                     clothesDb.addChildEventListener(new ChildEventListener() {
                         @Override
                         public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                            Log.d("primero","tercero");
                             currentUId = mAuth.getCurrentUser().getUid();
                             clothesCurrentUid = dataSnapshot.getKey();
-                            Log.d("MisPublicaciones",clothesCurrentUid);
 
                             String fotoPublicacion;
                             if (dataSnapshot.child("clothesPhotos").hasChild("photoId1")) {
-                                Log.d("primero", "cuarto");
                                 fotoPublicacion = dataSnapshot.child("clothesPhotos").child("photoId1").getValue().toString();
                             } else {
                                 fotoPublicacion = "default";
@@ -136,15 +131,6 @@ public class MisPublicaciones extends AppCompatActivity {
             }
         });
     }
-
-    /*private ArrayList<publicacion> GetArrayItems(){
-        ArrayList<publicacion> listItems = new ArrayList<>();
-        listItems.add(new publicacion("wea"));
-        listItems.add(new publicacion("wea"));
-        listItems.add(new publicacion("wea"));
-
-        return listItems;
-    }*/
 
     //toolbar
     public boolean onOptionsItemSelected(MenuItem item){

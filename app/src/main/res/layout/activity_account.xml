@@ -11,15 +11,16 @@
         android:id="@+id/toolbar"
         layout="@layout/toolbar"/>
 
-    <ImageView
+    <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/profileImageUrl"
-        android:layout_width="121dp"
-        android:layout_height="119dp"
-        android:layout_marginTop="140dp"
+        android:layout_width="144dp"
+        android:layout_height="148dp"
+        android:layout_marginTop="100dp"
         android:src="@mipmap/ic_launcher"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"></ImageView>
+        app:layout_constraintTop_toTopOf="parent"></de.hdodenhof.circleimageview.CircleImageView>
 
     <ImageView
         android:id="@+id/borrarFotoPerfil"

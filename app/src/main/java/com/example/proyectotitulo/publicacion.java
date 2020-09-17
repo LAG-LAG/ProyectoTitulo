@@ -1,11 +1,12 @@
 package com.example.proyectotitulo;
 
 public class publicacion {
-    private String UserId;
+    private String tituloPublicacion;
     private String profileImageUrl;
+    private String valorPublicacion;
 
-    public publicacion(String userId, String profileImageUrl) {
-        UserId = userId;
+    public publicacion(String tituloPublicacion, String profileImageUrl) {
+        this.tituloPublicacion = tituloPublicacion;
         this.profileImageUrl = profileImageUrl;
     }
 
@@ -17,11 +18,11 @@ public class publicacion {
         this.profileImageUrl = profileImageUrl;
     }
 
-    public String getUserId() {
-        return UserId;
+    public String getTituloPublicacion() {
+        return tituloPublicacion;
     }
 
-    public void setUserId(String userId) {
-        UserId = userId;
+    public void setTituloPublicacion(String tituloPublicacion) {
+        this.tituloPublicacion = tituloPublicacion;
     }
 }

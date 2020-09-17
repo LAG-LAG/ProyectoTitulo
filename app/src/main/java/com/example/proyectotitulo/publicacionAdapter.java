@@ -46,9 +46,10 @@ public class publicacionAdapter extends BaseAdapter{
         convertView = LayoutInflater.from(context).inflate(R.layout.item_publicacion, null);
         ImageView imgPublicacion = (ImageView) convertView.findViewById(R.id.imgPublicacion);
         TextView tituloPublicacion = (TextView) convertView.findViewById(R.id.tituloPublicacion);
+        TextView valorPublicacion = (TextView) convertView.findViewById(R.id.valorPublicacion);
 
         Picasso.get().load(item.getProfileImageUrl()).into(imgPublicacion);
-        tituloPublicacion.setText(item.getUserId());
+        tituloPublicacion.setText(item.getTituloPublicacion());
 
         return convertView;
     }
