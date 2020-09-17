@@ -87,7 +87,7 @@ public class MisFavoritos extends AppCompatActivity {
                                         fotoPublicacion = "default";
                                     }
 
-                                    publicacion item = new publicacion(dataSnapshot.child("tituloPublicacion").getValue().toString(), fotoPublicacion);
+                                    publicacion item = new publicacion(dataSnapshot.child("tituloPublicacion").getValue().toString(), fotoPublicacion, clothesIdGuardados.get(i));
                                     listItems.add(item);
                                     adapter.notifyDataSetChanged(); //esto se usa cad vez que se añade o se quita un elemetno del arraylist de los items.
                                 }
