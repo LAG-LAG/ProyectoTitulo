@@ -69,7 +69,7 @@ public class MiPublicacionDetalle extends AppCompatActivity {
         mtipoPrenda = (TextView) findViewById(R.id.tipoPrendaDetallePropia);
 
         mPrecio = (TextView) findViewById(R.id.precioDetallePublicacionPropia);
-        mDescripcion = (TextView) findViewById(R.id.descartarPublicacionDetallePropia);
+        mDescripcion = (TextView) findViewById(R.id.descripcionPrendaDetallePropia);
         mColor = (TextView) findViewById(R.id.colorPrendaDetallePropia);
         mTalla = (TextView) findViewById(R.id.tallaPrendaDetallePropia);
         indiceFotoActual=0;
@@ -136,7 +136,7 @@ public class MiPublicacionDetalle extends AppCompatActivity {
         mGuardar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                usersDb.child(mAuth.getCurrentUser().getUid()).child("connections").child("publicacionesGuardadas").child(idClothes).setValue(true);
+                //usersDb.child(mAuth.getCurrentUser().getUid()).child("connections").child("publicacionesGuardadas").child(idClothes).setValue(true);
                 Intent intent = new Intent(MiPublicacionDetalle.this,PaginaPrincipal.class);
                 startActivity(intent);
             }
@@ -144,7 +144,7 @@ public class MiPublicacionDetalle extends AppCompatActivity {
         mRechazar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                usersDb.child(mAuth.getCurrentUser().getUid()).child("connections").child("publicacionesRechazadas").child(idClothes).setValue(true);
+                //usersDb.child(mAuth.getCurrentUser().getUid()).child("connections").child("publicacionesRechazadas").child(idClothes).setValue(true);
                 Intent intent = new Intent(MiPublicacionDetalle.this,PaginaPrincipal.class);
                 startActivity(intent);
             }

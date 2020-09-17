@@ -8,37 +8,50 @@ public class publicacion {
 
     public publicacion(String tituloPublicacion, String profileImageUrl) {
         this.tituloPublicacion = tituloPublicacion;
+    }
+
     public publicacion(String tituloPublicacion, String profileImageUrl, String idClothes) {
-        this.tituloPublicacion = tituloPublicacion;
-        this.profileImageUrl = profileImageUrl;
-        this.idClothes = idClothes;
+            this.tituloPublicacion = tituloPublicacion;
+            this.profileImageUrl = profileImageUrl;
+            this.idClothes = idClothes;
+        }
+
+    public String getValorPublicacion() {
+        return valorPublicacion;
     }
 
-    public String getProfileImageUrl() {
-        return profileImageUrl;
+    public void setValorPublicacion(String valorPublicacion) {
+        this.valorPublicacion = valorPublicacion;
     }
 
-    public void setProfileImageUrl(String profileImageUrl) {
-        this.profileImageUrl = profileImageUrl;
-    }
+    public String getProfileImageUrl () {
+            return profileImageUrl;
+        }
 
-    public String getTituloPublicacion() {
-        return tituloPublicacion;
-    public String getIdClothes() {
-        return idClothes;
-    }
+        public void setProfileImageUrl (String profileImageUrl){
+            this.profileImageUrl = profileImageUrl;
+        }
 
-    public void setTituloPublicacion(String tituloPublicacion) {
-        this.tituloPublicacion = tituloPublicacion;
-    public void setIdClothes(String idClothes) {
-        this.idClothes = idClothes;
-    }
 
-    public String getTituloPublicacion() {
-        return tituloPublicacion;
-    }
 
-    public void setTituloPublicacion(String tituloPublicacion) {
-        this.tituloPublicacion = tituloPublicacion;
-    }
-}
+            public String getIdClothes () {
+                return idClothes;
+            }
+
+
+
+                public void setIdClothes (String idClothes){
+                    this.idClothes = idClothes;
+                }
+
+                public String getTituloPublicacion () {
+                    return tituloPublicacion;
+                }
+
+                public void setTituloPublicacion (String tituloPublicacion){
+                    this.tituloPublicacion = tituloPublicacion;
+                }
+            }
+
+
+

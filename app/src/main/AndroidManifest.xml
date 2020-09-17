@@ -12,6 +12,9 @@
         <activity android:name=".MiPublicacionDetalle"></activity>
         <activity android:name=".Filtros" />
         <activity
+            android:name=".Chat"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".detallePublicacion"
             android:screenOrientation="portrait" />
         <activity
