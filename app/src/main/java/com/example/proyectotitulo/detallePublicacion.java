@@ -3,6 +3,7 @@ package com.example.proyectotitulo;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -51,9 +52,12 @@ public class detallePublicacion extends AppCompatActivity {
         tamanoUrlImagenes = 0;
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
         if (getSupportActionBar() != null) {
-            getSupportActionBar().setTitle("Publicaciones");
+            getSupportActionBar().setTitle("Detalle publicacion");
         }
+
         //mAdelanteButton = (ImageView) findViewById(R.id.adelanteDetalleButton);
         //mAtrasButton = (ImageView) findViewById(R.id.atrasDetalleButton);
 
@@ -258,4 +262,12 @@ public class detallePublicacion extends AppCompatActivity {
             }
         });
     }
+
+    //toolbar
+    public boolean onOptionsItemSelected(MenuItem item){
+        Intent myIntent = new Intent(getApplicationContext(), MisPublicaciones.class);
+        startActivityForResult(myIntent, 0);
+        return true;
+    }
+
 }
