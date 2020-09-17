@@ -66,26 +66,84 @@ public class MisFavoritos extends AppCompatActivity {
         usersDb.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                if(dataSnapshot.exists() && dataSnapshot.hasChild("clothes") && dataSnapshot.getKey().equals(mAuth.getCurrentUser().getUid()) ){
+                if(dataSnapshot.exists() && dataSnapshot.hasChild("connections") && dataSnapshot.getKey().equals(mAuth.getCurrentUser().getUid()) ){
                     String key = dataSnapshot.getKey();
                     currentOwnerUid = key;
-                    clothesDb = usersDb.child(key).child("clothes");
+                    clothesDb = usersDb.child(key).child("connections").child("publicacionesGuardadas");
                     clothesDb.addChildEventListener(new ChildEventListener() {
                         @Override
                         public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                             currentUId = mAuth.getCurrentUser().getUid();
                             clothesCurrentUid = dataSnapshot.getKey();
 
-                            String fotoPublicacion;
-                            if (dataSnapshot.child("clothesPhotos").hasChild("photoId1")) {
-                                fotoPublicacion = dataSnapshot.child("clothesPhotos").child("photoId1").getValue().toString();
-                            } else {
-                                fotoPublicacion = "default";
-                            }
+                            usersDb.addChildEventListener(new ChildEventListener() {
+                                @Override
+                                public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                                    if(dataSnapshot.exists() && dataSnapshot.hasChild("clothes")){
+                                        String key = dataSnapshot.getKey();
+                                        currentOwnerUid = key;
+                                        clothesDb = usersDb.child(key).child("clothes");
+                                        clothesDb.addChildEventListener(new ChildEventListener() {
+                                            @Override
+                                            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                                                if(dataSnapshot.getKey().equals(clothesCurrentUid)){
+                                                    String fotoPublicacion;
+                                                    if (dataSnapshot.child("clothesPhotos").hasChild("photoId1")) {
+                                                        fotoPublicacion = dataSnapshot.child("clothesPhotos").child("photoId1").getValue().toString();
+                                                    } else {
+                                                        fotoPublicacion = "default";
+                                                    }
 
-                            publicacion item = new publicacion(dataSnapshot.child("tituloPublicacion").getValue().toString(), fotoPublicacion);
-                            listItems.add(item);
-                            adapter.notifyDataSetChanged(); //esto se usa cad vez que se añade o se quita un elemetno del arraylist de los items.
+                                                    publicacion item = new publicacion(dataSnapshot.child("tituloPublicacion").getValue().toString(), fotoPublicacion);
+                                                    listItems.add(item);
+                                                    adapter.notifyDataSetChanged(); //esto se usa cad vez que se añade o se quita un elemetno del arraylist de los items.
+                                                }
+                                            }
+
+                                            @Override
+                                            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+                                            }
+
+                                            @Override
+                                            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+                                            }
+
+                                            @Override
+                                            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+                                            }
+
+                                            @Override
+                                            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                            }
+                                        });
+                                    }
+                                }
+
+                                @Override
+                                public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+                                }
+
+                                @Override
+                                public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+                                }
+
+                                @Override
+                                public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                }
+                            });
+
                         }
 
                         @Override
