@@ -12,6 +12,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Adapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -27,6 +28,10 @@ import androidx.core.app.ActivityCompat;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
@@ -56,6 +61,7 @@ public class EditarPublicacion extends AppCompatActivity {
     private Uri resultUri4;
     private Uri resultUri5;
     private Uri resultUri6;
+    private String currentUId;
     private DatabaseReference mClothesDatabase;
     private DatabaseReference usersDb;
     private ImageView mPublicacionImage1;
@@ -103,6 +109,8 @@ public class EditarPublicacion extends AppCompatActivity {
         mBorrarPublicacion5.setVisibility(View.INVISIBLE);
         mBorrarPublicacion6.setVisibility(View.INVISIBLE);
 
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        currentUId = user.getUid();
 
         //if x ispressed then resulturi correspondiente = null y se
         mAuth = FirebaseAuth.getInstance();
@@ -253,7 +261,73 @@ public class EditarPublicacion extends AppCompatActivity {
     }
 
     private void obtenerInformacionPublicacion() {
-        usersDb = FirebaseDatabase.getInstance().getReference().child("Users"); //esto obtiene todos los usuarios de la bd
+        usersDb = FirebaseDatabase.getInstance().getReference().child("Users").child(currentUId).child("clothes"); //esto obtiene todos los usuarios de la bd
+        usersDb.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                if(dataSnapshot.exists() && dataSnapshot.getKey().equals(getIntent().getExtras().getString("idClothes"))) {
+                    mTitulo.setText(dataSnapshot.child("tituloPublicacion").getValue().toString());
+                    mValor.setText(dataSnapshot.child("ValorPrenda").getValue().toString());
+                    mDescripcion.setText(dataSnapshot.child("DescripcionPrenda").getValue().toString());
+
+                    Adapter adapter = mTallaSpinner.getAdapter();
+                    int n = adapter.getCount();
+                    for (int i = 0; i < n; i++) {
+                        String elementoSpinner = (String) adapter.getItem(i);
+                        if (elementoSpinner.equals(dataSnapshot.child("TallaPrenda").getValue().toString())) {
+                            mTallaSpinner.setSelection(i);
+                        }
+                    }
+
+                    adapter = mColorSpinner.getAdapter();
+                    n = adapter.getCount();
+                    for (int i = 0; i < n; i++) {
+                        String elementoSpinner = (String) adapter.getItem(i);
+                        if (elementoSpinner.equals(dataSnapshot.child("ColorPrenda").getValue().toString())) {
+                            mColorSpinner.setSelection(i);
+                        }
+                    }
+
+                    adapter = mEstadoPrendaSpinner.getAdapter();
+                    n = adapter.getCount();
+                    for (int i = 0; i < n; i++) {
+                        String elementoSpinner = (String) adapter.getItem(i);
+                        if (elementoSpinner.equals(dataSnapshot.child("EstadoPrenda").getValue().toString())) {
+                            mEstadoPrendaSpinner.setSelection(i);
+                        }
+                    }
+
+                    adapter = mTipoPrendaSpinner.getAdapter();
+                    n = adapter.getCount();
+                    for (int i = 0; i < n; i++) {
+                        String elementoSpinner = (String) adapter.getItem(i);
+                        if (elementoSpinner.equals(dataSnapshot.child("TipoPrenda").getValue().toString())) {
+                            mTipoPrendaSpinner.setSelection(i);
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
 
     }
 

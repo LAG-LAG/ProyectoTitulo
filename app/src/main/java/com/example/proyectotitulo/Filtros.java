@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -65,6 +66,7 @@ public class Filtros extends AppCompatActivity {
         }
 
         getFiltroInfo();
+        getSpinnerDatos();
         llenarComboBoxRegiones();
 
         mRegionesSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -161,6 +163,37 @@ public class Filtros extends AppCompatActivity {
                         return;
                     }
                 });
+    }
+
+    private void getSpinnerDatos() {
+
+        Adapter adapter = mTalla.getAdapter();
+        int n = adapter.getCount();
+        for (int i = 0; i < n; i++) {
+            String elementoSpinner = (String) adapter.getItem(i);
+            if (elementoSpinner.equals(tallaBusqueda)) {
+                mTalla.setSelection(i);
+            }
+        }
+
+        adapter = mTipoPrenda.getAdapter();
+        n = adapter.getCount();
+        for (int i = 0; i < n; i++) {
+            String elementoSpinner = (String) adapter.getItem(i);
+            if (elementoSpinner.equals(tipoPrendaBusqueda)) {
+                mTipoPrenda.setSelection(i);
+            }
+        }
+
+        adapter = mEstado.getAdapter();
+        n = adapter.getCount();
+        for (int i = 0; i < n; i++) {
+            String elementoSpinner = (String) adapter.getItem(i);
+            if (elementoSpinner.equals(estadoBusqueda)){
+                mEstado.setSelection(i);
+            }
+        }
+
     }
 
     private void llenarComboBoxRegiones() {
