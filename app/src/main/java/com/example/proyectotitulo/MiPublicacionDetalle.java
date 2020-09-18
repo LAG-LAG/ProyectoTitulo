@@ -140,7 +140,8 @@ public class MiPublicacionDetalle extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 //usersDb.child(mAuth.getCurrentUser().getUid()).child("connections").child("publicacionesGuardadas").child(idClothes).setValue(true);
-                Intent intent = new Intent(MiPublicacionDetalle.this,PaginaPrincipal.class);
+                Intent intent = new Intent(MiPublicacionDetalle.this,EditarPublicacion.class);
+                intent.putExtra("idClothes",idClothes);
                 startActivity(intent);
             }
         });
