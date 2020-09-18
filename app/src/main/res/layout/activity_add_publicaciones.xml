@@ -211,75 +211,75 @@
 
     <ImageView
         android:id="@+id/borrarPublicacionCrear1"
-        android:layout_width="31dp"
-        android:layout_height="25dp"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
         app:layout_constraintBottom_toBottomOf="@+id/publicacionImageCrear1"
         app:layout_constraintEnd_toEndOf="@+id/publicacionImageCrear1"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="@+id/publicacionImageCrear1"
         app:layout_constraintTop_toTopOf="@+id/publicacionImageCrear1"
         app:layout_constraintVertical_bias="0.0"
-        app:srcCompat="@android:mipmap/sym_def_app_icon" />
+        app:srcCompat="@drawable/close_48dp" />
 
     <ImageView
         android:id="@+id/borrarPublicacionCrear2"
-        android:layout_width="31dp"
-        android:layout_height="25dp"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
         app:layout_constraintBottom_toBottomOf="@+id/publicacionImageCrear2"
         app:layout_constraintEnd_toEndOf="@+id/publicacionImageCrear2"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="@+id/publicacionImageCrear2"
         app:layout_constraintTop_toTopOf="@+id/publicacionImageCrear2"
         app:layout_constraintVertical_bias="0.0"
-        app:srcCompat="@android:mipmap/sym_def_app_icon" />
+        app:srcCompat="@drawable/close_48dp" />
 
     <ImageView
         android:id="@+id/borrarPublicacionCrear4"
-        android:layout_width="31dp"
-        android:layout_height="25dp"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
         app:layout_constraintBottom_toBottomOf="@+id/publicacionImageCrear4"
         app:layout_constraintEnd_toEndOf="@+id/publicacionImageCrear4"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="@+id/publicacionImageCrear4"
         app:layout_constraintTop_toTopOf="@+id/publicacionImageCrear4"
         app:layout_constraintVertical_bias="0.0"
-        app:srcCompat="@android:mipmap/sym_def_app_icon" />
+        app:srcCompat="@drawable/close_48dp"/>
 
     <ImageView
         android:id="@+id/borrarPublicacionCrear3"
-        android:layout_width="31dp"
-        android:layout_height="25dp"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
         app:layout_constraintBottom_toBottomOf="@+id/publicacionImageCrear3"
         app:layout_constraintEnd_toEndOf="@+id/publicacionImageCrear3"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="@+id/publicacionImageCrear3"
         app:layout_constraintTop_toTopOf="@+id/publicacionImageCrear3"
         app:layout_constraintVertical_bias="0.0"
-        app:srcCompat="@android:mipmap/sym_def_app_icon" />
+        app:srcCompat="@drawable/close_48dp" />
 
     <ImageView
         android:id="@+id/borrarPublicacionCrear5"
-        android:layout_width="31dp"
-        android:layout_height="25dp"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
         app:layout_constraintBottom_toBottomOf="@+id/publicacionImageCrear5"
         app:layout_constraintEnd_toEndOf="@+id/publicacionImageCrear5"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="@+id/publicacionImageCrear5"
         app:layout_constraintTop_toTopOf="@+id/publicacionImageCrear5"
         app:layout_constraintVertical_bias="0.0"
-        app:srcCompat="@android:mipmap/sym_def_app_icon" />
+        app:srcCompat="@drawable/close_48dp" />
 
     <ImageView
         android:id="@+id/borrarPublicacionCrear6"
-        android:layout_width="31dp"
-        android:layout_height="25dp"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
         app:layout_constraintBottom_toBottomOf="@+id/publicacionImageCrear6"
         app:layout_constraintEnd_toEndOf="@+id/publicacionImageCrear6"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="@+id/publicacionImageCrear6"
         app:layout_constraintTop_toTopOf="@+id/publicacionImageCrear6"
         app:layout_constraintVertical_bias="0.0"
-        app:srcCompat="@android:mipmap/sym_def_app_icon" />
+        app:srcCompat="@drawable/close_48dp" />
 
 
 

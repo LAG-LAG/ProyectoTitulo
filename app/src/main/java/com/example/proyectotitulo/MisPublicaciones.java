@@ -58,8 +58,6 @@ public class MisPublicaciones extends AppCompatActivity {
         adapter = new publicacionAdapter(this, listItems);
         lvItems.setAdapter(adapter);
 
-
-
         lvItems.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -72,7 +70,6 @@ public class MisPublicaciones extends AppCompatActivity {
                 finish();
             }
         });
-
 
     }
 
@@ -96,8 +93,7 @@ public class MisPublicaciones extends AppCompatActivity {
                             } else {
                                 fotoPublicacion = "default";
                             }
-
-                            publicacion item = new publicacion(dataSnapshot.child("tituloPublicacion").getValue().toString(), fotoPublicacion,clothesCurrentUid);
+                            publicacion item = new publicacion(dataSnapshot.child("tituloPublicacion").getValue().toString(),fotoPublicacion,"$" + dataSnapshot.child("ValorPrenda").getValue().toString(),clothesCurrentUid);
                             listItems.add(item);
                             adapter.notifyDataSetChanged(); //esto se usa cad vez que se añade o se quita un elemetno del arraylist de los items.
                         }

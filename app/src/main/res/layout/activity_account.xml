@@ -24,15 +24,15 @@
 
     <ImageView
         android:id="@+id/borrarFotoPerfil"
-        android:layout_width="31dp"
-        android:layout_height="25dp"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
         app:layout_constraintBottom_toBottomOf="@+id/profileImageUrl"
         app:layout_constraintEnd_toEndOf="@+id/profileImageUrl"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="@+id/profileImageUrl"
         app:layout_constraintTop_toTopOf="@+id/profileImageUrl"
         app:layout_constraintVertical_bias="0.0"
-        app:srcCompat="@android:mipmap/sym_def_app_icon" />
+        app:srcCompat="@drawable/close_48dp" />
 
     <EditText
         android:id="@+id/name"

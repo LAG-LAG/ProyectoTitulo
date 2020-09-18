@@ -9,24 +9,42 @@
         android:layout_height="100dp"
         android:id="@+id/imgPublicacion"/>
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_marginLeft="10dp">
-        <TextView
-            android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/tituloPublicacion"
-            android:textSize="16dp"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/valorPublicacion"
-            android:textSize="16dp"/>
-    </LinearLayout>
+            android:orientation="vertical"
+            android:layout_marginLeft="10dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/tituloPublicacion"
+                android:textSize="16dp"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/valorPublicacion"
+                android:textSize="16dp"/>
+        </LinearLayout>
 
-
-
+        <!--<de.hdodenhof.circleimageview.CircleImageView
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:src="@drawable/edit_48dp"
+        android:layout_centerVertical="true"
+        android:layout_toLeftOf="@+id/imgBorrarMiPublicacion"
+        android:layout_marginRight="5dp"
+        android:id="@+id/imgEditarMiPublicacion"/>-->
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/delete_48dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10dp"
+            android:id="@+id/imgBorrarMiPublicacion"/>
+    </RelativeLayout>
 
 </LinearLayout>

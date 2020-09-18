@@ -287,6 +287,9 @@ public class EditarPublicacion extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 savePublicacion();
+                Intent intentPublicaciones = new Intent(EditarPublicacion.this, MisPublicaciones.class);
+                startActivity(intentPublicaciones);
+                finish();
             }
         });
 

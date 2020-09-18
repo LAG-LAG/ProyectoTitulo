@@ -53,7 +53,6 @@ public class VerMiCuenta extends AppCompatActivity {
         setContentView(R.layout.activity_ver_mi_cuenta);
 
         mProfileImage = (ImageView) findViewById(R.id.ImagenPerfilUrl);
-        mborrarFotoPerfil = (ImageView) findViewById(R.id.ImagenBorrarFotoPerfil);
         mTextViewNombre = (TextView) findViewById(R.id.TextViewNombre);
         mTextViewComuna = (TextView) findViewById(R.id.TextViewComuna);
         mTextViewRegion = (TextView) findViewById(R.id.TextViewRegion);
@@ -123,7 +122,7 @@ public class VerMiCuenta extends AppCompatActivity {
 //esto de aca es para cargar la foto de perfil del usuario
                     Glide.with(getApplication()).clear(mProfileImage);
                     if(map.get("profileImageUrl")!=null){
-                        mborrarFotoPerfil.setVisibility(View.VISIBLE);
+                        //mborrarFotoPerfil.setVisibility(View.VISIBLE);
                         profileImageUrl = map.get("profileImageUrl").toString();
                         switch(profileImageUrl){
                             case "default":

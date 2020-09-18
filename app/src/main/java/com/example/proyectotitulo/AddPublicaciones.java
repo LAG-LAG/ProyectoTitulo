@@ -244,6 +244,9 @@ public class AddPublicaciones extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 savePublicacion();
+                Intent intentPublicaciones = new Intent(AddPublicaciones.this, MisPublicaciones.class);
+                startActivity(intentPublicaciones);
+                finish();
             }
         });
 

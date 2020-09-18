@@ -25,8 +25,10 @@
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextDescripcionEditar" />
+        app:layout_constraintTop_toBottomOf="@+id/editTextDescripcionEditar"
+        app:layout_constraintVertical_bias="1.0" />
 
     <EditText
         android:id="@+id/editTextTituloEditar"
@@ -133,7 +135,6 @@
         android:backgroundTint="#FFFFFF"
         android:ems="10"
         android:hint="Descripción"
-        android:inputType="textPersonName"
         android:textColorHint="#FFFFFF"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -211,75 +212,75 @@
 
     <ImageView
         android:id="@+id/borrarPublicacionCrear1Editar"
-        android:layout_width="31dp"
-        android:layout_height="25dp"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
         app:layout_constraintBottom_toBottomOf="@+id/publicacionImageCrear1Editar"
         app:layout_constraintEnd_toEndOf="@+id/publicacionImageCrear1Editar"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="@+id/publicacionImageCrear1Editar"
         app:layout_constraintTop_toTopOf="@+id/publicacionImageCrear1Editar"
         app:layout_constraintVertical_bias="0.0"
-        app:srcCompat="@android:mipmap/sym_def_app_icon" />
+        app:srcCompat="@drawable/close_48dp" />
 
     <ImageView
         android:id="@+id/borrarPublicacionCrear2Editar"
-        android:layout_width="31dp"
-        android:layout_height="25dp"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
         app:layout_constraintBottom_toBottomOf="@+id/publicacionImageCrear2Editar"
         app:layout_constraintEnd_toEndOf="@+id/publicacionImageCrear2Editar"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="@+id/publicacionImageCrear2Editar"
         app:layout_constraintTop_toTopOf="@+id/publicacionImageCrear2Editar"
         app:layout_constraintVertical_bias="0.0"
-        app:srcCompat="@android:mipmap/sym_def_app_icon" />
+        app:srcCompat="@drawable/close_48dp" />
 
     <ImageView
         android:id="@+id/borrarPublicacionCrear4Editar"
-        android:layout_width="31dp"
-        android:layout_height="25dp"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
         app:layout_constraintBottom_toBottomOf="@+id/publicacionImageCrear4Editar"
         app:layout_constraintEnd_toEndOf="@+id/publicacionImageCrear4Editar"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="@+id/publicacionImageCrear4Editar"
         app:layout_constraintTop_toTopOf="@+id/publicacionImageCrear4Editar"
         app:layout_constraintVertical_bias="0.0"
-        app:srcCompat="@android:mipmap/sym_def_app_icon" />
+        app:srcCompat="@drawable/close_48dp" />
 
     <ImageView
         android:id="@+id/borrarPublicacionCrear3Editar"
-        android:layout_width="31dp"
-        android:layout_height="25dp"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
         app:layout_constraintBottom_toBottomOf="@+id/publicacionImageCrear3Editar"
         app:layout_constraintEnd_toEndOf="@+id/publicacionImageCrear3Editar"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="@+id/publicacionImageCrear3Editar"
         app:layout_constraintTop_toTopOf="@+id/publicacionImageCrear3Editar"
         app:layout_constraintVertical_bias="0.0"
-        app:srcCompat="@android:mipmap/sym_def_app_icon" />
+        app:srcCompat="@drawable/close_48dp" />
 
     <ImageView
         android:id="@+id/borrarPublicacionCrear5Editar"
-        android:layout_width="31dp"
-        android:layout_height="25dp"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
         app:layout_constraintBottom_toBottomOf="@+id/publicacionImageCrear5Editar"
         app:layout_constraintEnd_toEndOf="@+id/publicacionImageCrear5Editar"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="@+id/publicacionImageCrear5Editar"
         app:layout_constraintTop_toTopOf="@+id/publicacionImageCrear5Editar"
         app:layout_constraintVertical_bias="0.0"
-        app:srcCompat="@android:mipmap/sym_def_app_icon" />
+        app:srcCompat="@drawable/close_48dp" />
 
     <ImageView
         android:id="@+id/borrarPublicacionCrear6Editar"
-        android:layout_width="31dp"
-        android:layout_height="25dp"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
         app:layout_constraintBottom_toBottomOf="@+id/publicacionImageCrear6Editar"
         app:layout_constraintEnd_toEndOf="@+id/publicacionImageCrear6Editar"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="@+id/publicacionImageCrear6Editar"
         app:layout_constraintTop_toTopOf="@+id/publicacionImageCrear6Editar"
         app:layout_constraintVertical_bias="0.0"
-        app:srcCompat="@android:mipmap/sym_def_app_icon" />
+        app:srcCompat="@drawable/close_48dp" />
 
 
 
