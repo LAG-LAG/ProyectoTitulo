@@ -161,7 +161,9 @@ public class Account extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 saveUserInfo();
-
+                Intent intentPublicaciones = new Intent(Account.this, VerMiCuenta.class);
+                startActivity(intentPublicaciones);
+                finish();
             }
 
         });
