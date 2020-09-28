@@ -1,19 +1,19 @@
 package com.example.proyectotitulo;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Debug;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import com.bumptech.glide.Glide;
 import com.denzcoskun.imageslider.ImageSlider;
@@ -35,9 +35,9 @@ public class MisFavoritosDetalle extends AppCompatActivity {
 
     private TextView mTitulo,mPrecio,mDescripcion,mColor,mTalla,mtipoPrenda;
     private FirebaseAuth mAuth;
-    private DatabaseReference clothesDb,photosDb,usersDb;
+    private DatabaseReference clothesDb,photosDb,usersDb,chatsDb;
     private String idUser,idClothes;
-    private String currentUId;
+    private String currentUId,vendedorUID;
     private String currentOwnerUid;
     private Button mEditar, mRechazar;
     private ImageView mFotoActual;
@@ -45,6 +45,7 @@ public class MisFavoritosDetalle extends AppCompatActivity {
     private ArrayList<String> urlImagenes;
     private ImageSlider mSlider;
     private ArrayList<SlideModel> imageList;
+    private boolean logica;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -82,8 +83,8 @@ public class MisFavoritosDetalle extends AppCompatActivity {
         imageList = new ArrayList<SlideModel>();
         obtenerDatosPublicacion();
         mAuth = FirebaseAuth.getInstance();
-
-
+        logica = false;
+        existeChat();
         usersDb = FirebaseDatabase.getInstance().getReference().child("Users"); //esto obtiene todos los usuarios de la bd
         mSlider.setItemClickListener(new ItemClickListener() {
             @Override
@@ -91,10 +92,23 @@ public class MisFavoritosDetalle extends AppCompatActivity {
 
             }
         });
+
         mEditar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
+                if(logica==false){
+                    String id = FirebaseDatabase.getInstance().getReference().child("chat").push().getKey();
+                    DatabaseReference currentVendedor = FirebaseDatabase.getInstance().getReference().child("chat").child(id).child("idUserVendedor"); //busca al usuario que va a crear y lo guarda como una variable que se le agregan las cosas y se manda al a db de nuevo
+                    DatabaseReference currentComprador = FirebaseDatabase.getInstance().getReference().child("chat").child(id).child("idUserComprador"); //busca al usuario que va a crear y lo guarda como una variable que se le agregan las cosas y se manda al a db de nuevo
+                    DatabaseReference currentPrenda = FirebaseDatabase.getInstance().getReference().child("chat").child(id).child("idPrenda"); //busca al usuario que va a crear y lo guarda como una variable que se le agregan las cosas y se manda al a db de nuevo
+                    currentVendedor.setValue(vendedorUID);
+                    currentComprador.setValue(currentUId);
+                    currentPrenda.setValue(idClothes);
+                    logica=true;
+                    Toast.makeText(MisFavoritosDetalle.this, "Chat Creado.", Toast.LENGTH_SHORT).show();
+                }
+                //intent que te mande a chat
             }
         });
         mRechazar.setOnClickListener(new View.OnClickListener() {
@@ -108,6 +122,41 @@ public class MisFavoritosDetalle extends AppCompatActivity {
         //el onclick del boton y que se cambie la foto
         //      }
 
+    }
+
+    private void existeChat() {
+        logica = false;
+        chatsDb = FirebaseDatabase.getInstance().getReference().child("chat");
+        chatsDb.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                if(dataSnapshot.exists() && dataSnapshot.hasChild("idUserComprador")){
+                    if(dataSnapshot.child("idUserComprador").getValue().toString().equals(currentUId) && dataSnapshot.child("idPrenda").getValue().toString().equals(idClothes)){
+                        logica = true;
+                    }
+                }
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
 
     private void obtenerDatosPublicacion() {
@@ -124,6 +173,7 @@ public class MisFavoritosDetalle extends AppCompatActivity {
                         @Override
                         public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                             if (dataSnapshot.exists() && dataSnapshot.getKey().equals(idClothes)) {
+                                vendedorUID = currentOwnerUid;
                                 Log.d("MFD", dataSnapshot.child("tituloPublicacion").getValue().toString() + dataSnapshot.child("ValorPrenda").getValue().toString() + dataSnapshot.child("DescripcionPrenda").getValue().toString() + dataSnapshot.child("TipoPrenda").getValue().toString() + dataSnapshot.child("ColorPrenda").getValue().toString() + dataSnapshot.child("TallaPrenda").getValue().toString());
                                 mTitulo.setText(dataSnapshot.child("tituloPublicacion").getValue().toString());
                                 mPrecio.setText("$" + dataSnapshot.child("ValorPrenda").getValue().toString());
