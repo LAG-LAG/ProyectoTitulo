@@ -90,9 +90,9 @@ public class PaginaPrincipal extends AppCompatActivity {
 
         SwipeFlingAdapterView flingContainer = (SwipeFlingAdapterView) findViewById(R.id.frame);
         obtenerPublicacionesAceptadasyRechazadas();
-        al = new ArrayList<String>();/*
-        obtenerPublicaciones();
-
+        al = new ArrayList<String>();
+        //obtenerPublicaciones();
+/*
         obtenerTodasLasPublicaciones();
 
         /*
@@ -119,7 +119,7 @@ public class PaginaPrincipal extends AppCompatActivity {
                 cards obj = (cards) dataObject;
                 String idClothes = obj.getClothesId();
                 usersDb.child(mAuth.getCurrentUser().getUid()).child("connections").child("publicacionesRechazadas").child(idClothes).setValue(true); //esto significa que no le gusto y le dio a la izq
-                Toast.makeText(PaginaPrincipal.this,"left", Toast.LENGTH_SHORT).show();
+                Toast.makeText(PaginaPrincipal.this,"Rechazado!", Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -128,11 +128,12 @@ public class PaginaPrincipal extends AppCompatActivity {
                 String idClothes = obj.getClothesId();
                 usersDb.child(mAuth.getCurrentUser().getUid()).child("connections").child("publicacionesGuardadas").child(idClothes).setValue(true); //esto significa que le gusto y le dio a la der
                 //aca hay que crear el chat dentro de publicaciones guardadas.
-                Toast.makeText(PaginaPrincipal.this,"right", Toast.LENGTH_SHORT).show();
+                Toast.makeText(PaginaPrincipal.this,"Aceptado!", Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onAdapterAboutToEmpty(int itemsInAdapter) {
+                //Toast.makeText(PaginaPrincipal.this, "No se encuentran mas coincidencias.", Toast.LENGTH_SHORT).show();
                 // Ask for more data here/
             /*al.add("XML ".concat(String.valueOf(i)));
                 arrayAdapter.notifyDataSetChanged();
@@ -193,12 +194,16 @@ public class PaginaPrincipal extends AppCompatActivity {
                     tipoPrendaBusqueda = dataSnapshot.child("filtros").child("tipoPrendaAnterior").getValue().toString();
                     estadoBusqueda = dataSnapshot.child("filtros").child("estadoAnterior").getValue().toString();
                     tallaBusqueda = dataSnapshot.child("filtros").child("tallaAnterior").getValue().toString();
-                    obtenerPublicaciones();
+                    if (comunaBusqueda != "") {
+                        obtenerPublicaciones();
+                    }
                 }
-                if(!dataSnapshot.hasChild("filtros")){
-                    obtenerTodasLasPublicaciones();
+                else if(dataSnapshot.exists() && dataSnapshot.getKey().equals(currentUId) && !dataSnapshot.hasChild("filtros")){
+                        obtenerTodasLasPublicaciones();
                 }
+
             }
+
 
             @Override
             public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
