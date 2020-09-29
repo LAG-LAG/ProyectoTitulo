@@ -95,9 +95,10 @@ public class PaginaPrincipal extends AppCompatActivity {
 
         obtenerTodasLasPublicaciones();
 
-        rowItems = new ArrayList<cards>();/*
+        /*
 
          */
+        rowItems = new ArrayList<cards>();
         //crea el arrayadapter y le manda los rowitems que es donde se guardaran todas las cartas y le envia el item que es donde se mostraran las cartas.
         arrayAdapter = new arrayAdaptor(this, R.layout.item, rowItems );
         //el r.id.frame es donde se mostrara el item en el mainactivity.
