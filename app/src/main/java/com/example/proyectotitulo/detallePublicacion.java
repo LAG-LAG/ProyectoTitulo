@@ -265,7 +265,7 @@ public class detallePublicacion extends AppCompatActivity {
 
     //toolbar
     public boolean onOptionsItemSelected(MenuItem item){
-        Intent myIntent = new Intent(getApplicationContext(), MisPublicaciones.class);
+        Intent myIntent = new Intent(getApplicationContext(), PaginaPrincipal.class);
         startActivityForResult(myIntent, 0);
         return true;
     }
