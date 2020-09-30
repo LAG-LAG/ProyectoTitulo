@@ -36,7 +36,7 @@ public class PaginaPrincipal extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private DatabaseReference usersDb;
     private DatabaseReference clothesDb;
-    private String currentUId, clothesCurrentUid, currentOwnerUid;
+    private String currentUId, clothesCurrentUid;
     private Map<String, Object> map;
     private String userId;
     private int puedeMostrarCard,noExistenFiltros;
@@ -154,7 +154,7 @@ public class PaginaPrincipal extends AppCompatActivity {
                 cards obj = (cards) dataObject;
                 String idClothes = obj.getClothesId();
                 String idOwner = obj.getOwnerId();
-                Toast.makeText(PaginaPrincipal.this,"click", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(PaginaPrincipal.this,"click", Toast.LENGTH_SHORT).show();
                 Intent intentDetalle = new Intent(PaginaPrincipal.this, detallePublicacion.class);
                 intentDetalle.putExtra("idClothes",idClothes);
                 intentDetalle.putExtra("idOwner",idOwner);
@@ -235,14 +235,18 @@ public class PaginaPrincipal extends AppCompatActivity {
                             && !dataSnapshot.getKey().equals(currentUId)) {
                         //aca si le añadimos la localizacion, habria que hacer un metodo que calculara distancia y ponerlo arriba y compararlo por el ingresado x usuario.
                         String key = dataSnapshot.getKey();
-                        currentOwnerUid = key;
+                        final String currentOwnerUid = key;
+                        Log.d("entro","currentOwnerUid antes :"+currentOwnerUid);
+
                         clothesDb = usersDb.child(key).child("clothes");
                         clothesDb.addChildEventListener(new ChildEventListener() {
                             @Override
                             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) { //aqui ya recorre los productos.
                                 currentUId = mAuth.getCurrentUser().getUid();
                                 clothesCurrentUid = dataSnapshot.getKey();
-                                if (!verSiSeEncuentraEnArrayList(clothesCurrentUid)) {
+                                Log.d("entro","currentOwnerUid:"+currentOwnerUid);
+                                if (!verSiSeEncuentraEnArrayList2(clothesCurrentUid)) {
+
                                     String idPrenda = dataSnapshot.getKey();
                                     String tituloPublicacion = dataSnapshot.child("tituloPublicacion").getValue().toString();
                                     String fotoPublicacion;
@@ -288,6 +292,15 @@ public class PaginaPrincipal extends AppCompatActivity {
                                         }
                                     }
                                 }
+                            }
+
+                            private boolean verSiSeEncuentraEnArrayList2(String clothesCurrentUid) {
+                                for(int i=0;i<al.size();i++){
+                                    if(al.get(i).equals(clothesCurrentUid)){
+                                        return true;
+                                    }
+                                }
+                                return false;
                             }
 
                             @Override
@@ -346,7 +359,7 @@ public class PaginaPrincipal extends AppCompatActivity {
                 if (dataSnapshot.exists() && dataSnapshot.hasChild("clothes") && !dataSnapshot.getKey().equals(currentUId)) {
                     //aca si le añadimos la localizacion, habria que hacer un metodo que calculara distancia y ponerlo arriba y compararlo por el ingresado x usuario.
                     String key = dataSnapshot.getKey();
-                    currentOwnerUid = key;
+                    final String currentOwnerUid = key;
                     clothesDb = usersDb.child(key).child("clothes");
                     clothesDb.addChildEventListener(new ChildEventListener() {
                         @Override
