@@ -36,7 +36,7 @@ public class PaginaPrincipal extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private DatabaseReference usersDb;
     private DatabaseReference clothesDb;
-    private String currentUId, clothesCurrentUid, currentOwnerUid;
+    private String currentUId, clothesCurrentUid;
     private Map<String, Object> map;
     private String userId;
     private int puedeMostrarCard,noExistenFiltros;
@@ -90,9 +90,9 @@ public class PaginaPrincipal extends AppCompatActivity {
 
         SwipeFlingAdapterView flingContainer = (SwipeFlingAdapterView) findViewById(R.id.frame);
         obtenerPublicacionesAceptadasyRechazadas();
-        al = new ArrayList<String>();/*
-        obtenerPublicaciones();
-
+        al = new ArrayList<String>();
+        //obtenerPublicaciones();
+/*
         obtenerTodasLasPublicaciones();
 
         /*
@@ -119,7 +119,7 @@ public class PaginaPrincipal extends AppCompatActivity {
                 cards obj = (cards) dataObject;
                 String idClothes = obj.getClothesId();
                 usersDb.child(mAuth.getCurrentUser().getUid()).child("connections").child("publicacionesRechazadas").child(idClothes).setValue(true); //esto significa que no le gusto y le dio a la izq
-                Toast.makeText(PaginaPrincipal.this,"left", Toast.LENGTH_SHORT).show();
+                Toast.makeText(PaginaPrincipal.this,"Rechazado!", Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -128,11 +128,12 @@ public class PaginaPrincipal extends AppCompatActivity {
                 String idClothes = obj.getClothesId();
                 usersDb.child(mAuth.getCurrentUser().getUid()).child("connections").child("publicacionesGuardadas").child(idClothes).setValue(true); //esto significa que le gusto y le dio a la der
                 //aca hay que crear el chat dentro de publicaciones guardadas.
-                Toast.makeText(PaginaPrincipal.this,"right", Toast.LENGTH_SHORT).show();
+                Toast.makeText(PaginaPrincipal.this,"Aceptado!", Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onAdapterAboutToEmpty(int itemsInAdapter) {
+                //Toast.makeText(PaginaPrincipal.this, "No se encuentran mas coincidencias.", Toast.LENGTH_SHORT).show();
                 // Ask for more data here/
             /*al.add("XML ".concat(String.valueOf(i)));
                 arrayAdapter.notifyDataSetChanged();
@@ -153,7 +154,7 @@ public class PaginaPrincipal extends AppCompatActivity {
                 cards obj = (cards) dataObject;
                 String idClothes = obj.getClothesId();
                 String idOwner = obj.getOwnerId();
-                Toast.makeText(PaginaPrincipal.this,"click", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(PaginaPrincipal.this,"click", Toast.LENGTH_SHORT).show();
                 Intent intentDetalle = new Intent(PaginaPrincipal.this, detallePublicacion.class);
                 intentDetalle.putExtra("idClothes",idClothes);
                 intentDetalle.putExtra("idOwner",idOwner);
@@ -193,12 +194,16 @@ public class PaginaPrincipal extends AppCompatActivity {
                     tipoPrendaBusqueda = dataSnapshot.child("filtros").child("tipoPrendaAnterior").getValue().toString();
                     estadoBusqueda = dataSnapshot.child("filtros").child("estadoAnterior").getValue().toString();
                     tallaBusqueda = dataSnapshot.child("filtros").child("tallaAnterior").getValue().toString();
-                    obtenerPublicaciones();
+                    if (comunaBusqueda != "") {
+                        obtenerPublicaciones();
+                    }
                 }
-                if(!dataSnapshot.hasChild("filtros")){
-                    obtenerTodasLasPublicaciones();
+                else if(dataSnapshot.exists() && dataSnapshot.getKey().equals(currentUId) && !dataSnapshot.hasChild("filtros")){
+                        obtenerTodasLasPublicaciones();
                 }
+
             }
+
 
             @Override
             public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
@@ -230,14 +235,18 @@ public class PaginaPrincipal extends AppCompatActivity {
                             && !dataSnapshot.getKey().equals(currentUId)) {
                         //aca si le añadimos la localizacion, habria que hacer un metodo que calculara distancia y ponerlo arriba y compararlo por el ingresado x usuario.
                         String key = dataSnapshot.getKey();
-                        currentOwnerUid = key;
+                        final String currentOwnerUid = key;
+                        Log.d("entro","currentOwnerUid antes :"+currentOwnerUid);
+
                         clothesDb = usersDb.child(key).child("clothes");
                         clothesDb.addChildEventListener(new ChildEventListener() {
                             @Override
                             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) { //aqui ya recorre los productos.
                                 currentUId = mAuth.getCurrentUser().getUid();
                                 clothesCurrentUid = dataSnapshot.getKey();
-                                if (!verSiSeEncuentraEnArrayList(clothesCurrentUid)) {
+                                Log.d("entro","currentOwnerUid:"+currentOwnerUid);
+                                if (!verSiSeEncuentraEnArrayList2(clothesCurrentUid)) {
+
                                     String idPrenda = dataSnapshot.getKey();
                                     String tituloPublicacion = dataSnapshot.child("tituloPublicacion").getValue().toString();
                                     String fotoPublicacion;
@@ -283,6 +292,15 @@ public class PaginaPrincipal extends AppCompatActivity {
                                         }
                                     }
                                 }
+                            }
+
+                            private boolean verSiSeEncuentraEnArrayList2(String clothesCurrentUid) {
+                                for(int i=0;i<al.size();i++){
+                                    if(al.get(i).equals(clothesCurrentUid)){
+                                        return true;
+                                    }
+                                }
+                                return false;
                             }
 
                             @Override
@@ -341,7 +359,7 @@ public class PaginaPrincipal extends AppCompatActivity {
                 if (dataSnapshot.exists() && dataSnapshot.hasChild("clothes") && !dataSnapshot.getKey().equals(currentUId)) {
                     //aca si le añadimos la localizacion, habria que hacer un metodo que calculara distancia y ponerlo arriba y compararlo por el ingresado x usuario.
                     String key = dataSnapshot.getKey();
-                    currentOwnerUid = key;
+                    final String currentOwnerUid = key;
                     clothesDb = usersDb.child(key).child("clothes");
                     clothesDb.addChildEventListener(new ChildEventListener() {
                         @Override

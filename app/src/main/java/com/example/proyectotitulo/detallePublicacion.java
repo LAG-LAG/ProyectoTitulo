@@ -48,7 +48,8 @@ public class detallePublicacion extends AppCompatActivity {
         setContentView(R.layout.activity_detalle_publicacion);
         idOwner = getIntent().getExtras().getString("idOwner");
         idClothes = getIntent().getExtras().getString("idClothes");
-
+        Log.d("entro","Owner "+idOwner);
+        Log.d("entro","Clothes "+idClothes);
         tamanoUrlImagenes = 0;
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -166,6 +167,7 @@ public class detallePublicacion extends AppCompatActivity {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                 if(dataSnapshot.exists() && dataSnapshot.getKey().equals(idClothes)){
+                    Log.d("entro","entro a obtener datos");
                     mTitulo.setText(dataSnapshot.child("tituloPublicacion").getValue().toString());
                     mPrecio.setText("$"+dataSnapshot.child("ValorPrenda").getValue().toString());
                     mDescripcion.setText(dataSnapshot.child("DescripcionPrenda").getValue().toString());
