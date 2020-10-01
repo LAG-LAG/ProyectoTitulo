@@ -1,13 +1,14 @@
 package com.example.proyectotitulo;
 
 import android.Manifest;
-import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.provider.OpenableColumns;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -23,6 +24,8 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -35,12 +38,14 @@ import com.google.firebase.storage.UploadTask;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class AddPublicaciones extends AppCompatActivity {
     private DatabaseReference mCustomerDatabase;
-    private static final int PICK_FROM_GALLERY = 1;
+    private static int PICK_FROM_GALLERY = 1;
     private FirebaseAuth mAuth;
     private Button mAplicar;
     private EditText mTitulo;
@@ -68,6 +73,14 @@ public class AddPublicaciones extends AppCompatActivity {
     private ImageView mBorrarPublicacion1,mBorrarPublicacion2,mBorrarPublicacion3,mBorrarPublicacion4,mBorrarPublicacion5,mBorrarPublicacion6;
     private int publicacion1,publicacion2,publicacion3,publicacion4,publicacion5,publicacion6;
 
+    private StorageReference mStorageRef;
+    private static final int IMAGE_CODE = 1;
+    private Button selectBtn;
+    RecyclerView recyclerView;
+    List<ModalClass> modalClassList;
+    CustomAdapter customAdapter;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,26 +95,23 @@ public class AddPublicaciones extends AppCompatActivity {
         mDescripcion = (EditText) findViewById(R.id.editTextDescripcion);
         mAplicar = (Button) findViewById(R.id.publicarBtn);
 
-        mPublicacionImage1 = (ImageView) findViewById(R.id.publicacionImageCrear1);
-        mPublicacionImage2 = (ImageView) findViewById(R.id.publicacionImageCrear2);
-        mPublicacionImage3 = (ImageView) findViewById(R.id.publicacionImageCrear3);
-        mPublicacionImage4 = (ImageView) findViewById(R.id.publicacionImageCrear4);
-        mPublicacionImage5 = (ImageView) findViewById(R.id.publicacionImageCrear5);
-        mPublicacionImage6 = (ImageView) findViewById(R.id.publicacionImageCrear6);
-
-        mBorrarPublicacion1 = (ImageView)findViewById(R.id.borrarPublicacionCrear1);
-        mBorrarPublicacion2 = (ImageView)findViewById(R.id.borrarPublicacionCrear2);
-        mBorrarPublicacion3 = (ImageView)findViewById(R.id.borrarPublicacionCrear3);
-        mBorrarPublicacion4 = (ImageView)findViewById(R.id.borrarPublicacionCrear4);
-        mBorrarPublicacion5 = (ImageView)findViewById(R.id.borrarPublicacionCrear5);
-        mBorrarPublicacion6 = (ImageView)findViewById(R.id.borrarPublicacionCrear6);
-
+/*
         mBorrarPublicacion1.setVisibility(View.INVISIBLE);
         mBorrarPublicacion2.setVisibility(View.INVISIBLE);
         mBorrarPublicacion3.setVisibility(View.INVISIBLE);
         mBorrarPublicacion4.setVisibility(View.INVISIBLE);
         mBorrarPublicacion5.setVisibility(View.INVISIBLE);
         mBorrarPublicacion6.setVisibility(View.INVISIBLE);
+*/
+        selectBtn = findViewById(R.id.button2);
+        recyclerView = findViewById(R.id.recyclerViewId);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        mStorageRef = FirebaseStorage.getInstance().getReference();
+
+        modalClassList = new ArrayList<>();
+
 
 
         //if x ispressed then resulturi correspondiente = null y se
@@ -114,132 +124,20 @@ public class AddPublicaciones extends AppCompatActivity {
         }
 
 
-        mBorrarPublicacion1.setOnClickListener(new View.OnClickListener() {
+        selectBtn.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                if(resultUri!=null) {
-                    final Uri imageUri = null;
-                    // final Uri imageUri = Uri.parse("android.resource://ProyectoTitulo/drawable/image_name");
-                    resultUri = imageUri;
-                    mPublicacionImage1.setImageResource(R.drawable.ic_launcher_foreground);
-                    mBorrarPublicacion1.setVisibility(View.INVISIBLE);
-                }
+            public void onClick(View v) {
+
+                Intent intent = new Intent();
+                intent.setType("image/*");
+                intent.setAction(Intent.ACTION_GET_CONTENT);
+                intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
+                startActivityForResult(intent, IMAGE_CODE);
+
+
             }
         });
 
-        mBorrarPublicacion2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(resultUri2!=null) {
-                    final Uri imageUri = null;
-                    // final Uri imageUri = Uri.parse("android.resource://ProyectoTitulo/drawable/image_name");
-                    resultUri2 = imageUri;
-                    mPublicacionImage2.setImageResource(R.drawable.ic_launcher_foreground);
-                    mBorrarPublicacion2.setVisibility(View.INVISIBLE);
-                }
-            }
-        });
-
-        mBorrarPublicacion3.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(resultUri3!=null) {
-                    final Uri imageUri = null;
-                    // final Uri imageUri = Uri.parse("android.resource://ProyectoTitulo/drawable/image_name");
-                    resultUri3 = imageUri;
-                    mPublicacionImage3.setImageResource(R.drawable.ic_launcher_foreground);
-                    mBorrarPublicacion3.setVisibility(View.INVISIBLE);
-                }
-            }
-        });
-
-        mBorrarPublicacion4.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(resultUri4!=null) {
-                    final Uri imageUri = null;
-                    // final Uri imageUri = Uri.parse("android.resource://ProyectoTitulo/drawable/image_name");
-                    resultUri4 = imageUri;
-                    mPublicacionImage4.setImageResource(R.drawable.ic_launcher_foreground);
-                    mBorrarPublicacion4.setVisibility(View.INVISIBLE);
-                }
-            }
-        });
-
-        mBorrarPublicacion5.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(resultUri5!=null) {
-                    final Uri imageUri = null;
-                    // final Uri imageUri = Uri.parse("android.resource://ProyectoTitulo/drawable/image_name");
-                    resultUri5 = imageUri;
-                    mPublicacionImage5.setImageResource(R.drawable.ic_launcher_foreground);
-                    mBorrarPublicacion5.setVisibility(View.INVISIBLE);
-                }
-            }
-        });
-
-        mBorrarPublicacion6.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(resultUri6!=null) {
-                    final Uri imageUri = null;
-                    // final Uri imageUri = Uri.parse("android.resource://ProyectoTitulo/drawable/image_name");
-                    resultUri6 = imageUri;
-                    mPublicacionImage6.setImageResource(R.drawable.ic_launcher_foreground);
-                    mBorrarPublicacion6.setVisibility(View.INVISIBLE);
-                }
-            }
-        });
-
-        mPublicacionImage1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                publicacion1=1;
-                comprobarImagen();
-                mBorrarPublicacion1.setVisibility(View.VISIBLE);
-            }
-        });
-        mPublicacionImage2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                publicacion2=1;
-                comprobarImagen();
-                mBorrarPublicacion2.setVisibility(View.VISIBLE);
-            }
-        });
-        mPublicacionImage3.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                publicacion3=1;
-                comprobarImagen();
-                mBorrarPublicacion3.setVisibility(View.VISIBLE);
-            }
-        });
-        mPublicacionImage4.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                publicacion4=1;
-                comprobarImagen();
-                mBorrarPublicacion4.setVisibility(View.VISIBLE);
-            }
-        });
-        mPublicacionImage5.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                publicacion5=1;
-                comprobarImagen();
-                mBorrarPublicacion5.setVisibility(View.VISIBLE);
-            }
-        });
-        mPublicacionImage6.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                publicacion6=1;
-                comprobarImagen();
-                mBorrarPublicacion6.setVisibility(View.VISIBLE);
-            }
-        });
         mAplicar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -263,41 +161,66 @@ public class AddPublicaciones extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode==1 && resultCode == Activity.RESULT_OK){
-            final Uri imageUri = data.getData();
 
-            if(publicacion1==1){
-                resultUri = imageUri;
-                mPublicacionImage1.setImageURI(resultUri);
 
-                publicacion1=0;
+        if (requestCode == IMAGE_CODE && resultCode == RESULT_OK) {
+
+            if (data.getClipData() != null) {
+
+                int totalitem = data.getClipData().getItemCount();
+
+                for (int i = 0; i < totalitem; i++) {
+
+                    Uri imageUri = data.getClipData().getItemAt(i).getUri();
+                    String imagename = getFileName(imageUri);
+
+                    ModalClass modalClass = new ModalClass(imagename,imageUri);
+                    modalClassList.add(modalClass);
+
+                    customAdapter = new CustomAdapter(AddPublicaciones.this, modalClassList);
+                    recyclerView.setAdapter(customAdapter);
+//
+
+                }
+
+
+            } else if (data.getData() != null) {
+                Toast.makeText(this, "single", Toast.LENGTH_SHORT).show();
+                Uri imageUri = data.getData();
+                String imagename = getFileName(imageUri);
+
+                ModalClass modalClass = new ModalClass(imagename,imageUri);
+                modalClassList.add(modalClass);
+
+                customAdapter = new CustomAdapter(AddPublicaciones.this, modalClassList);
+                recyclerView.setAdapter(customAdapter);
+//
             }
-            else if(publicacion2==1) {
-                resultUri2 = imageUri;
-                mPublicacionImage2.setImageURI(resultUri2);
-                publicacion2=0;
-            }
-            else if(publicacion3==1) {
-                resultUri3 = imageUri;
-                mPublicacionImage3.setImageURI(resultUri3);
-                publicacion3=0;
-            }
-            else if(publicacion4==1) {
-                resultUri4 = imageUri;
-                mPublicacionImage4.setImageURI(resultUri4);
-                publicacion4=0;
-            }
-            else if(publicacion5==1) {
-                resultUri5 = imageUri;
-                mPublicacionImage5.setImageURI(resultUri5);
-                publicacion5=0;
-            }
-            else if(publicacion6==1) {
-                resultUri6 = imageUri;
-                mPublicacionImage6.setImageURI(resultUri6);
-                publicacion6=0;
+
+        }
+
+    }
+
+    public String getFileName(Uri uri) {
+        String result = null;
+        if (uri.getScheme().equals("content")) {
+            Cursor cursor = getContentResolver().query(uri, null, null, null, null);
+            try {
+                if (cursor != null && cursor.moveToFirst()) {
+                    result = cursor.getString(cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME));
+                }
+            } finally {
+                cursor.close();
             }
         }
+        if (result == null) {
+            result = uri.getPath();
+            int cut = result.lastIndexOf('/');
+            if (cut != -1) {
+                result = result.substring(cut + 1);
+            }
+        }
+        return result;
     }
 
     private void savePublicacion() {
@@ -336,13 +259,57 @@ public class AddPublicaciones extends AppCompatActivity {
         else{
             Toast.makeText(AddPublicaciones.this, "Datos Incorrectos.", Toast.LENGTH_SHORT).show();
         }
+
+        for (int i = 0; i<modalClassList.size();i++) {
+            String imagename = modalClassList.get(i).getImagename();
+            final String idPrenda;
+            int numero = i+1;
+            idPrenda = ""+numero;
+            mClothesDatabase = FirebaseDatabase.getInstance().getReference().child("Users").child(userId).child("clothes").child(id).child("clothesPhotos");
+
+
+
+            final StorageReference mRef = mStorageRef.child("prendasImages").child(userId).child(id).child(idPrenda);;
+            Uri imageUri = modalClassList.get(i).getImage();
+            mRef.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    mRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                        @Override
+                        public void onSuccess(Uri uri) {
+                            Map newImage = new HashMap();
+                            newImage.put("photoId" + idPrenda, uri.toString());
+                            mClothesDatabase.updateChildren(newImage);
+                            Intent intentAccount = new Intent(AddPublicaciones.this, VerMiCuenta.class);
+                            startActivity(intentAccount);
+                            finish();
+                            //finish();
+                            //return;
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception exception) {
+                            //finish();
+                            //return;
+                        }
+                    });
+                    Toast.makeText(AddPublicaciones.this, "Done", Toast.LENGTH_SHORT).show();
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Toast.makeText(AddPublicaciones.this, "Fail" + e.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+        /*
         guardarImagen(resultUri,userId,"1",id);
         guardarImagen(resultUri2,userId,"2",id);
         guardarImagen(resultUri3,userId,"3",id);
         guardarImagen(resultUri4,userId,"4",id);
         guardarImagen(resultUri5,userId,"5",id);
         guardarImagen(resultUri6,userId,"6",id);
-
+*/
     }
 
     private void guardarImagen(Uri resultUri, String userId, final String idPrenda,String id) {
