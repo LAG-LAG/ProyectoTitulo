@@ -142,6 +142,9 @@ public class AddPublicaciones extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 savePublicacion();
+                Intent intentAccount = new Intent(AddPublicaciones.this, VerMiCuenta.class);
+                startActivity(intentAccount);
+                finish();
             }
         });
 
@@ -280,9 +283,7 @@ public class AddPublicaciones extends AppCompatActivity {
                             Map newImage = new HashMap();
                             newImage.put("photoId" + idPrenda, uri.toString());
                             mClothesDatabase.updateChildren(newImage);
-                            Intent intentAccount = new Intent(AddPublicaciones.this, VerMiCuenta.class);
-                            startActivity(intentAccount);
-                            finish();
+
                             //finish();
                             //return;
                         }
