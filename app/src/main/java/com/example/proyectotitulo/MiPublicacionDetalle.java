@@ -14,7 +14,6 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-import com.bumptech.glide.Glide;
 import com.denzcoskun.imageslider.ImageSlider;
 import com.denzcoskun.imageslider.constants.ScaleTypes;
 import com.denzcoskun.imageslider.interfaces.ItemClickListener;
@@ -25,7 +24,6 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -199,40 +197,24 @@ public class MiPublicacionDetalle extends AppCompatActivity {
         });
     }
 
-    private void mostrarFoto(String urlFotoActual) {
-        Glide.with(getApplication()).clear(mFotoActual);
-        switch(urlFotoActual){
-            case "default":
-                Picasso.get().setLoggingEnabled(true);
-                //Glide.with(getApplication()).load(card_item.getProfileImageUrl()).into(image);
-                Picasso.get().load(R.mipmap.ic_launcher).into(mFotoActual);
-                break;
-            default:
-                Picasso.get().setLoggingEnabled(true);
-                //Glide.with(getApplication()).load(card_item.getProfileImageUrl()).into(image);
-                Picasso.get().load(urlFotoActual).into(mFotoActual);
-                break;
-
-        }
-        Picasso.get().setLoggingEnabled(true);
-        //Glide.with(getApplication()).load(profileImageUrl).into(mProfileImage);
-        Picasso.get().load(urlFotoActual).into(mFotoActual);
-    }
-
 
     private void guardarUrlPhotos() {
         Log.d("weaweawea","xd");
+
         photosDb = FirebaseDatabase.getInstance().getReference().child("Users").child(idOwner).child("clothes").child(idClothes).child("clothesPhotos");
 
         photosDb.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                 if(dataSnapshot.exists()){
+                    Log.d("weaweawea","datasnapshot exists");
                     urlImagenes.add(dataSnapshot.getValue().toString());
                     SlideModel aux = new SlideModel(dataSnapshot.getValue().toString(),ScaleTypes.FIT);
                     imageList.add(aux);
                     mSlider.setImageList(imageList,ScaleTypes.FIT);
                     if(indiceFotoActual==0) {
+                        Log.d("weaweawea","indice");
+
                         //   mostrarFoto(urlImagenes.get(0));
                         indiceFotoActual++;
                     }

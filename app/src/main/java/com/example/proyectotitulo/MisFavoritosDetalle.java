@@ -167,6 +167,7 @@ public class MisFavoritosDetalle extends AppCompatActivity {
                 if(dataSnapshot.exists() && dataSnapshot.hasChild("clothes") && !dataSnapshot.getKey().equals(currentUId)) {
                     String key = dataSnapshot.getKey();
                     currentOwnerUid = key;
+                    final String vendedorId = key;
                     clothesDb = usersDb.child(key).child("clothes");
                     Log.d("MFD", "primero");
                     clothesDb.addChildEventListener(new ChildEventListener() {
@@ -181,7 +182,7 @@ public class MisFavoritosDetalle extends AppCompatActivity {
                                 mtipoPrenda.setText(dataSnapshot.child("TipoPrenda").getValue().toString());
                                 mColor.setText(dataSnapshot.child("ColorPrenda").getValue().toString());
                                 mTalla.setText(dataSnapshot.child("TallaPrenda").getValue().toString());
-                                guardarUrlPhotos();
+                                guardarUrlPhotos(vendedorId);
                                 //SUBIR FOTOS.
                             }
                         }
@@ -253,9 +254,11 @@ public class MisFavoritosDetalle extends AppCompatActivity {
     }
 
 
-    private void guardarUrlPhotos() {
+    private void guardarUrlPhotos(String vendedorId) {
         Log.d("weaweawea","xd");
-        photosDb = FirebaseDatabase.getInstance().getReference().child("Users").child(currentOwnerUid).child("clothes").child(idClothes).child("clothesPhotos");
+        Log.d("weaweawea","idOwner "+vendedorId);
+        Log.d("weaweawea","idClothes "+idClothes);
+        photosDb = FirebaseDatabase.getInstance().getReference().child("Users").child(vendedorId).child("clothes").child(idClothes).child("clothesPhotos");
 
         photosDb.addChildEventListener(new ChildEventListener() {
             @Override
