@@ -24,12 +24,12 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
-public class publicacionAdapter extends BaseAdapter{
+public class misPublicacionAdapter extends BaseAdapter{
     private Context context;
     private ArrayList<publicacion> listItems;
     private DatabaseReference connectionsDb,usersDb;
 
-    public publicacionAdapter(Context context, ArrayList<publicacion> listItems) {
+    public misPublicacionAdapter(Context context, ArrayList<publicacion> listItems) {
         this.context = context;
         this.listItems = listItems;
     }
@@ -81,13 +81,13 @@ public class publicacionAdapter extends BaseAdapter{
                 item.getIdClothes();
                 FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                 String currentUId = user.getUid();
-                usersDb = FirebaseDatabase.getInstance().getReference().child("Users").child(currentUId).child("connections").child("publicacionesGuardadas");
+                usersDb = FirebaseDatabase.getInstance().getReference().child("Users").child(currentUId).child("clothes");
                 usersDb.addChildEventListener(new ChildEventListener() {
                     @Override
                     public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                         if(dataSnapshot.exists() && dataSnapshot.getKey().equals(item.getIdClothes())){
                             dataSnapshot.getRef().removeValue();
-                            Intent intent = new Intent(context,MisFavoritos.class);
+                            Intent intent = new Intent(context,MisPublicaciones.class);
                             context.startActivity(intent);
                         }
                     }

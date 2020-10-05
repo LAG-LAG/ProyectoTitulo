@@ -55,7 +55,6 @@ public class PaginaPrincipal extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         currentUId = user.getUid();
-        Log.d("weawea",currentUId);
         mFiltros = (Button) findViewById(R.id.filtrosBtn);
         puedeMostrarCard=1;
         //Toolbar Menu
@@ -446,10 +445,8 @@ public class PaginaPrincipal extends AppCompatActivity {
         usersDb.child(currentUId).child("connections").child("publicacionesGuardadas").addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                //Log.d("weawea","cmasdasd"+dataSnapshot.getKey());
                 if (dataSnapshot.exists()) { //si existe y tiene algo ya guardado dentro lo muestra, para eso lo trae y lo castea al mapa.
                     al.add(dataSnapshot.getKey().toString());
-                    Log.d("weawea","guardada");
                 }
             }
 
