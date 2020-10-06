@@ -9,6 +9,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.provider.OpenableColumns;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -142,9 +143,9 @@ public class AddPublicaciones extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 savePublicacion();
-                Intent intentAccount = new Intent(AddPublicaciones.this, VerMiCuenta.class);
-                startActivity(intentAccount);
-                finish();
+                //Intent intentAccount = new Intent(AddPublicaciones.this, VerMiCuenta.class);
+                //startActivity(intentAccount);
+                //finish();
             }
         });
 
@@ -265,6 +266,9 @@ public class AddPublicaciones extends AppCompatActivity {
 
         for (int i = 0; i<modalClassList.size();i++) {
             String imagename = modalClassList.get(i).getImagename();
+            final int tamanoLogico = modalClassList.size()-1;
+            final int posicion = i;
+            Log.d("verveces","tamañoLogico:"+tamanoLogico+" Posicion: "+posicion);
             final String idPrenda;
             int numero = i+1;
             idPrenda = ""+numero;
@@ -295,6 +299,12 @@ public class AddPublicaciones extends AppCompatActivity {
                         }
                     });
                     Toast.makeText(AddPublicaciones.this, "Done", Toast.LENGTH_SHORT).show();
+                    if(tamanoLogico==posicion){
+                        Log.d("verveces","done");
+                        Intent intentAccount = new Intent(AddPublicaciones.this, PaginaPrincipal.class);
+                        startActivity(intentAccount);
+                        finish();
+                    }
                 }
             }).addOnFailureListener(new OnFailureListener() {
                 @Override

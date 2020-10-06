@@ -53,9 +53,6 @@
             android:name=".MisPublicaciones"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".AddPublicaciones"
-            android:screenOrientation="portrait" />
-        <activity
             android:name=".Account"
             android:screenOrientation="portrait" />
         <activity
@@ -63,6 +60,9 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".PaginaPrincipal"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".AddPublicaciones"
             android:screenOrientation="portrait" />
         <activity
             android:name=".Login"
