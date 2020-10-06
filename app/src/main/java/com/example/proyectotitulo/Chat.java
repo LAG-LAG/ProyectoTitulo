@@ -29,7 +29,7 @@ public class Chat extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private DatabaseReference usersDb,chatsDb;
     private DatabaseReference clothesDb;
-    private String currentUId, clothesCurrentUid, currentOwnerUid,idPrendaChat,chatCurrentId;
+    private String currentUId, clothesCurrentUid, currentOwnerUid,idPrendaChat;
     private ArrayList<chats> listItems = new ArrayList<>();
     private ArrayList<String> idPrendas = new ArrayList<>();
 
@@ -85,9 +85,10 @@ public class Chat extends AppCompatActivity {
                 if (dataSnapshot.child("idUserVendedor").getValue().toString().equals(currentUId) || dataSnapshot.child("idUserComprador").getValue().toString().equals(currentUId)){
                     Log.d("probando","Adentro"+dataSnapshot.getKey());
                     idPrendaChat = dataSnapshot.child("idPrenda").getValue().toString();
-                    idPrendas.add(idPrendaChat);
+                    final String idPrendaChatNuevo = idPrendaChat;
+                    //idPrendas.add(idPrendaChat);
                     Log.d("probando","id prenda chat "+idPrendaChat);
-                    chatCurrentId = dataSnapshot.getKey();
+                    final String chatCurrentId = dataSnapshot.getKey();
                     usersDb.addChildEventListener(new ChildEventListener() {
                         @Override
                         public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
@@ -100,8 +101,8 @@ public class Chat extends AppCompatActivity {
                                     @Override
                                     public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                                         //Log.d("probando","afuera producto "+dataSnapshot.getKey());
-                                        for(int i = 0 ; i< idPrendas.size();i++) {
-                                            if (dataSnapshot.getKey().equals(idPrendas.get(i))) {
+                                        //for(int i = 0 ; i< idPrendas.size();i++) {
+                                            if (dataSnapshot.getKey().equals(idPrendaChatNuevo)) {
                                                 Log.d("probando", "Adentro producto" + dataSnapshot.getKey());
                                                 currentUId = mAuth.getCurrentUser().getUid();
                                                 clothesCurrentUid = dataSnapshot.getKey();
@@ -115,10 +116,10 @@ public class Chat extends AppCompatActivity {
                                                 Log.d("probando", "titulo: " + dataSnapshot.child("tituloPublicacion").getValue().toString() + " fotoPublicacion: " + fotoPublicacion + "current chat: " + chatCurrentId);
                                                 chats item = new chats(dataSnapshot.child("tituloPublicacion").getValue().toString(), fotoPublicacion, chatCurrentId);
                                                 listItems.add(item);
-                                                idPrendas.remove(i);
+                                                //idPrendas.remove(i);
                                                 adapter.notifyDataSetChanged(); //esto se usa cad vez que se añade o se quita un elemetno del arraylist de los items.
                                             }
-                                        }
+                                        //}
                                     }
 
                                     @Override

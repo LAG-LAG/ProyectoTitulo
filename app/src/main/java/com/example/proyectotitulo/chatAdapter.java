@@ -60,7 +60,7 @@ public class chatAdapter extends BaseAdapter{
         }
 
         final chats item = (chats) getItem(position);
-
+        Log.d("positionVector","wea :: "+position);
         //convertView = LayoutInflater.from(context).inflate(R.layout.item_publicacion, null);
         ImageView imgPublicacion = (ImageView) view.findViewById(R.id.imgPublicacion);
         TextView tituloPublicacion = (TextView) view.findViewById(R.id.tituloPublicacion);
@@ -69,6 +69,8 @@ public class chatAdapter extends BaseAdapter{
         Picasso.get().load(item.getProfileImageUrl()).into(imgPublicacion);
         tituloPublicacion.setText(item.getTituloPublicacion());
         valorPublicacion.setText(item.getValorPublicacion());
+
+        Log.d("positionVector","ID Publicacion Item: "+item.getIdClothes());
 
         ImageView borrarbtn= (ImageView) view.findViewById(R.id.imgBorrarMiPublicacion);
         //ImageView editarbtn= (ImageView) view.findViewById(R.id.imgEditarMiPublicacion);
