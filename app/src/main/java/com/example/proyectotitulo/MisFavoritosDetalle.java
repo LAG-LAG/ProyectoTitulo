@@ -176,7 +176,7 @@ public class MisFavoritosDetalle extends AppCompatActivity {
                         @Override
                         public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                             if (dataSnapshot.exists() && dataSnapshot.getKey().equals(idClothes)) {
-                                vendedorUID = currentOwnerUid;
+                                vendedorUID = vendedorId;
                                 Log.d("MFD", dataSnapshot.child("tituloPublicacion").getValue().toString() + dataSnapshot.child("ValorPrenda").getValue().toString() + dataSnapshot.child("DescripcionPrenda").getValue().toString() + dataSnapshot.child("TipoPrenda").getValue().toString() + dataSnapshot.child("ColorPrenda").getValue().toString() + dataSnapshot.child("TallaPrenda").getValue().toString());
                                 mTitulo.setText(dataSnapshot.child("tituloPublicacion").getValue().toString());
                                 mPrecio.setText("$" + dataSnapshot.child("ValorPrenda").getValue().toString());
