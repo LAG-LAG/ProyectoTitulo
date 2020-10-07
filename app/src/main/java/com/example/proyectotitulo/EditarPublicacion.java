@@ -142,13 +142,14 @@ public class EditarPublicacion extends AppCompatActivity {
                     final Uri imageUri = null;
                     // final Uri imageUri = Uri.parse("android.resource://ProyectoTitulo/drawable/image_name");
                    // resultUri = imageUri;
-                    borrar1 = 1;
+
                     mPublicacionImage1.setImageResource(R.drawable.ic_launcher_foreground);
                     mBorrarPublicacion1.setVisibility(View.INVISIBLE);
                 }
                 if(existoFoto1==1){
                     mPublicacionImage1.setImageResource(R.drawable.ic_launcher_foreground);
                     mBorrarPublicacion1.setVisibility(View.INVISIBLE);
+                    borrar1 = 1;
                 }
             }
         });
@@ -158,7 +159,7 @@ public class EditarPublicacion extends AppCompatActivity {
             public void onClick(View view) {
                 if(resultUri2!=null) {
                     final Uri imageUri = null;
-                    borrar2 = 1;
+
                     // final Uri imageUri = Uri.parse("android.resource://ProyectoTitulo/drawable/image_name");
                    // resultUri2 = imageUri;
                     mPublicacionImage2.setImageResource(R.drawable.ic_launcher_foreground);
@@ -167,6 +168,7 @@ public class EditarPublicacion extends AppCompatActivity {
                 if(existoFoto2==1){
                     mPublicacionImage2.setImageResource(R.drawable.ic_launcher_foreground);
                     mBorrarPublicacion2.setVisibility(View.INVISIBLE);
+                    borrar2 = 1;
                 }
             }
         });
@@ -175,7 +177,6 @@ public class EditarPublicacion extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if(resultUri3!=null) {
-                    borrar3 = 1;
                     final Uri imageUri = null;
                     // final Uri imageUri = Uri.parse("android.resource://ProyectoTitulo/drawable/image_name");
                     //resultUri3 = imageUri;
@@ -185,6 +186,7 @@ public class EditarPublicacion extends AppCompatActivity {
                 if(existoFoto3==1){
                     mPublicacionImage3.setImageResource(R.drawable.ic_launcher_foreground);
                     mBorrarPublicacion3.setVisibility(View.INVISIBLE);
+                    borrar3 = 1;
                 }
             }
         });
@@ -193,8 +195,8 @@ public class EditarPublicacion extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if(resultUri4!=null) {
-                    borrar4 = 1;
                     final Uri imageUri = null;
+                    Log.d("probanding","se borro foto 4 "+borrar4);
                     // final Uri imageUri = Uri.parse("android.resource://ProyectoTitulo/drawable/image_name");
                     //resultUri4 = imageUri;
                     mPublicacionImage4.setImageResource(R.drawable.ic_launcher_foreground);
@@ -203,6 +205,9 @@ public class EditarPublicacion extends AppCompatActivity {
                 if(existoFoto4==1){
                     mPublicacionImage4.setImageResource(R.drawable.ic_launcher_foreground);
                     mBorrarPublicacion4.setVisibility(View.INVISIBLE);
+                    borrar4 = 1;
+                    Log.d("probanding","se borro foto 4 "+borrar4);
+
                 }
             }
         });
@@ -211,7 +216,7 @@ public class EditarPublicacion extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if(resultUri5!=null) {
-                    borrar5 = 1;
+
                     final Uri imageUri = null;
                     // final Uri imageUri = Uri.parse("android.resource://ProyectoTitulo/drawable/image_name");
                     //resultUri5 = imageUri;
@@ -221,6 +226,8 @@ public class EditarPublicacion extends AppCompatActivity {
                 if(existoFoto5==1){
                     mPublicacionImage5.setImageResource(R.drawable.ic_launcher_foreground);
                     mBorrarPublicacion5.setVisibility(View.INVISIBLE);
+                    borrar5 = 1;
+                    Log.d("probanding","se borro foto 5 "+borrar5);
                 }
             }
         });
@@ -229,7 +236,7 @@ public class EditarPublicacion extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if(resultUri6!=null) {
-                    borrar6 = 1;
+
                     final Uri imageUri = null;
                     // final Uri imageUri = Uri.parse("android.resource://ProyectoTitulo/drawable/image_name");
                     //resultUri6 = imageUri;
@@ -239,6 +246,7 @@ public class EditarPublicacion extends AppCompatActivity {
                 if(existoFoto6==1){
                     mPublicacionImage6.setImageResource(R.drawable.ic_launcher_foreground);
                     mBorrarPublicacion6.setVisibility(View.INVISIBLE);
+                    borrar6 = 1;
                 }
             }
         });
@@ -621,15 +629,18 @@ public class EditarPublicacion extends AppCompatActivity {
 
     }
 
-    private void borrarImagen(Uri resultUri, String userId, String s, final String photoIdBorrar, int borrar) {
+    private void borrarImagen(Uri resultUri, String userId, final String idClotheBorrar, final String photoIdBorrar, int borrar) {
+        Log.d("probanding","no entro al correspondiente borrar."+photoIdBorrar);
         if(borrar==1){
+            Log.d("probanding","entro al correspondiente borrar.");
             usersDb = FirebaseDatabase.getInstance().getReference().child("Users").child(currentUId).child("clothes").child(photoIdBorrar).child("clothesPhotos");
             usersDb.addChildEventListener(new ChildEventListener() {
                 @Override
                 public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                     if(dataSnapshot.exists()){
-                        if(dataSnapshot.getKey().equals(photoIdBorrar)){
-                            FirebaseDatabase.getInstance().getReference().child("Users").child(currentUId).child("clothes").child(photoIdBorrar).child("clothesPhotos").child(photoIdBorrar).removeValue();
+                        if(dataSnapshot.getKey().equals(idClotheBorrar)){
+                            Log.d("probanding","entro");
+                            FirebaseDatabase.getInstance().getReference().child("Users").child(currentUId).child("clothes").child(photoIdBorrar).child("clothesPhotos").child(idClotheBorrar).removeValue();
                             //FirebaseStorage.getInstance().getReference().child("profileImages").child(userId).child(map.get("profilesImages").toString()).delete();
                         }
 
