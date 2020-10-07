@@ -102,9 +102,11 @@ public class MisFavoritosDetalle extends AppCompatActivity {
                     DatabaseReference currentVendedor = FirebaseDatabase.getInstance().getReference().child("chat").child(id).child("idUserVendedor"); //busca al usuario que va a crear y lo guarda como una variable que se le agregan las cosas y se manda al a db de nuevo
                     DatabaseReference currentComprador = FirebaseDatabase.getInstance().getReference().child("chat").child(id).child("idUserComprador"); //busca al usuario que va a crear y lo guarda como una variable que se le agregan las cosas y se manda al a db de nuevo
                     DatabaseReference currentPrenda = FirebaseDatabase.getInstance().getReference().child("chat").child(id).child("idPrenda"); //busca al usuario que va a crear y lo guarda como una variable que se le agregan las cosas y se manda al a db de nuevo
+                    DatabaseReference messages = FirebaseDatabase.getInstance().getReference().child("chat").child(id).child("messages");
                     currentVendedor.setValue(vendedorUID);
                     currentComprador.setValue(currentUId);
                     currentPrenda.setValue(idClothes);
+                    messages.setValue(true);
                     logica=true;
                     Toast.makeText(MisFavoritosDetalle.this, "Chat Creado.", Toast.LENGTH_SHORT).show();
                 }
