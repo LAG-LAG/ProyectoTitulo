@@ -35,24 +35,30 @@ public class ChatUserActivity extends AppCompatActivity {
 
     private String currentUserID, matchId, chatId;
 
-    DatabaseReference mDatabaseUser, mDatabaseChat;
+    DatabaseReference mDatabaseUser, mDatabaseChat,mDatabaseMessages;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_chat);
+        setContentView(R.layout.activity_user_chat);
 
         chatId = getIntent().getExtras().getString("chatId");
 
         currentUserID = FirebaseAuth.getInstance().getCurrentUser().getUid();
         Log.d("probanding","1");
         //mDatabaseUser = FirebaseDatabase.getInstance().getReference().child("Users").child(currentUserID).child("connections").child("matches").child(matchId).child("ChatId");
-        mDatabaseUser = FirebaseDatabase.getInstance().getReference().child("chat").child(chatId);
+        Log.d("probanding","CHAT ID "+chatId);
+        mDatabaseChat =  FirebaseDatabase.getInstance().getReference().child("chat").child(chatId).child("messages");
         Log.d("probanding","2");
-        mDatabaseChat = FirebaseDatabase.getInstance().getReference().child("Chat").child(chatId).child("messages");
+        //mDatabaseChat = FirebaseDatabase.getInstance().getReference().child("Chat").child(chatId).child("messages");
+        mDatabaseUser = FirebaseDatabase.getInstance().getReference().child("chat").child(chatId);
+        mDatabaseMessages = FirebaseDatabase.getInstance().getReference().child("chat").child(chatId);
+
         Log.d("probanding","3");
         //getChatId();
         getChatMessages();
         Log.d("probanding","4");
+
+
         mRecyclerView = (RecyclerView) findViewById(R.id.recyclerView);
         mRecyclerView.setNestedScrollingEnabled(false);
         mRecyclerView.setHasFixedSize(false);
@@ -76,7 +82,7 @@ public class ChatUserActivity extends AppCompatActivity {
         String sendMessageText = mSendEditText.getText().toString();
 
         if(!sendMessageText.isEmpty()){
-            DatabaseReference newMessageDb = mDatabaseChat.child("messages").push();
+            DatabaseReference newMessageDb = mDatabaseMessages.child("messages").push();
 
             Map newMessage = new HashMap();
             newMessage.put("createdByUser", currentUserID);
@@ -107,15 +113,14 @@ public class ChatUserActivity extends AppCompatActivity {
 
     private void getChatMessages() {
         Log.d("probanding","3.1");
-        mDatabaseChat.addChildEventListener(new ChildEventListener() {
+        mDatabaseChat.addChildEventListener(new ChildEventListener() {//RECORREMOS LOS CHATS
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                Log.d("probanding","3.2");
                 if(dataSnapshot.exists()){
                     Log.d("probanding","3.3");
+
                     String message = null;
                     String createdByUser = null;
-
                     if(dataSnapshot.child("text").getValue()!=null){
                         message = dataSnapshot.child("text").getValue().toString();
                     }
