@@ -236,7 +236,6 @@ public class EditarPublicacion extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if(resultUri6!=null) {
-
                     final Uri imageUri = null;
                     // final Uri imageUri = Uri.parse("android.resource://ProyectoTitulo/drawable/image_name");
                     //resultUri6 = imageUri;
@@ -244,9 +243,9 @@ public class EditarPublicacion extends AppCompatActivity {
                     mBorrarPublicacion6.setVisibility(View.INVISIBLE);
                 }
                 if(existoFoto6==1){
-                    mPublicacionImage6.setImageResource(R.drawable.ic_launcher_foreground);
-                    mBorrarPublicacion6.setVisibility(View.INVISIBLE);
-                    borrar6 = 1;
+                        mPublicacionImage6.setImageResource(R.drawable.ic_launcher_foreground);
+                        mBorrarPublicacion6.setVisibility(View.INVISIBLE);
+                        borrar6 = 1;
                 }
             }
         });

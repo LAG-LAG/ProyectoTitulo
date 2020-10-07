@@ -20,7 +20,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.NoActionBar">
-        <activity android:name=".file"></activity>
+        <activity android:name=".ChatUserActivity"></activity>
+        <activity android:name=".file" />
         <activity android:name=".MisFavoritosDetalle" />
         <activity
             android:name=".EditarPublicacion"

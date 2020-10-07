@@ -64,7 +64,14 @@ public class Chat extends AppCompatActivity {
 
         lvItems.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {/*
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(view.getContext(), ChatUserActivity.class);
+                Bundle b = new Bundle();
+                chats auxChat = (chats)lvItems.getAdapter().getItem(position);
+                b.putString("chatId", auxChat.getIdClothes());
+                intent.putExtras(b);
+                view.getContext().startActivity(intent);
+                /*
                 publicacion AuxPublicacion = (publicacion)lvItems.getAdapter().getItem(position);
                 String idClothes = AuxPublicacion.getIdClothes();
                 Intent intentDetalle = new Intent(Chat.this, MiPublicacionDetalle.class);
