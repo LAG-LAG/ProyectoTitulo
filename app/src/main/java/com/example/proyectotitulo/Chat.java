@@ -93,12 +93,13 @@ public class Chat extends AppCompatActivity {
         chatsDb.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                if (dataSnapshot.exists() && dataSnapshot.child("idUserVendedor").getValue().toString().equals(currentUId) || dataSnapshot.child("idUserComprador").getValue().toString().equals(currentUId)){
-                    Log.d("probando","Adentro"+dataSnapshot.getKey());
+                if (dataSnapshot.exists() && dataSnapshot.hasChild("idPrenda") && dataSnapshot.hasChild("idUserComprador") && dataSnapshot.hasChild("idUserVendedor") && dataSnapshot.hasChild("messages")) {
+                    if (dataSnapshot.child("idUserVendedor").getValue().toString().equals(currentUId) || dataSnapshot.child("idUserComprador").getValue().toString().equals(currentUId)) {
+                    Log.d("probando", "Adentro" + dataSnapshot.getKey());
                     idPrendaChat = dataSnapshot.child("idPrenda").getValue().toString();
                     final String idPrendaChatNuevo = idPrendaChat;
                     //idPrendas.add(idPrendaChat);
-                    Log.d("probando","id prenda chat "+idPrendaChat);
+                    Log.d("probando", "id prenda chat " + idPrendaChat);
                     final String chatCurrentId = dataSnapshot.getKey();
                     usersDb.addChildEventListener(new ChildEventListener() {
                         @Override
@@ -113,23 +114,22 @@ public class Chat extends AppCompatActivity {
                                     public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                                         //Log.d("probando","afuera producto "+dataSnapshot.getKey());
                                         //for(int i = 0 ; i< idPrendas.size();i++) {
-                                            if (dataSnapshot.getKey().equals(idPrendaChatNuevo)) {
-                                                Log.d("probando", "Adentro producto" + dataSnapshot.getKey());
-                                                currentUId = mAuth.getCurrentUser().getUid();
-                                                clothesCurrentUid = dataSnapshot.getKey();
-                                                //String idVendedorOComprador = "por hacer";//aca hay que ver si el loco es vendedor o comprador en el chat para mostrar el nombre.
-                                                String fotoPublicacion;
-                                                if (dataSnapshot.child("clothesPhotos").hasChild("photoId1")) {
-                                                    fotoPublicacion = dataSnapshot.child("clothesPhotos").child("photoId1").getValue().toString();
-                                                } else {
-                                                    fotoPublicacion = "default";
-                                                }
-                                                Log.d("probando", "titulo: " + dataSnapshot.child("tituloPublicacion").getValue().toString() + " fotoPublicacion: " + fotoPublicacion + "current chat: " + chatCurrentId);
-                                                chats item = new chats(dataSnapshot.child("tituloPublicacion").getValue().toString(), fotoPublicacion, chatCurrentId);
-                                                listItems.add(item);
-                                                //idPrendas.remove(i);
-                                                adapter.notifyDataSetChanged(); //esto se usa cad vez que se añade o se quita un elemetno del arraylist de los items.
+                                        if (dataSnapshot.getKey().equals(idPrendaChatNuevo)) {
+                                            Log.d("probando", "Adentro producto" + dataSnapshot.getKey());
+                                            currentUId = mAuth.getCurrentUser().getUid();
+                                            clothesCurrentUid = dataSnapshot.getKey();
+                                            //String idVendedorOComprador = "por hacer";//aca hay que ver si el loco es vendedor o comprador en el chat para mostrar el nombre.
+                                            String fotoPublicacion;
+                                            if (dataSnapshot.child("clothesPhotos").hasChild("photoId1")) {
+                                                fotoPublicacion = dataSnapshot.child("clothesPhotos").child("photoId1").getValue().toString();
+                                            } else {
+                                                fotoPublicacion = "default";
                                             }
+                                            Log.d("probando", "titulo: " + dataSnapshot.child("tituloPublicacion").getValue().toString() + " fotoPublicacion: " + fotoPublicacion + "current chat: " + chatCurrentId);
+                                            chats item = new chats(dataSnapshot.child("tituloPublicacion").getValue().toString(), fotoPublicacion, chatCurrentId);
+                                            listItems.add(item);
+                                            adapter.notifyDataSetChanged(); //esto se usa cad vez que se añade o se quita un elemetno del arraylist de los items.
+                                        }
                                         //}
                                     }
 
@@ -180,7 +180,7 @@ public class Chat extends AppCompatActivity {
                     });
 
                 }
-
+                }
             }
 
             @Override
@@ -202,6 +202,7 @@ public class Chat extends AppCompatActivity {
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
+
         });
 
 
