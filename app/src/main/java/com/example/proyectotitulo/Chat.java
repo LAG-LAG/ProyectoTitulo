@@ -3,6 +3,8 @@ package com.example.proyectotitulo;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -42,11 +44,13 @@ public class Chat extends AppCompatActivity {
         //Toolbar Menu
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        //getSupportActionBar().setDisplayShowHomeEnabled(true);
         if (getSupportActionBar() != null) {
             getSupportActionBar().setTitle("Mis Chats");
         }
+
+
 
         usersDb = FirebaseDatabase.getInstance().getReference().child("Users"); //esto obtiene todos los usuarios de la bd
         chatsDb = FirebaseDatabase.getInstance().getReference().child("chat");
@@ -89,7 +93,7 @@ public class Chat extends AppCompatActivity {
         chatsDb.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                if (dataSnapshot.child("idUserVendedor").getValue().toString().equals(currentUId) || dataSnapshot.child("idUserComprador").getValue().toString().equals(currentUId)){
+                if (dataSnapshot.exists() && dataSnapshot.child("idUserVendedor").getValue().toString().equals(currentUId) || dataSnapshot.child("idUserComprador").getValue().toString().equals(currentUId)){
                     Log.d("probando","Adentro"+dataSnapshot.getKey());
                     idPrendaChat = dataSnapshot.child("idPrenda").getValue().toString();
                     final String idPrendaChatNuevo = idPrendaChat;
@@ -204,7 +208,13 @@ public class Chat extends AppCompatActivity {
     }
 
 
-
+    //Crea el menu en la toolbar
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu, menu);
+        return true;
+    }
 
     /*private ArrayList<publicacion> GetArrayItems(){
         ArrayList<publicacion> listItems = new ArrayList<>();
@@ -216,10 +226,31 @@ public class Chat extends AppCompatActivity {
     }*/
 
     //toolbar
-    public boolean onOptionsItemSelected(MenuItem item){
-        Intent myIntent = new Intent(getApplicationContext(), VerMiCuenta.class);
-        startActivityForResult(myIntent, 0);
-        return true;
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()){
+
+            case R.id.accountBtn:
+                Intent intentAccount = new Intent(Chat.this, VerMiCuenta.class);
+                startActivity(intentAccount);
+                finish();
+                break;
+
+            case R.id.publicacionesBtn:
+                Intent intentChat = new Intent(Chat.this, PaginaPrincipal.class);
+                startActivity(intentChat);
+                finish();
+                break;
+
+            case R.id.addBtn:
+                Intent intentAdd = new Intent(Chat.this, AddPublicaciones.class);
+                startActivity(intentAdd);
+                finish();
+                break;
+
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
 }

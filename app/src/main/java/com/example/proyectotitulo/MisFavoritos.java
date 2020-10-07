@@ -215,9 +215,11 @@ public class MisFavoritos extends AppCompatActivity {
     }
 
                 //toolbar
-        public boolean onOptionsItemSelected(MenuItem item){
+                @Override
+                public boolean onOptionsItemSelected(MenuItem item){
         Intent myIntent = new Intent(getApplicationContext(), VerMiCuenta.class);
-        startActivityForResult(myIntent, 0);
+        startActivity(myIntent);
+        finish();
         return true;
     }
 
