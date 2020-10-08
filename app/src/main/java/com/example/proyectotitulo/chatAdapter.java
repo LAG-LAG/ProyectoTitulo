@@ -73,6 +73,7 @@ public class chatAdapter extends BaseAdapter{
         nombreVendedor.setText(item.getNombreVendedor());
         Log.d("positionVector","ID Publicacion Item: "+item.getIdClothes());
 
+        ImageView editarbtn= (ImageView) view.findViewById(R.id.imgEditarMiPublicacion);
         ImageView borrarbtn= (ImageView) view.findViewById(R.id.imgBorrarMiPublicacionChat);
         //ImageView editarbtn= (ImageView) view.findViewById(R.id.imgEditarMiPublicacion);
 

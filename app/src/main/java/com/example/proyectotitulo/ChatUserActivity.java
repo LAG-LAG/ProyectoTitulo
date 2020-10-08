@@ -1,12 +1,19 @@
 package com.example.proyectotitulo;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -40,6 +47,15 @@ public class ChatUserActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_chat);
+
+        //toolbar
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setTitle("Chat");
+        }
 
         chatId = getIntent().getExtras().getString("chatId");
 
@@ -160,4 +176,35 @@ public class ChatUserActivity extends AppCompatActivity {
     private List<ChatObject> getDataSetChat() {
         return resultsChat;
     }
+
+
+    //Crea el menu en la toolbar
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_chat, menu);
+        return true;
+    }
+
+    //Controla los botones del menu
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.valorarPublicacionBtn:
+                Toast.makeText(this, "Valorar", Toast.LENGTH_SHORT).show();
+                /*Intent intentValorar = new Intent(ChatUserActivity.this, AddPublicaciones.class);
+                startActivity(intentValorar);
+                finish();*/
+                break;
+            case R.id.bloquearChatBtn:
+                Toast.makeText(this, "Bloquear", Toast.LENGTH_SHORT).show();
+                /*Intent intentBloquear = new Intent(ChatUserActivity.this, PaginaPrincipal.class);
+                startActivity(intentBloquear);
+                finish();*/
+                break;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
 }

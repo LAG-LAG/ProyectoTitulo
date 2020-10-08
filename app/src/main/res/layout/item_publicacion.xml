@@ -29,14 +29,14 @@
                 android:textSize="16dp"/>
         </LinearLayout>
 
-        <!--<de.hdodenhof.circleimageview.CircleImageView
+        <de.hdodenhof.circleimageview.CircleImageView
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:src="@drawable/edit_48dp"
         android:layout_centerVertical="true"
         android:layout_toLeftOf="@+id/imgBorrarMiPublicacion"
         android:layout_marginRight="5dp"
-        android:id="@+id/imgEditarMiPublicacion"/>-->
+        android:id="@+id/imgEditarMiPublicacion"/>
         <de.hdodenhof.circleimageview.CircleImageView
             android:layout_width="50dp"
             android:layout_height="50dp"

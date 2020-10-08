@@ -58,6 +58,8 @@ public class MisFavoritosDetalle extends AppCompatActivity {
         idClothes = getIntent().getExtras().getString("idClothes");
 
         tamanoUrlImagenes = 0;
+
+        //toolbar
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);

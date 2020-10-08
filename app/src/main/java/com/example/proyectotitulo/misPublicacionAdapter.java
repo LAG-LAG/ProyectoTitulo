@@ -28,6 +28,7 @@ public class misPublicacionAdapter extends BaseAdapter{
     private Context context;
     private ArrayList<publicacion> listItems;
     private DatabaseReference connectionsDb,usersDb;
+    private FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
     public misPublicacionAdapter(Context context, ArrayList<publicacion> listItems) {
         this.context = context;
@@ -71,7 +72,8 @@ public class misPublicacionAdapter extends BaseAdapter{
         valorPublicacion.setText(item.getValorPublicacion());
 
         ImageView borrarbtn= (ImageView) view.findViewById(R.id.imgBorrarMiPublicacion);
-        //ImageView editarbtn= (ImageView) view.findViewById(R.id.imgEditarMiPublicacion);
+        ImageView editarbtn= (ImageView) view.findViewById(R.id.imgEditarMiPublicacion);
+        editarbtn.setVisibility(View.VISIBLE);
 
         borrarbtn.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -116,6 +118,52 @@ public class misPublicacionAdapter extends BaseAdapter{
 
             }
         });
+
+        editarbtn.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                Log.d("TAG", "onClick: editar");
+                Log.d("TAG", "Titulo Publicacion: "+item.getTituloPublicacion());
+                item.getIdClothes();
+                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                String currentUId = user.getUid();
+                usersDb = FirebaseDatabase.getInstance().getReference().child("Users").child(currentUId).child("clothes");
+                usersDb.addChildEventListener(new ChildEventListener() {
+                    @Override
+                    public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                        if(dataSnapshot.exists() && dataSnapshot.getKey().equals(item.getIdClothes())){
+                            //Intent intent = new Intent(context, MisPublicaciones.class);
+                            Intent intent = new Intent(context,EditarPublicacion.class);
+                            intent.putExtra("idClothes",item.getIdClothes());
+                            context.startActivity(intent);
+                        }
+                    }
+
+                    @Override
+                    public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+                    }
+
+                    @Override
+                    public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+                    }
+
+                    @Override
+                    public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+
+
+            }
+        });
+
         /*editarbtn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {

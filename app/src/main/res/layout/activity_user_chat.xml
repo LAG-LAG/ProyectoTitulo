@@ -6,18 +6,27 @@ xmlns:tools="http://schemas.android.com/tools"
 android:layout_width="match_parent"
 android:layout_height="match_parent"
 tools:context=".ChatUserActivity">
-<androidx.core.widget.NestedScrollView
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_above="@+id/sendLayout">
-    <androidx.recyclerview.widget.RecyclerView
+
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/toolbar" />
+
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/recyclerView"
-        android:scrollbars="vertical">
-    </androidx.recyclerview.widget.RecyclerView>
-</androidx.core.widget.NestedScrollView>
-<LinearLayout
+        android:layout_height="607dp"
+        android:layout_above="@+id/sendLayout"
+        android:layout_below="@+id/toolbar"
+        android:layout_marginTop="0dp"
+        android:layout_marginBottom="20dp">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scrollbars="vertical"></androidx.recyclerview.widget.RecyclerView>
+    </androidx.core.widget.NestedScrollView>
+
+    <LinearLayout
     android:id="@+id/sendLayout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
