@@ -7,11 +7,17 @@ android:layout_width="match_parent"
 android:layout_height="match_parent"
 tools:context=".ChatUserActivity">
 
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/toolbar" />
+
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="607dp"
         android:layout_above="@+id/sendLayout"
-        android:layout_marginBottom="-20dp">
+        android:layout_below="@+id/toolbar"
+        android:layout_marginTop="0dp"
+        android:layout_marginBottom="20dp">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView"

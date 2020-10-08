@@ -39,7 +39,8 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".ChatUserActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:parentActivityName=".Chat"/>
         <activity
             android:name=".detallePublicacion"
             android:screenOrientation="portrait" />
