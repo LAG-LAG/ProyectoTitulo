@@ -113,8 +113,10 @@ public class Login extends AppCompatActivity {
         mGoogleBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Log.d("gungaginga","entro1");
                 switch (view.getId()) {
                     case R.id.GoogleBtn:
+                        Log.d("gungaginga","entro2");
                         signIn();
                         break;
                 }
@@ -152,18 +154,23 @@ public class Login extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == RC_SIGN_IN) { //Si esta logueando con un Google.
+            Log.d("gungaginga","entro4");
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
             try {
+                Log.d("gungaginga","entro5");
                 GoogleSignInAccount account = task.getResult(ApiException.class);
+                Log.d("gungaginga","entro5.2");
+                Log.d("gungaginga","entro5.3"+account.getIdToken());
                 firebaseAuthWithGoogle(account.getIdToken());
             } catch (ApiException e) {
-
+                Log.d("gungaginga","error");
             }
         }
         else { //SI ESTA LOGUEANDO CON FACEBOOK
             callbackManager.onActivityResult(requestCode, resultCode, data);
         }
     }
+
     //Este metodo se encarga de obtener las credenciales de login de facebook. el mAuth(sesion actual) se le asignan las credencias y se da por completado.
     private void handleFacebookAccessToken(AccessToken token) {
         AuthCredential credential = FacebookAuthProvider.getCredential(token.getToken());
@@ -182,12 +189,17 @@ public class Login extends AppCompatActivity {
     }
 
     private void firebaseAuthWithGoogle(String idToken) {
+        Log.d("gungaginga","entro5.5");
         AuthCredential credential = GoogleAuthProvider.getCredential(idToken, null);
+        Log.d("gungaginga","entro6");
         mAuth.signInWithCredential(credential)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
+                        Log.d("gungaginga","entro7");
                         if (task.isSuccessful()) {
+                            Log.d("gungaginga","entro8");
+
                             // Sign in success, update UI with the signed-in user's information
                             FirebaseUser user = mAuth.getCurrentUser();
                         } else {
@@ -212,6 +224,7 @@ public class Login extends AppCompatActivity {
     //sign in de facebook
     private void signIn() {
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
+        Log.d("gungaginga","entro3");
         startActivityForResult(signInIntent, RC_SIGN_IN);
     }
     /*
