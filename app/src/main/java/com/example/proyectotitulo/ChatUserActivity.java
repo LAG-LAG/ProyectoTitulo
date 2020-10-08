@@ -1,12 +1,15 @@
 package com.example.proyectotitulo;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -40,6 +43,15 @@ public class ChatUserActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_chat);
+
+        //toolbar
+        /*Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setTitle("Chat");
+        }*/
 
         chatId = getIntent().getExtras().getString("chatId");
 
@@ -160,4 +172,13 @@ public class ChatUserActivity extends AppCompatActivity {
     private List<ChatObject> getDataSetChat() {
         return resultsChat;
     }
+
+
+
+    /*//toolbar
+    public boolean onOptionsItemSelected(MenuItem item){
+        Intent myIntent = new Intent(getApplicationContext(), Chat.class);
+        startActivityForResult(myIntent, 0);
+        return true;
+    }*/
 }

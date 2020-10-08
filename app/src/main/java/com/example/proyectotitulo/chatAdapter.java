@@ -73,7 +73,8 @@ public class chatAdapter extends BaseAdapter{
         Log.d("positionVector","ID Publicacion Item: "+item.getIdClothes());
 
         ImageView borrarbtn= (ImageView) view.findViewById(R.id.imgBorrarMiPublicacion);
-        //ImageView editarbtn= (ImageView) view.findViewById(R.id.imgEditarMiPublicacion);
+        ImageView editarbtn= (ImageView) view.findViewById(R.id.imgEditarMiPublicacion);
+        editarbtn.setVisibility(View.INVISIBLE);
 
         borrarbtn.setOnClickListener(new View.OnClickListener(){
             @Override
