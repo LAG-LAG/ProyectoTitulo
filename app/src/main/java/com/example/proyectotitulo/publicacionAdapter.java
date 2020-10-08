@@ -71,7 +71,8 @@ public class publicacionAdapter extends BaseAdapter{
         valorPublicacion.setText(item.getValorPublicacion());
 
         ImageView borrarbtn= (ImageView) view.findViewById(R.id.imgBorrarMiPublicacion);
-        //ImageView editarbtn= (ImageView) view.findViewById(R.id.imgEditarMiPublicacion);
+        ImageView editarbtn= (ImageView) view.findViewById(R.id.imgEditarMiPublicacion);
+        editarbtn.setVisibility(View.INVISIBLE);
 
         borrarbtn.setOnClickListener(new View.OnClickListener(){
             @Override
