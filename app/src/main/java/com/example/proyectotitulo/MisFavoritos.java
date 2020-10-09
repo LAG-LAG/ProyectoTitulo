@@ -96,15 +96,16 @@ public class MisFavoritos extends AppCompatActivity {
                             for(i=0;i<clothesIdGuardados.size();i++) {
                                 if (dataSnapshot.getKey().equals(clothesIdGuardados.get(i))) {
                                     String fotoPublicacion;
-                                    if (dataSnapshot.child("clothesPhotos").hasChild("photoId1")) {
-                                        fotoPublicacion = dataSnapshot.child("clothesPhotos").child("photoId1").getValue().toString();
-                                    } else {
-                                        fotoPublicacion = "default";
+                                    if(dataSnapshot.hasChild("tituloPublicacion") && dataSnapshot.hasChild("clothesPhotos")& dataSnapshot.hasChild("ValorPrenda")) {
+                                        if (dataSnapshot.child("clothesPhotos").hasChild("photoId1")) {
+                                            fotoPublicacion = dataSnapshot.child("clothesPhotos").child("photoId1").getValue().toString();
+                                        } else {
+                                            fotoPublicacion = "default";
+                                        }
+                                        publicacion item = new publicacion(dataSnapshot.child("tituloPublicacion").getValue().toString(), fotoPublicacion, clothesIdGuardados.get(i));
+                                        listItems.add(item);
+                                        adapter.notifyDataSetChanged(); //esto se usa cad vez que se añade o se quita un elemetno del arraylist de los items.
                                     }
-
-                                    publicacion item = new publicacion(dataSnapshot.child("tituloPublicacion").getValue().toString(), fotoPublicacion, clothesIdGuardados.get(i));
-                                    listItems.add(item);
-                                    adapter.notifyDataSetChanged(); //esto se usa cad vez que se añade o se quita un elemetno del arraylist de los items.
                                 }
                             }
                         }
@@ -165,8 +166,10 @@ public class MisFavoritos extends AppCompatActivity {
                     clothesDb.addChildEventListener(new ChildEventListener() {
                         @Override
                         public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                            currentUId = mAuth.getCurrentUser().getUid();
-                            clothesIdGuardados.add(dataSnapshot.getKey());
+                            if(dataSnapshot.exists()) {
+                                currentUId = mAuth.getCurrentUser().getUid();
+                                clothesIdGuardados.add(dataSnapshot.getKey());
+                            }
                         }
 
                         @Override
