@@ -19,7 +19,7 @@ public class Valorar extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         if (getSupportActionBar() != null) {
-            getSupportActionBar().setTitle("Detalle publicacion");
+            getSupportActionBar().setTitle("Valorar");
         }
 
 
@@ -28,7 +28,7 @@ public class Valorar extends AppCompatActivity {
     //toolbar
     @Override
     public boolean onOptionsItemSelected(MenuItem item){
-        Intent myIntent = new Intent(getApplicationContext(), PaginaPrincipal.class);
+        Intent myIntent = new Intent(getApplicationContext(), ChatUserActivity.class);
         startActivityForResult(myIntent, 0);
         return true;
     }
