@@ -28,7 +28,7 @@ public class Valorar extends AppCompatActivity {
     private ImageView mImage;
     private RatingBar mRBestado, mRBtrato, mRBpuntualidad;
     private String chatId,currentUserID;
-    private DatabaseReference chatsDb,usersDb,clothesDb;
+    private DatabaseReference chatsDb,usersDb,clothesDb,chatsDbdos;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,7 +36,7 @@ public class Valorar extends AppCompatActivity {
         setContentView(R.layout.activity_valorar);
         chatsDb = FirebaseDatabase.getInstance().getReference().child("chat");
         usersDb = FirebaseDatabase.getInstance().getReference().child("Users"); //esto obtiene todos los usuarios de la bd
-
+        chatsDbdos = FirebaseDatabase.getInstance().getReference().child("chat");
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -81,6 +81,39 @@ public class Valorar extends AppCompatActivity {
                     estadoFinalizado.setValue("1");
                     DatabaseReference estadoPublicacion =  FirebaseDatabase.getInstance().getReference().child("Users").child(idVendedor).child("clothes").child(idPrenda).child("estaVendida");
                     estadoPublicacion.setValue("1");
+                    chatsDbdos.addChildEventListener(new ChildEventListener() {
+                        @Override
+                        public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                            if(dataSnapshot.exists() && dataSnapshot.child("idPrenda").getValue().toString().equals(idPrenda)){
+                                Log.d("valoracion","weaaaa "+dataSnapshot.getKey());
+                                Log.d("valoracion", "idprenda "+dataSnapshot.child("idPrenda").getValue().toString());
+                                Log.d("valoracion", "idprenda de arriba "+idPrenda);
+                                final DatabaseReference finalizarChats =  FirebaseDatabase.getInstance().getReference().child("chat").child(dataSnapshot.getKey()).child("estadoFinalizado");
+                                finalizarChats.setValue("1");
+                            }
+                        }
+
+                        @Override
+                        public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+                        }
+
+                        @Override
+                        public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+                        }
+
+                        @Override
+                        public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+                    });
+
                     Intent myIntent = new Intent(getApplicationContext(), ChatUserActivity.class);
                     myIntent.putExtra("chatId",chatId);
                     startActivityForResult(myIntent, 0);

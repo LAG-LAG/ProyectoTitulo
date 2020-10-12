@@ -221,7 +221,7 @@ public class ChatUserActivity extends AppCompatActivity {
 
                             }
                             else {
-                                valorarOComprar.setTitle("Marcar como Comprada.");
+                                valorarOComprar.setTitle("Marcar Como No Vendida");
                                 Log.d("pruebachat","7");
                             }
                         }
@@ -230,7 +230,7 @@ public class ChatUserActivity extends AppCompatActivity {
                         }
                         else{
                             Log.d("pruebachat","8");
-                            valorarOComprar.setTitle("Marcar como Comprada.");
+                            valorarOComprar.setTitle("Marcar Como No Vendida");
                             DatabaseReference estadoPrenda = FirebaseDatabase.getInstance().getReference().child("chat").child(chatId).child("marcadaComoVendida");
                             estadoPrenda.setValue("0");
                         }
