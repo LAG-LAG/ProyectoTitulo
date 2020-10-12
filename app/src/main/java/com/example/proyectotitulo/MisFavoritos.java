@@ -166,7 +166,7 @@ public class MisFavoritos extends AppCompatActivity {
                     clothesDb.addChildEventListener(new ChildEventListener() {
                         @Override
                         public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                            if(dataSnapshot.exists()) {
+                            if(dataSnapshot.exists() && dataSnapshot.getValue().toString().equals("true")) {
                                 currentUId = mAuth.getCurrentUser().getUid();
                                 clothesIdGuardados.add(dataSnapshot.getKey());
                             }
