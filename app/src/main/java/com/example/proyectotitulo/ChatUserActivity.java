@@ -1,5 +1,6 @@
 package com.example.proyectotitulo;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -215,7 +216,7 @@ public class ChatUserActivity extends AppCompatActivity {
                         esComprador=0;
                         if(dataSnapshot.hasChild("marcadaComoVendida")) {
                             if(dataSnapshot.child("marcadaComoVendida").getValue().equals("1")){
-                                valorarOComprar.setTitle("Marcar Como Vendida");
+                                valorarOComprar.setTitle("Marcar Como No Vendida");
                                 Log.d("pruebachat","6");
 
                             }
@@ -265,10 +266,57 @@ public class ChatUserActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()){
             case R.id.valorarPublicacionBtn:
-                Toast.makeText(this, "Valorar", Toast.LENGTH_SHORT).show();
-                Intent intentValorar = new Intent(ChatUserActivity.this, Valorar.class);
-                startActivity(intentValorar);
-                finish();
+                if(esComprador==1){
+                    chatsDb.addChildEventListener(new ChildEventListener() {
+                        @Override
+                        public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                            if(dataSnapshot.exists() && dataSnapshot.getKey().equals(chatId)) {
+                                if (dataSnapshot.hasChild("marcadaComoVendida")) {
+                                    if(dataSnapshot.child("marcadaComoVendida").getValue().toString().equals("1")){
+                                        Intent intentValorar = new Intent(ChatUserActivity.this, Valorar.class);
+                                        startActivity(intentValorar);
+                                        finish();                                    }
+                                    else{
+                                        Toast.makeText(ChatUserActivity.this, "El vendedor no ha marcado como vendida.", Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+                            }
+                        }
+
+                        @Override
+                        public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+                        }
+
+                        @Override
+                        public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+                        }
+
+                        @Override
+                        public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+                    });
+                }
+                else{
+                    if(item.getTitle().equals("Marcar Como No Vendida")){
+                        item.setTitle("Marcar Como Vendida");
+                        DatabaseReference estadoPrenda = FirebaseDatabase.getInstance().getReference().child("chat").child(chatId).child("marcadaComoVendida");
+                        estadoPrenda.setValue("0");
+                    }
+                    else{
+                        item.setTitle("Marcar Como No Vendida");
+                        DatabaseReference estadoPrenda = FirebaseDatabase.getInstance().getReference().child("chat").child(chatId).child("marcadaComoVendida");
+                        estadoPrenda.setValue("1");
+                    }
+
+                }
                 break;
             case R.id.bloquearChatBtn:
                 Toast.makeText(this, "Bloquear", Toast.LENGTH_SHORT).show();
@@ -280,5 +328,6 @@ public class ChatUserActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
 
 }
