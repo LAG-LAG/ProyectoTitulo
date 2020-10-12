@@ -1,6 +1,5 @@
 package com.example.proyectotitulo;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -12,6 +11,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -35,11 +35,10 @@ public class ChatUserActivity extends AppCompatActivity {
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mChatAdapter;
     private RecyclerView.LayoutManager mChatLayoutManager;
-
+    private DatabaseReference chatsDb;
     private EditText mSendEditText;
-
+    private int esComprador;
     private Button mSendButton;
-
     private String currentUserID, matchId, chatId;
 
     DatabaseReference mDatabaseUser, mDatabaseChat,mDatabaseMessages;
@@ -56,7 +55,10 @@ public class ChatUserActivity extends AppCompatActivity {
         if (getSupportActionBar() != null) {
             getSupportActionBar().setTitle("Chat");
         }
+        //valorarOComprar = (MenuItem) findViewById(R.id.valorarPublicacionBtn);
 
+        //valorarOComprar.setTitle("gungaginga");
+        chatsDb = FirebaseDatabase.getInstance().getReference().child("chat");
         chatId = getIntent().getExtras().getString("chatId");
 
         currentUserID = FirebaseAuth.getInstance().getCurrentUser().getUid();
@@ -71,6 +73,7 @@ public class ChatUserActivity extends AppCompatActivity {
 
         Log.d("probanding","3");
         //getChatId();
+        checkSellerorBuyer();
         getChatMessages();
         Log.d("probanding","4");
 
@@ -92,6 +95,10 @@ public class ChatUserActivity extends AppCompatActivity {
                 sendMessage();
             }
         });
+    }
+
+    private void checkSellerorBuyer() {
+
     }
 
     private void sendMessage() {
@@ -183,6 +190,73 @@ public class ChatUserActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_chat, menu);
+
+        final MenuItem valorarOComprar = menu.findItem(R.id.valorarPublicacionBtn);
+
+
+        Log.d("pruebachat","1");
+        chatsDb.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                Log.d("pruebachat","2");
+                if(dataSnapshot.exists() && dataSnapshot.getKey().equals(chatId)){
+                    Log.d("pruebachat","3");
+                    if(dataSnapshot.child("idUserComprador").getValue().toString().equals(currentUserID)){
+                        Log.d("pruebachat","4 es comprador");
+                        esComprador=1;
+                        valorarOComprar.setTitle("Valorar");
+                        if(!dataSnapshot.hasChild("marcadaComoVendida")) {
+                            DatabaseReference estadoPrenda = FirebaseDatabase.getInstance().getReference().child("chat").child(chatId).child("marcadaComoVendida");
+                            estadoPrenda.setValue("0");
+                        }
+                    }
+                    else{
+                        Log.d("pruebachat","5 es vendedor");
+                        esComprador=0;
+                        if(dataSnapshot.hasChild("marcadaComoVendida")) {
+                            if(dataSnapshot.child("marcadaComoVendida").getValue().equals("1")){
+                                valorarOComprar.setTitle("Marcar Como Vendida");
+                                Log.d("pruebachat","6");
+
+                            }
+                            else {
+                                valorarOComprar.setTitle("Marcar como Comprada.");
+                                Log.d("pruebachat","7");
+                            }
+                        }
+                        else{
+                            Log.d("pruebachat","8");
+                            valorarOComprar.setTitle("Marcar como Comprada.");
+                            DatabaseReference estadoPrenda = FirebaseDatabase.getInstance().getReference().child("chat").child(chatId).child("marcadaComoVendida");
+                            estadoPrenda.setValue("0");
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+
+
         return true;
     }
 
