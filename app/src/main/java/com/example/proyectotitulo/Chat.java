@@ -29,7 +29,7 @@ public class Chat extends AppCompatActivity {
     private ListView lvItems;
     private chatAdapter adapter;
     private FirebaseAuth mAuth;
-    private DatabaseReference usersDb,chatsDb;
+    private DatabaseReference usersDb,usersDbDos,chatsDb;
     private DatabaseReference clothesDb;
     private String currentUId, clothesCurrentUid, currentOwnerUid,idPrendaChat;
     private ArrayList<chats> listItems = new ArrayList<>();
@@ -40,7 +40,6 @@ public class Chat extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
-
         //Toolbar Menu
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -53,6 +52,7 @@ public class Chat extends AppCompatActivity {
 
 
         usersDb = FirebaseDatabase.getInstance().getReference().child("Users"); //esto obtiene todos los usuarios de la bd
+        usersDbDos = FirebaseDatabase.getInstance().getReference().child("Users");
         chatsDb = FirebaseDatabase.getInstance().getReference().child("chat");
         mAuth = FirebaseAuth.getInstance();
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
@@ -96,6 +96,18 @@ public class Chat extends AppCompatActivity {
                 if (dataSnapshot.exists() && dataSnapshot.hasChild("idPrenda") && dataSnapshot.hasChild("idUserComprador") && dataSnapshot.hasChild("idUserVendedor") && dataSnapshot.hasChild("messages")) {
                     if (dataSnapshot.child("idUserVendedor").getValue().toString().equals(currentUId) || dataSnapshot.child("idUserComprador").getValue().toString().equals(currentUId)) {
                     Log.d("probando", "Adentro" + dataSnapshot.getKey());
+
+                    //String idNombreChatAux = "";
+                    String vendedor;
+                    if(!dataSnapshot.child("idUserComprador").getValue().toString().equals(currentUId)){
+                        vendedor = "idUserComprador";
+                    }
+                    else{
+                        vendedor = "idUserVendedor";
+                    }
+
+                    final String idNombreChat = dataSnapshot.child(vendedor).getValue().toString();
+                    Log.d("gingigingi","idnombre "+idNombreChat);
                     idPrendaChat = dataSnapshot.child("idPrenda").getValue().toString();
                     final String idPrendaChatNuevo = idPrendaChat;
                     //idPrendas.add(idPrendaChat);
@@ -114,9 +126,11 @@ public class Chat extends AppCompatActivity {
                                     public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                                         //Log.d("probando","afuera producto "+dataSnapshot.getKey());
                                         //for(int i = 0 ; i< idPrendas.size();i++) {
+
                                         if (dataSnapshot.getKey().equals(idPrendaChatNuevo)) {
                                             Log.d("probando", "Adentro producto" + dataSnapshot.getKey());
                                             currentUId = mAuth.getCurrentUser().getUid();
+
                                             clothesCurrentUid = dataSnapshot.getKey();
                                             //String idVendedorOComprador = "por hacer";//aca hay que ver si el loco es vendedor o comprador en el chat para mostrar el nombre.
                                             String fotoPublicacion;
@@ -125,13 +139,57 @@ public class Chat extends AppCompatActivity {
                                             } else {
                                                 fotoPublicacion = "default";
                                             }
+                                            final String fotoPublicacionFinal = fotoPublicacion;
+                                            final String tituloPublicacion = dataSnapshot.child("tituloPublicacion").getValue().toString();
+                                            Log.d("mueremuere","aqui");
+                                            usersDbDos.addChildEventListener(new ChildEventListener() {
+                                                @Override
+                                                public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                                                    Log.d("mueremuere","aqui2");
+                                                    if(dataSnapshot.exists() && dataSnapshot.getKey().equals(idNombreChat)){
+                                                        Log.d("mueremuere","aqui3");
+                                                        final String nombreVendedor = "Usuario: "+dataSnapshot.child("nameUser").getValue().toString();
+                                                        Log.d("mueremuere","aqui4");
+                                                        //Log.d("mueremuere", "titulo: " + dataSnapshot.child("tituloPublicacion").getValue().toString() + " fotoPublicacion: " + fotoPublicacionFinal + "current chat: " + chatCurrentId);
+                                                        //Log.d("mueremuere","nombre vendedor: "+nombreVendedor);
+                                                        Log.d("mueremuere","aqui5");
+                                                        chats item = new chats(tituloPublicacion, fotoPublicacionFinal, chatCurrentId,nombreVendedor);
+                                                        listItems.add(item);
+                                                        adapter.notifyDataSetChanged(); //esto se usa cad vez que se añade o se quita un elemetno del arraylist de los items.
+                                                    }
+                                                }
+
+                                                @Override
+                                                public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+                                                }
+
+                                                @Override
+                                                public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+                                                }
+
+                                                @Override
+                                                public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+                                                }
+
+                                                @Override
+                                                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                                }
+                                            });
+/*
                                             Log.d("probando", "titulo: " + dataSnapshot.child("tituloPublicacion").getValue().toString() + " fotoPublicacion: " + fotoPublicacion + "current chat: " + chatCurrentId);
+                                            Log.d("gingigingi","nombre vendedor: "+nombreVendedor);
                                             chats item = new chats(dataSnapshot.child("tituloPublicacion").getValue().toString(), fotoPublicacion, chatCurrentId);
                                             listItems.add(item);
-                                            adapter.notifyDataSetChanged(); //esto se usa cad vez que se añade o se quita un elemetno del arraylist de los items.
+                                            adapter.notifyDataSetChanged(); //esto se usa cad vez que se añade o se quita un elemetno del arraylist de los items.*/
                                         }
                                         //}
                                     }
+
+
 
                                     @Override
                                     public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {

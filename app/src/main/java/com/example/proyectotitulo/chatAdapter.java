@@ -56,25 +56,26 @@ public class chatAdapter extends BaseAdapter{
         View view = convertView;
         if (view == null) {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            view = inflater.inflate(R.layout.item_publicacion, null);
+            view = inflater.inflate(R.layout.item_chat_lista, null);
         }
 
         final chats item = (chats) getItem(position);
         Log.d("positionVector","wea :: "+position);
         //convertView = LayoutInflater.from(context).inflate(R.layout.item_publicacion, null);
-        ImageView imgPublicacion = (ImageView) view.findViewById(R.id.imgPublicacion);
-        TextView tituloPublicacion = (TextView) view.findViewById(R.id.tituloPublicacion);
-        TextView valorPublicacion = (TextView) view.findViewById(R.id.valorPublicacion);
+        ImageView imgPublicacion = (ImageView) view.findViewById(R.id.imgPublicacionChat);
+        TextView tituloPublicacion = (TextView) view.findViewById(R.id.tituloPublicacionChat);
+        TextView valorPublicacion = (TextView) view.findViewById(R.id.valorPublicacionChat);
+        TextView nombreVendedor = (TextView) view.findViewById(R.id.nombreVendedor);
 
         Picasso.get().load(item.getProfileImageUrl()).into(imgPublicacion);
         tituloPublicacion.setText(item.getTituloPublicacion());
         valorPublicacion.setText(item.getValorPublicacion());
-
+        nombreVendedor.setText(item.getNombreVendedor());
         Log.d("positionVector","ID Publicacion Item: "+item.getIdClothes());
 
-        ImageView borrarbtn= (ImageView) view.findViewById(R.id.imgBorrarMiPublicacion);
         ImageView editarbtn= (ImageView) view.findViewById(R.id.imgEditarMiPublicacion);
-        editarbtn.setVisibility(View.INVISIBLE);
+        ImageView borrarbtn= (ImageView) view.findViewById(R.id.imgBorrarMiPublicacionChat);
+        //ImageView editarbtn= (ImageView) view.findViewById(R.id.imgEditarMiPublicacion);
 
         borrarbtn.setOnClickListener(new View.OnClickListener(){
             @Override
