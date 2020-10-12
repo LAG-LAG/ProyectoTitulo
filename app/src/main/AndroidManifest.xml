@@ -20,6 +20,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.NoActionBar">
+        <activity android:name=".Valorar"></activity>
         <activity android:name=".file" />
         <activity android:name=".MisFavoritosDetalle" />
         <activity
@@ -39,8 +40,8 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".ChatUserActivity"
-            android:screenOrientation="portrait"
-            android:parentActivityName=".Chat"/>
+            android:parentActivityName=".Chat"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".detallePublicacion"
             android:screenOrientation="portrait" />
