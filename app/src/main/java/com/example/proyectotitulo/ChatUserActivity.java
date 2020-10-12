@@ -272,12 +272,18 @@ public class ChatUserActivity extends AppCompatActivity {
                         public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                             if(dataSnapshot.exists() && dataSnapshot.getKey().equals(chatId)) {
                                 if (dataSnapshot.hasChild("marcadaComoVendida")) {
-                                    if(dataSnapshot.child("marcadaComoVendida").getValue().toString().equals("1")){
+                                    if(dataSnapshot.child("marcadaComoVendida").getValue().toString().equals("1") && !dataSnapshot.hasChild("estadoFinalizado")){
                                         Intent intentValorar = new Intent(ChatUserActivity.this, Valorar.class);
+                                        intentValorar.putExtra("chatId",chatId);
                                         startActivity(intentValorar);
                                         finish();                                    }
                                     else{
-                                        Toast.makeText(ChatUserActivity.this, "El vendedor no ha marcado como vendida.", Toast.LENGTH_SHORT).show();
+                                        if(dataSnapshot.hasChild("estadoFinalizado")){
+                                            Toast.makeText(ChatUserActivity.this, "Publicación ya fue valorada.", Toast.LENGTH_SHORT).show();
+                                        }
+                                        else {
+                                            Toast.makeText(ChatUserActivity.this, "El vendedor no ha marcado como vendida.", Toast.LENGTH_SHORT).show();
+                                        }
                                     }
                                 }
                             }
