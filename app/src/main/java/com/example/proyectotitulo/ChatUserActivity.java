@@ -202,7 +202,7 @@ public class ChatUserActivity extends AppCompatActivity {
                 Log.d("pruebachat","2");
                 if(dataSnapshot.exists() && dataSnapshot.getKey().equals(chatId)){
                     Log.d("pruebachat","3");
-                    if(dataSnapshot.child("idUserComprador").getValue().toString().equals(currentUserID)){
+                    if(dataSnapshot.child("idUserComprador").getValue().toString().equals(currentUserID)){ //significa que el usuario es comprador.
                         Log.d("pruebachat","4 es comprador");
                         esComprador=1;
                         valorarOComprar.setTitle("Valorar");
@@ -211,10 +211,10 @@ public class ChatUserActivity extends AppCompatActivity {
                             estadoPrenda.setValue("0");
                         }
                     }
-                    else{
+                    else{ //significa que el usuario es vendedor.
                         Log.d("pruebachat","5 es vendedor");
                         esComprador=0;
-                        if(dataSnapshot.hasChild("marcadaComoVendida")) {
+                        if(dataSnapshot.hasChild("marcadaComoVendida") && !dataSnapshot.hasChild("estadoFinalizado")) {
                             if(dataSnapshot.child("marcadaComoVendida").getValue().equals("1")){
                                 valorarOComprar.setTitle("Marcar Como No Vendida");
                                 Log.d("pruebachat","6");
@@ -224,6 +224,9 @@ public class ChatUserActivity extends AppCompatActivity {
                                 valorarOComprar.setTitle("Marcar como Comprada.");
                                 Log.d("pruebachat","7");
                             }
+                        }
+                        else if(dataSnapshot.hasChild("estadoFinalizado")){
+                            valorarOComprar.setTitle("Vendida.");
                         }
                         else{
                             Log.d("pruebachat","8");
@@ -316,10 +319,13 @@ public class ChatUserActivity extends AppCompatActivity {
                         DatabaseReference estadoPrenda = FirebaseDatabase.getInstance().getReference().child("chat").child(chatId).child("marcadaComoVendida");
                         estadoPrenda.setValue("0");
                     }
-                    else{
+                    else if (item.getTitle().equals("Marcar Como Vendida")){
                         item.setTitle("Marcar Como No Vendida");
                         DatabaseReference estadoPrenda = FirebaseDatabase.getInstance().getReference().child("chat").child(chatId).child("marcadaComoVendida");
                         estadoPrenda.setValue("1");
+                    }
+                    else{
+                        Toast.makeText(ChatUserActivity.this, "Publicación ya fue vendida.", Toast.LENGTH_SHORT).show();
                     }
 
                 }
