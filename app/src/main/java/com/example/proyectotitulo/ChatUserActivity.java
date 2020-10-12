@@ -192,9 +192,9 @@ public class ChatUserActivity extends AppCompatActivity {
         switch (item.getItemId()){
             case R.id.valorarPublicacionBtn:
                 Toast.makeText(this, "Valorar", Toast.LENGTH_SHORT).show();
-                /*Intent intentValorar = new Intent(ChatUserActivity.this, AddPublicaciones.class);
+                Intent intentValorar = new Intent(ChatUserActivity.this, Valorar.class);
                 startActivity(intentValorar);
-                finish();*/
+                finish();
                 break;
             case R.id.bloquearChatBtn:
                 Toast.makeText(this, "Bloquear", Toast.LENGTH_SHORT).show();

@@ -26,10 +26,10 @@ public class Valorar extends AppCompatActivity {
     }
 
     //toolbar
-    @Override
+    /*@Override
     public boolean onOptionsItemSelected(MenuItem item){
         Intent myIntent = new Intent(getApplicationContext(), ChatUserActivity.class);
         startActivityForResult(myIntent, 0);
         return true;
-    }
+    }*/
 }
