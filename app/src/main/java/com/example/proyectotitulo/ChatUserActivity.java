@@ -424,9 +424,12 @@ public class ChatUserActivity extends AppCompatActivity {
                 if(dataSnapshot.exists() && dataSnapshot.getKey().equals(chatId)) {
                     if(esComprador == 1) {
                         FirebaseDatabase.getInstance().getReference().child("Users").child(currentUserID).child("Bloqueados").child(dataSnapshot.child("idUserVendedor").getValue().toString()).removeValue();
+                        //FirebaseDatabase.getInstance().getReference().child("Users").child(idVendedor).child("Bloqueados").child(dataSnapshot.child(currentUserID).getValue().toString()).removeValue();
                     }
                     else{
                         FirebaseDatabase.getInstance().getReference().child("Users").child(currentUserID).child("Bloqueados").child(dataSnapshot.child("idUserComprador").getValue().toString());
+                        //FirebaseDatabase.getInstance().getReference().child("Users").child(idComprador).child("Bloqueados").child(dataSnapshot.child(currentUserID).getValue().toString()).removeValue();
+
                     }
                 }
                 if(dataSnapshot.exists() && dataSnapshot.child("idUserComprador").getValue().toString().equals(idComprador) && dataSnapshot.child("idUserVendedor").getValue().toString().equals(idVendedor)){
@@ -467,15 +470,20 @@ public class ChatUserActivity extends AppCompatActivity {
                     if(esComprador == 1) {
                         DatabaseReference guardarBloqueados = FirebaseDatabase.getInstance().getReference().child("Users").child(currentUserID).child("Bloqueados").child(dataSnapshot.child("idUserVendedor").getValue().toString());
                         guardarBloqueados.setValue("1");
+                        DatabaseReference guardarBloqueadosEnOtroUser = FirebaseDatabase.getInstance().getReference().child("Users").child(idVendedor).child("Bloqueados").child(currentUserID);
+                        guardarBloqueadosEnOtroUser.setValue("1");
                     }
                     else{
                         DatabaseReference guardarBloqueados = FirebaseDatabase.getInstance().getReference().child("Users").child(currentUserID).child("Bloqueados").child(dataSnapshot.child("idUserComprador").getValue().toString());
                         guardarBloqueados.setValue("1");
+                        DatabaseReference guardarBloqueadosEnOtroUser = FirebaseDatabase.getInstance().getReference().child("Users").child(idComprador).child("Bloqueados").child(currentUserID);
+                        guardarBloqueadosEnOtroUser.setValue("1");
                     }
                 }
                 if(dataSnapshot.exists() && dataSnapshot.child("idUserComprador").getValue().toString().equals(idComprador) && dataSnapshot.child("idUserVendedor").getValue().toString().equals(idVendedor)){
                     DatabaseReference bloquearChat = FirebaseDatabase.getInstance().getReference().child("chat").child(dataSnapshot.getKey()).child("chatBloqueado");
                     bloquearChat.setValue(currentUserID);
+
                 }
             }
 

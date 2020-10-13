@@ -10,14 +10,8 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.ChildEventListener;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.squareup.picasso.Picasso;
@@ -75,46 +69,18 @@ public class publicacionAdapter extends BaseAdapter{
         borrarbtn.setVisibility(View.VISIBLE);
         editarbtn.setVisibility(View.INVISIBLE);
 
-        borrarbtn.setOnClickListener(new View.OnClickListener(){
+        borrarbtn.setOnClickListener(new View.OnClickListener(){ //esta funcion esta mal.
             @Override
             public void onClick(View v) {
-                Log.d("TAG", "onClick: Borrar");
-                Log.d("TAG", "Titulo Publicacion: "+item.getTituloPublicacion());
-                item.getIdClothes();
+                Log.d("TAGBorrar", "onClick: Borrar");
+                Log.d("TAGBorrar", "Titulo Publicacion: "+item.getTituloPublicacion());
+                final String itemBorrar = item.getIdClothes();
                 FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-                String currentUId = user.getUid();
+                final String currentUId = user.getUid();
                 usersDb = FirebaseDatabase.getInstance().getReference().child("Users").child(currentUId).child("connections").child("publicacionesGuardadas");
-                usersDb.addChildEventListener(new ChildEventListener() {
-                    @Override
-                    public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                        if(dataSnapshot.exists() && dataSnapshot.getKey().equals(item.getIdClothes())){
-                            dataSnapshot.getRef().removeValue();
-                            Intent intent = new Intent(context,MisFavoritos.class);
-                            context.startActivity(intent);
-                        }
-                    }
-
-                    @Override
-                    public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-                    }
-
-                    @Override
-                    public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-
-                    }
-
-                    @Override
-                    public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                    }
-                });
-
+                FirebaseDatabase.getInstance().getReference().child("Users").child(currentUId).child("connections").child("publicacionesGuardadas").child(item.getIdClothes()).removeValue();
+                Intent intent = new Intent(context,MisFavoritos.class);
+                context.startActivity(intent);
 
             }
         });

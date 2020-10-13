@@ -2,6 +2,7 @@ package com.example.proyectotitulo;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -49,6 +50,7 @@ public class MisFavoritos extends AppCompatActivity {
         }
         i=0;
         clothesIdGuardados = new ArrayList<>();
+
         usersDb = FirebaseDatabase.getInstance().getReference().child("Users"); //esto obtiene todos los usuarios de la bd
 
         mAuth = FirebaseAuth.getInstance();
@@ -77,8 +79,154 @@ public class MisFavoritos extends AppCompatActivity {
     }
 
     private void obtenerPublicaciones(){
-        obtenerPublicacionesGuardadas();
-        obtenerPublicacionesGuardadasInformacion();
+
+        usersDb.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                if(dataSnapshot.exists() && dataSnapshot.hasChild("connections") && dataSnapshot.getKey().equals(mAuth.getCurrentUser().getUid())){
+                    Log.d("yunglean","yunglean1");
+                    final String key = dataSnapshot.getKey();
+                    currentOwnerUid = key;
+                    final DatabaseReference clothesDbos = usersDb.child(key).child("connections").child("publicacionesGuardadas");
+                    clothesDbos.addChildEventListener(new ChildEventListener() {
+                        @Override
+                        public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                            if(dataSnapshot.exists() && dataSnapshot.getValue().toString().equals("true")) {
+                                Log.d("yunglean","yunglean1");
+                                currentUId = mAuth.getCurrentUser().getUid();
+                                final String clothesIdGuardado = dataSnapshot.getKey();
+
+                                final DatabaseReference usersDbdos = FirebaseDatabase.getInstance().getReference().child("Users");
+                                usersDbdos.addChildEventListener(new ChildEventListener() {
+                                    @Override
+                                    public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                                        if (dataSnapshot.exists() && dataSnapshot.hasChild("clothes")) {
+                                            Log.d("yunglean","yunglean3");
+                                            final String keydos = dataSnapshot.getKey();
+                                            currentOwnerUid = keydos;
+                                            final DatabaseReference clothesDtres = usersDb.child(keydos).child("clothes");
+                                            clothesDtres.addChildEventListener(new ChildEventListener() {
+                                                @Override
+                                                public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                                                        if (dataSnapshot.exists() && dataSnapshot.getKey().equals(clothesIdGuardado)) {
+                                                            Log.d("yunglean","yunglean4");
+                                                            final String fotoPublicacion;
+                                                            if(dataSnapshot.hasChild("tituloPublicacion") && dataSnapshot.hasChild("clothesPhotos")& dataSnapshot.hasChild("ValorPrenda")) {
+                                                                if (dataSnapshot.child("clothesPhotos").hasChild("photoId1")) {
+                                                                    fotoPublicacion = dataSnapshot.child("clothesPhotos").child("photoId1").getValue().toString();
+                                                                } else {
+                                                                    fotoPublicacion = "default";
+                                                                }
+                                                                final publicacion item = new publicacion(dataSnapshot.child("tituloPublicacion").getValue().toString(), fotoPublicacion, clothesIdGuardado);
+                                                                Log.d("yunglean","yunglean5");
+                                                                listItems.add(item);
+                                                                Log.d("yunglean","yunglean6");
+                                                                adapter.notifyDataSetChanged(); //esto se usa cad vez que se añade o se quita un elemetno del arraylist de los items.
+                                                            }
+                                                        }
+                                                }
+
+                                                @Override
+                                                public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+                                                }
+
+                                                @Override
+                                                public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+                                                }
+
+                                                @Override
+                                                public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+                                                }
+
+                                                @Override
+                                                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                                }
+                                            });
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+                                    }
+
+                                    @Override
+                                    public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+                                    }
+
+                                    @Override
+                                    public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+                                    }
+
+                                    @Override
+                                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                    }
+                                });
+
+
+
+
+
+
+
+                                //clothesIdGuardados.add(dataSnapshot.getKey());
+                            }
+                        }
+
+                        @Override
+                        public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+                        }
+
+                        @Override
+                        public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+                        }
+
+                        @Override
+                        public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+                    });
+                }
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+
+        //obtenerPublicacionesGuardadas();
+        //obtenerPublicacionesGuardadasInformacion(); //el problema esta en esta funcion.
 
     }
 
@@ -159,14 +307,15 @@ public class MisFavoritos extends AppCompatActivity {
         usersDb.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                if(dataSnapshot.exists() && dataSnapshot.hasChild("connections") && dataSnapshot.getKey().equals(mAuth.getCurrentUser().getUid()) ){
+                if(dataSnapshot.exists() && dataSnapshot.hasChild("connections") && dataSnapshot.getKey().equals(mAuth.getCurrentUser().getUid()) && dataSnapshot.child("connections").hasChild("publicacionesGuardadas")){
+                    Log.d("yunglean","yunglean2");
                     String key = dataSnapshot.getKey();
                     currentOwnerUid = key;
                     clothesDb = usersDb.child(key).child("connections").child("publicacionesGuardadas");
                     clothesDb.addChildEventListener(new ChildEventListener() {
                         @Override
                         public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                            if(dataSnapshot.exists() && dataSnapshot.getValue().toString().equals("true")) {
+                            if(dataSnapshot.exists() ) {
                                 currentUId = mAuth.getCurrentUser().getUid();
                                 clothesIdGuardados.add(dataSnapshot.getKey());
                             }
