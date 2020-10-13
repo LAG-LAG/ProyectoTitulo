@@ -382,13 +382,13 @@ public class ChatUserActivity extends AppCompatActivity {
                     if(chatBloqueado!=1){
                         Bloquear();
                         item.setTitle("Desbloquear");
-                        chatBloqueado=1;
+                        //chatBloqueado=1;
                     }
                     else{
                         if(currentUserID.equals(idUserQueBloqueo)) {
                             Bloquear();
                             item.setTitle("Desbloquear");
-                            chatBloqueado=1;
+                           // chatBloqueado=1;
                         }
                     }
 
