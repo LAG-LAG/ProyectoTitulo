@@ -398,7 +398,7 @@ public class ChatUserActivity extends AppCompatActivity {
                     if(currentUserID.equals(idUserQueBloqueo)) {
                         Desbloquear();
                         item.setTitle("Bloquear");
-                        chatBloqueado=1;
+                        //chatBloqueado=1;
                     }
                     else{
                         Toast.makeText(this, "No puede desbloquear, usted fue bloqueado.", Toast.LENGTH_SHORT).show();
