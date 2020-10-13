@@ -1,16 +1,16 @@
 package com.example.proyectotitulo;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
@@ -21,9 +21,10 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 
-public class MisPublicaciones extends AppCompatActivity {
+public class MisPublicacionesVendidas extends AppCompatActivity {
+
     private ListView lvItems;
-    private publicacionAdapter adapter;
+    private misPublicacionAdapter adapter;
     private FirebaseAuth mAuth;
     private DatabaseReference usersDb;
     private DatabaseReference clothesDb;
@@ -33,7 +34,7 @@ public class MisPublicaciones extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_mis_publicaciones);
+        setContentView(R.layout.activity_mis_publicaciones_vendidas);
 
         //Toolbar Menu
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -41,7 +42,7 @@ public class MisPublicaciones extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         if (getSupportActionBar() != null) {
-            getSupportActionBar().setTitle("Mis publicaciones");
+            getSupportActionBar().setTitle("Mis publicaciones vendidas");
         }
 
         usersDb = FirebaseDatabase.getInstance().getReference().child("Users"); //esto obtiene todos los usuarios de la bd
@@ -52,8 +53,8 @@ public class MisPublicaciones extends AppCompatActivity {
 
         obtenerPublicaciones();
 
-        lvItems = (ListView) findViewById(R.id.lvMisPublicaciones);
-        adapter = new publicacionAdapter(this, listItems);
+        lvItems = (ListView) findViewById(R.id.lvMisPublicacionesVendidas);
+        adapter = new misPublicacionAdapter(this, listItems);
         lvItems.setAdapter(adapter);
 
         lvItems.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -61,7 +62,7 @@ public class MisPublicaciones extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 publicacion AuxPublicacion = (publicacion)lvItems.getAdapter().getItem(position);
                 String idClothes = AuxPublicacion.getIdClothes();
-                Intent intentDetalle = new Intent(MisPublicaciones.this, MiPublicacionDetalle.class);
+                Intent intentDetalle = new Intent(MisPublicacionesVendidas.this, MiPublicacionDetalle.class);
                 intentDetalle.putExtra("idClothes",idClothes);
                 intentDetalle.putExtra("idUser",mAuth.getCurrentUser().getUid());
                 startActivity(intentDetalle);
@@ -90,7 +91,7 @@ public class MisPublicaciones extends AppCompatActivity {
                                 } else {
                                     fotoPublicacion = "default";
                                 }
-                                if (dataSnapshot.hasChild("ValorPrenda") && dataSnapshot.hasChild("tituloPublicacion") && dataSnapshot.hasChild("DescripcionPrenda") && dataSnapshot.hasChild("clothesPhotos") && !dataSnapshot.hasChild("estaVendida")) {
+                                if (dataSnapshot.hasChild("ValorPrenda") && dataSnapshot.hasChild("tituloPublicacion") && dataSnapshot.hasChild("DescripcionPrenda") && dataSnapshot.hasChild("clothesPhotos") && dataSnapshot.hasChild("estaVendida")) {
                                     final publicacion item = new publicacion(dataSnapshot.child("tituloPublicacion").getValue().toString(), fotoPublicacion, "$" + dataSnapshot.child("ValorPrenda").getValue().toString(), clothesCurrentUid);
                                     listItems.add(item);
                                     adapter.notifyDataSetChanged(); //esto se usa cad vez que se añade o se quita un elemetno del arraylist de los items.
