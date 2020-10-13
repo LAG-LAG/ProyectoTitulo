@@ -92,6 +92,7 @@ public class misPublicacionAdapter extends BaseAdapter{
                             dataSnapshot.getRef().removeValue();
                             Intent intent = new Intent(context,MisPublicaciones.class);
                             context.startActivity(intent);
+
                         }
                     }
 
