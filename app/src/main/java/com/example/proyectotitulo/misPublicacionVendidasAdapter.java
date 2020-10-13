@@ -24,12 +24,13 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
-public class publicacionAdapter extends BaseAdapter{
+public class misPublicacionVendidasAdapter extends BaseAdapter {
     private Context context;
     private ArrayList<publicacion> listItems;
     private DatabaseReference connectionsDb,usersDb;
+    private FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
-    public publicacionAdapter(Context context, ArrayList<publicacion> listItems) {
+    public misPublicacionVendidasAdapter(Context context, ArrayList<publicacion> listItems) {
         this.context = context;
         this.listItems = listItems;
     }
@@ -48,8 +49,6 @@ public class publicacionAdapter extends BaseAdapter{
     public long getItemId(int position) {
         return 0;
     }
-
-
 
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
@@ -72,58 +71,8 @@ public class publicacionAdapter extends BaseAdapter{
 
         ImageView borrarbtn= (ImageView) view.findViewById(R.id.imgBorrarMiPublicacion);
         ImageView editarbtn= (ImageView) view.findViewById(R.id.imgEditarMiPublicacion);
-        borrarbtn.setVisibility(View.VISIBLE);
         editarbtn.setVisibility(View.INVISIBLE);
-
-        borrarbtn.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v) {
-                Log.d("TAG", "onClick: Borrar");
-                Log.d("TAG", "Titulo Publicacion: "+item.getTituloPublicacion());
-                item.getIdClothes();
-                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-                String currentUId = user.getUid();
-                usersDb = FirebaseDatabase.getInstance().getReference().child("Users").child(currentUId).child("connections").child("publicacionesGuardadas");
-                usersDb.addChildEventListener(new ChildEventListener() {
-                    @Override
-                    public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                        if(dataSnapshot.exists() && dataSnapshot.getKey().equals(item.getIdClothes())){
-                            dataSnapshot.getRef().removeValue();
-                            Intent intent = new Intent(context,MisFavoritos.class);
-                            context.startActivity(intent);
-                        }
-                    }
-
-                    @Override
-                    public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-                    }
-
-                    @Override
-                    public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-
-                    }
-
-                    @Override
-                    public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                    }
-                });
-
-
-            }
-        });
-        /*editarbtn.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v) {
-                Log.d("TAG", "onClick: editar");
-            }
-        });*/
+        borrarbtn.setVisibility(View.INVISIBLE);
 
         return view;
     }

@@ -43,6 +43,7 @@ public class VerMiCuenta extends AppCompatActivity {
     private TextView mTextViewComuna;
     private TextView mTextViewRegion;
     private Button misPublicacionesBtn;
+    private Button misPublicacionesVendidasBtn;
     private Button misFavoritosBtn;
     private String profileImageUrl, nombreUsuario, regionAnterior, comunaAnterior;
     private int existeFotoPerfil;
@@ -57,6 +58,7 @@ public class VerMiCuenta extends AppCompatActivity {
         mTextViewComuna = (TextView) findViewById(R.id.TextViewComuna);
         mTextViewRegion = (TextView) findViewById(R.id.TextViewRegion);
         misPublicacionesBtn = (Button) findViewById(R.id.misPublicacionesBtn);
+        misPublicacionesVendidasBtn = (Button) findViewById(R.id.misPublicacionesVendidasBtn);
         misFavoritosBtn = (Button) findViewById(R.id.misFavoritosBtn);
         mEditarBtn = (Button) findViewById(R.id.editarBtn);
 
@@ -85,6 +87,15 @@ public class VerMiCuenta extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(VerMiCuenta.this, MisPublicaciones.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+
+        misPublicacionesVendidasBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(VerMiCuenta.this, MisPublicacionesVendidas.class);
                 startActivity(intent);
                 finish();
             }
