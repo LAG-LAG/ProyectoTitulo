@@ -29,7 +29,7 @@ import java.util.List;
 import java.util.Map;
 
 public class PaginaPrincipal extends AppCompatActivity {
-    private ArrayList<String> al;
+    private ArrayList<String> al,bloqueados;
     // private ArrayAdapter<String> arrayAdapter;
     private arrayAdaptor arrayAdapter;
     private SwipeFlingAdapterView flingContainer;
@@ -88,8 +88,10 @@ public class PaginaPrincipal extends AppCompatActivity {
         //tallaBusqueda = "XS";
 
         SwipeFlingAdapterView flingContainer = (SwipeFlingAdapterView) findViewById(R.id.frame);
+        obtenerRechazados();
         obtenerPublicacionesAceptadasyRechazadas();
         al = new ArrayList<String>();
+        bloqueados = new ArrayList<String>();
         //obtenerPublicaciones();
 /*
         obtenerTodasLasPublicaciones();
@@ -178,6 +180,65 @@ public class PaginaPrincipal extends AppCompatActivity {
         });
     }
 
+    private void obtenerRechazados() {
+        usersDb.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                if(dataSnapshot.exists() && dataSnapshot.getKey().equals(currentUId) && dataSnapshot.hasChild("Bloqueados")){
+                    DatabaseReference blockDb = FirebaseDatabase.getInstance().getReference().child("Users").child(currentUId).child("Bloqueados");
+                    blockDb.addChildEventListener(new ChildEventListener() {
+                        @Override
+                        public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                            if(dataSnapshot.exists()){
+                                bloqueados.add(dataSnapshot.getKey());
+                            }
+                        }
+
+                        @Override
+                        public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+                        }
+
+                        @Override
+                        public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+                        }
+
+                        @Override
+                        public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+                    });
+                }
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
     private void obtenerFiltros() {
         currentUId = mAuth.getCurrentUser().getUid();
         usersDb.addChildEventListener(new ChildEventListener() {
@@ -244,8 +305,7 @@ public class PaginaPrincipal extends AppCompatActivity {
                                 currentUId = mAuth.getCurrentUser().getUid();
                                 clothesCurrentUid = dataSnapshot.getKey();
                                 Log.d("entro","currentOwnerUid:"+currentOwnerUid);
-                                if (!verSiSeEncuentraEnArrayList2(clothesCurrentUid)) {
-
+                                if (!verSiSeEncuentraEnArrayList2(clothesCurrentUid) && !estaBloqueado(currentOwnerUid)) {
                                     String idPrenda = dataSnapshot.getKey();
                                     String tituloPublicacion = dataSnapshot.child("tituloPublicacion").getValue().toString();
                                     String fotoPublicacion;
@@ -296,6 +356,15 @@ public class PaginaPrincipal extends AppCompatActivity {
                             private boolean verSiSeEncuentraEnArrayList2(String clothesCurrentUid) {
                                 for(int i=0;i<al.size();i++){
                                     if(al.get(i).equals(clothesCurrentUid)){
+                                        return true;
+                                    }
+                                }
+                                return false;
+                            }
+
+                            private boolean estaBloqueado(String ownerId) {
+                                for(int i=0;i<bloqueados.size();i++){
+                                    if(bloqueados.get(i).equals(ownerId)){
                                         return true;
                                     }
                                 }
