@@ -78,5 +78,11 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tipoPrendaSpinnerFiltrar" />
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="177dp"
+        android:layout_height="410dp"
+        tools:layout_editor_absoluteX="117dp"
+        tools:layout_editor_absoluteY="305dp" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
