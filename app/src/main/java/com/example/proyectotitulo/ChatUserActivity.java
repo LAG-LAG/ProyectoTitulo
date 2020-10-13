@@ -36,18 +36,18 @@ public class ChatUserActivity extends AppCompatActivity {
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mChatAdapter;
     private RecyclerView.LayoutManager mChatLayoutManager;
-    private DatabaseReference chatsDb;
+    private DatabaseReference chatsDb, userDb;
     private EditText mSendEditText;
-    private int esComprador;
+    private int esComprador,chatBloqueado;
     private Button mSendButton;
     private String currentUserID, matchId, chatId;
-
+    private String idVendedor, idComprador, idUserQueBloqueo;
     DatabaseReference mDatabaseUser, mDatabaseChat,mDatabaseMessages;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_chat);
-
+        idUserQueBloqueo="1";
         //toolbar
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -60,6 +60,8 @@ public class ChatUserActivity extends AppCompatActivity {
 
         //valorarOComprar.setTitle("gungaginga");
         chatsDb = FirebaseDatabase.getInstance().getReference().child("chat");
+        userDb = FirebaseDatabase.getInstance().getReference().child("Users");
+
         chatId = getIntent().getExtras().getString("chatId");
 
         currentUserID = FirebaseAuth.getInstance().getCurrentUser().getUid();
@@ -74,7 +76,7 @@ public class ChatUserActivity extends AppCompatActivity {
 
         Log.d("probanding","3");
         //getChatId();
-        checkSellerorBuyer();
+        obtenerIdVendedorEIdComprador();
         getChatMessages();
         Log.d("probanding","4");
 
@@ -98,23 +100,61 @@ public class ChatUserActivity extends AppCompatActivity {
         });
     }
 
-    private void checkSellerorBuyer() {
+    private void obtenerIdVendedorEIdComprador() {
+        chatsDb.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                if(dataSnapshot.exists() && dataSnapshot.getKey().equals(chatId)){
+                    idComprador = dataSnapshot.child("idUserComprador").getValue().toString();
+                    idVendedor = dataSnapshot.child("idUserVendedor").getValue().toString();
+                    if(dataSnapshot.hasChild("chatBloqueado")){
+                        chatBloqueado=1;
+                        idUserQueBloqueo = dataSnapshot.child("chatBloqueado").getValue().toString();
+                    }
+                }
+            }
 
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
 
+
     private void sendMessage() {
-        String sendMessageText = mSendEditText.getText().toString();
+        if(chatBloqueado!=1) {
+            String sendMessageText = mSendEditText.getText().toString();
 
-        if(!sendMessageText.isEmpty()){
-            DatabaseReference newMessageDb = mDatabaseMessages.child("messages").push();
+            if (!sendMessageText.isEmpty()) {
+                DatabaseReference newMessageDb = mDatabaseMessages.child("messages").push();
 
-            Map newMessage = new HashMap();
-            newMessage.put("createdByUser", currentUserID);
-            newMessage.put("text", sendMessageText);
+                Map newMessage = new HashMap();
+                newMessage.put("createdByUser", currentUserID);
+                newMessage.put("text", sendMessageText);
 
-            newMessageDb.setValue(newMessage);
+                newMessageDb.setValue(newMessage);
+            }
+            mSendEditText.setText(null);
         }
-        mSendEditText.setText(null);
+        else{
+            Toast.makeText(this, "No se puede enviar mensaje. Bloqueado.", Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void getChatId(){
@@ -193,6 +233,7 @@ public class ChatUserActivity extends AppCompatActivity {
         inflater.inflate(R.menu.menu_chat, menu);
 
         final MenuItem valorarOComprar = menu.findItem(R.id.valorarPublicacionBtn);
+        final MenuItem Bloquear = menu.findItem(R.id.bloquearChatBtn);
 
 
         Log.d("pruebachat","1");
@@ -201,6 +242,12 @@ public class ChatUserActivity extends AppCompatActivity {
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                 Log.d("pruebachat","2");
                 if(dataSnapshot.exists() && dataSnapshot.getKey().equals(chatId)){
+                    if(!dataSnapshot.hasChild("chatBloqueado")){
+                        Bloquear.setTitle("Bloquear");
+                    }
+                    else{
+                        Bloquear.setTitle("Desbloquear");
+                    }
                     Log.d("pruebachat","3");
                     if(dataSnapshot.child("idUserComprador").getValue().toString().equals(currentUserID)){ //significa que el usuario es comprador.
                         Log.d("pruebachat","4 es comprador");
@@ -331,7 +378,35 @@ public class ChatUserActivity extends AppCompatActivity {
                 }
                 break;
             case R.id.bloquearChatBtn:
-                Toast.makeText(this, "Bloquear", Toast.LENGTH_SHORT).show();
+                if(item.getTitle().equals("Bloquear")) {
+                    if(chatBloqueado!=1){
+                        Bloquear();
+                        item.setTitle("Desbloquear");
+                        chatBloqueado=1;
+                    }
+                    else{
+                        if(currentUserID.equals(idUserQueBloqueo)) {
+                            Bloquear();
+                            item.setTitle("Desbloquear");
+                            chatBloqueado=1;
+                        }
+                    }
+
+
+                }
+                else{
+                    if(currentUserID.equals(idUserQueBloqueo)) {
+                        Desbloquear();
+                        item.setTitle("Bloquear");
+                        chatBloqueado=1;
+                    }
+                    else{
+                        Toast.makeText(this, "No puede desbloquear, usted fue bloqueado.", Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+
+
                 /*Intent intentBloquear = new Intent(ChatUserActivity.this, PaginaPrincipal.class);
                 startActivity(intentBloquear);
                 finish();*/
@@ -339,6 +414,91 @@ public class ChatUserActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void Desbloquear() {
+        Toast.makeText(this, "Desbloquear", Toast.LENGTH_SHORT).show();
+        chatsDb.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                if(dataSnapshot.exists() && dataSnapshot.getKey().equals(chatId)) {
+                    if(esComprador == 1) {
+                        FirebaseDatabase.getInstance().getReference().child("Users").child(currentUserID).child("Bloqueados").child(dataSnapshot.child("idUserVendedor").getValue().toString()).removeValue();
+                    }
+                    else{
+                        FirebaseDatabase.getInstance().getReference().child("Users").child(currentUserID).child("Bloqueados").child(dataSnapshot.child("idUserComprador").getValue().toString());
+                    }
+                }
+                if(dataSnapshot.exists() && dataSnapshot.child("idUserComprador").getValue().toString().equals(idComprador) && dataSnapshot.child("idUserVendedor").getValue().toString().equals(idVendedor)){
+                    FirebaseDatabase.getInstance().getReference().child("chat").child(dataSnapshot.getKey()).child("chatBloqueado").removeValue();
+                    //bloquearChat.setValue("1");
+                }
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+    }
+
+    private void Bloquear() {
+        Toast.makeText(this, "Bloquear", Toast.LENGTH_SHORT).show();
+        chatsDb.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                if(dataSnapshot.exists() && dataSnapshot.getKey().equals(chatId)) {
+                    if(esComprador == 1) {
+                        DatabaseReference guardarBloqueados = FirebaseDatabase.getInstance().getReference().child("Users").child(currentUserID).child("Bloqueados").child(dataSnapshot.child("idUserVendedor").getValue().toString());
+                        guardarBloqueados.setValue("1");
+                    }
+                    else{
+                        DatabaseReference guardarBloqueados = FirebaseDatabase.getInstance().getReference().child("Users").child(currentUserID).child("Bloqueados").child(dataSnapshot.child("idUserComprador").getValue().toString());
+                        guardarBloqueados.setValue("1");
+                    }
+                }
+                if(dataSnapshot.exists() && dataSnapshot.child("idUserComprador").getValue().toString().equals(idComprador) && dataSnapshot.child("idUserVendedor").getValue().toString().equals(idVendedor)){
+                    DatabaseReference bloquearChat = FirebaseDatabase.getInstance().getReference().child("chat").child(dataSnapshot.getKey()).child("chatBloqueado");
+                    bloquearChat.setValue(currentUserID);
+                }
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
 
 
