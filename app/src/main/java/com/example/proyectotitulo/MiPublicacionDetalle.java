@@ -40,6 +40,7 @@ public class MiPublicacionDetalle extends AppCompatActivity {
     private ArrayList<String> urlImagenes;
     private ImageSlider mSlider;
     private ArrayList<SlideModel> imageList;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -172,7 +173,16 @@ public class MiPublicacionDetalle extends AppCompatActivity {
                     mTalla.setText(dataSnapshot.child("TallaPrenda").getValue().toString());
                     guardarUrlPhotos();
                     //SUBIR FOTOS.
+                    if(dataSnapshot.hasChild("estaVendida")){
+                        mGuardar.setVisibility(View.INVISIBLE);
+                        mRechazar.setVisibility(View.INVISIBLE);
+                    }
+                    else{
+                        mGuardar.setVisibility(View.VISIBLE);
+                        mRechazar.setVisibility(View.VISIBLE);
+                    }
                 }
+
             }
 
             @Override
@@ -247,8 +257,9 @@ public class MiPublicacionDetalle extends AppCompatActivity {
 
     //toolbar
     public boolean onOptionsItemSelected(MenuItem item){
-        Intent myIntent = new Intent(getApplicationContext(), MisPublicaciones.class);
-        startActivityForResult(myIntent, 0);
+        //Intent myIntent = new Intent(getApplicationContext(), MisPublicaciones.class);
+        //startActivityForResult(myIntent, 0);
+        finish();
         return true;
     }
 }

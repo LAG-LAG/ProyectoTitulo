@@ -73,6 +73,7 @@ public class misPublicacionAdapter extends BaseAdapter{
 
         ImageView borrarbtn= (ImageView) view.findViewById(R.id.imgBorrarMiPublicacion);
         ImageView editarbtn= (ImageView) view.findViewById(R.id.imgEditarMiPublicacion);
+        borrarbtn.setVisibility(View.VISIBLE);
         editarbtn.setVisibility(View.VISIBLE);
 
         borrarbtn.setOnClickListener(new View.OnClickListener(){

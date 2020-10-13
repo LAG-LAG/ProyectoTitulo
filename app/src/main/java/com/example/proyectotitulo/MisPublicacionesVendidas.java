@@ -24,7 +24,7 @@ import java.util.ArrayList;
 public class MisPublicacionesVendidas extends AppCompatActivity {
 
     private ListView lvItems;
-    private misPublicacionAdapter adapter;
+    private misPublicacionVendidasAdapter adapter;
     private FirebaseAuth mAuth;
     private DatabaseReference usersDb;
     private DatabaseReference clothesDb;
@@ -54,7 +54,7 @@ public class MisPublicacionesVendidas extends AppCompatActivity {
         obtenerPublicaciones();
 
         lvItems = (ListView) findViewById(R.id.lvMisPublicacionesVendidas);
-        adapter = new misPublicacionAdapter(this, listItems);
+        adapter = new misPublicacionVendidasAdapter(this, listItems);
         lvItems.setAdapter(adapter);
 
         lvItems.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -66,7 +66,7 @@ public class MisPublicacionesVendidas extends AppCompatActivity {
                 intentDetalle.putExtra("idClothes",idClothes);
                 intentDetalle.putExtra("idUser",mAuth.getCurrentUser().getUid());
                 startActivity(intentDetalle);
-                finish();
+                //finish();
             }
         });
 
@@ -145,9 +145,6 @@ public class MisPublicacionesVendidas extends AppCompatActivity {
             }
         });
     }
-
-
-
 
 
     //toolbar

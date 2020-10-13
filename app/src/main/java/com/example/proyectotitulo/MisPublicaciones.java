@@ -23,7 +23,7 @@ import java.util.ArrayList;
 
 public class MisPublicaciones extends AppCompatActivity {
     private ListView lvItems;
-    private publicacionAdapter adapter;
+    private misPublicacionAdapter adapter;
     private FirebaseAuth mAuth;
     private DatabaseReference usersDb;
     private DatabaseReference clothesDb;
@@ -53,7 +53,7 @@ public class MisPublicaciones extends AppCompatActivity {
         obtenerPublicaciones();
 
         lvItems = (ListView) findViewById(R.id.lvMisPublicaciones);
-        adapter = new publicacionAdapter(this, listItems);
+        adapter = new misPublicacionAdapter(this, listItems);
         lvItems.setAdapter(adapter);
 
         lvItems.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -65,7 +65,7 @@ public class MisPublicaciones extends AppCompatActivity {
                 intentDetalle.putExtra("idClothes",idClothes);
                 intentDetalle.putExtra("idUser",mAuth.getCurrentUser().getUid());
                 startActivity(intentDetalle);
-                finish();
+                //finish();
             }
         });
 
@@ -144,8 +144,6 @@ public class MisPublicaciones extends AppCompatActivity {
             }
         });
     }
-
-
 
 
 
