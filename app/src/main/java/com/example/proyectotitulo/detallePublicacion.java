@@ -31,13 +31,13 @@ import java.util.ArrayList;
 
 public class detallePublicacion extends AppCompatActivity {
 
-    private TextView mTitulo,mPrecio,mDescripcion,mColor,mTalla,mtipoPrenda;
+    private TextView mTitulo,mPrecio,mDescripcion,mColor,mTalla,mtipoPrenda,mVendedor,mNombreVendedor;
     private FirebaseAuth mAuth;
     private DatabaseReference clothesDb,photosDb,usersDb;
     private ImageView mAdelanteButton,mAtrasButton;
     private ImageView mFotoActual;
     private String idOwner,idClothes;
-    private Button mEditar, mRechazar;
+    private Button mEditar, mRechazar, mVerPerfil;
     private int indiceFotoActual, tamanoUrlImagenes;
     private ArrayList<String> urlImagenes;
     private ImageSlider mSlider;
@@ -51,6 +51,7 @@ public class detallePublicacion extends AppCompatActivity {
         Log.d("entro","Owner "+idOwner);
         Log.d("entro","Clothes "+idClothes);
         tamanoUrlImagenes = 0;
+        //toolbar
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -64,6 +65,7 @@ public class detallePublicacion extends AppCompatActivity {
 
         mEditar = (Button) findViewById(R.id.guardarPublicacionDetalle);
         mRechazar = (Button) findViewById(R.id.descartarPublicacionDetalle);
+        mVerPerfil = (Button) findViewById(R.id.verPerfilBtnPublicacionDetalle);
   //      mAdelanteButton.setVisibility(View.INVISIBLE);
 //        mAtrasButton.setVisibility(View.INVISIBLE);
 
@@ -73,6 +75,8 @@ public class detallePublicacion extends AppCompatActivity {
         mTitulo = (TextView) findViewById(R.id.tituloDetallePublicacion);
         mtipoPrenda = (TextView) findViewById(R.id.tipoPrendaDetalle);
 
+        mVendedor = (TextView) findViewById(R.id.vendedorDetallePublicacion);
+        mNombreVendedor = (TextView) findViewById(R.id.nombreVendedorDetallePublicacion);
         mPrecio = (TextView) findViewById(R.id.precioDetallePublicacion);
         mDescripcion = (TextView) findViewById(R.id.descripcionPrendaDetalle);
         mColor = (TextView) findViewById(R.id.colorPrendaDetalle);
@@ -151,6 +155,15 @@ public class detallePublicacion extends AppCompatActivity {
             public void onClick(View view) {
                 usersDb.child(mAuth.getCurrentUser().getUid()).child("connections").child("publicacionesRechazadas").child(idClothes).setValue(true);
                 Intent intent = new Intent(detallePublicacion.this,PaginaPrincipal.class);
+                startActivity(intent);
+            }
+        });
+        mVerPerfil.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(detallePublicacion.this,VerPerfilDeVendedor.class);
+                intent.putExtra("idClothes",idClothes);
+                intent.putExtra("idOwner",idOwner);
                 startActivity(intent);
             }
         });

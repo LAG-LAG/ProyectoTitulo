@@ -164,6 +164,7 @@ public class PaginaPrincipal extends AppCompatActivity {
                 Intent intentDetalle = new Intent(PaginaPrincipal.this, detallePublicacion.class);
                 intentDetalle.putExtra("idClothes",idClothes);
                 intentDetalle.putExtra("idOwner",idOwner);
+
                 startActivity(intentDetalle);
                 finish();
             }

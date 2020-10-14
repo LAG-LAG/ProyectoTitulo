@@ -161,10 +161,6 @@ public class VerMiCuenta extends AppCompatActivity {
 
             }
         });
-
-
-
-
     }
 
     //Crea el menu en la toolbar

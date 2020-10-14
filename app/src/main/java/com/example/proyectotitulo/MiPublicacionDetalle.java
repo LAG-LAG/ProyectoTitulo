@@ -152,7 +152,6 @@ public class MiPublicacionDetalle extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
         //hacer boton derecha visible.
         //el onclick del boton y que se cambie la foto
         //      }
@@ -180,6 +179,7 @@ public class MiPublicacionDetalle extends AppCompatActivity {
                     else{
                         mGuardar.setVisibility(View.VISIBLE);
                         mRechazar.setVisibility(View.VISIBLE);
+
                     }
                 }
 
