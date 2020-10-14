@@ -70,9 +70,9 @@ public class VerPerfilDeVendedor extends AppCompatActivity {
         usersDb = FirebaseDatabase.getInstance().getReference().child("Users"); //esto obtiene todos los usuarios de la bd
         getUserInfo();
 
-        /*obtenerPublicaciones();
+        obtenerPublicaciones();
 
-        lvItems = (ListView) findViewById(R.id.lvMisPublicacionesVendidas);
+        lvItems = (ListView) findViewById(R.id.lvPublicacionesVendidasVendedor);
         adapter = new misPublicacionAdapter(this, listItems);
         lvItems.setAdapter(adapter);
 
@@ -87,7 +87,7 @@ public class VerPerfilDeVendedor extends AppCompatActivity {
                 startActivity(intentDetalle);
                 //finish();
             }
-        });*/
+        });
 
     }
 
