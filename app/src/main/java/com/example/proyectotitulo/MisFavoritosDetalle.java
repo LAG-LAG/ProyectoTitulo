@@ -46,6 +46,7 @@ public class MisFavoritosDetalle extends AppCompatActivity {
     private ImageSlider mSlider;
     private ArrayList<SlideModel> imageList;
     private boolean logica;
+    private DatabaseReference usersDbDos,bloqueadosDb;
     private boolean bloqueado;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -145,7 +146,7 @@ public class MisFavoritosDetalle extends AppCompatActivity {
     private void estaBloqueado() {
         bloqueado = false;
 
-        DatabaseReference usersDbDos = FirebaseDatabase.getInstance().getReference().child("Users");/*
+        usersDbDos = FirebaseDatabase.getInstance().getReference().child("Users");/*
         usersDbDos.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -178,7 +179,7 @@ public class MisFavoritosDetalle extends AppCompatActivity {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                 if(dataSnapshot.exists() && dataSnapshot.getKey().equals(currentUId) && dataSnapshot.hasChild("Bloqueados")) {
-                    DatabaseReference bloqueadosDb = FirebaseDatabase.getInstance().getReference().child("Users").child(currentUId).child("Bloqueados");
+                    bloqueadosDb = FirebaseDatabase.getInstance().getReference().child("Users").child(currentUId).child("Bloqueados");
                     bloqueadosDb.addChildEventListener(new ChildEventListener() {
                         @Override
                         public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {

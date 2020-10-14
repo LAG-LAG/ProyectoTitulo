@@ -314,7 +314,7 @@ public class ChatUserActivity extends AppCompatActivity {
 
     //Controla los botones del menu
     @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+    public boolean onOptionsItemSelected(@NonNull final MenuItem item) {
         switch (item.getItemId()){
             case R.id.valorarPublicacionBtn:
                 if(esComprador==1){
@@ -384,29 +384,70 @@ public class ChatUserActivity extends AppCompatActivity {
                         Bloquear();
                         item.setTitle("Desbloquear");
                         chatBloqueadoMsj = 1;
-                        //chatBloqueado=1;
+                        chatBloqueado=1;
                     }
                     else{
                         if(currentUserID.equals(idUserQueBloqueo)) {
                             Bloquear();
                             item.setTitle("Desbloquear");
-                            chatBloqueadoMsj = 1;
-                           // chatBloqueado=1;
+                            chatBloqueadoMsj = 1;chatBloqueado=1;
                         }
                     }
 
 
                 }
                 else{
-                    if(currentUserID.equals(idUserQueBloqueo)) {
-                        Desbloquear();
-                        item.setTitle("Bloquear");
-                        chatBloqueadoMsj = 0;
-                        //chatBloqueado=1;
-                    }
-                    else{
-                        Toast.makeText(this, "No puede desbloquear, usted fue bloqueado.", Toast.LENGTH_SHORT).show();
-                    }
+
+                    Log.d("bloqueadito",currentUserID);
+
+                    chatsDb.addChildEventListener(new ChildEventListener() {
+                        @Override
+                        public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                            if(dataSnapshot.exists() && dataSnapshot.getKey().equals(chatId)){
+                                idComprador = dataSnapshot.child("idUserComprador").getValue().toString();
+                                idVendedor = dataSnapshot.child("idUserVendedor").getValue().toString();
+                                if(dataSnapshot.hasChild("chatBloqueado")){
+                                    chatBloqueado=1;
+                                    chatBloqueadoMsj=1;
+                                    final String idUserQueBloquea = dataSnapshot.child("chatBloqueado").getValue().toString();
+                                    if(currentUserID.equals(idUserQueBloquea)) {
+                                        Desbloquear();
+                                        item.setTitle("Bloquear");
+                                        chatBloqueadoMsj=0;
+                                        chatBloqueado=0;
+                                    }
+                                    else{
+                                        Toast.makeText(ChatUserActivity.this, "No puede desbloquear, usted fue bloqueado.", Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+                            }
+                        }
+
+                        @Override
+                        public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+                        }
+
+                        @Override
+                        public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+                        }
+
+                        @Override
+                        public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+                    });
+
+
+
+
+
                 }
 
 
