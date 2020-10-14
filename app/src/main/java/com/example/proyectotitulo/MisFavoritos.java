@@ -71,6 +71,7 @@ public class MisFavoritos extends AppCompatActivity {
                 Intent intentDetalle = new Intent(MisFavoritos.this, MisFavoritosDetalle.class);
                 intentDetalle.putExtra("idClothes",idClothes);
                 intentDetalle.putExtra("idUser",mAuth.getCurrentUser().getUid());
+                intentDetalle.putExtra("idOwner",AuxPublicacion.getIdOwner());
                 startActivity(intentDetalle);
                 finish();
             }
@@ -117,7 +118,7 @@ public class MisFavoritos extends AppCompatActivity {
                                                                 } else {
                                                                     fotoPublicacion = "default";
                                                                 }
-                                                                final publicacion item = new publicacion(dataSnapshot.child("tituloPublicacion").getValue().toString(), fotoPublicacion, clothesIdGuardado);
+                                                                final publicacion item = new publicacion(dataSnapshot.child("tituloPublicacion").getValue().toString(), fotoPublicacion, clothesIdGuardado,keydos,"1");
                                                                 Log.d("yunglean","yunglean5");
                                                                 listItems.add(item);
                                                                 Log.d("yunglean","yunglean6");

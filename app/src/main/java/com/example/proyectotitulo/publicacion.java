@@ -1,10 +1,13 @@
 package com.example.proyectotitulo;
 
 public class publicacion {
+    private String idOwner;
     private String tituloPublicacion;
     private String profileImageUrl;
     private String valorPublicacion;
     private String idClothes;
+
+
 
     public publicacion(String tituloPublicacion, String profileImageUrl, String valorPublicacion, String idClothes) {
         this.tituloPublicacion = tituloPublicacion;
@@ -19,6 +22,20 @@ public class publicacion {
             this.idClothes = idClothes;
     }
 
+    public publicacion(String tituloPublicacion, String profileImageUrl, String idClothes, String keydos, String s) {
+            this.tituloPublicacion = tituloPublicacion;
+            this.profileImageUrl = profileImageUrl;
+            this.idClothes = idClothes;
+            this.idOwner = keydos;
+    }
+
+    public String getIdOwner() {
+        return idOwner;
+    }
+
+    public void setIdOwner(String idOwner) {
+        this.idOwner = idOwner;
+    }
     public String getValorPublicacion() {
         return valorPublicacion;
     }

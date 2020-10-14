@@ -90,7 +90,8 @@ public class chatAdapter extends BaseAdapter{
                     @Override
                     public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                         if(dataSnapshot.exists() && dataSnapshot.getKey().equals(item.getIdClothes())){
-                            dataSnapshot.getRef().removeValue();
+                            //dataSnapshot.getRef().removeValue();
+                            //FirebaseDatabase.getInstance().getReference().child("chat").child(item.getIdClothes()).child("idUserVendedor")
                             Intent intent = new Intent(context,Chat.class);
                             context.startActivity(intent);
                         }

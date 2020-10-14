@@ -37,7 +37,7 @@ public class MisFavoritosDetalle extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private DatabaseReference clothesDb,photosDb,usersDb,chatsDb;
     private String idUser,idClothes;
-    private String currentUId,vendedorUID;
+    private String currentUId,vendedorUID,idOwner;
     private String currentOwnerUid;
     private Button mEditar, mRechazar;
     private ImageView mFotoActual;
@@ -46,17 +46,23 @@ public class MisFavoritosDetalle extends AppCompatActivity {
     private ImageSlider mSlider;
     private ArrayList<SlideModel> imageList;
     private boolean logica;
+    private boolean bloqueado;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mis_favoritos_detalle);
         //idOwner = getIntent().getExtras().getString("idUser");
-
+        bloqueado = false;
         mAuth = FirebaseAuth.getInstance();
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         currentUId = user.getUid();
         idClothes = getIntent().getExtras().getString("idClothes");
-
+        if(getIntent().getExtras().getString("idOwner")!=null) {
+            idOwner = getIntent().getExtras().getString("idOwner");
+        }
+        else{
+            idOwner = "";
+        }
         tamanoUrlImagenes = 0;
 
         //toolbar
@@ -87,6 +93,7 @@ public class MisFavoritosDetalle extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         logica = false;
         existeChat();
+        estaBloqueado();
         usersDb = FirebaseDatabase.getInstance().getReference().child("Users"); //esto obtiene todos los usuarios de la bd
         mSlider.setItemClickListener(new ItemClickListener() {
             @Override
@@ -99,7 +106,7 @@ public class MisFavoritosDetalle extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                if(logica==false){
+                if(logica==false && bloqueado==false){
                     String id = FirebaseDatabase.getInstance().getReference().child("chat").push().getKey();
                     DatabaseReference currentVendedor = FirebaseDatabase.getInstance().getReference().child("chat").child(id).child("idUserVendedor"); //busca al usuario que va a crear y lo guarda como una variable que se le agregan las cosas y se manda al a db de nuevo
                     DatabaseReference currentComprador = FirebaseDatabase.getInstance().getReference().child("chat").child(id).child("idUserComprador"); //busca al usuario que va a crear y lo guarda como una variable que se le agregan las cosas y se manda al a db de nuevo
@@ -110,7 +117,14 @@ public class MisFavoritosDetalle extends AppCompatActivity {
                     currentPrenda.setValue(idClothes);
                     messages.setValue(true);
                     logica=true;
+                    bloqueado = true;
                     Toast.makeText(MisFavoritosDetalle.this, "Chat Creado.", Toast.LENGTH_SHORT).show();
+                }
+                else if(bloqueado==true && logica == false){
+                    Toast.makeText(MisFavoritosDetalle.this, "No se puede crear chat: Usuario Bloqueado.", Toast.LENGTH_SHORT).show();
+                }
+                else if(bloqueado==false && logica == true){
+                    Toast.makeText(MisFavoritosDetalle.this, "No se puede crear chat: Chat ya existente.", Toast.LENGTH_SHORT).show();
                 }
                 //intent que te mande a chat
             }
@@ -125,6 +139,97 @@ public class MisFavoritosDetalle extends AppCompatActivity {
         //hacer boton derecha visible.
         //el onclick del boton y que se cambie la foto
         //      }
+
+    }
+
+    private void estaBloqueado() {
+        bloqueado = false;
+
+        DatabaseReference usersDbDos = FirebaseDatabase.getInstance().getReference().child("Users");/*
+        usersDbDos.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if(dataSnapshot.exists() && dataSnapshot.getKey().equals(currentUId) && dataSnapshot.hasChild("Bloqueados")) {
+                    DatabaseReference bloqueadosDb = FirebaseDatabase.getInstance().getReference().child("Users").child(currentUId).child("Bloqueados");
+                    bloqueadosDb.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            if(dataSnapshot.exists() && dataSnapshot.getKey().equals(idOwner)){
+                                bloqueado=true;
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+                    });
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+        */
+
+        usersDbDos.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                if(dataSnapshot.exists() && dataSnapshot.getKey().equals(currentUId) && dataSnapshot.hasChild("Bloqueados")) {
+                    DatabaseReference bloqueadosDb = FirebaseDatabase.getInstance().getReference().child("Users").child(currentUId).child("Bloqueados");
+                    bloqueadosDb.addChildEventListener(new ChildEventListener() {
+                        @Override
+                        public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                            if(dataSnapshot.exists() && dataSnapshot.getKey().equals(idOwner)){
+                                bloqueado=true;
+                            }
+                        }
+
+                        @Override
+                        public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+                        }
+
+                        @Override
+                        public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+                        }
+
+                        @Override
+                        public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+                    });
+                }
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
 
     }
 
