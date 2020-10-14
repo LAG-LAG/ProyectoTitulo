@@ -38,7 +38,7 @@ public class ChatUserActivity extends AppCompatActivity {
     private RecyclerView.LayoutManager mChatLayoutManager;
     private DatabaseReference chatsDb, userDb;
     private EditText mSendEditText;
-    private int esComprador,chatBloqueado;
+    private int esComprador,chatBloqueado,chatBloqueadoMsj;
     private Button mSendButton;
     private String currentUserID, matchId, chatId;
     private String idVendedor, idComprador, idUserQueBloqueo;
@@ -109,6 +109,7 @@ public class ChatUserActivity extends AppCompatActivity {
                     idVendedor = dataSnapshot.child("idUserVendedor").getValue().toString();
                     if(dataSnapshot.hasChild("chatBloqueado")){
                         chatBloqueado=1;
+                        chatBloqueadoMsj = 1;
                         idUserQueBloqueo = dataSnapshot.child("chatBloqueado").getValue().toString();
                     }
                 }
@@ -138,7 +139,7 @@ public class ChatUserActivity extends AppCompatActivity {
 
 
     private void sendMessage() {
-        if(chatBloqueado!=1) {
+        if(chatBloqueadoMsj!=1) {
             String sendMessageText = mSendEditText.getText().toString();
 
             if (!sendMessageText.isEmpty()) {
@@ -382,12 +383,14 @@ public class ChatUserActivity extends AppCompatActivity {
                     if(chatBloqueado!=1){
                         Bloquear();
                         item.setTitle("Desbloquear");
+                        chatBloqueadoMsj = 1;
                         //chatBloqueado=1;
                     }
                     else{
                         if(currentUserID.equals(idUserQueBloqueo)) {
                             Bloquear();
                             item.setTitle("Desbloquear");
+                            chatBloqueadoMsj = 1;
                            // chatBloqueado=1;
                         }
                     }
@@ -398,6 +401,7 @@ public class ChatUserActivity extends AppCompatActivity {
                     if(currentUserID.equals(idUserQueBloqueo)) {
                         Desbloquear();
                         item.setTitle("Bloquear");
+                        chatBloqueadoMsj = 0;
                         //chatBloqueado=1;
                     }
                     else{
