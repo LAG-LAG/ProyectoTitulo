@@ -591,7 +591,8 @@ public class PaginaPrincipal extends AppCompatActivity {
         usersDb.child(currentUId).child("connections").child("publicacionesGuardadas").addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                if (dataSnapshot.exists()) { //si existe y tiene algo ya guardado dentro lo muestra, para eso lo trae y lo castea al mapa.
+                if (dataSnapshot.exists()  ) { //si existe y tiene algo ya guardado dentro lo muestra, para eso lo trae y lo castea al mapa.
+                    //!dataSnapshot.getValue().toString().equals("Guardado")
                     al.add(dataSnapshot.getKey().toString());
                 }
             }
