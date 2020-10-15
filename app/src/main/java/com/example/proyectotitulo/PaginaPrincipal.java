@@ -402,6 +402,8 @@ public class PaginaPrincipal extends AppCompatActivity {
                     }
             }
 
+
+
                 @Override
                 public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
 
@@ -431,25 +433,86 @@ public class PaginaPrincipal extends AppCompatActivity {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                 if (dataSnapshot.exists() && dataSnapshot.hasChild("clothes") && !dataSnapshot.getKey().equals(currentUId)) {
-                    //aca si le añadimos la localizacion, habria que hacer un metodo que calculara distancia y ponerlo arriba y compararlo por el ingresado x usuario.
-                    String key = dataSnapshot.getKey();
-                    final String currentOwnerUid = key;
-                    clothesDb = usersDb.child(key).child("clothes");
-                    clothesDb.addChildEventListener(new ChildEventListener() {
-                        @Override
-                        public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) { //aqui ya recorre los productos.
-                            currentUId = mAuth.getCurrentUser().getUid();
-                            clothesCurrentUid = dataSnapshot.getKey();
-                            if (!verSiSeEncuentraEnArrayList(clothesCurrentUid) && !estaBloqueado(currentOwnerUid)) {
-                                String idPrenda = dataSnapshot.getKey();
-                                String tituloPublicacion = dataSnapshot.child("tituloPublicacion").getValue().toString();
-                                String fotoPublicacion;
-                                if (dataSnapshot.child("clothesPhotos").hasChild("photoId1")) {
-                                    Log.d("primero", "cuarto");
-                                    fotoPublicacion = dataSnapshot.child("clothesPhotos").child("photoId1").getValue().toString();
-                                } else {
-                                    fotoPublicacion = "default";
+                    if(dataSnapshot.hasChild("Bloqueados")) {
+                        if (!dataSnapshot.child("Bloqueados").hasChild(currentUId)) {
+                            //aca si le añadimos la localizacion, habria que hacer un metodo que calculara distancia y ponerlo arriba y compararlo por el ingresado x usuario.
+                            String key = dataSnapshot.getKey();
+                            final String currentOwnerUid = key;
+                            clothesDb = usersDb.child(key).child("clothes");
+                            clothesDb.addChildEventListener(new ChildEventListener() {
+                                @Override
+                                public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) { //aqui ya recorre los productos.
+                                    currentUId = mAuth.getCurrentUser().getUid();
+                                    clothesCurrentUid = dataSnapshot.getKey();
+                                    if (!verSiSeEncuentraEnArrayList(clothesCurrentUid) && !estaBloqueado(currentOwnerUid)) {
+                                        String idPrenda = dataSnapshot.getKey();
+                                        String tituloPublicacion = dataSnapshot.child("tituloPublicacion").getValue().toString();
+                                        String fotoPublicacion;
+                                        if (dataSnapshot.child("clothesPhotos").hasChild("photoId1")) {
+                                            Log.d("primero", "cuarto");
+                                            fotoPublicacion = dataSnapshot.child("clothesPhotos").child("photoId1").getValue().toString();
+                                        } else {
+                                            fotoPublicacion = "default";
+                                        }
+                                        cards Item = new cards(dataSnapshot.getKey(), dataSnapshot.child("tituloPublicacion").getValue().toString(), fotoPublicacion, currentOwnerUid); //aca se puebla la card con un constructor
+                                        rowItems.add(Item); //aca añade la persona a la tarjetita.
+                                        arrayAdapter.notifyDataSetChanged(); //esto se usa cad vez que se añade o se quita un elemetno del arraylist de los items.
+
+                                    }
                                 }
+
+                                private boolean estaBloqueado(String currentOwnerUid) {
+                                    for (int i = 0; i < bloqueados.size(); i++) {
+                                        if (bloqueados.get(i).equals(currentOwnerUid)) {
+                                            return true;
+                                        }
+                                    }
+                                    return false;
+                                }
+
+
+                                @Override
+                                public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+                                }
+
+                                @Override
+                                public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+                                }
+
+                                @Override
+                                public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                }
+                            });
+
+                        }
+                    }
+                    else{
+                        String key = dataSnapshot.getKey();
+                        final String currentOwnerUid = key;
+                        clothesDb = usersDb.child(key).child("clothes");
+                        clothesDb.addChildEventListener(new ChildEventListener() {
+                            @Override
+                            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) { //aqui ya recorre los productos.
+                                currentUId = mAuth.getCurrentUser().getUid();
+                                clothesCurrentUid = dataSnapshot.getKey();
+                                if (!verSiSeEncuentraEnArrayList(clothesCurrentUid) && !estaBloqueado(currentOwnerUid)) {
+                                    String idPrenda = dataSnapshot.getKey();
+                                    String tituloPublicacion = dataSnapshot.child("tituloPublicacion").getValue().toString();
+                                    String fotoPublicacion;
+                                    if (dataSnapshot.child("clothesPhotos").hasChild("photoId1")) {
+                                        Log.d("primero", "cuarto");
+                                        fotoPublicacion = dataSnapshot.child("clothesPhotos").child("photoId1").getValue().toString();
+                                    } else {
+                                        fotoPublicacion = "default";
+                                    }
                                     cards Item = new cards(dataSnapshot.getKey(), dataSnapshot.child("tituloPublicacion").getValue().toString(), fotoPublicacion, currentOwnerUid); //aca se puebla la card con un constructor
                                     rowItems.add(Item); //aca añade la persona a la tarjetita.
                                     arrayAdapter.notifyDataSetChanged(); //esto se usa cad vez que se añade o se quita un elemetno del arraylist de los items.
@@ -457,38 +520,37 @@ public class PaginaPrincipal extends AppCompatActivity {
                                 }
                             }
 
-                        private boolean estaBloqueado(String currentOwnerUid) {
-                            for(int i=0;i<bloqueados.size();i++){
-                                if(bloqueados.get(i).equals(currentOwnerUid)){
-                                    return true;
+                            private boolean estaBloqueado(String currentOwnerUid) {
+                                for (int i = 0; i < bloqueados.size(); i++) {
+                                    if (bloqueados.get(i).equals(currentOwnerUid)) {
+                                        return true;
+                                    }
                                 }
+                                return false;
                             }
-                            return false;
-                        }
 
 
-                        @Override
-                        public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                            @Override
+                            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
 
-                        }
+                            }
 
-                        @Override
-                        public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+                            @Override
+                            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
 
-                        }
+                            }
 
-                        @Override
-                        public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                            @Override
+                            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
 
-                        }
+                            }
 
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError databaseError) {
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
 
-                        }
-                    });
-
-
+                            }
+                        });
+                    }
                 }
             }
 
