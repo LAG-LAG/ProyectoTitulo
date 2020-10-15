@@ -34,6 +34,7 @@ public class Chat extends AppCompatActivity {
     private String currentUId, clothesCurrentUid, currentOwnerUid,idPrendaChat;
     private ArrayList<chats> listItems = new ArrayList<>();
     private ArrayList<String> idPrendas = new ArrayList<>();
+    ChildEventListener childListener;
 
 
     @Override
@@ -73,6 +74,7 @@ public class Chat extends AppCompatActivity {
                 Bundle b = new Bundle();
                 chats auxChat = (chats)lvItems.getAdapter().getItem(position);
                 b.putString("chatId", auxChat.getIdClothes());
+                chatsDb.removeEventListener(childListener);
                 intent.putExtras(b);
                 view.getContext().startActivity(intent);
                 /*
@@ -90,7 +92,7 @@ public class Chat extends AppCompatActivity {
     }
 
     private void obtenerPublicaciones(){
-        chatsDb.addChildEventListener(new ChildEventListener() {
+        childListener = chatsDb.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                 if (dataSnapshot.exists() && dataSnapshot.hasChild("idPrenda") && dataSnapshot.hasChild("idUserComprador") && dataSnapshot.hasChild("idUserVendedor")) {
@@ -288,8 +290,8 @@ public class Chat extends AppCompatActivity {
     //toolbar
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        chatsDb.removeEventListener(childListener);
         switch (item.getItemId()){
-
             case R.id.accountBtn:
                 Intent intentAccount = new Intent(Chat.this, VerMiCuenta.class);
                 startActivity(intentAccount);
@@ -299,6 +301,7 @@ public class Chat extends AppCompatActivity {
             case R.id.publicacionesBtn:
                 Intent intentChat = new Intent(Chat.this, PaginaPrincipal.class);
                 startActivity(intentChat);
+
                 finish();
                 break;
 
