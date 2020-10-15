@@ -84,13 +84,19 @@ public class chatAdapter extends BaseAdapter{
                 Log.d("TAG", "Titulo Publicacion: "+item.getTituloPublicacion());
                 item.getIdClothes();
                 FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-                String currentUId = user.getUid();
+                final String currentUId = user.getUid();
                 chatDb = FirebaseDatabase.getInstance().getReference().child("chat");
                 chatDb.addChildEventListener(new ChildEventListener() {
                     @Override
                     public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                         if(dataSnapshot.exists() && dataSnapshot.getKey().equals(item.getIdClothes())){
-                            dataSnapshot.getRef().removeValue();
+                            //dataSnapshot.getRef().removeValue();
+                            if(dataSnapshot.child("idUserVendedor").equals(currentUId)){
+                                FirebaseDatabase.getInstance().getReference().child("chat").child(item.getIdClothes()).child("idUserVendedor").setValue("");
+                            }
+                            else{
+                                FirebaseDatabase.getInstance().getReference().child("chat").child(item.getIdClothes()).child("idUserComprador").setValue("");
+                            }
                             Intent intent = new Intent(context,Chat.class);
                             context.startActivity(intent);
                         }

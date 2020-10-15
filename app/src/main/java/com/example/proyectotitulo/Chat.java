@@ -93,7 +93,7 @@ public class Chat extends AppCompatActivity {
         chatsDb.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                if (dataSnapshot.exists() && dataSnapshot.hasChild("idPrenda") && dataSnapshot.hasChild("idUserComprador") && dataSnapshot.hasChild("idUserVendedor") && dataSnapshot.hasChild("messages")) {
+                if (dataSnapshot.exists() && dataSnapshot.hasChild("idPrenda") && dataSnapshot.hasChild("idUserComprador") && dataSnapshot.hasChild("idUserVendedor")) {
                     if (dataSnapshot.child("idUserVendedor").getValue().toString().equals(currentUId) || dataSnapshot.child("idUserComprador").getValue().toString().equals(currentUId)) {
                     Log.d("probando", "Adentro" + dataSnapshot.getKey());
 
@@ -153,9 +153,10 @@ public class Chat extends AppCompatActivity {
                                                         //Log.d("mueremuere", "titulo: " + dataSnapshot.child("tituloPublicacion").getValue().toString() + " fotoPublicacion: " + fotoPublicacionFinal + "current chat: " + chatCurrentId);
                                                         //Log.d("mueremuere","nombre vendedor: "+nombreVendedor);
                                                         Log.d("mueremuere","aqui5");
-                                                        chats item = new chats(tituloPublicacion, fotoPublicacionFinal, chatCurrentId,nombreVendedor);
-                                                        listItems.add(item);
-                                                        adapter.notifyDataSetChanged(); //esto se usa cad vez que se añade o se quita un elemetno del arraylist de los items.
+                                                            chats item = new chats(tituloPublicacion, fotoPublicacionFinal, chatCurrentId, nombreVendedor);
+                                                            listItems.add(item);
+                                                            adapter.notifyDataSetChanged(); //esto se usa cad vez que se añade o se quita un elemetno del arraylist de los items.
+
                                                     }
                                                 }
 
