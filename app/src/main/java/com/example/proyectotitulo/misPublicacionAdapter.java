@@ -29,10 +29,16 @@ public class misPublicacionAdapter extends BaseAdapter{
     private ArrayList<publicacion> listItems;
     private DatabaseReference connectionsDb,usersDb;
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
-
+    private int perfilVendedor = 0;
     public misPublicacionAdapter(Context context, ArrayList<publicacion> listItems) {
         this.context = context;
         this.listItems = listItems;
+    }
+
+    public misPublicacionAdapter(Context context, ArrayList<publicacion> listItems, String perfilvendedor) {
+        this.context = context;
+        this.listItems = listItems;
+        this.perfilVendedor=1;
     }
 
     @Override
@@ -76,6 +82,10 @@ public class misPublicacionAdapter extends BaseAdapter{
         borrarbtn.setVisibility(View.VISIBLE);
         editarbtn.setVisibility(View.VISIBLE);
 
+        if(perfilVendedor==1){
+            borrarbtn.setVisibility(View.INVISIBLE);
+            editarbtn.setVisibility(View.INVISIBLE);
+        }
         borrarbtn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
@@ -175,4 +185,6 @@ public class misPublicacionAdapter extends BaseAdapter{
 
         return view;
     }
+
+
 }

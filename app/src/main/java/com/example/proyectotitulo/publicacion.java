@@ -67,6 +67,8 @@ public class publicacion {
     public void setTituloPublicacion (String tituloPublicacion){
                     this.tituloPublicacion = tituloPublicacion;
                 }
+
+
 }
 
 

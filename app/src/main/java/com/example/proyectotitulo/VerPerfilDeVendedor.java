@@ -72,7 +72,7 @@ public class VerPerfilDeVendedor extends AppCompatActivity {
         obtenerPublicaciones();
 
         lvItems = (ListView) findViewById(R.id.lvPublicacionesVendidasVendedor);
-        adapter = new misPublicacionAdapter(this, listItems);
+        adapter = new misPublicacionAdapter(this, listItems,"PERFILVENDEDOR");
         lvItems.setAdapter(adapter);
 
         lvItems.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -83,6 +83,7 @@ public class VerPerfilDeVendedor extends AppCompatActivity {
                 Intent intentDetalle = new Intent(VerPerfilDeVendedor.this, MiPublicacionDetalle.class);
                 intentDetalle.putExtra("idClothes",idClothes);
                 intentDetalle.putExtra("idUser",idOwner); //mAuth.getCurrentUser().getUid());
+                intentDetalle.putExtra("verPerfilVendedor","1");
                 startActivity(intentDetalle);
                 //finish();
             }

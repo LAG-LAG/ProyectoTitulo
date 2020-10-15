@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -40,7 +41,7 @@ public class MiPublicacionDetalle extends AppCompatActivity {
     private ArrayList<String> urlImagenes;
     private ImageSlider mSlider;
     private ArrayList<SlideModel> imageList;
-
+    private int verPerfilVendedor = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,6 +62,13 @@ public class MiPublicacionDetalle extends AppCompatActivity {
 
         mGuardar = (Button) findViewById(R.id.guardarPublicacionDetallePropia);
         mRechazar = (Button) findViewById(R.id.descartarPublicacionDetallePropia);
+
+        if(getIntent().getExtras().getString("verPerfilVendedor")!=null){
+            Log.d("verVendedor","gungaginga");
+            verPerfilVendedor = 1;
+            mGuardar.setText("Guardar");
+            mRechazar.setVisibility(View.INVISIBLE);
+        }
         //      mAdelanteButton.setVisibility(View.INVISIBLE);
 //        mAtrasButton.setVisibility(View.INVISIBLE);
 
@@ -139,9 +147,17 @@ public class MiPublicacionDetalle extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 //usersDb.child(mAuth.getCurrentUser().getUid()).child("connections").child("publicacionesGuardadas").child(idClothes).setValue(true);
-                Intent intent = new Intent(MiPublicacionDetalle.this,EditarPublicacion.class);
-                intent.putExtra("idClothes",idClothes);
-                startActivity(intent);
+                if(verPerfilVendedor==0) {
+                    Intent intent = new Intent(MiPublicacionDetalle.this, EditarPublicacion.class);
+                    intent.putExtra("idClothes", idClothes);
+                    startActivity(intent);
+                }
+                else{
+                    usersDb.child(mAuth.getCurrentUser().getUid()).child("connections").child("publicacionesGuardadas").child(idClothes).setValue(true);
+                    Toast.makeText(MiPublicacionDetalle.this, "Publicacion Guardada", Toast.LENGTH_SHORT).show();
+                    //Intent intent = new Intent(MiPublicacionDetalle.this,MiPublicacionDetalle.class);
+                    //startActivity(intent);
+                }
             }
         });
         mRechazar.setOnClickListener(new View.OnClickListener() {
@@ -177,9 +193,11 @@ public class MiPublicacionDetalle extends AppCompatActivity {
                         mRechazar.setVisibility(View.INVISIBLE);
                     }
                     else{
-                        mGuardar.setVisibility(View.VISIBLE);
-                        mRechazar.setVisibility(View.VISIBLE);
-
+                            mGuardar.setVisibility(View.VISIBLE);
+                            mRechazar.setVisibility(View.VISIBLE);
+                            if(verPerfilVendedor==1){
+                                mRechazar.setVisibility(View.INVISIBLE);
+                            }
                     }
                 }
 
