@@ -1,6 +1,5 @@
 package com.example.proyectotitulo;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -48,6 +47,7 @@ public class MisFavoritosDetalle extends AppCompatActivity {
     private boolean logica;
     private DatabaseReference usersDbDos,bloqueadosDb;
     private boolean bloqueado;
+    ChildEventListener childListener;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -237,11 +237,11 @@ public class MisFavoritosDetalle extends AppCompatActivity {
     private void existeChat() {
         logica = false;
         chatsDb = FirebaseDatabase.getInstance().getReference().child("chat");
-        chatsDb.addChildEventListener(new ChildEventListener() {
+        childListener = chatsDb.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                if(dataSnapshot.exists() && dataSnapshot.hasChild("idUserComprador")){
-                    if(dataSnapshot.child("idUserComprador").getValue().toString().equals(currentUId) && dataSnapshot.child("idPrenda").getValue().toString().equals(idClothes)){
+                if (dataSnapshot.exists() && dataSnapshot.hasChild("idUserComprador") && dataSnapshot.hasChild("idPrenda")) {
+                    if (dataSnapshot.child("idUserComprador").getValue().toString().equals(currentUId) && dataSnapshot.child("idPrenda").getValue().toString().equals(idClothes)) {
                         logica = true;
                     }
                 }
@@ -413,6 +413,7 @@ public class MisFavoritosDetalle extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item){
         //Intent myIntent = new Intent(getApplicationContext(), MisFavoritos.class);
         //startActivityForResult(myIntent, 0);
+        chatsDb.removeEventListener(childListener);
         finish();
         return true;
     }
