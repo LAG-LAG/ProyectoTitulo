@@ -440,7 +440,7 @@ public class PaginaPrincipal extends AppCompatActivity {
                         public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) { //aqui ya recorre los productos.
                             currentUId = mAuth.getCurrentUser().getUid();
                             clothesCurrentUid = dataSnapshot.getKey();
-                            if (!verSiSeEncuentraEnArrayList(clothesCurrentUid)) {
+                            if (!verSiSeEncuentraEnArrayList(clothesCurrentUid) && !estaBloqueado(currentOwnerUid)) {
                                 String idPrenda = dataSnapshot.getKey();
                                 String tituloPublicacion = dataSnapshot.child("tituloPublicacion").getValue().toString();
                                 String fotoPublicacion;
@@ -456,6 +456,15 @@ public class PaginaPrincipal extends AppCompatActivity {
 
                                 }
                             }
+
+                        private boolean estaBloqueado(String currentOwnerUid) {
+                            for(int i=0;i<bloqueados.size();i++){
+                                if(bloqueados.get(i).equals(currentOwnerUid)){
+                                    return true;
+                                }
+                            }
+                            return false;
+                        }
 
 
                         @Override
