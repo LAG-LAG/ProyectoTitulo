@@ -73,7 +73,7 @@ public class MisFavoritos extends AppCompatActivity {
                 intentDetalle.putExtra("idUser",mAuth.getCurrentUser().getUid());
                 intentDetalle.putExtra("idOwner",AuxPublicacion.getIdOwner());
                 startActivity(intentDetalle);
-                finish();
+                //finish();
             }
         });
 

@@ -20,6 +20,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.NoActionBar">
+        <activity android:name=".VerPerfilDeVendedor"></activity>
         <activity android:name=".MisPublicacionesVendidas" />
         <activity android:name=".file" />
         <activity android:name=".MisFavoritosDetalle" />
