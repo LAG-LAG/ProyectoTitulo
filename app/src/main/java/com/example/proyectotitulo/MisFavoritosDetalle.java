@@ -66,6 +66,9 @@ public class MisFavoritosDetalle extends AppCompatActivity {
         }
         tamanoUrlImagenes = 0;
 
+
+
+
         //toolbar
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
