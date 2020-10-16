@@ -90,7 +90,7 @@ public class Account extends AppCompatActivity {
         mborrarFotoPerfil.setVisibility(View.INVISIBLE);
         longitudLatitudEstado = 0;
         mUbicacion = (Button) findViewById(R.id.ubicacionButton);
-
+        mUbicacion.setVisibility(View.INVISIBLE);
         //Toolbar Menu
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -249,6 +249,7 @@ public class Account extends AppCompatActivity {
                         List<Address> addresses = geocoder.getFromLocation(location.getLatitude(), location.getLatitude(), 1);
                         latitude = addresses.get(0).getLatitude();
                         longitude = addresses.get(0).getLongitude();
+                        Log.d("latitud","latitud "+latitude+" longitude "+longitude);
                         longitudLatitudEstado=1;
                     }
                     catch(IOException e){

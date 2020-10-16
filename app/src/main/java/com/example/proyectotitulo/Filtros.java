@@ -1,6 +1,11 @@
 package com.example.proyectotitulo;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
+import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -19,7 +24,12 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
 
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
@@ -30,9 +40,11 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class Filtros extends AppCompatActivity {
     private DatabaseReference mCustomerDatabase;
@@ -40,12 +52,15 @@ public class Filtros extends AppCompatActivity {
     private DatabaseReference usersDb;
     private Spinner mRegionesSpinner,mComunasSpinner,mTalla,mTipoPrenda,mEstado;
     private String comunaBusqueda, tallaBusqueda, estadoBusqueda, tipoPrendaBusqueda,regionBusqueda,currentUId;
-    private int estadoComunas,valorKm;
+    private int estadoComunas,valorKm,longitudLatitudEstado;
+    private double longitude,latitude;
     private Button mAplicar;
     private Switch mSwitch;
     private TextView KmSeekBar;
     private boolean isChecked;
     private SeekBar mSeekbar;
+    private FusedLocationProviderClient fusedLocationProviderClient;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -118,6 +133,7 @@ public class Filtros extends AppCompatActivity {
         llenarComboBoxRegiones();
 
 */
+        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
 
         mSeekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
@@ -267,28 +283,69 @@ public class Filtros extends AppCompatActivity {
                             return;
                         }
                         else{
-                            String tipoPrendaAnterior = String.valueOf(mTipoPrenda.getSelectedItem());
-                            String estadoAnterior = String.valueOf(mEstado.getSelectedItem());
-                            String tallaAnterior = String.valueOf(mTalla.getSelectedItem());
-                            if (tipoPrendaAnterior.equals("Seleccione tipo de prenda")) {
-                                tipoPrendaAnterior = "";
+                            if (ActivityCompat.checkSelfPermission(Filtros.this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                                getLocation();
+                                String tipoPrendaAnterior = String.valueOf(mTipoPrenda.getSelectedItem());
+                                String estadoAnterior = String.valueOf(mEstado.getSelectedItem());
+                                String tallaAnterior = String.valueOf(mTalla.getSelectedItem());
+                                if (tipoPrendaAnterior.equals("Seleccione tipo de prenda")) {
+                                    tipoPrendaAnterior = "";
+                                }
+                                if (estadoAnterior.equals("Seleccione estado")) {
+                                    estadoAnterior = "";
+                                }
+                                if (tallaAnterior.equals("Seleccione talla")) {
+                                    tallaAnterior = "";
+                                }
+                                usersDb.child(mAuth.getCurrentUser().getUid()).child("filtros").child("tipoBusqueda").setValue("1"); //si es uno busca por km.
+                                usersDb.child(mAuth.getCurrentUser().getUid()).child("filtros").child("KMBusqueda").setValue(valorKm);
+                                usersDb.child(mAuth.getCurrentUser().getUid()).child("filtros").child("tipoPrendaAnterior").setValue(tipoPrendaAnterior);
+                                usersDb.child(mAuth.getCurrentUser().getUid()).child("filtros").child("estadoAnterior").setValue(estadoAnterior);
+                                usersDb.child(mAuth.getCurrentUser().getUid()).child("filtros").child("tallaAnterior").setValue(tallaAnterior);
+                                Intent intentPaginaPrincipal = new Intent(Filtros.this, PaginaPrincipal.class);
+                                startActivity(intentPaginaPrincipal);
+                                finish();
+                                return;
+                            } else {
+                                ActivityCompat.requestPermissions(Filtros.this, new String[]{
+                                        Manifest.permission.ACCESS_FINE_LOCATION}, 44);
                             }
-                            if (estadoAnterior.equals("Seleccione estado")) {
-                                estadoAnterior = "";
-                            }
-                            if (tallaAnterior.equals("Seleccione talla")) {
-                                tallaAnterior = "";
-                            }
-                            usersDb.child(mAuth.getCurrentUser().getUid()).child("filtros").child("tipoBusqueda").setValue("1"); //si es uno busca por km.
-                            usersDb.child(mAuth.getCurrentUser().getUid()).child("filtros").child("KMBusqueda").setValue(valorKm);
-                            usersDb.child(mAuth.getCurrentUser().getUid()).child("filtros").child("tipoPrendaAnterior").setValue(tipoPrendaAnterior);
-                            usersDb.child(mAuth.getCurrentUser().getUid()).child("filtros").child("estadoAnterior").setValue(estadoAnterior);
-                            usersDb.child(mAuth.getCurrentUser().getUid()).child("filtros").child("tallaAnterior").setValue(tallaAnterior);
-                            Intent intentPaginaPrincipal = new Intent(Filtros.this, PaginaPrincipal.class);
-                            startActivity(intentPaginaPrincipal);
-                            finish();
+
+                        }
+                    }
+
+                    private void getLocation() {
+                        if (ActivityCompat.checkSelfPermission(Filtros.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(Filtros.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                            // TODO: Consider calling
+                            //    ActivityCompat#requestPermissions
+                            // here to request the missing permissions, and then overriding
+                            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                            //                                          int[] grantResults)
+                            // to handle the case where the user grants the permission. See the documentation
+                            // for ActivityCompat#requestPermissions for more details.
                             return;
                         }
+                        fusedLocationProviderClient.getLastLocation().addOnCompleteListener(new OnCompleteListener<Location>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Location> task) {
+                                Location location = task.getResult();
+                                if (location != null) {
+                                    Geocoder geocoder = new Geocoder(Filtros.this, Locale.getDefault());
+                                    try {
+                                        List<Address> addresses = geocoder.getFromLocation(location.getLatitude(), location.getLatitude(), 1);
+                                        latitude = addresses.get(0).getLatitude();
+                                        longitude = addresses.get(0).getLongitude();
+                                        Log.d("latitud","latitud "+latitude+" longitude "+longitude);
+                                        longitudLatitudEstado=1;
+                                        FirebaseDatabase.getInstance().getReference().child("Users").child(currentUId).child("latitude").setValue(latitude);
+                                        FirebaseDatabase.getInstance().getReference().child("Users").child(currentUId).child("logitude").setValue(longitude);
+                                    }
+                                    catch(IOException e){
+                                        e.printStackTrace();
+                                    }
+                                }
+                            }
+                        });
                     }
                 });
     }
