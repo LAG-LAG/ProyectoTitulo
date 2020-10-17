@@ -39,6 +39,7 @@ public class PaginaPrincipal extends AppCompatActivity {
     private String currentUId, clothesCurrentUid;
     private Map<String, Object> map;
     private String userId;
+    private double longitudUser,latitudeUser;
     private int puedeMostrarCard,noExistenFiltros,kmBusqueda,esBusquedaPorKm;
     private String comunaBusqueda, tallaBusqueda, estadoBusqueda, tipoPrendaBusqueda,regionBusqueda;
     private Button mFiltros;
@@ -251,7 +252,7 @@ public class PaginaPrincipal extends AppCompatActivity {
         usersDb.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                if(dataSnapshot.exists() && dataSnapshot.getKey().equals(currentUId) && dataSnapshot.hasChild("filtros")){
+                if(dataSnapshot.exists() && dataSnapshot.getKey().equals(currentUId) && dataSnapshot.hasChild("filtros") ){
                     noExistenFiltros=0;
                     if(dataSnapshot.child("filtros").hasChild("KMBusqueda")){
                         kmBusqueda = Integer.valueOf(dataSnapshot.child("filtros").child("KMBusqueda").getValue().toString());
@@ -259,6 +260,12 @@ public class PaginaPrincipal extends AppCompatActivity {
                     if(dataSnapshot.child("filtros").hasChild("tipoBusqueda")){
                         if(dataSnapshot.child("filtros").child("tipoBusqueda").getValue().toString().equals("0")){
                             esBusquedaPorKm = 0;
+                            if(dataSnapshot.hasChild("longitude")){
+                                longitudUser = Double.valueOf(dataSnapshot.child("longitude").getValue().toString());
+                            }
+                            if(dataSnapshot.hasChild("latitude")){
+                                latitudeUser = Double.valueOf(dataSnapshot.child("latitude").getValue().toString());
+                            }
                         }
                         else{
                             esBusquedaPorKm = 1;
@@ -266,9 +273,13 @@ public class PaginaPrincipal extends AppCompatActivity {
                     }
                     Log.d("entro","DENTRO DEL IF. DEBERIA SER 0 "+noExistenFiltros);
                     //Toast.makeText(PaginaPrincipal.this, dataSnapshot.getKey().toString(), Toast.LENGTH_SHORT).show();
-                    comunaBusqueda = dataSnapshot.child("filtros").child("comunaAnterior").getValue().toString();
+                    if(dataSnapshot.child("filtros").hasChild("comunaAnterior")) {
+                        comunaBusqueda = dataSnapshot.child("filtros").child("comunaAnterior").getValue().toString();
+                    }
                     //Toast.makeText(PaginaPrincipal.this, comunaBusqueda, Toast.LENGTH_SHORT).show();
-                    regionBusqueda = dataSnapshot.child("filtros").child("regionAnterior").getValue().toString();
+                    if(dataSnapshot.child("filtros").hasChild("comunaAnterior")) {
+                        regionBusqueda = dataSnapshot.child("filtros").child("regionAnterior").getValue().toString();
+                    }
                     tipoPrendaBusqueda = dataSnapshot.child("filtros").child("tipoPrendaAnterior").getValue().toString();
                     estadoBusqueda = dataSnapshot.child("filtros").child("estadoAnterior").getValue().toString();
                     tallaBusqueda = dataSnapshot.child("filtros").child("tallaAnterior").getValue().toString();
@@ -278,9 +289,7 @@ public class PaginaPrincipal extends AppCompatActivity {
                     else if(esBusquedaPorKm==0){
                         obtenerPublicaciones();
                     }
-                    //if (comunaBusqueda != "") {
 
-                    //}
                 }
                 else if(dataSnapshot.exists() && dataSnapshot.getKey().equals(currentUId) && !dataSnapshot.hasChild("filtros")){
                         obtenerTodasLasPublicaciones();
@@ -296,116 +305,144 @@ public class PaginaPrincipal extends AppCompatActivity {
                     @Override
                     public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                         if (dataSnapshot.exists() && dataSnapshot.hasChild("clothes") && !dataSnapshot.getKey().equals(currentUId)) {
-                            /*
-                            if(dataSnapshot.){
 
-                            }
+                            if(dataSnapshot.hasChild("latitude") && dataSnapshot.hasChild("longitude") ){
+                                double latitude,longitude;
+                                latitude = Double.valueOf(dataSnapshot.child("latitude").getValue().toString());
+                                longitude = Double.valueOf(dataSnapshot.child("longitude").getValue().toString());
+                                
+                                if(estaEnRadioKM(kmBusqueda,latitude,longitude)){
+                                    //aca si le añadimos la localizacion, habria que hacer un metodo que calculara distancia y ponerlo arriba y compararlo por el ingresado x usuario.
+                                    String key = dataSnapshot.getKey();
+                                    final String currentOwnerUid = key;
+                                    Log.d("entro","currentOwnerUid antes :"+currentOwnerUid);
 
-                             */
-                            //aca si le añadimos la localizacion, habria que hacer un metodo que calculara distancia y ponerlo arriba y compararlo por el ingresado x usuario.
-                            String key = dataSnapshot.getKey();
-                            final String currentOwnerUid = key;
-                            Log.d("entro","currentOwnerUid antes :"+currentOwnerUid);
-
-                            clothesDb = usersDb.child(key).child("clothes");
-                            clothesDb.addChildEventListener(new ChildEventListener() {
-                                @Override
-                                public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) { //aqui ya recorre los productos.
-                                    currentUId = mAuth.getCurrentUser().getUid();
-                                    clothesCurrentUid = dataSnapshot.getKey();
-                                    Log.d("entro","currentOwnerUid:"+currentOwnerUid);
-                                    if (!verSiSeEncuentraEnArrayList2(clothesCurrentUid) && !estaBloqueado(currentOwnerUid)) {
-                                        String idPrenda = dataSnapshot.getKey();
-                                        String tituloPublicacion = dataSnapshot.child("tituloPublicacion").getValue().toString();
-                                        String fotoPublicacion;
-                                        if (dataSnapshot.child("clothesPhotos").hasChild("photoId1")) {
-                                            Log.d("primero", "cuarto");
-                                            fotoPublicacion = dataSnapshot.child("clothesPhotos").child("photoId1").getValue().toString();
-                                        } else {
-                                            fotoPublicacion = "default";
-                                        }
-                                        if (tipoPrendaBusqueda.equals("") && tallaBusqueda.equals("") && estadoBusqueda.equals("")) {
-                                            cards Item = new cards(dataSnapshot.getKey(), dataSnapshot.child("tituloPublicacion").getValue().toString(), fotoPublicacion, currentOwnerUid); //aca se puebla la card con un constructor
-                                            rowItems.add(Item); //aca añade la persona a la tarjetita.
-                                            arrayAdapter.notifyDataSetChanged(); //esto se usa cad vez que se añade o se quita un elemetno del arraylist de los items.
-                                        } else {
-                                            if (tipoPrendaBusqueda.equals(dataSnapshot.child("TipoPrenda").getValue().toString()) && tallaBusqueda.equals("") && estadoBusqueda.equals("")) {
-                                                cards Item = new cards(dataSnapshot.getKey(), dataSnapshot.child("tituloPublicacion").getValue().toString(), fotoPublicacion, currentOwnerUid); //aca se puebla la card con un constructor
-                                                rowItems.add(Item); //aca añade la persona a la tarjetita.
-                                                arrayAdapter.notifyDataSetChanged(); //esto se usa cad vez que se añade o se quita un elemetno del arraylist de los items.
-                                            } else if (tipoPrendaBusqueda.equals("") && tallaBusqueda.equals(dataSnapshot.child("TallaPrenda").getValue().toString()) && estadoBusqueda.equals("")) {
-                                                cards Item = new cards(dataSnapshot.getKey(), dataSnapshot.child("tituloPublicacion").getValue().toString(), fotoPublicacion, currentOwnerUid); //aca se puebla la card con un constructor
-                                                rowItems.add(Item); //aca añade la persona a la tarjetita.
-                                                arrayAdapter.notifyDataSetChanged(); //esto se usa cad vez que se añade o se quita un elemetno del arraylist de los items.
-                                            } else if (tipoPrendaBusqueda.equals("") && tallaBusqueda.equals("") && estadoBusqueda.equals(dataSnapshot.child("EstadoPrenda").getValue().toString())) {
-                                                cards Item = new cards(dataSnapshot.getKey(), dataSnapshot.child("tituloPublicacion").getValue().toString(), fotoPublicacion, currentOwnerUid); //aca se puebla la card con un constructor
-                                                rowItems.add(Item); //aca añade la persona a la tarjetita.
-                                                arrayAdapter.notifyDataSetChanged(); //esto se usa cad vez que se añade o se quita un elemetno del arraylist de los items.
-                                            } else if (tipoPrendaBusqueda.equals(dataSnapshot.child("TipoPrenda").getValue().toString()) && tallaBusqueda.equals(dataSnapshot.child("TallaPrenda").getValue().toString()) && estadoBusqueda.equals(dataSnapshot.child("EstadoPrenda").getValue().toString())) {
-                                                cards Item = new cards(dataSnapshot.getKey(), dataSnapshot.child("tituloPublicacion").getValue().toString(), fotoPublicacion, currentOwnerUid); //aca se puebla la card con un constructor
-                                                rowItems.add(Item); //aca añade la persona a la tarjetita.
-                                                arrayAdapter.notifyDataSetChanged(); //esto se usa cad vez que se añade o se quita un elemetno del arraylist de los items.
-                                            } else if (tipoPrendaBusqueda.equals(dataSnapshot.child("TipoPrenda").getValue().toString()) && tallaBusqueda.equals(dataSnapshot.child("TallaPrenda").getValue().toString()) && estadoBusqueda.equals("")) {
-                                                cards Item = new cards(dataSnapshot.getKey(), dataSnapshot.child("tituloPublicacion").getValue().toString(), fotoPublicacion, currentOwnerUid); //aca se puebla la card con un constructor
-                                                rowItems.add(Item); //aca añade la persona a la tarjetita.
-                                                arrayAdapter.notifyDataSetChanged(); //esto se usa cad vez que se añade o se quita un elemetno del arraylist de los items.
-                                            } else if (tipoPrendaBusqueda.equals(dataSnapshot.child("TipoPrenda").getValue().toString()) && tallaBusqueda.equals("") && estadoBusqueda.equals(dataSnapshot.child("EstadoPrenda").getValue().toString())) {
-                                                cards Item = new cards(dataSnapshot.getKey(), dataSnapshot.child("tituloPublicacion").getValue().toString(), fotoPublicacion, currentOwnerUid); //aca se puebla la card con un constructor
-                                                rowItems.add(Item); //aca añade la persona a la tarjetita.
-                                                arrayAdapter.notifyDataSetChanged(); //esto se usa cad vez que se añade o se quita un elemetno del arraylist de los items.
-                                            } else if (tipoPrendaBusqueda.equals("") && tallaBusqueda.equals(dataSnapshot.child("TallaPrenda").getValue().toString()) && estadoBusqueda.equals(dataSnapshot.child("EstadoPrenda").getValue().toString())) {
-                                                cards Item = new cards(dataSnapshot.getKey(), dataSnapshot.child("tituloPublicacion").getValue().toString(), fotoPublicacion, currentOwnerUid); //aca se puebla la card con un constructor
-                                                rowItems.add(Item); //aca añade la persona a la tarjetita.
-                                                arrayAdapter.notifyDataSetChanged(); //esto se usa cad vez que se añade o se quita un elemetno del arraylist de los items.
+                                    clothesDb = usersDb.child(key).child("clothes");
+                                    clothesDb.addChildEventListener(new ChildEventListener() {
+                                        @Override
+                                        public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) { //aqui ya recorre los productos.
+                                            currentUId = mAuth.getCurrentUser().getUid();
+                                            clothesCurrentUid = dataSnapshot.getKey();
+                                            Log.d("entro","currentOwnerUid:"+currentOwnerUid);
+                                            if (!verSiSeEncuentraEnArrayList2(clothesCurrentUid) && !estaBloqueado(currentOwnerUid)) {
+                                                String idPrenda = dataSnapshot.getKey();
+                                                String tituloPublicacion = dataSnapshot.child("tituloPublicacion").getValue().toString();
+                                                String fotoPublicacion;
+                                                if (dataSnapshot.child("clothesPhotos").hasChild("photoId1")) {
+                                                    Log.d("primero", "cuarto");
+                                                    fotoPublicacion = dataSnapshot.child("clothesPhotos").child("photoId1").getValue().toString();
+                                                } else {
+                                                    fotoPublicacion = "default";
+                                                }
+                                                if (tipoPrendaBusqueda.equals("") && tallaBusqueda.equals("") && estadoBusqueda.equals("")) {
+                                                    cards Item = new cards(dataSnapshot.getKey(), dataSnapshot.child("tituloPublicacion").getValue().toString(), fotoPublicacion, currentOwnerUid); //aca se puebla la card con un constructor
+                                                    rowItems.add(Item); //aca añade la persona a la tarjetita.
+                                                    arrayAdapter.notifyDataSetChanged(); //esto se usa cad vez que se añade o se quita un elemetno del arraylist de los items.
+                                                } else {
+                                                    if (tipoPrendaBusqueda.equals(dataSnapshot.child("TipoPrenda").getValue().toString()) && tallaBusqueda.equals("") && estadoBusqueda.equals("")) {
+                                                        cards Item = new cards(dataSnapshot.getKey(), dataSnapshot.child("tituloPublicacion").getValue().toString(), fotoPublicacion, currentOwnerUid); //aca se puebla la card con un constructor
+                                                        rowItems.add(Item); //aca añade la persona a la tarjetita.
+                                                        arrayAdapter.notifyDataSetChanged(); //esto se usa cad vez que se añade o se quita un elemetno del arraylist de los items.
+                                                    } else if (tipoPrendaBusqueda.equals("") && tallaBusqueda.equals(dataSnapshot.child("TallaPrenda").getValue().toString()) && estadoBusqueda.equals("")) {
+                                                        cards Item = new cards(dataSnapshot.getKey(), dataSnapshot.child("tituloPublicacion").getValue().toString(), fotoPublicacion, currentOwnerUid); //aca se puebla la card con un constructor
+                                                        rowItems.add(Item); //aca añade la persona a la tarjetita.
+                                                        arrayAdapter.notifyDataSetChanged(); //esto se usa cad vez que se añade o se quita un elemetno del arraylist de los items.
+                                                    } else if (tipoPrendaBusqueda.equals("") && tallaBusqueda.equals("") && estadoBusqueda.equals(dataSnapshot.child("EstadoPrenda").getValue().toString())) {
+                                                        cards Item = new cards(dataSnapshot.getKey(), dataSnapshot.child("tituloPublicacion").getValue().toString(), fotoPublicacion, currentOwnerUid); //aca se puebla la card con un constructor
+                                                        rowItems.add(Item); //aca añade la persona a la tarjetita.
+                                                        arrayAdapter.notifyDataSetChanged(); //esto se usa cad vez que se añade o se quita un elemetno del arraylist de los items.
+                                                    } else if (tipoPrendaBusqueda.equals(dataSnapshot.child("TipoPrenda").getValue().toString()) && tallaBusqueda.equals(dataSnapshot.child("TallaPrenda").getValue().toString()) && estadoBusqueda.equals(dataSnapshot.child("EstadoPrenda").getValue().toString())) {
+                                                        cards Item = new cards(dataSnapshot.getKey(), dataSnapshot.child("tituloPublicacion").getValue().toString(), fotoPublicacion, currentOwnerUid); //aca se puebla la card con un constructor
+                                                        rowItems.add(Item); //aca añade la persona a la tarjetita.
+                                                        arrayAdapter.notifyDataSetChanged(); //esto se usa cad vez que se añade o se quita un elemetno del arraylist de los items.
+                                                    } else if (tipoPrendaBusqueda.equals(dataSnapshot.child("TipoPrenda").getValue().toString()) && tallaBusqueda.equals(dataSnapshot.child("TallaPrenda").getValue().toString()) && estadoBusqueda.equals("")) {
+                                                        cards Item = new cards(dataSnapshot.getKey(), dataSnapshot.child("tituloPublicacion").getValue().toString(), fotoPublicacion, currentOwnerUid); //aca se puebla la card con un constructor
+                                                        rowItems.add(Item); //aca añade la persona a la tarjetita.
+                                                        arrayAdapter.notifyDataSetChanged(); //esto se usa cad vez que se añade o se quita un elemetno del arraylist de los items.
+                                                    } else if (tipoPrendaBusqueda.equals(dataSnapshot.child("TipoPrenda").getValue().toString()) && tallaBusqueda.equals("") && estadoBusqueda.equals(dataSnapshot.child("EstadoPrenda").getValue().toString())) {
+                                                        cards Item = new cards(dataSnapshot.getKey(), dataSnapshot.child("tituloPublicacion").getValue().toString(), fotoPublicacion, currentOwnerUid); //aca se puebla la card con un constructor
+                                                        rowItems.add(Item); //aca añade la persona a la tarjetita.
+                                                        arrayAdapter.notifyDataSetChanged(); //esto se usa cad vez que se añade o se quita un elemetno del arraylist de los items.
+                                                    } else if (tipoPrendaBusqueda.equals("") && tallaBusqueda.equals(dataSnapshot.child("TallaPrenda").getValue().toString()) && estadoBusqueda.equals(dataSnapshot.child("EstadoPrenda").getValue().toString())) {
+                                                        cards Item = new cards(dataSnapshot.getKey(), dataSnapshot.child("tituloPublicacion").getValue().toString(), fotoPublicacion, currentOwnerUid); //aca se puebla la card con un constructor
+                                                        rowItems.add(Item); //aca añade la persona a la tarjetita.
+                                                        arrayAdapter.notifyDataSetChanged(); //esto se usa cad vez que se añade o se quita un elemetno del arraylist de los items.
+                                                    }
+                                                }
                                             }
                                         }
-                                    }
-                                }
 
-                                private boolean verSiSeEncuentraEnArrayList2(String clothesCurrentUid) {
-                                    for(int i=0;i<al.size();i++){
-                                        if(al.get(i).equals(clothesCurrentUid)){
-                                            return true;
+                                        private boolean verSiSeEncuentraEnArrayList2(String clothesCurrentUid) {
+                                            for(int i=0;i<al.size();i++){
+                                                if(al.get(i).equals(clothesCurrentUid)){
+                                                    return true;
+                                                }
+                                            }
+                                            return false;
                                         }
-                                    }
-                                    return false;
-                                }
 
-                                private boolean estaBloqueado(String ownerId) {
-                                    for(int i=0;i<bloqueados.size();i++){
-                                        if(bloqueados.get(i).equals(ownerId)){
-                                            return true;
+                                        private boolean estaBloqueado(String ownerId) {
+                                            for(int i=0;i<bloqueados.size();i++){
+                                                if(bloqueados.get(i).equals(ownerId)){
+                                                    return true;
+                                                }
+                                            }
+                                            return false;
                                         }
-                                    }
-                                    return false;
+
+                                        @Override
+                                        public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+                                        }
+
+                                        @Override
+                                        public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+                                        }
+
+                                        @Override
+                                        public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+                                        }
+
+                                        @Override
+                                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                        }
+                                    });
+
                                 }
+                            }
 
-                                @Override
-                                public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
 
-                                }
-
-                                @Override
-                                public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-
-                                }
-
-                                @Override
-                                public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-                                }
-
-                                @Override
-                                public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                                }
-                            });
 
 
                         }
                     }
 
+                    private boolean estaEnRadioKM(int kmBusqueda, double lat2, double lon2) {
+                        double theta = longitudUser - lon2;
+                        double dist = Math.sin(deg2rad(latitudeUser))
+                                * Math.sin(deg2rad(lat2))
+                                + Math.cos(deg2rad(latitudeUser))
+                                * Math.cos(deg2rad(lat2))
+                                * Math.cos(deg2rad(theta));
+                        dist = Math.acos(dist);
+                        dist = rad2deg(dist);
+                        dist = dist * 60 * 1.1515;
+                        if(dist<=kmBusqueda){
+                            return true;
+                        }
+                        return false;
+                    }
 
+                    private double deg2rad(double deg) {
+                        return (deg * Math.PI / 180.0);
+                    }
+
+                    private double rad2deg(double rad) {
+                        return (rad * 180.0 / Math.PI);
+                    }
 
                     @Override
                     public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {

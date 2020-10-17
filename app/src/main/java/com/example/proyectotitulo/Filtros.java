@@ -302,6 +302,7 @@ public class Filtros extends AppCompatActivity {
                                 usersDb.child(mAuth.getCurrentUser().getUid()).child("filtros").child("tipoPrendaAnterior").setValue(tipoPrendaAnterior);
                                 usersDb.child(mAuth.getCurrentUser().getUid()).child("filtros").child("estadoAnterior").setValue(estadoAnterior);
                                 usersDb.child(mAuth.getCurrentUser().getUid()).child("filtros").child("tallaAnterior").setValue(tallaAnterior);
+
                                 Intent intentPaginaPrincipal = new Intent(Filtros.this, PaginaPrincipal.class);
                                 startActivity(intentPaginaPrincipal);
                                 finish();
@@ -336,9 +337,10 @@ public class Filtros extends AppCompatActivity {
                                         latitude = addresses.get(0).getLatitude();
                                         longitude = addresses.get(0).getLongitude();
                                         Log.d("latitud","latitud "+latitude+" longitude "+longitude);
-                                        longitudLatitudEstado=1;
                                         FirebaseDatabase.getInstance().getReference().child("Users").child(currentUId).child("latitude").setValue(latitude);
-                                        FirebaseDatabase.getInstance().getReference().child("Users").child(currentUId).child("logitude").setValue(longitude);
+                                        FirebaseDatabase.getInstance().getReference().child("Users").child(currentUId).child("longitude").setValue(longitude);
+                                        //longitudLatitudEstado=1;
+
                                     }
                                     catch(IOException e){
                                         e.printStackTrace();
