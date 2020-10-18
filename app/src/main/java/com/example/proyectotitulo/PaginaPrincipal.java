@@ -1,6 +1,7 @@
 package com.example.proyectotitulo;
 
 import android.content.Intent;
+import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -39,7 +40,8 @@ public class PaginaPrincipal extends AppCompatActivity {
     private String currentUId, clothesCurrentUid;
     private Map<String, Object> map;
     private String userId;
-    private int puedeMostrarCard,noExistenFiltros;
+    private double longitudUser,latitudeUser;
+    private int puedeMostrarCard,noExistenFiltros,kmBusqueda,esBusquedaPorKm;
     private String comunaBusqueda, tallaBusqueda, estadoBusqueda, tipoPrendaBusqueda,regionBusqueda;
     private Button mFiltros;
     List<cards> rowItems;
@@ -50,6 +52,7 @@ public class PaginaPrincipal extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pagina_principal);
+        esBusquedaPorKm = 0;
         usersDb = FirebaseDatabase.getInstance().getReference().child("Users"); //esto obtiene todos los usuarios de la bd
         //noExistenFiltros = 0;
         mAuth = FirebaseAuth.getInstance();
@@ -250,23 +253,260 @@ public class PaginaPrincipal extends AppCompatActivity {
         usersDb.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                if(dataSnapshot.exists() && dataSnapshot.getKey().equals(currentUId) && dataSnapshot.hasChild("filtros")){
+                if(dataSnapshot.exists() && dataSnapshot.getKey().equals(currentUId) && dataSnapshot.hasChild("filtros") ){
                     noExistenFiltros=0;
+                    if(dataSnapshot.child("filtros").hasChild("KMBusqueda")){
+                        kmBusqueda = Integer.valueOf(dataSnapshot.child("filtros").child("KMBusqueda").getValue().toString());
+                    }
+                    if(dataSnapshot.child("filtros").hasChild("tipoBusqueda")){
+                        Log.d("pnect","weaa3");
+                        if(dataSnapshot.child("filtros").child("tipoBusqueda").getValue().toString().equals("1")){
+                            esBusquedaPorKm = 1;
+                            if(dataSnapshot.hasChild("longitude")){
+                                longitudUser = Double.valueOf(dataSnapshot.child("longitude").getValue().toString());
+                                Log.d("pnect","weaa");
+                            }
+                            if(dataSnapshot.hasChild("latitude")){
+                                latitudeUser = Double.valueOf(dataSnapshot.child("latitude").getValue().toString());
+                                Log.d("pnect","wea2");
+
+                            }
+                        }
+                        else{
+                            esBusquedaPorKm = 0;
+                        }
+                    }
                     Log.d("entro","DENTRO DEL IF. DEBERIA SER 0 "+noExistenFiltros);
                     //Toast.makeText(PaginaPrincipal.this, dataSnapshot.getKey().toString(), Toast.LENGTH_SHORT).show();
-                    comunaBusqueda = dataSnapshot.child("filtros").child("comunaAnterior").getValue().toString();
+                    if(dataSnapshot.child("filtros").hasChild("comunaAnterior")) {
+                        comunaBusqueda = dataSnapshot.child("filtros").child("comunaAnterior").getValue().toString();
+                    }
                     //Toast.makeText(PaginaPrincipal.this, comunaBusqueda, Toast.LENGTH_SHORT).show();
-                    regionBusqueda = dataSnapshot.child("filtros").child("regionAnterior").getValue().toString();
+                    if(dataSnapshot.child("filtros").hasChild("comunaAnterior")) {
+                        regionBusqueda = dataSnapshot.child("filtros").child("regionAnterior").getValue().toString();
+                    }
                     tipoPrendaBusqueda = dataSnapshot.child("filtros").child("tipoPrendaAnterior").getValue().toString();
                     estadoBusqueda = dataSnapshot.child("filtros").child("estadoAnterior").getValue().toString();
                     tallaBusqueda = dataSnapshot.child("filtros").child("tallaAnterior").getValue().toString();
-                    if (comunaBusqueda != "") {
+                    if(esBusquedaPorKm==1){
+                        obtenerpublicacionesPorKm();
+                    }
+                    else if(esBusquedaPorKm==0){
                         obtenerPublicaciones();
                     }
+
                 }
                 else if(dataSnapshot.exists() && dataSnapshot.getKey().equals(currentUId) && !dataSnapshot.hasChild("filtros")){
                         obtenerTodasLasPublicaciones();
                 }
+
+            }
+
+            private void obtenerpublicacionesPorKm() {
+
+                Log.d("pnect","1");
+
+                currentUId = mAuth.getCurrentUser().getUid();
+                usersDb.addChildEventListener(new ChildEventListener() {
+                    @Override
+                    public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                        if (dataSnapshot.exists() && dataSnapshot.hasChild("clothes") && !dataSnapshot.getKey().equals(currentUId)) {
+                            Log.d("pnect","2");
+
+                            if(dataSnapshot.hasChild("latitude") && dataSnapshot.hasChild("longitude") ){
+                                double latitude,longitude;
+                                Log.d("pnect","3");
+//esto esta bien
+                                latitude = Double.valueOf(dataSnapshot.child("latitude").getValue().toString());
+                                longitude = Double.valueOf(dataSnapshot.child("longitude").getValue().toString());
+                                
+                                if(estaEnRadioKM(kmBusqueda,latitude,longitude)){
+                                    Log.d("pnect","4");
+                                    String key = dataSnapshot.getKey();
+                                    final String currentOwnerUid = key;
+                                    clothesDb = usersDb.child(key).child("clothes");
+                                    clothesDb.addChildEventListener(new ChildEventListener() {
+                                        @Override
+                                        public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) { //aqui ya recorre los productos.
+                                            Log.d("pnect","4");
+                                            currentUId = mAuth.getCurrentUser().getUid();
+                                            clothesCurrentUid = dataSnapshot.getKey();
+                                            if (!verSiSeEncuentraEnArrayList2(clothesCurrentUid) && !estaBloqueado(currentOwnerUid)) {
+                                                String idPrenda = dataSnapshot.getKey();
+                                                String tituloPublicacion = dataSnapshot.child("tituloPublicacion").getValue().toString();
+                                                String fotoPublicacion;
+                                                if (dataSnapshot.child("clothesPhotos").hasChild("photoId1")) {
+                                                    Log.d("primero", "cuarto");
+                                                    fotoPublicacion = dataSnapshot.child("clothesPhotos").child("photoId1").getValue().toString();
+                                                } else {
+                                                    fotoPublicacion = "default";
+                                                }
+                                                if (tipoPrendaBusqueda.equals("") && tallaBusqueda.equals("") && estadoBusqueda.equals("")) {
+                                                    cards Item = new cards(dataSnapshot.getKey(), dataSnapshot.child("tituloPublicacion").getValue().toString(), fotoPublicacion, currentOwnerUid); //aca se puebla la card con un constructor
+                                                    rowItems.add(Item); //aca añade la persona a la tarjetita.
+                                                    arrayAdapter.notifyDataSetChanged(); //esto se usa cad vez que se añade o se quita un elemetno del arraylist de los items.
+                                                } else {
+                                                    if (tipoPrendaBusqueda.equals(dataSnapshot.child("TipoPrenda").getValue().toString()) && tallaBusqueda.equals("") && estadoBusqueda.equals("")) {
+                                                        cards Item = new cards(dataSnapshot.getKey(), dataSnapshot.child("tituloPublicacion").getValue().toString(), fotoPublicacion, currentOwnerUid); //aca se puebla la card con un constructor
+                                                        rowItems.add(Item); //aca añade la persona a la tarjetita.
+                                                        arrayAdapter.notifyDataSetChanged(); //esto se usa cad vez que se añade o se quita un elemetno del arraylist de los items.
+                                                    } else if (tipoPrendaBusqueda.equals("") && tallaBusqueda.equals(dataSnapshot.child("TallaPrenda").getValue().toString()) && estadoBusqueda.equals("")) {
+                                                        cards Item = new cards(dataSnapshot.getKey(), dataSnapshot.child("tituloPublicacion").getValue().toString(), fotoPublicacion, currentOwnerUid); //aca se puebla la card con un constructor
+                                                        rowItems.add(Item); //aca añade la persona a la tarjetita.
+                                                        arrayAdapter.notifyDataSetChanged(); //esto se usa cad vez que se añade o se quita un elemetno del arraylist de los items.
+                                                    } else if (tipoPrendaBusqueda.equals("") && tallaBusqueda.equals("") && estadoBusqueda.equals(dataSnapshot.child("EstadoPrenda").getValue().toString())) {
+                                                        cards Item = new cards(dataSnapshot.getKey(), dataSnapshot.child("tituloPublicacion").getValue().toString(), fotoPublicacion, currentOwnerUid); //aca se puebla la card con un constructor
+                                                        rowItems.add(Item); //aca añade la persona a la tarjetita.
+                                                        arrayAdapter.notifyDataSetChanged(); //esto se usa cad vez que se añade o se quita un elemetno del arraylist de los items.
+                                                    } else if (tipoPrendaBusqueda.equals(dataSnapshot.child("TipoPrenda").getValue().toString()) && tallaBusqueda.equals(dataSnapshot.child("TallaPrenda").getValue().toString()) && estadoBusqueda.equals(dataSnapshot.child("EstadoPrenda").getValue().toString())) {
+                                                        cards Item = new cards(dataSnapshot.getKey(), dataSnapshot.child("tituloPublicacion").getValue().toString(), fotoPublicacion, currentOwnerUid); //aca se puebla la card con un constructor
+                                                        rowItems.add(Item); //aca añade la persona a la tarjetita.
+                                                        arrayAdapter.notifyDataSetChanged(); //esto se usa cad vez que se añade o se quita un elemetno del arraylist de los items.
+                                                    } else if (tipoPrendaBusqueda.equals(dataSnapshot.child("TipoPrenda").getValue().toString()) && tallaBusqueda.equals(dataSnapshot.child("TallaPrenda").getValue().toString()) && estadoBusqueda.equals("")) {
+                                                        cards Item = new cards(dataSnapshot.getKey(), dataSnapshot.child("tituloPublicacion").getValue().toString(), fotoPublicacion, currentOwnerUid); //aca se puebla la card con un constructor
+                                                        rowItems.add(Item); //aca añade la persona a la tarjetita.
+                                                        arrayAdapter.notifyDataSetChanged(); //esto se usa cad vez que se añade o se quita un elemetno del arraylist de los items.
+                                                    } else if (tipoPrendaBusqueda.equals(dataSnapshot.child("TipoPrenda").getValue().toString()) && tallaBusqueda.equals("") && estadoBusqueda.equals(dataSnapshot.child("EstadoPrenda").getValue().toString())) {
+                                                        cards Item = new cards(dataSnapshot.getKey(), dataSnapshot.child("tituloPublicacion").getValue().toString(), fotoPublicacion, currentOwnerUid); //aca se puebla la card con un constructor
+                                                        rowItems.add(Item); //aca añade la persona a la tarjetita.
+                                                        arrayAdapter.notifyDataSetChanged(); //esto se usa cad vez que se añade o se quita un elemetno del arraylist de los items.
+                                                    } else if (tipoPrendaBusqueda.equals("") && tallaBusqueda.equals(dataSnapshot.child("TallaPrenda").getValue().toString()) && estadoBusqueda.equals(dataSnapshot.child("EstadoPrenda").getValue().toString())) {
+                                                        cards Item = new cards(dataSnapshot.getKey(), dataSnapshot.child("tituloPublicacion").getValue().toString(), fotoPublicacion, currentOwnerUid); //aca se puebla la card con un constructor
+                                                        rowItems.add(Item); //aca añade la persona a la tarjetita.
+                                                        arrayAdapter.notifyDataSetChanged(); //esto se usa cad vez que se añade o se quita un elemetno del arraylist de los items.
+                                                    }
+                                                }
+                                            }
+                                        }
+
+                                        private boolean verSiSeEncuentraEnArrayList2(String clothesCurrentUid) {
+                                            for(int i=0;i<al.size();i++){
+                                                if(al.get(i).equals(clothesCurrentUid)){
+                                                    return true;
+                                                }
+                                            }
+                                            return false;
+                                        }
+
+                                        private boolean estaBloqueado(String ownerId) {
+                                            for(int i=0;i<bloqueados.size();i++){
+                                                if(bloqueados.get(i).equals(ownerId)){
+                                                    return true;
+                                                }
+                                            }
+                                            return false;
+                                        }
+
+                                        @Override
+                                        public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+                                        }
+
+                                        @Override
+                                        public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+                                        }
+
+                                        @Override
+                                        public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+                                        }
+
+                                        @Override
+                                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                        }
+                                    });
+
+                                }
+                            }
+
+
+
+
+                        }
+                    }
+
+                    private boolean estaEnRadioKM(int kmBusqueda, double lat2, double lon2) {
+
+                        Location startPoint=new Location("locationA");
+                        startPoint.setLatitude(latitudeUser);
+                        startPoint.setLongitude(longitudUser);
+
+                        Location endPoint=new Location("locationA");
+                        endPoint.setLatitude(lat2);
+                        endPoint.setLongitude(lon2);
+
+                        double distance = startPoint.distanceTo(endPoint);
+                        kmBusqueda=kmBusqueda*1000;
+                        Log.d("pnect","latitudeUser "+latitudeUser);
+                        Log.d("pnect","longitudUser "+longitudUser);
+                        Log.d("pnect","lon2 "+lon2);
+                        Log.d("pnect","lat2 "+lat2);
+
+                        Log.d("pnect","dist "+distance);
+                        Log.d("pnect","kmBusqueda "+kmBusqueda);
+
+                        if(distance<=kmBusqueda){
+                            return true;
+                        }
+                        return false;
+                        /*
+                        Log.d("pnect","kmBusqueda "+kmBusqueda);
+                        Log.d("pnect","lon2 "+lon2);
+                        Log.d("pnect","lat2 "+lat2);
+
+                        double theta = longitudUser - lon2;
+                        double dist = Math.sin(deg2rad(latitudeUser))
+                                * Math.sin(deg2rad(lat2))
+                                + Math.cos(deg2rad(latitudeUser))
+                                * Math.cos(deg2rad(lat2))
+                                * Math.cos(deg2rad(theta));
+                        dist = Math.acos(dist);
+                        dist = rad2deg(dist);
+                        dist = dist * 60 * 1.1515;
+                        dist =dist / 0.62137;
+                        Log.d("pnect","dist "+dist);
+
+                        if(dist<=kmBusqueda){
+                            return true;
+                        }
+                        return false;
+                    */
+                    }
+
+                    private double deg2rad(double deg) {
+                        return (deg * Math.PI / 180.0);
+                    }
+
+                    private double rad2deg(double rad) {
+                        return (rad * 180.0 / Math.PI);
+                    }
+
+                    @Override
+                    public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+                    }
+
+                    @Override
+                    public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+                    }
+
+                    @Override
+                    public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+
+
+
+
 
             }
 
@@ -591,7 +831,8 @@ public class PaginaPrincipal extends AppCompatActivity {
         usersDb.child(currentUId).child("connections").child("publicacionesGuardadas").addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                if (dataSnapshot.exists()) { //si existe y tiene algo ya guardado dentro lo muestra, para eso lo trae y lo castea al mapa.
+                if (dataSnapshot.exists()  ) { //si existe y tiene algo ya guardado dentro lo muestra, para eso lo trae y lo castea al mapa.
+                    //!dataSnapshot.getValue().toString().equals("Guardado")
                     al.add(dataSnapshot.getKey().toString());
                 }
             }
