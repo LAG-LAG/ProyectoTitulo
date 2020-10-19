@@ -90,15 +90,14 @@
 
     <TextView
         android:id="@+id/TextViewPuntacionVendedor"
-        android:layout_width="42dp"
+        android:layout_width="0dp"
         android:layout_height="34dp"
         android:layout_marginStart="4dp"
         android:layout_marginTop="28dp"
         android:layout_marginEnd="8dp"
         android:backgroundTint="#FFFFFF"
         android:ems="10"
-        android:inputType="number"
-        android:text="0.0"
+        android:inputType="text"
         android:textColorHint="#FFFFFF"
         android:textSize="24dp"
         app:layout_constraintEnd_toEndOf="parent"

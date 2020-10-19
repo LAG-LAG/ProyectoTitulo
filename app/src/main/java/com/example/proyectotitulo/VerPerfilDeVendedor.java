@@ -111,14 +111,14 @@ public class VerPerfilDeVendedor extends AppCompatActivity {
                         mTextViewComuna.setText(comunaAnterior);
                     }
 
-                    /*if(map.get("") != null){
-                        if(map.get("") >= 0){
-                            mTextViewPuntacion.setText("");
+                    if(map.get("puntuacionGeneral") != null){
+                        if(map.get("puntuacionGeneral").toString().equals("-1")){
+                            mTextViewPuntacion.setText("S/V");
                         }
                         else{
-                            mTextViewPuntacion.setText("Sin Valoraciones");
+                            mTextViewPuntacion.setText(map.get("puntuacionGeneral").toString());
                         }
-                    }*/
+                    }
 
 
             //esto de aca es para cargar la foto de perfil del usuario

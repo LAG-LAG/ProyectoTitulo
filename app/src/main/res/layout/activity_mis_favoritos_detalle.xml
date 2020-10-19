@@ -23,7 +23,9 @@
         app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbar"
-        app:srcCompat="@mipmap/ic_launcher" />
+        app:srcCompat="@mipmap/ic_launcher" >
+
+    </com.denzcoskun.imageslider.ImageSlider>
 
     <TextView
         android:id="@+id/tituloFavoritosDetalle"
@@ -170,5 +172,36 @@
         android:text="Quitar de Favoritos"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/verPerfilBtnFavoritosDetalle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="28dp"
+        android:text="Ver perfil"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/vendedorDetallePublicacion2" />
+
+    <TextView
+        android:id="@+id/vendedorDetallePublicacion2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="8dp"
+        android:text="Vendedor:"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toStartOf="@+id/nombreVendedorFavoritosDetalle"
+        app:layout_constraintTop_toBottomOf="@+id/precioFavoritosDetalle" />
+
+    <TextView
+        android:id="@+id/nombreVendedorFavoritosDetalle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="44dp"
+        android:text="nombre"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/precioFavoritosDetalle" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

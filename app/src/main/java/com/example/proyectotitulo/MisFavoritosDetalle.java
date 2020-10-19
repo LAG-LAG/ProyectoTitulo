@@ -1,5 +1,6 @@
 package com.example.proyectotitulo;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -32,13 +33,13 @@ import java.util.ArrayList;
 
 public class MisFavoritosDetalle extends AppCompatActivity {
 
-    private TextView mTitulo,mPrecio,mDescripcion,mColor,mTalla,mtipoPrenda,mEstado;
+    private TextView mTitulo,mPrecio,mDescripcion,mColor,mTalla,mtipoPrenda,mEstado,mNombreVendedor;
     private FirebaseAuth mAuth;
     private DatabaseReference clothesDb,photosDb,usersDb,chatsDb;
     private String idUser,idClothes;
     private String currentUId,vendedorUID,idOwner;
     private String currentOwnerUid;
-    private Button mEditar, mRechazar;
+    private Button mEditar, mRechazar, mVerPerfil;
     private ImageView mFotoActual;
     private int indiceFotoActual, tamanoUrlImagenes;
     private ArrayList<String> urlImagenes;
@@ -66,9 +67,6 @@ public class MisFavoritosDetalle extends AppCompatActivity {
         }
         tamanoUrlImagenes = 0;
 
-
-
-
         //toolbar
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -91,10 +89,14 @@ public class MisFavoritosDetalle extends AppCompatActivity {
         mColor = (TextView) findViewById(R.id.colorFavoritosDetalle);
         mTalla = (TextView) findViewById(R.id.tallaPrendaFavoritosDetalle);
         mEstado = (TextView) findViewById(R.id.estadoPrendaDetalleFavoritosDetalle);
+        mVerPerfil = (Button) findViewById(R.id.verPerfilBtnFavoritosDetalle);
+        mNombreVendedor = (TextView) findViewById(R.id.nombreVendedorFavoritosDetalle);
+
         indiceFotoActual=0;
         mSlider = (ImageSlider) findViewById(R.id.fotoFavoritosDetalle);
         imageList = new ArrayList<SlideModel>();
         obtenerDatosPublicacion();
+        obtenerNombreDueño();
         mAuth = FirebaseAuth.getInstance();
         logica = false;
         existeChat();
@@ -140,6 +142,16 @@ public class MisFavoritosDetalle extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
+            }
+        });
+
+        mVerPerfil.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MisFavoritosDetalle.this,VerPerfilDeVendedor.class);
+                intent.putExtra("idClothes",idClothes);
+                intent.putExtra("idOwner",idOwner);
+                startActivity(intent);
             }
         });
 
@@ -391,6 +403,38 @@ public class MisFavoritosDetalle extends AppCompatActivity {
                     }
                     tamanoUrlImagenes++;
                     //Log.d("weaweawea",dataSnapshot.getKey());
+                }
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    private void obtenerNombreDueño() {
+        usersDb = FirebaseDatabase.getInstance().getReference().child("Users");
+        usersDb.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                if(dataSnapshot.exists() && dataSnapshot.getKey().equals(idOwner)){
+                    mNombreVendedor.setText(dataSnapshot.child("nameUser").getValue().toString());
                 }
             }
 
