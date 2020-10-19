@@ -26,4 +26,9 @@
         android:id="@+id/accountBtn"
         app:showAsAction="always"/>
 
+    <item
+        android:title="Cerrar sesión"
+        android:id="@+id/cerrarSesionBtn"
+        app:showAsAction="never"/>
+
 </menu>

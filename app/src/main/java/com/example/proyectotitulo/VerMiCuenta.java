@@ -192,6 +192,14 @@ public class VerMiCuenta extends AppCompatActivity {
                 startActivity(intentAccount);
                 finish();
                 break;
+
+            case R.id.cerrarSesionBtn:
+                mAuth.signOut(); //desconecta
+                //las lineas de abajo mandan de la ventana actual(mainactiviy) a la de chooseloginregistration que es la de antes de estar loguado.
+                Intent intent = new Intent(VerMiCuenta.this,Login.class);
+                startActivity(intent);
+                finish();
+                break;
         }
 
         return super.onOptionsItemSelected(item);

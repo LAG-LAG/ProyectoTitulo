@@ -4,8 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".VerPerfilDeVendedor"
-    android:background="@drawable/background_color">
+    android:background="@drawable/background_color"
+    tools:context=".VerPerfilDeVendedor">
+
 
     <include
         android:id="@+id/toolbar"
@@ -23,10 +24,20 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"></de.hdodenhof.circleimageview.CircleImageView>
 
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/imagenEstrellasVendedor"
+        android:layout_width="41dp"
+        android:layout_height="44dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="20dp"
+        android:src="@drawable/star_48dp"
+        app:layout_constraintStart_toEndOf="@+id/TextViewRegionVendedor"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar"></de.hdodenhof.circleimageview.CircleImageView>
+
     <TextView
         android:id="@+id/TextViewNombreVendedor"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_width="218dp"
+        android:layout_height="21dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
@@ -43,8 +54,8 @@
 
     <TextView
         android:id="@+id/TextViewComunaVendedor"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_width="219dp"
+        android:layout_height="22dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="4dp"
         android:layout_marginEnd="8dp"
@@ -61,8 +72,8 @@
 
     <TextView
         android:id="@+id/TextViewRegionVendedor"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_width="218dp"
+        android:layout_height="22dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="4dp"
         android:layout_marginEnd="8dp"
@@ -76,6 +87,24 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/ImagenPerfilUrlVendedor"
         app:layout_constraintTop_toBottomOf="@+id/TextViewNombreVendedor" />
+
+    <TextView
+        android:id="@+id/TextViewPuntacionVendedor"
+        android:layout_width="42dp"
+        android:layout_height="34dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="28dp"
+        android:layout_marginEnd="8dp"
+        android:backgroundTint="#FFFFFF"
+        android:ems="10"
+        android:inputType="number"
+        android:text="0.0"
+        android:textColorHint="#FFFFFF"
+        android:textSize="24dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.2"
+        app:layout_constraintStart_toEndOf="@+id/imagenEstrellasVendedor"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar" />
 
     <ListView
         android:id="@+id/lvPublicacionesVendidasVendedor"
