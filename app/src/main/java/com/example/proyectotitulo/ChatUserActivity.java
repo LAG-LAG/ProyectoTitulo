@@ -269,7 +269,7 @@ public class ChatUserActivity extends AppCompatActivity {
 
                             }
                             else {
-                                valorarOComprar.setTitle("Marcar Como No Vendida");
+                                valorarOComprar.setTitle("Marcar Como Vendida");
                                 Log.d("pruebachat","7");
                             }
                         }
@@ -327,7 +327,8 @@ public class ChatUserActivity extends AppCompatActivity {
                                         Intent intentValorar = new Intent(ChatUserActivity.this, Valorar.class);
                                         intentValorar.putExtra("chatId",chatId);
                                         startActivity(intentValorar);
-                                        finish();                                    }
+                                        finish();
+                                    }
                                     else{
                                         if(dataSnapshot.hasChild("estadoFinalizado")){
                                             Toast.makeText(ChatUserActivity.this, "Publicación ya fue valorada.", Toast.LENGTH_SHORT).show();

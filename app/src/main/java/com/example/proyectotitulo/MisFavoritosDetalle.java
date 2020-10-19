@@ -116,6 +116,7 @@ public class MisFavoritosDetalle extends AppCompatActivity {
                     DatabaseReference currentComprador = FirebaseDatabase.getInstance().getReference().child("chat").child(id).child("idUserComprador"); //busca al usuario que va a crear y lo guarda como una variable que se le agregan las cosas y se manda al a db de nuevo
                     DatabaseReference currentPrenda = FirebaseDatabase.getInstance().getReference().child("chat").child(id).child("idPrenda"); //busca al usuario que va a crear y lo guarda como una variable que se le agregan las cosas y se manda al a db de nuevo
                     DatabaseReference messages = FirebaseDatabase.getInstance().getReference().child("chat").child(id).child("messages");
+                    //FirebaseDatabase.getInstance().getReference().child("chat").child(id).child("marcadaComoVendida").setValue("0");
                     //FirebaseDatabase.getInstance().getReference().child("Users").child(currentUId).child("connections").child("publicacionesGuardadas").child(idClothes).setValue("Guardado");
                     currentVendedor.setValue(vendedorUID);
                     currentComprador.setValue(currentUId);
