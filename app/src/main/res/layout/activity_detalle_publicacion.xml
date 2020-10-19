@@ -73,7 +73,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="28dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="36dp"
         android:text="Descripcion:"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
@@ -83,11 +83,9 @@
         android:id="@+id/descripcionPrendaDetalle"
         android:layout_width="352dp"
         android:layout_height="136dp"
-        android:layout_marginTop="4dp"
         android:text="descripcion"
         android:textSize="12sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.509"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/descripcion" />
 
@@ -112,6 +110,28 @@
         android:textSize="12sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tituloDetallePublicacion" />
+
+    <TextView
+        android:id="@+id/estadoPrenda"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="28dp"
+        android:layout_marginTop="36dp"
+        android:text="Estado:"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/colorPrenda" />
+
+    <TextView
+        android:id="@+id/estadoPrendaDetalle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="estado"
+        android:textSize="12sp"
+        app:layout_constraintStart_toEndOf="@+id/estadoPrenda"
+        app:layout_constraintTop_toBottomOf="@+id/tallaPrendaDetalle" />
 
     <TextView
         android:id="@+id/precioDetallePublicacion"

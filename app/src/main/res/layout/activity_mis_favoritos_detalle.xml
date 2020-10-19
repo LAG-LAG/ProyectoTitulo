@@ -95,24 +95,14 @@
         android:text="Descripcion:"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tallaPrendaFavoritosDetalle" />
-
-    <TextView
-        android:id="@+id/tallaPrendaFavoritosDetalle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="12dp"
-        android:layout_marginTop="12dp"
-        android:text="talla"
-        app:layout_constraintStart_toEndOf="@+id/tallaPrenda"
-        app:layout_constraintTop_toBottomOf="@+id/colorPrendaFavoritosDetalle" />
+        app:layout_constraintTop_toBottomOf="@+id/estadoPrendaFavoritosDetalle" />
 
     <TextView
         android:id="@+id/colorPrendaFavoritosDetalle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="28dp"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="8dp"
         android:text="Color:"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
@@ -123,11 +113,43 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="28dp"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="8dp"
         android:text="Talla:"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/colorPrendaFavoritosDetalle" />
+
+    <TextView
+        android:id="@+id/tallaPrendaFavoritosDetalle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="8dp"
+        android:text="talla"
+        app:layout_constraintStart_toEndOf="@+id/tallaPrenda"
+        app:layout_constraintTop_toBottomOf="@+id/colorPrendaFavoritosDetalle" />
+
+    <TextView
+        android:id="@+id/estadoPrendaFavoritosDetalle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="28dp"
+        android:layout_marginTop="8dp"
+        android:text="Estado:"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tallaPrenda" />
+
+    <TextView
+        android:id="@+id/estadoPrendaDetalleFavoritosDetalle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="8dp"
+        android:text="estado"
+        android:textSize="12sp"
+        app:layout_constraintStart_toEndOf="@+id/estadoPrendaFavoritosDetalle"
+        app:layout_constraintTop_toBottomOf="@+id/tallaPrendaFavoritosDetalle" />
 
     <Button
         android:id="@+id/guardarPublicacionFavoritosDetalle"

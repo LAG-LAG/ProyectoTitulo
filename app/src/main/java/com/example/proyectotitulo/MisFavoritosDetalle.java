@@ -32,7 +32,7 @@ import java.util.ArrayList;
 
 public class MisFavoritosDetalle extends AppCompatActivity {
 
-    private TextView mTitulo,mPrecio,mDescripcion,mColor,mTalla,mtipoPrenda;
+    private TextView mTitulo,mPrecio,mDescripcion,mColor,mTalla,mtipoPrenda,mEstado;
     private FirebaseAuth mAuth;
     private DatabaseReference clothesDb,photosDb,usersDb,chatsDb;
     private String idUser,idClothes;
@@ -90,6 +90,7 @@ public class MisFavoritosDetalle extends AppCompatActivity {
         mDescripcion = (TextView) findViewById(R.id.descripcionFavoritosDetalle);
         mColor = (TextView) findViewById(R.id.colorFavoritosDetalle);
         mTalla = (TextView) findViewById(R.id.tallaPrendaFavoritosDetalle);
+        mEstado = (TextView) findViewById(R.id.estadoPrendaDetalleFavoritosDetalle);
         indiceFotoActual=0;
         mSlider = (ImageSlider) findViewById(R.id.fotoFavoritosDetalle);
         imageList = new ArrayList<SlideModel>();
@@ -297,6 +298,7 @@ public class MisFavoritosDetalle extends AppCompatActivity {
                                 mtipoPrenda.setText(dataSnapshot.child("TipoPrenda").getValue().toString());
                                 mColor.setText(dataSnapshot.child("ColorPrenda").getValue().toString());
                                 mTalla.setText(dataSnapshot.child("TallaPrenda").getValue().toString());
+                                mEstado.setText(dataSnapshot.child("EstadoPrenda").getValue().toString());
                                 guardarUrlPhotos(vendedorId);
                                 //SUBIR FOTOS.
                             }

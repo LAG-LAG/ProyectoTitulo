@@ -1,6 +1,7 @@
 package com.example.proyectotitulo;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -9,6 +10,8 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.appcompat.app.AlertDialog;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -74,13 +77,24 @@ public class publicacionAdapter extends BaseAdapter{
             public void onClick(View v) {
                 Log.d("TAGBorrar", "onClick: Borrar");
                 Log.d("TAGBorrar", "Titulo Publicacion: "+item.getTituloPublicacion());
-                final String itemBorrar = item.getIdClothes();
-                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-                final String currentUId = user.getUid();
-                usersDb = FirebaseDatabase.getInstance().getReference().child("Users").child(currentUId).child("connections").child("publicacionesGuardadas");
-                FirebaseDatabase.getInstance().getReference().child("Users").child(currentUId).child("connections").child("publicacionesGuardadas").child(item.getIdClothes()).removeValue();
-                Intent intent = new Intent(context,MisFavoritos.class);
-                context.startActivity(intent);
+
+                new AlertDialog.Builder(context)
+                        //.setTitle("")
+                        .setMessage("¿Esta seguro de remover la publicación?")
+                        .setIcon(android.R.drawable.ic_dialog_alert)
+                        .setPositiveButton("si", new DialogInterface.OnClickListener() {
+
+                            public void onClick(DialogInterface dialog, int whichButton) {
+                                final String itemBorrar = item.getIdClothes();
+                                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                                final String currentUId = user.getUid();
+                                usersDb = FirebaseDatabase.getInstance().getReference().child("Users").child(currentUId).child("connections").child("publicacionesGuardadas");
+                                FirebaseDatabase.getInstance().getReference().child("Users").child(currentUId).child("connections").child("publicacionesGuardadas").child(item.getIdClothes()).removeValue();
+                                Intent intent = new Intent(context,MisFavoritos.class);
+                                context.startActivity(intent);
+                            }})
+                        .setNegativeButton(android.R.string.no, null).show();
+
 
             }
         });
