@@ -31,7 +31,7 @@ import java.util.ArrayList;
 
 public class detallePublicacion extends AppCompatActivity {
 
-    private TextView mTitulo,mPrecio,mDescripcion,mColor,mTalla,mtipoPrenda,mVendedor,mNombreVendedor;
+    private TextView mTitulo,mPrecio,mDescripcion,mColor,mTalla,mtipoPrenda,mVendedor,mNombreVendedor,mEstado;
     private FirebaseAuth mAuth;
     private DatabaseReference clothesDb,photosDb,usersDb;
     private ImageView mAdelanteButton,mAtrasButton;
@@ -81,11 +81,13 @@ public class detallePublicacion extends AppCompatActivity {
         mDescripcion = (TextView) findViewById(R.id.descripcionPrendaDetalle);
         mColor = (TextView) findViewById(R.id.colorPrendaDetalle);
         mTalla = (TextView) findViewById(R.id.tallaPrendaDetalle);
+        mEstado = (TextView) findViewById(R.id.estadoPrendaDetalle);
         indiceFotoActual=0;
         mSlider = (ImageSlider) findViewById(R.id.fotoDetallePublicacion);
         imageList = new ArrayList<SlideModel>();
         Log.d("weaweawea","1si");
         obtenerDatosPublicacion();
+        obtenerNombreDueño();
         mAuth = FirebaseAuth.getInstance();
 
 
@@ -174,6 +176,39 @@ public class detallePublicacion extends AppCompatActivity {
 
     }
 
+    private void obtenerNombreDueño() {
+        usersDb = FirebaseDatabase.getInstance().getReference().child("Users");
+        usersDb.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                if(dataSnapshot.exists() && dataSnapshot.getKey().equals(idOwner)){
+                    mNombreVendedor.setText(dataSnapshot.child("nameUser").getValue().toString());
+                }
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+
     private void obtenerDatosPublicacion() {
         clothesDb = FirebaseDatabase.getInstance().getReference().child("Users").child(idOwner).child("clothes");
         clothesDb.addChildEventListener(new ChildEventListener() {
@@ -187,6 +222,7 @@ public class detallePublicacion extends AppCompatActivity {
                     mtipoPrenda.setText(dataSnapshot.child("TipoPrenda").getValue().toString());
                     mColor.setText(dataSnapshot.child("ColorPrenda").getValue().toString());
                     mTalla.setText(dataSnapshot.child("TallaPrenda").getValue().toString());
+                    mEstado.setText(dataSnapshot.child("EstadoPrenda").getValue().toString());
                     guardarUrlPhotos();
                     //SUBIR FOTOS.
                 }

@@ -30,7 +30,7 @@ import java.util.ArrayList;
 
 public class MiPublicacionDetalle extends AppCompatActivity {
 
-    private TextView mTitulo,mPrecio,mDescripcion,mColor,mTalla,mtipoPrenda;
+    private TextView mTitulo,mPrecio,mDescripcion,mColor,mTalla,mtipoPrenda,mEstado;
     private FirebaseAuth mAuth;
     private DatabaseReference clothesDb,photosDb,usersDb;
     private ImageView mAdelanteButton,mAtrasButton;
@@ -82,6 +82,7 @@ public class MiPublicacionDetalle extends AppCompatActivity {
         mDescripcion = (TextView) findViewById(R.id.descripcionPrendaDetallePropia);
         mColor = (TextView) findViewById(R.id.colorPrendaDetallePropia);
         mTalla = (TextView) findViewById(R.id.tallaPrendaDetallePropia);
+        mEstado = (TextView) findViewById(R.id.estadoPrendaDetallePropia);
         indiceFotoActual=0;
         mSlider = (ImageSlider) findViewById(R.id.fotoDetallePublicacionPropia);
         imageList = new ArrayList<SlideModel>();
@@ -186,6 +187,7 @@ public class MiPublicacionDetalle extends AppCompatActivity {
                     mtipoPrenda.setText(dataSnapshot.child("TipoPrenda").getValue().toString());
                     mColor.setText(dataSnapshot.child("ColorPrenda").getValue().toString());
                     mTalla.setText(dataSnapshot.child("TallaPrenda").getValue().toString());
+                    mEstado.setText(dataSnapshot.child("EstadoPrenda").getValue().toString());
                     guardarUrlPhotos();
                     //SUBIR FOTOS.
                     if(dataSnapshot.hasChild("estaVendida")){
