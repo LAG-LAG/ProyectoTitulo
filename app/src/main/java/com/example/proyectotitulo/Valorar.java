@@ -28,8 +28,9 @@ public class Valorar extends AppCompatActivity {
     private ImageView mImage;
     private RatingBar mRBestado, mRBtrato, mRBpuntualidad;
     private String chatId,currentUserID;
-    private DatabaseReference chatsDb,usersDb,clothesDb,chatsDbdos;
-
+    private DatabaseReference chatsDb,usersDb,clothesDb,chatsDbdos,chatsDbtres,usersdbDos;
+    private ChildEventListener childEvent1,childEvent2,childEvent3,childEvent4;
+    private float puntuacionGeneral,cantidadDePrendas=0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,13 +60,117 @@ public class Valorar extends AppCompatActivity {
         mEnviar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                saveValoracionGeneral();
                SaveValoracion();
             }
         });
     }
 
+    private void saveValoracionGeneral() {
+
+        chatsDbtres = FirebaseDatabase.getInstance().getReference().child("chat");
+        childEvent3 =chatsDbtres.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                if(dataSnapshot.exists() && dataSnapshot.getKey().equals(chatId)){
+                    Log.d("GeneralV","3");
+                    final String idVendedor = dataSnapshot.child("idUserVendedor").getValue().toString();
+                    final String idPrenda = dataSnapshot.child("idPrenda").getValue().toString();
+                    usersdbDos = FirebaseDatabase.getInstance().getReference().child("Users");
+                    childEvent4 = usersdbDos.addChildEventListener(new ChildEventListener() {
+                        @Override
+                        public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                            Log.d("GeneralV","4");
+
+                            if(dataSnapshot.exists() && dataSnapshot.getKey().equals(idVendedor)){
+                                Log.d("GeneralV","5");
+
+                                if(dataSnapshot.hasChild("puntuacionGeneral") && !dataSnapshot.child("puntuacionGeneral").getValue().toString().equals("-1")){
+                                    Log.d("GeneralV","6");
+
+                                    if(dataSnapshot.hasChild("clothes")){
+                                        Log.d("GeneralV","7");
+
+                                        if(dataSnapshot.child("clothes").hasChild(idPrenda)){
+                                            Log.d("GeneralV","8");
+                                            float puntualidad = 0, estado = 0, trato = 0,puntuacionAnterior = 0;
+                                            puntuacionAnterior = Float.valueOf(dataSnapshot.child("puntuacionGeneral").getValue().toString());
+                                            if(dataSnapshot.child("clothes").child(idPrenda).hasChild("valoracionPuntualidad")){
+                                                puntualidad = Float.valueOf(dataSnapshot.child("clothes").child(idPrenda).child("valoracionPuntualidad").getValue().toString());
+                                            }
+                                            if(dataSnapshot.child("clothes").child(idPrenda).hasChild("valoracionEstado")) {
+                                                estado = Float.valueOf(dataSnapshot.child("clothes").child(idPrenda).child("valoracionEstado").getValue().toString());
+                                            }
+                                            if(dataSnapshot.child("clothes").child(idPrenda).hasChild("valoracionTrato")) {
+                                                trato = Float.valueOf(dataSnapshot.child("clothes").child(idPrenda).child("valoracionTrato").getValue().toString());
+                                            }
+                                            puntuacionGeneral = (((puntualidad + trato + estado)/3) + puntuacionAnterior)/2;
+                                            FirebaseDatabase.getInstance().getReference().child("Users").child(idVendedor).child("puntuacionGeneral").setValue(puntuacionGeneral);
+                                        }
+                                    }
+                                }
+                                else{
+                                    Log.d("GeneralV","9");
+
+                                    float puntualidad, estado, trato;
+                                    puntualidad = mRBpuntualidad.getRating();
+                                    estado = mRBestado.getRating();
+                                    trato = mRBtrato.getRating();
+                                    puntuacionGeneral = (puntualidad + trato + estado)/3;
+                                    FirebaseDatabase.getInstance().getReference().child("Users").child(idVendedor).child("puntuacionGeneral").setValue(puntuacionGeneral);
+                                }
+                            }
+                        }
+
+                        @Override
+                        public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+                        }
+
+                        @Override
+                        public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+                        }
+
+                        @Override
+                        public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+                    });
+                }
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+
+    }
+
     private void SaveValoracion(){
-        chatsDb.addChildEventListener(new ChildEventListener() {
+        childEvent1 = chatsDb.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                 if(dataSnapshot.exists() && dataSnapshot.getKey().equals(chatId)){
@@ -81,7 +186,7 @@ public class Valorar extends AppCompatActivity {
                     estadoFinalizado.setValue("1");
                     DatabaseReference estadoPublicacion =  FirebaseDatabase.getInstance().getReference().child("Users").child(idVendedor).child("clothes").child(idPrenda).child("estaVendida");
                     estadoPublicacion.setValue("1");
-                    chatsDbdos.addChildEventListener(new ChildEventListener() {
+                    childEvent2 = chatsDbdos.addChildEventListener(new ChildEventListener() {
                         @Override
                         public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                             if(dataSnapshot.exists() && dataSnapshot.child("idPrenda").getValue().toString().equals(idPrenda)){
