@@ -21,18 +21,6 @@
         tools:layout_editor_absoluteY="-16dp" />
 
     <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="72dp"
-        android:onClick="logoutUser"
-        android:text="Salir"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/toolbar"
-        tools:ignore="MissingConstraints" />
-
-    <Button
         android:id="@+id/filtrosBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

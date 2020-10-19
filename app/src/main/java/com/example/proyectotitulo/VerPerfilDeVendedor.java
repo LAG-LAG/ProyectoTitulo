@@ -39,6 +39,7 @@ public class VerPerfilDeVendedor extends AppCompatActivity {
     private TextView mTextViewNombre;
     private TextView mTextViewComuna;
     private TextView mTextViewRegion;
+    private TextView mTextViewPuntacion;
     private String profileImageUrl, nombreUsuario, regionAnterior, comunaAnterior;
     private String idOwner,idClothes;
     private int existeFotoPerfil;
@@ -65,6 +66,7 @@ public class VerPerfilDeVendedor extends AppCompatActivity {
         mTextViewNombre = (TextView) findViewById(R.id.TextViewNombreVendedor);
         mTextViewComuna = (TextView) findViewById(R.id.TextViewComunaVendedor);
         mTextViewRegion = (TextView) findViewById(R.id.TextViewRegionVendedor);
+        mTextViewPuntacion = (TextView) findViewById(R.id.TextViewPuntacionVendedor);
         mCustomerDatabase = FirebaseDatabase.getInstance().getReference().child("Users").child(idOwner);
         usersDb = FirebaseDatabase.getInstance().getReference().child("Users"); //esto obtiene todos los usuarios de la bd
         getUserInfo();
@@ -109,6 +111,15 @@ public class VerPerfilDeVendedor extends AppCompatActivity {
                         mTextViewComuna.setText(comunaAnterior);
                     }
 
+                    if(map.get("puntuacionGeneral") != null){
+                        if(map.get("puntuacionGeneral").toString().equals("-1")){
+                            mTextViewPuntacion.setText("S/V");
+                        }
+                        else{
+                            mTextViewPuntacion.setText(map.get("puntuacionGeneral").toString());
+                        }
+                    }
+
 
             //esto de aca es para cargar la foto de perfil del usuario
                     Glide.with(getApplication()).clear(mProfileImage);
@@ -149,7 +160,6 @@ public class VerPerfilDeVendedor extends AppCompatActivity {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                 if(dataSnapshot.exists() && dataSnapshot.hasChild("clothes") && dataSnapshot.getKey().equals(idOwner)){
-                    Log.d("vervendedor", "entra 1");
                     final String key = dataSnapshot.getKey();
                     final String currentOwnerUid = key;
                     clothesDb = usersDb.child(key).child("clothes");
@@ -157,7 +167,6 @@ public class VerPerfilDeVendedor extends AppCompatActivity {
                         @Override
                         public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                             if(dataSnapshot.exists()) {
-                                Log.d("vervendedor", "entra 2");
                                 final String clothesCurrentUid = dataSnapshot.getKey();
                                 final String fotoPublicacion;
                                 if (dataSnapshot.child("clothesPhotos").hasChild("photoId1")) {
