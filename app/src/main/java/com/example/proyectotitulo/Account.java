@@ -68,7 +68,7 @@ public class Account extends AppCompatActivity {
 
     private Spinner mRegionesSpinner;
     private String comunaAnterior, profileImageUrl;
-    private String regionAnterior;
+    private String regionAnterior,puntuacionGeneral;
     private Spinner mComunasSpinner;
     private Uri resultUri;
     private int estadoComunas, existeFotoPerfil, longitudLatitudEstado;
@@ -265,6 +265,9 @@ public class Account extends AppCompatActivity {
         String regionGuardar = String.valueOf(mRegionesSpinner.getSelectedItem());
         String comunaGuardar = String.valueOf(mComunasSpinner.getSelectedItem());
 
+        if(puntuacionGeneral.equals("-1")){
+            FirebaseDatabase.getInstance().getReference().child("Users").child(userId).child("puntuacionGeneral").setValue("-1");
+        }
         DatabaseReference currentUserName = FirebaseDatabase.getInstance().getReference().child("Users").child(userId).child("nameUser"); //busca al usuario que va a crear y lo guarda como una variable que se le agregan las cosas y se manda al a db de nuevo
         //mRegionesSpinner.getSelectedItem();
         if(regionGuardar != "Seleccione Región" && comunaGuardar != "Seleccione Comuna" && mNombre.getText().toString() != ""){
@@ -274,12 +277,15 @@ public class Account extends AppCompatActivity {
             currentUserComuna.setValue(comunaGuardar);
             currentUserName.setValue(mNombre.getText().toString()); //Aca va y le asigna el nombre al User.
             //aca guarda la latitud y longitud.
+            /*
             if(longitudLatitudEstado==1) {
                 DatabaseReference currentUserLatitude = FirebaseDatabase.getInstance().getReference().child("Users").child(userId).child("latitude");
                 currentUserLatitude.setValue(latitude);
                 DatabaseReference currentUserLongitude = FirebaseDatabase.getInstance().getReference().child("Users").child(userId).child("longitude");
                 currentUserLongitude.setValue(longitude);
             }
+
+             */
         }
         else{
             Toast.makeText(Account.this, "Datos Incorrectos.", Toast.LENGTH_SHORT).show();
@@ -397,6 +403,12 @@ public class Account extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists() && dataSnapshot.getChildrenCount() > 0) { //si existe y tiene algo ya guardado dentro lo muestra, para eso lo trae y lo castea al mapa.a
                     Map<String, Object> map = (Map<String, Object>) dataSnapshot.getValue();
+                    if(dataSnapshot.hasChild("puntuacionGeneral")){
+                        puntuacionGeneral = dataSnapshot.child("puntuacionGeneral").getValue().toString();
+                    }
+                    else{
+                        puntuacionGeneral = "-1";
+                    }
                     if (map.get("nameUser") != null) {
                         nombreUsuario = map.get("nameUser").toString();
                         mNombre.setText(nombreUsuario);
