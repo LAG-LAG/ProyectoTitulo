@@ -30,7 +30,7 @@ public class Valorar extends AppCompatActivity {
     private String chatId,currentUserID;
     private DatabaseReference chatsDb,usersDb,clothesDb,chatsDbdos,chatsDbtres,usersdbDos;
     private ChildEventListener childEvent1,childEvent2,childEvent3,childEvent4;
-    private float puntuacionGeneral,cantidadDePrendas=0;
+    private double puntuacionGeneral,cantidadDePrendas=0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -98,12 +98,11 @@ public class Valorar extends AppCompatActivity {
                                             if(dataSnapshot.hasChild("numeroPrendasVendidas")) {
                                                 prendasVendidas = Float.valueOf(dataSnapshot.child("numeroPrendasVendidas").getValue().toString());
                                             }
-                                            puntuacionGeneral = Math.round((((trato + puntualidad + estado)/3) + puntuacionAnterior * prendasVendidas) / (prendasVendidas+1) * 10) / 10;
+                                            puntuacionGeneral = (double) Math.round((((trato + puntualidad + estado)/3) + puntuacionAnterior * prendasVendidas) / (prendasVendidas+1) * 10) / 10;
 
                                             //puntuacionGeneral = (((trato + puntualidad + estado)/3) + puntuacionAnterior * prendasVendidas)/(prendasVendidas+1);
 
                                             FirebaseDatabase.getInstance().getReference().child("Users").child(idVendedor).child("numeroPrendasVendidas").setValue(prendasVendidas+1);
-
                                             //puntuacionGeneral = (((puntualidad + trato + estado)/3) + puntuacionAnterior)/2;
                                             FirebaseDatabase.getInstance().getReference().child("Users").child(idVendedor).child("puntuacionGeneral").setValue(puntuacionGeneral);
                                         }
@@ -116,11 +115,11 @@ public class Valorar extends AppCompatActivity {
                                     puntualidad = mRBpuntualidad.getRating();
                                     estado = mRBestado.getRating();
                                     trato = mRBtrato.getRating();
-                                    puntuacionGeneral = (puntualidad + trato + estado)/3;
-                                    puntuacionGeneral = Math.round((((trato + puntualidad + estado)/3)) * 10) / 10;
-
+                                    //puntuacionGeneral = (puntualidad + trato + estado)/3;
+                                    puntuacionGeneral = (double) Math.round((((trato + puntualidad + estado)/3)) * 10) / 10;
                                     FirebaseDatabase.getInstance().getReference().child("Users").child(idVendedor).child("numeroPrendasVendidas").setValue("1");
                                     FirebaseDatabase.getInstance().getReference().child("Users").child(idVendedor).child("puntuacionGeneral").setValue(puntuacionGeneral);
+
                                 }
                             }
                         }
