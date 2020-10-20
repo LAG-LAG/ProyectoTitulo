@@ -258,6 +258,9 @@ public class ChatUserActivity extends AppCompatActivity {
                             DatabaseReference estadoPrenda = FirebaseDatabase.getInstance().getReference().child("chat").child(chatId).child("marcadaComoVendida");
                             estadoPrenda.setValue("0");
                         }
+                        else if(dataSnapshot.hasChild("estadoFinalizado")){
+                            valorarOComprar.setTitle("Vendida.");
+                        }
                     }
                     else{ //significa que el usuario es vendedor.
                         Log.d("pruebachat","5 es vendedor");
@@ -278,7 +281,7 @@ public class ChatUserActivity extends AppCompatActivity {
                         }
                         else{
                             Log.d("pruebachat","8");
-                            valorarOComprar.setTitle("Marcar Como No Vendida");
+                            valorarOComprar.setTitle("Marcar Como Vendida");
                             DatabaseReference estadoPrenda = FirebaseDatabase.getInstance().getReference().child("chat").child(chatId).child("marcadaComoVendida");
                             estadoPrenda.setValue("0");
                         }

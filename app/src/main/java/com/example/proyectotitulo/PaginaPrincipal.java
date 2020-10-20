@@ -331,7 +331,7 @@ public class PaginaPrincipal extends AppCompatActivity {
                                             Log.d("pnect","4");
                                             currentUId = mAuth.getCurrentUser().getUid();
                                             clothesCurrentUid = dataSnapshot.getKey();
-                                            if (!verSiSeEncuentraEnArrayList2(clothesCurrentUid) && !estaBloqueado(currentOwnerUid)) {
+                                            if (!verSiSeEncuentraEnArrayList2(clothesCurrentUid) && !estaBloqueado(currentOwnerUid) && !dataSnapshot.hasChild("estaVendida")) {
                                                 String idPrenda = dataSnapshot.getKey();
                                                 String tituloPublicacion = dataSnapshot.child("tituloPublicacion").getValue().toString();
                                                 String fotoPublicacion;
@@ -551,7 +551,7 @@ public class PaginaPrincipal extends AppCompatActivity {
                                 currentUId = mAuth.getCurrentUser().getUid();
                                 clothesCurrentUid = dataSnapshot.getKey();
                                 Log.d("entro","currentOwnerUid:"+currentOwnerUid);
-                                if (!verSiSeEncuentraEnArrayList2(clothesCurrentUid) && !estaBloqueado(currentOwnerUid)) {
+                                if (!verSiSeEncuentraEnArrayList2(clothesCurrentUid) && !estaBloqueado(currentOwnerUid) && !dataSnapshot.hasChild("estaVendida")) {
                                     String idPrenda = dataSnapshot.getKey();
                                     String tituloPublicacion = dataSnapshot.child("tituloPublicacion").getValue().toString();
                                     String fotoPublicacion;
@@ -684,7 +684,7 @@ public class PaginaPrincipal extends AppCompatActivity {
                                 public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) { //aqui ya recorre los productos.
                                     currentUId = mAuth.getCurrentUser().getUid();
                                     clothesCurrentUid = dataSnapshot.getKey();
-                                    if (!verSiSeEncuentraEnArrayList(clothesCurrentUid) && !estaBloqueado(currentOwnerUid)) {
+                                    if (!verSiSeEncuentraEnArrayList(clothesCurrentUid) && !estaBloqueado(currentOwnerUid) && !dataSnapshot.hasChild("estaVendida")) {
                                         String idPrenda = dataSnapshot.getKey();
                                         String tituloPublicacion = dataSnapshot.child("tituloPublicacion").getValue().toString();
                                         String fotoPublicacion;
