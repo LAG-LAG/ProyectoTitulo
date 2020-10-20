@@ -159,6 +159,7 @@ public class Account extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 saveUserInfo();
+                Toast.makeText(Account.this, "Perfil Editado.", Toast.LENGTH_SHORT).show();
                 Intent intentPublicaciones = new Intent(Account.this, VerMiCuenta.class);
                 startActivity(intentPublicaciones);
                 finish();
@@ -340,12 +341,15 @@ public class Account extends AppCompatActivity {
             mCustomerDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    if (dataSnapshot.exists() && dataSnapshot.getChildrenCount() > 0) { //si existe y tiene algo ya guardado dentro lo muestra, para eso lo trae y lo castea al mapa.
+                    if (dataSnapshot.exists()) { //si existe y tiene algo ya guardado dentro lo muestra, para eso lo trae y lo castea al mapa.
                         Map<String, Object> map = (Map<String, Object>) dataSnapshot.getValue();
                         if (map.get("profileImages") == null) {
                             String userId = mAuth.getCurrentUser().getUid();
-                            FirebaseDatabase.getInstance().getReference().child("Users").child(userId).child("profileImageUrl").removeValue();
-                            FirebaseStorage.getInstance().getReference().child("profileImages").child(userId).child(map.get("profilesImages").toString()).delete();
+                            if(dataSnapshot.hasChild("profileImageUrl")) {
+                                FirebaseDatabase.getInstance().getReference().child("Users").child(userId).child("profileImageUrl").removeValue();
+                                //FirebaseStorage.getInstance().getReference().child("profileImages").child(userId).child(map.get("profilesImages").toString()).delete();
+
+                            }
                         }
                     }
                 }
