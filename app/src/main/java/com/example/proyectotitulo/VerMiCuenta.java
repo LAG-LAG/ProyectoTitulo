@@ -1,21 +1,18 @@
 package com.example.proyectotitulo;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
@@ -24,13 +21,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.squareup.picasso.Picasso;
 
-import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 public class VerMiCuenta extends AppCompatActivity {
@@ -110,6 +102,75 @@ public class VerMiCuenta extends AppCompatActivity {
             }
         });
     }
+/*
+    private void getUserInfo(){
+        mCustomerDatabase.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                if (dataSnapshot.exists() && dataSnapshot.getChildrenCount() > 0) { //si existe y tiene algo ya guardado dentro lo muestra, para eso lo trae y lo castea al mapa.a
+                    Map<String, Object> map = (Map<String, Object>) dataSnapshot.getValue();
+                    if (map.get("nameUser") != null) {
+                        nombreUsuario = map.get("nameUser").toString();
+                        mTextViewNombre.setText(nombreUsuario);
+                    }
+
+                    if (map.get("region") != null) {
+                        regionAnterior = map.get("region").toString();
+                        comunaAnterior = map.get("comuna").toString();
+                        mTextViewRegion.setText(regionAnterior);
+                        mTextViewComuna.setText(comunaAnterior);
+                    }
+
+
+//esto de aca es para cargar la foto de perfil del usuario
+                    Glide.with(getApplication()).clear(mProfileImage);
+                    if(map.get("profileImageUrl")!=null){
+                        //mborrarFotoPerfil.setVisibility(View.VISIBLE);
+                        profileImageUrl = map.get("profileImageUrl").toString();
+                        switch(profileImageUrl){
+                            case "default":
+                                Picasso.get().setLoggingEnabled(true);
+                                //Glide.with(getApplication()).load(card_item.getProfileImageUrl()).into(image);
+                                Picasso.get().load(R.mipmap.ic_launcher).into(mProfileImage);
+                                break;
+                            default:
+                                Picasso.get().setLoggingEnabled(true);
+                                //Glide.with(getApplication()).load(card_item.getProfileImageUrl()).into(image);
+                                Picasso.get().load(profileImageUrl).into(mProfileImage);
+                                break;
+
+                        }
+                        Picasso.get().setLoggingEnabled(true);
+                        //Glide.with(getApplication()).load(profileImageUrl).into(mProfileImage);
+                        Picasso.get().load(profileImageUrl).into(mProfileImage);
+                        existeFotoPerfil = 1;
+                    }
+                }
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+ */
 
     private void getUserInfo() {
         mCustomerDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -162,6 +223,8 @@ public class VerMiCuenta extends AppCompatActivity {
             }
         });
     }
+
+
 
     //Crea el menu en la toolbar
     @Override
