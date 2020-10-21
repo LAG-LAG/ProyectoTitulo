@@ -30,7 +30,7 @@ public class Valorar extends AppCompatActivity {
     private String chatId,currentUserID;
     private DatabaseReference chatsDb,usersDb,clothesDb,chatsDbdos,chatsDbtres,usersdbDos;
     private ChildEventListener childEvent1,childEvent2,childEvent3,childEvent4;
-    private double puntuacionGeneral,cantidadDePrendas=0;
+    private double puntuacionGeneral,cantidadDePrendas=0, puntuacionGeneralTrato, puntuacionGeneralPuntualidad, puntuacionGeneralEstado;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,8 +54,6 @@ public class Valorar extends AppCompatActivity {
         mRBestado = (RatingBar) findViewById(R.id.ratingBar);
         mRBtrato = (RatingBar) findViewById(R.id.ratingBar2);
         mRBpuntualidad = (RatingBar) findViewById(R.id.ratingBar3);
-
-
 
         mEnviar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -84,8 +82,11 @@ public class Valorar extends AppCompatActivity {
                                 if(dataSnapshot.hasChild("puntuacionGeneral") && !dataSnapshot.child("puntuacionGeneral").getValue().toString().equals("-1")){
                                     if(dataSnapshot.hasChild("clothes")){
                                         if(dataSnapshot.child("clothes").hasChild(idPrenda)){
-                                            float puntualidad = 0, estado = 0, trato = 0,puntuacionAnterior = 0,prendasVendidas=0;
+                                            float puntualidad = 0, estado = 0, trato = 0,puntuacionAnterior = 0,prendasVendidas=0, puntuacionAntEstado, puntuacionAntPuntualidad,puntuacionAntTrato;
                                             puntuacionAnterior = Float.valueOf(dataSnapshot.child("puntuacionGeneral").getValue().toString());
+                                            //puntuacionAntEstado = Float.valueOf(dataSnapshot.child("puntuacionEstado").getValue().toString());
+                                            //puntuacionAntPuntualidad = Float.valueOf(dataSnapshot.child("puntuacionPuntualidad").getValue().toString());
+                                            //puntuacionAntTrato = Float.valueOf(dataSnapshot.child("puntuacionTrato").getValue().toString());
                                             if(dataSnapshot.child("clothes").child(idPrenda).hasChild("valoracionPuntualidad")){
                                                 puntualidad = Float.valueOf(dataSnapshot.child("clothes").child(idPrenda).child("valoracionPuntualidad").getValue().toString());
                                             }
@@ -102,9 +103,17 @@ public class Valorar extends AppCompatActivity {
 
                                             //puntuacionGeneral = (((trato + puntualidad + estado)/3) + puntuacionAnterior * prendasVendidas)/(prendasVendidas+1);
 
+                                            //puntuacionGeneralTrato = (double) Math.round((trato + puntuacionAntTrato * prendasVendidas) / (prendasVendidas+1) * 10) / 10;
+                                            //puntuacionGeneralPuntualidad = (double) Math.round((puntualidad + puntuacionAntPuntualidad * prendasVendidas) / (prendasVendidas+1) * 10) / 10;
+                                            //puntuacionGeneralEstado = (double) Math.round((estado + puntuacionAntEstado * prendasVendidas) / (prendasVendidas+1) * 10) / 10;
+
                                             FirebaseDatabase.getInstance().getReference().child("Users").child(idVendedor).child("numeroPrendasVendidas").setValue(prendasVendidas+1);
                                             //puntuacionGeneral = (((puntualidad + trato + estado)/3) + puntuacionAnterior)/2;
                                             FirebaseDatabase.getInstance().getReference().child("Users").child(idVendedor).child("puntuacionGeneral").setValue(puntuacionGeneral);
+                                            //FirebaseDatabase.getInstance().getReference().child("Users").child(idVendedor).child("puntuacionEstado").setValue(puntuacionGeneralEstado);
+                                            //FirebaseDatabase.getInstance().getReference().child("Users").child(idVendedor).child("puntuacionPuntualidad").setValue(puntuacionGeneralPuntualidad);
+                                            //FirebaseDatabase.getInstance().getReference().child("Users").child(idVendedor).child("puntuacionTrato").setValue(puntuacionGeneralTrato);
+
                                         }
                                     }
                                 }
@@ -120,6 +129,9 @@ public class Valorar extends AppCompatActivity {
                                     FirebaseDatabase.getInstance().getReference().child("Users").child(idVendedor).child("numeroPrendasVendidas").setValue("1");
                                     FirebaseDatabase.getInstance().getReference().child("Users").child(idVendedor).child("puntuacionGeneral").setValue(puntuacionGeneral);
 
+                                    FirebaseDatabase.getInstance().getReference().child("Users").child(idVendedor).child("puntuacionTrato").setValue(trato);
+                                    FirebaseDatabase.getInstance().getReference().child("Users").child(idVendedor).child("puntuacionPuntualidad").setValue(puntualidad);
+                                    FirebaseDatabase.getInstance().getReference().child("Users").child(idVendedor).child("puntuacionEstado").setValue(estado);
                                 }
                             }
                         }

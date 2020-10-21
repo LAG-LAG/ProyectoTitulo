@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background_color"
+    tools:context=".VerPuntuacionDeVendedor">
+
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/toolbar" />
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/imagenEstrellasTratoVendedor"
+        android:layout_width="41dp"
+        android:layout_height="44dp"
+        android:layout_marginStart="12dp"
+
+        android:src="@drawable/star_48dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/Tv1"></de.hdodenhof.circleimageview.CircleImageView>
+
+    <TextView
+        android:id="@+id/textViewTratoVendedor"
+        android:layout_width="64dp"
+        android:layout_height="28dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:backgroundTint="#FFFFFF"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:textColorHint="#FFFFFF"
+        android:textSize="24dp"
+        app:layout_constraintStart_toEndOf="@+id/imagenEstrellasTratoVendedor"
+        app:layout_constraintTop_toBottomOf="@+id/Tv1" />
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/imagenEstrellasEstadoVendedor"
+        android:layout_width="41dp"
+        android:layout_height="44dp"
+        android:layout_marginEnd="8dp"
+        android:src="@drawable/star_48dp"
+        app:layout_constraintEnd_toStartOf="@+id/TextViewEstadoVendedor"
+        app:layout_constraintTop_toBottomOf="@+id/Tv3"></de.hdodenhof.circleimageview.CircleImageView>
+
+    <TextView
+        android:id="@+id/TextViewEstadoVendedor"
+        android:layout_width="64dp"
+        android:layout_height="28dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:backgroundTint="#FFFFFF"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:textColorHint="#FFFFFF"
+        android:textSize="24dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/Tv3" />
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/imagenEstrellasPuntualidadVendedor"
+        android:layout_width="41dp"
+        android:layout_height="44dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="64dp"
+        android:src="@drawable/star_48dp"
+        app:layout_constraintEnd_toStartOf="@+id/imagenEstrellasEstadoVendedor"
+        app:layout_constraintStart_toEndOf="@+id/textViewTratoVendedor"
+        app:layout_constraintTop_toBottomOf="@+id/Tv2"></de.hdodenhof.circleimageview.CircleImageView>
+
+    <TextView
+        android:id="@+id/textViewPuntualidadVendedor"
+        android:layout_width="64dp"
+        android:layout_height="28dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:backgroundTint="#FFFFFF"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:textColorHint="#FFFFFF"
+        android:textSize="24dp"
+        app:layout_constraintStart_toEndOf="@+id/imagenEstrellasPuntualidadVendedor"
+        app:layout_constraintTop_toBottomOf="@+id/Tv2" />
+
+    <TextView
+        android:id="@+id/Tv2"
+        android:layout_width="110dp"
+        android:layout_height="28dp"
+        android:layout_marginTop="8dp"
+        android:backgroundTint="#FFFFFF"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="Puntualidad"
+        android:textColorHint="#FFFFFF"
+        android:textSize="16dp"
+        app:layout_constraintEnd_toStartOf="@+id/Tv3"
+        app:layout_constraintStart_toEndOf="@+id/Tv1"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar" />
+
+    <TextView
+        android:id="@+id/Tv1"
+        android:layout_width="130dp"
+        android:layout_height="28dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:backgroundTint="#FFFFFF"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="Trato personal"
+        android:textColorHint="#FFFFFF"
+        android:textSize="16dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar" />
+
+    <TextView
+        android:id="@+id/Tv3"
+        android:layout_width="151dp"
+        android:layout_height="28dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:backgroundTint="#FFFFFF"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="Estado de productos"
+        android:textColorHint="#FFFFFF"
+        android:textSize="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar" />
+
+    <ListView
+        android:id="@+id/lvPublicacionesVendidasVendedorPuntuacion"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imagenEstrellasPuntualidadVendedor"
+        app:layout_constraintVertical_bias="1.0" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
