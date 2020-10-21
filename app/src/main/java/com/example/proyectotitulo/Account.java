@@ -305,9 +305,9 @@ private boolean addLocation;
             //aca guarda la latitud y longitud.
 
             if(longitudLatitudEstado==1) {
-                DatabaseReference currentUserLatitude = FirebaseDatabase.getInstance().getReference().child("Users").child(userId).child("latitude");
+                DatabaseReference currentUserLatitude = FirebaseDatabase.getInstance().getReference().child("Users").child(userId).child("latitudeVenta");
                 currentUserLatitude.setValue(latitude);
-                DatabaseReference currentUserLongitude = FirebaseDatabase.getInstance().getReference().child("Users").child(userId).child("longitude");
+                DatabaseReference currentUserLongitude = FirebaseDatabase.getInstance().getReference().child("Users").child(userId).child("longitudeVenta");
                 currentUserLongitude.setValue(longitude);
             }
 
@@ -452,13 +452,13 @@ private boolean addLocation;
                         mNombre.setText(nombreUsuario);
                     }
 
-                    if (map.get("latitude") != null) {
-                        latitude = Double.parseDouble(map.get("latitude").toString());
+                    if (map.get("latitudeVenta") != null) {
+                        latitude = Double.parseDouble(map.get("latitudeVenta").toString());
                         longitudLatitudEstado =1;
                     }
 
-                    if (map.get("longitude") != null) {
-                        longitude = Double.parseDouble(map.get("longitude").toString());
+                    if (map.get("longitudeVenta") != null) {
+                        longitude = Double.parseDouble(map.get("longitudeVenta").toString());
                         longitudLatitudEstado =1;
                     }
 
