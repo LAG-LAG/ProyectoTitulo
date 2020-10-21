@@ -20,6 +20,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.NoActionBar">
+
+        <meta-data android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyAov-A4hAfu7wP76_DpSlA9izVrhVtZMZk"/>
+
         <activity android:name=".VerPerfilDeVendedor"></activity>
         <activity android:name=".MisPublicacionesVendidas" />
         <activity android:name=".file" />

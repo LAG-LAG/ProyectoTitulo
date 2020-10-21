@@ -260,7 +260,7 @@ public class PaginaPrincipal extends AppCompatActivity {
                     }
                     if(dataSnapshot.child("filtros").hasChild("tipoBusqueda")){
                         Log.d("pnect","weaa3");
-                        if(dataSnapshot.child("filtros").child("tipoBusqueda").getValue().toString().equals("1")){
+                        if(dataSnapshot.child("filtros").child("tipoBusqueda").getValue().toString().equals("1") || dataSnapshot.child("filtros").child("tipoBusqueda").getValue().toString().equals("0")){
                             esBusquedaPorKm = 1;
                             if(dataSnapshot.hasChild("longitude")){
                                 longitudUser = Double.valueOf(dataSnapshot.child("longitude").getValue().toString());
