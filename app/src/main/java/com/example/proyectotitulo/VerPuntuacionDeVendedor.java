@@ -34,7 +34,7 @@ public class VerPuntuacionDeVendedor extends AppCompatActivity {
     private DatabaseReference mCustomerDatabase;
     private DatabaseReference usersDb;
     private DatabaseReference clothesDb;
-    private misPublicacionAdapter adapter;
+    private publicacionValoracionAdapter adapter;
     private TextView mTextViewTrato;
     private TextView mTextViewPuntualidad;
     private TextView mTextViewEstado;
@@ -67,51 +67,10 @@ public class VerPuntuacionDeVendedor extends AppCompatActivity {
         obtenerPublicaciones();
 
         lvItems = (ListView) findViewById(R.id.lvPublicacionesVendidasVendedorPuntuacion);
-        adapter = new misPublicacionAdapter(this, listItems,"PERFILVENDEDOR");
+        adapter = new publicacionValoracionAdapter(this, listItems);
         lvItems.setAdapter(adapter);
 
-        /*lvItems.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                publicacion AuxPublicacion = (publicacion)lvItems.getAdapter().getItem(position);
-                String idClothes = AuxPublicacion.getIdClothes();
-                Intent intentDetalle = new Intent(VerPuntuacionDeVendedor.this, MiPublicacionDetalle.class);
-                intentDetalle.putExtra("idClothes",idClothes);
-                intentDetalle.putExtra("idUser",idOwner); //mAuth.getCurrentUser().getUid());
-                intentDetalle.putExtra("verPerfilVendedor","1");
-                startActivity(intentDetalle);
-                //finish();
-            }
-        });*/
-
     }
-
-
-    /*private void getUserInfo() {
-        usersDb.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if(dataSnapshot.exists() && dataSnapshot.hasChild("clothes") && dataSnapshot.getKey().equals(idOwner)){
-
-                    if(dataSnapshot.child("puntuacionTrato") != null){
-                        mTextViewTrato.setText(dataSnapshot.child("puntuacionTrato").getValue().toString());
-                    }
-                    if(dataSnapshot.child("puntuacionEstado") != null){
-                        mTextViewEstado.setText(dataSnapshot.child("puntuacionEstado").getValue().toString());
-                    }
-                    if(dataSnapshot.child("puntuacionPuntualidad") != null){
-                        mTextViewPuntualidad.setText(dataSnapshot.child("puntuacionPuntualidad").getValue().toString());
-                    }
-
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-    }*/
 
     private void obtenerPublicaciones(){
         Log.d("PUNTUACION", "0");
@@ -153,11 +112,29 @@ public class VerPuntuacionDeVendedor extends AppCompatActivity {
                                 } else {
                                     fotoPublicacion = "default";
                                 }
-                                if (dataSnapshot.hasChild("ValorPrenda") && dataSnapshot.hasChild("tituloPublicacion") && dataSnapshot.hasChild("DescripcionPrenda") && dataSnapshot.hasChild("clothesPhotos") && dataSnapshot.hasChild("estaVendida")) {
-                                    final publicacion item = new publicacion(dataSnapshot.child("tituloPublicacion").getValue().toString(), fotoPublicacion, "$" + dataSnapshot.child("ValorPrenda").getValue().toString(), clothesCurrentUid);
-                                    listItems.add(item);
-                                    adapter.notifyDataSetChanged(); //esto se usa cad vez que se añade o se quita un elemetno del arraylist de los items.
+
+                                if (dataSnapshot.hasChild("ValorPrenda") && dataSnapshot.hasChild("tituloPublicacion") && dataSnapshot.hasChild("DescripcionPrenda") && dataSnapshot.hasChild("clothesPhotos") && dataSnapshot.hasChild("estaVendida")){
+                                    float valoracionGeneral = 0;
+                                    if(dataSnapshot.hasChild("valoracionEstado") && dataSnapshot.hasChild("valoracionPuntualidad") && dataSnapshot.hasChild("valoracionTrato")){
+                                        float valoracionEstado = Float.parseFloat(dataSnapshot.child("valoracionEstado").getValue().toString());
+                                        float valoracionPuntualidad = Float.parseFloat(dataSnapshot.child("valoracionPuntualidad").getValue().toString());
+                                        float valoracionTrato = Float.parseFloat(dataSnapshot.child("valoracionTrato").getValue().toString());
+                                        valoracionGeneral = (valoracionEstado + valoracionPuntualidad + valoracionTrato) / 3;
+                                    }
+                                    if(dataSnapshot.hasChild("comment")){
+                                        final publicacion item = new publicacion(dataSnapshot.child("tituloPublicacion").getValue().toString(), fotoPublicacion, "$" + dataSnapshot.child("ValorPrenda").getValue().toString(), clothesCurrentUid, dataSnapshot.child("comment").getValue().toString(), valoracionGeneral);
+                                        listItems.add(item);
+                                        adapter.notifyDataSetChanged(); //esto se usa cad vez que se añade o se quita un elemetno del arraylist de los items.
+                                    }
+                                    else{
+                                        final publicacion item = new publicacion(dataSnapshot.child("tituloPublicacion").getValue().toString(), fotoPublicacion, "$" + dataSnapshot.child("ValorPrenda").getValue().toString(), clothesCurrentUid, "Sin comentario", valoracionGeneral);
+                                        listItems.add(item);
+                                        adapter.notifyDataSetChanged(); //esto se usa cad vez que se añade o se quita un elemetno del arraylist de los items.
+                                    }
+
                                 }
+
+
                             }
                         }
 
