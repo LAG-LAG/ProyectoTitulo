@@ -21,22 +21,27 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.squareup.picasso.Picasso;
 
 public class Valorar extends AppCompatActivity {
     private Button mEnviar;
     private TextView mTitulo;
+    private TextView mComentario;
     private ImageView mImage;
     private RatingBar mRBestado, mRBtrato, mRBpuntualidad;
     private String chatId,currentUserID;
-    private DatabaseReference chatsDb,usersDb,clothesDb,chatsDbdos,chatsDbtres,usersdbDos;
-    private ChildEventListener childEvent1,childEvent2,childEvent3,childEvent4;
+    private DatabaseReference chatsDb,usersDb,clothesDb,chatsDbdos,chatsDbtres,usersdbDos,chatsDbCuatro,usersDbTres;
+    private ChildEventListener childEvent1,childEvent2,childEvent3,childEvent4,childEvent5,childEvent6;
     private double puntuacionGeneral,cantidadDePrendas=0, puntuacionGeneralTrato, puntuacionGeneralPuntualidad, puntuacionGeneralEstado;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_valorar);
         chatsDb = FirebaseDatabase.getInstance().getReference().child("chat");
+        chatsDbCuatro = FirebaseDatabase.getInstance().getReference().child("chat");
+
         usersDb = FirebaseDatabase.getInstance().getReference().child("Users"); //esto obtiene todos los usuarios de la bd
+        usersDbTres = usersDb;
         chatsDbdos = FirebaseDatabase.getInstance().getReference().child("chat");
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -50,16 +55,91 @@ public class Valorar extends AppCompatActivity {
 
         mEnviar = (Button) findViewById(R.id.BtnEnviarValorar);
         mTitulo = (TextView) findViewById(R.id.TVtituloPublicacionValorar);
+        mComentario = (TextView) findViewById(R.id.comentarioText);
+
         mImage = (ImageView) findViewById(R.id.imageViewValorar);
         mRBestado = (RatingBar) findViewById(R.id.ratingBar);
         mRBtrato = (RatingBar) findViewById(R.id.ratingBar2);
         mRBpuntualidad = (RatingBar) findViewById(R.id.ratingBar3);
 
+        getInfoPrenda();
         mEnviar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 saveValoracionGeneral();
                SaveValoracion();
+            }
+        });
+    }
+
+    private void getInfoPrenda() {
+        childEvent5 = chatsDbCuatro.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                if(dataSnapshot.exists() && dataSnapshot.getKey().equals(chatId)){
+                    final String idPrenda = dataSnapshot.child("idPrenda").getValue().toString();
+                    final String idUserVendedor = dataSnapshot.child("idUserVendedor").getValue().toString();
+                    childEvent6 = usersDbTres.addChildEventListener(new ChildEventListener() {
+                        @Override
+                        public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                            if(dataSnapshot.exists() && dataSnapshot.getKey().equals(idUserVendedor)){
+                                if(dataSnapshot.hasChild("clothes")){
+                                    if(dataSnapshot.child("clothes").hasChild(idPrenda)){
+                                        mTitulo.setText(dataSnapshot.child("clothes").child(idPrenda).child("tituloPublicacion").getValue().toString());
+                                        if(dataSnapshot.child("clothes").child(idPrenda).hasChild("clothesPhotos")){
+                                            if(dataSnapshot.child("clothes").child(idPrenda).child("clothesPhotos").hasChild("photoId1")){
+                                                Picasso.get().load(dataSnapshot.child("clothes").child(idPrenda).child("clothesPhotos").child("photoId1").getValue().toString()).into(mImage);
+                                            }
+                                        }
+                                        chatsDbCuatro.removeEventListener(childEvent5);
+                                        usersDbTres.removeEventListener(childEvent6);
+                                    }
+                                }
+                            }
+                        }
+
+                        @Override
+                        public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+                        }
+
+                        @Override
+                        public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+                        }
+
+                        @Override
+                        public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+                    });
+
+                }
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
             }
         });
     }
@@ -214,6 +294,8 @@ public class Valorar extends AppCompatActivity {
                                 Log.d("valoracion", "idprenda "+dataSnapshot.child("idPrenda").getValue().toString());
                                 Log.d("valoracion", "idprenda de arriba "+idPrenda);
                                 final DatabaseReference finalizarChats =  FirebaseDatabase.getInstance().getReference().child("chat").child(dataSnapshot.getKey()).child("estadoFinalizado");
+                                //comentarioPublicacion =
+                                FirebaseDatabase.getInstance().getReference().child("Users").child(idVendedor).child("clothes").child(idPrenda).child("comment").setValue(mComentario.getText().toString());
                                 finalizarChats.setValue("1");
                             }
                         }

@@ -155,7 +155,10 @@ public class Filtros extends AppCompatActivity {
                 PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
                 try {
                     startActivityForResult(builder.build(Filtros.this),PLACE_PICKER_REQUEST);
+                    //startActivityForResult(builder.build(Filtros.this),PLACE_PICKER_REQUEST);
+
                 } catch (GooglePlayServicesRepairableException e) {
+                    
                     e.printStackTrace();
                 } catch (GooglePlayServicesNotAvailableException e) {
                     e.printStackTrace();
