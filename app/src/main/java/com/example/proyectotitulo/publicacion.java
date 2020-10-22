@@ -6,8 +6,8 @@ public class publicacion {
     private String profileImageUrl;
     private String valorPublicacion;
     private String idClothes;
-
-
+    private String comentario;
+    private float valoracion;
 
     public publicacion(String tituloPublicacion, String profileImageUrl, String valorPublicacion, String idClothes) {
         this.tituloPublicacion = tituloPublicacion;
@@ -27,6 +27,15 @@ public class publicacion {
             this.profileImageUrl = profileImageUrl;
             this.idClothes = idClothes;
             this.idOwner = keydos;
+    }
+
+    public publicacion(String tituloPublicacion, String profileImageUrl, String idClothes, String keydos, String comentario, float valoracion) {
+        this.tituloPublicacion = tituloPublicacion;
+        this.profileImageUrl = profileImageUrl;
+        this.idClothes = idClothes;
+        this.idOwner = keydos;
+        this.comentario = comentario;
+        this.valoracion = valoracion;
     }
 
     public String getIdOwner() {
@@ -65,10 +74,24 @@ public class publicacion {
                 }
 
     public void setTituloPublicacion (String tituloPublicacion){
-                    this.tituloPublicacion = tituloPublicacion;
-                }
+        this.tituloPublicacion = tituloPublicacion;
+    }
 
+    public String getComentario() {
+        return comentario;
+    }
 
+    public void setComentario(String comentario) {
+        this.comentario = comentario;
+    }
+
+    public float getValoracion() {
+        return valoracion;
+    }
+
+    public void setValoracion(float valoracion) {
+        this.valoracion = valoracion;
+    }
 }
 
 
