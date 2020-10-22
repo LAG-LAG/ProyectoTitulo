@@ -260,7 +260,7 @@ public class PaginaPrincipal extends AppCompatActivity {
                     }
                     if(dataSnapshot.child("filtros").hasChild("tipoBusqueda")){
                         Log.d("pnect","weaa3");
-                        if(dataSnapshot.child("filtros").child("tipoBusqueda").getValue().toString().equals("1")){
+                        if(dataSnapshot.child("filtros").child("tipoBusqueda").getValue().toString().equals("1") || dataSnapshot.child("filtros").child("tipoBusqueda").getValue().toString().equals("0")){
                             esBusquedaPorKm = 1;
                             if(dataSnapshot.hasChild("longitude")){
                                 longitudUser = Double.valueOf(dataSnapshot.child("longitude").getValue().toString());
@@ -313,13 +313,22 @@ public class PaginaPrincipal extends AppCompatActivity {
                         if (dataSnapshot.exists() && dataSnapshot.hasChild("clothes") && !dataSnapshot.getKey().equals(currentUId)) {
                             Log.d("pnect","2");
 
-                            if(dataSnapshot.hasChild("latitude") && dataSnapshot.hasChild("longitude") ){
+                            if(dataSnapshot.hasChild("latitudeVenta") && dataSnapshot.hasChild("longitudeVenta") || dataSnapshot.hasChild("latitude") && dataSnapshot.hasChild("longitude")){
                                 double latitude,longitude;
                                 Log.d("pnect","3");
 //esto esta bien
-                                latitude = Double.valueOf(dataSnapshot.child("latitude").getValue().toString());
-                                longitude = Double.valueOf(dataSnapshot.child("longitude").getValue().toString());
-                                
+                                if(dataSnapshot.hasChild("latitudeVenta") && dataSnapshot.hasChild("longitudeVenta")) {
+                                    latitude = Double.valueOf(dataSnapshot.child("latitudeVenta").getValue().toString());
+                                    longitude = Double.valueOf(dataSnapshot.child("longitudeVenta").getValue().toString());
+                                }
+                                else if (dataSnapshot.hasChild("latitude") && dataSnapshot.hasChild("longitude")){
+                                    latitude = Double.valueOf(dataSnapshot.child("latitude").getValue().toString());
+                                    longitude = Double.valueOf(dataSnapshot.child("longitude").getValue().toString());
+                                }
+                                else{
+                                    latitude = 0;
+                                    longitude = 0;
+                                }
                                 if(estaEnRadioKM(kmBusqueda,latitude,longitude)){
                                     Log.d("pnect","4");
                                     String key = dataSnapshot.getKey();

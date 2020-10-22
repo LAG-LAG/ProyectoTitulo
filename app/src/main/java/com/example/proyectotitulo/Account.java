@@ -29,8 +29,12 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 
 import com.bumptech.glide.Glide;
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
+import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.ui.PlacePicker;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -65,19 +69,21 @@ public class Account extends AppCompatActivity {
     private EditText mNombre;
     private ImageView mProfileImage, mborrarFotoPerfil;
     private String nombreUsuario;
-
+    int PLACE_PICKER_REQUEST = 1;
+private int tieneFotoDePerfil;
     private Spinner mRegionesSpinner;
     private String comunaAnterior, profileImageUrl;
     private String regionAnterior,puntuacionGeneral;
     private Spinner mComunasSpinner;
     private Uri resultUri;
-    private int estadoComunas, existeFotoPerfil, longitudLatitudEstado;
+    private int estadoComunas, borrarFotoPerfil, existeFotoPerfil, longitudLatitudEstado;
     private double latitude, longitude;
     private FusedLocationProviderClient fusedLocationProviderClient;
-
+private boolean addLocation;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        addLocation = false;
         setContentView(R.layout.activity_account);
         mAplicar = (Button) findViewById(R.id.aplicar);
         mNombre = (EditText) findViewById(R.id.name);
@@ -87,10 +93,12 @@ public class Account extends AppCompatActivity {
         mComunasSpinner = (Spinner) findViewById(R.id.comunasSpinner);
         estadoComunas = 0;
         existeFotoPerfil = 0;
+        tieneFotoDePerfil = 0;
+        borrarFotoPerfil = 0;
         mborrarFotoPerfil.setVisibility(View.INVISIBLE);
         longitudLatitudEstado = 0;
         mUbicacion = (Button) findViewById(R.id.ubicacionButton);
-        mUbicacion.setVisibility(View.INVISIBLE);
+        mUbicacion.setVisibility(View.VISIBLE);
         //Toolbar Menu
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -112,13 +120,28 @@ public class Account extends AppCompatActivity {
         mUbicacion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
+                try {
+                    addLocation = true;
+                    startActivityForResult(builder.build(Account.this),PLACE_PICKER_REQUEST);
+                } catch (GooglePlayServicesRepairableException e) {
+                    e.printStackTrace();
+                } catch (GooglePlayServicesNotAvailableException e) {
+                    e.printStackTrace();
+                }
+
+                /*
                 if (ActivityCompat.checkSelfPermission(Account.this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
                     getLocation();
                 } else {
                     ActivityCompat.requestPermissions(Account.this, new String[]{
                             Manifest.permission.ACCESS_FINE_LOCATION}, 44);
                 }
+
+                 */
             }
+
+
         });
 
 
@@ -128,10 +151,12 @@ public class Account extends AppCompatActivity {
                 if (resultUri != null) {
                     final Uri imageUri = null;
                     resultUri = imageUri;
+                    borrarFotoPerfil=1;
                     mProfileImage.setImageResource(R.drawable.ic_launcher_foreground);
                     mborrarFotoPerfil.setVisibility(View.INVISIBLE);
                 }
                 if (existeFotoPerfil == 1) {
+                    borrarFotoPerfil=1;
                     mProfileImage.setImageResource(R.drawable.ic_launcher_foreground);
                     mborrarFotoPerfil.setVisibility(View.INVISIBLE);
                 }
@@ -278,15 +303,15 @@ public class Account extends AppCompatActivity {
             currentUserComuna.setValue(comunaGuardar);
             currentUserName.setValue(mNombre.getText().toString()); //Aca va y le asigna el nombre al User.
             //aca guarda la latitud y longitud.
-            /*
+
             if(longitudLatitudEstado==1) {
-                DatabaseReference currentUserLatitude = FirebaseDatabase.getInstance().getReference().child("Users").child(userId).child("latitude");
+                DatabaseReference currentUserLatitude = FirebaseDatabase.getInstance().getReference().child("Users").child(userId).child("latitudeVenta");
                 currentUserLatitude.setValue(latitude);
-                DatabaseReference currentUserLongitude = FirebaseDatabase.getInstance().getReference().child("Users").child(userId).child("longitude");
+                DatabaseReference currentUserLongitude = FirebaseDatabase.getInstance().getReference().child("Users").child(userId).child("longitudeVenta");
                 currentUserLongitude.setValue(longitude);
             }
 
-             */
+
         }
         else{
             Toast.makeText(Account.this, "Datos Incorrectos.", Toast.LENGTH_SHORT).show();
@@ -346,7 +371,9 @@ public class Account extends AppCompatActivity {
                         if (map.get("profileImages") == null) {
                             String userId = mAuth.getCurrentUser().getUid();
                             if(dataSnapshot.hasChild("profileImageUrl")) {
-                                FirebaseDatabase.getInstance().getReference().child("Users").child(userId).child("profileImageUrl").removeValue();
+                                if(borrarFotoPerfil==1) {
+                                    FirebaseDatabase.getInstance().getReference().child("Users").child(userId).child("profileImageUrl").removeValue();
+                                }
                                 //FirebaseStorage.getInstance().getReference().child("profileImages").child(userId).child(map.get("profilesImages").toString()).delete();
 
                             }
@@ -369,7 +396,14 @@ public class Account extends AppCompatActivity {
             final Uri imageUri = data.getData();
             resultUri = imageUri;
             mProfileImage.setImageURI(resultUri);
+            if(addLocation == true) {
+                Place place = PlacePicker.getPlace(data, this);
+                latitude = place.getLatLng().latitude;
+                longitude = place.getLatLng().longitude;
+                longitudLatitudEstado = 1;
+            }
         }
+
     }
 
     private void llenarComboBoxRegiones() {
@@ -418,14 +452,14 @@ public class Account extends AppCompatActivity {
                         mNombre.setText(nombreUsuario);
                     }
 
-                    if (map.get("latitud") != null) {
-                        latitude = Double.parseDouble(map.get("latitud").toString());
-                        longitudLatitudEstado =0;
+                    if (map.get("latitudeVenta") != null) {
+                        latitude = Double.parseDouble(map.get("latitudeVenta").toString());
+                        longitudLatitudEstado =1;
                     }
 
-                    if (map.get("longitud") != null) {
-                        longitude = Double.parseDouble(map.get("longitud").toString());
-                        longitudLatitudEstado =0;
+                    if (map.get("longitudeVenta") != null) {
+                        longitude = Double.parseDouble(map.get("longitudeVenta").toString());
+                        longitudLatitudEstado =1;
                     }
 
                     if (map.get("region") != null) {
@@ -463,6 +497,7 @@ public class Account extends AppCompatActivity {
                     Glide.with(getApplication()).clear(mProfileImage);
                     if(map.get("profileImageUrl")!=null){
                         mborrarFotoPerfil.setVisibility(View.VISIBLE);
+                        tieneFotoDePerfil = 1;
                         profileImageUrl = map.get("profileImageUrl").toString();
                         switch(profileImageUrl){
                             case "default":

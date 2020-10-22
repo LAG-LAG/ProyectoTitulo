@@ -26,8 +26,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
+import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.ui.PlacePicker;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -54,11 +58,13 @@ public class Filtros extends AppCompatActivity {
     private String comunaBusqueda, tallaBusqueda, estadoBusqueda, tipoPrendaBusqueda,regionBusqueda,currentUId;
     private int estadoComunas,valorKm,longitudLatitudEstado;
     private double longitude,latitude;
-    private Button mAplicar;
+    private Button mAplicar,mUbication,mEliminarFiltros;
     private Switch mSwitch;
     private TextView KmSeekBar;
+    private ChildEventListener childListenerEliminar;
     private boolean isChecked;
     private SeekBar mSeekbar;
+    int PLACE_PICKER_REQUEST = 1;
     private FusedLocationProviderClient fusedLocationProviderClient;
 
     @Override
@@ -76,8 +82,12 @@ public class Filtros extends AppCompatActivity {
         mTipoPrenda = (Spinner) findViewById(R.id.tipoPrendaSpinnerFiltrar);
         mEstado = (Spinner) findViewById(R.id.estadoSpinnerFiltrar);
         mAplicar = (Button) findViewById(R.id.filtrarDatosBtn);
+        mUbication = (Button) findViewById(R.id.mButtonUbicacion);
+        mEliminarFiltros = (Button) findViewById(R.id.eliminarFiltros);
+
         mSwitch = (Switch) findViewById(R.id.switch2);
         KmSeekBar = (TextView) findViewById(R.id.textProgressSeek);
+        //mMapPicker = (TextView) findViewById(R.id.mapPlace);
         mSeekbar = (SeekBar) findViewById(R.id.seekBar);
         mSeekbar.setProgress(0);
         mSeekbar.setMax(100);
@@ -88,27 +98,31 @@ public class Filtros extends AppCompatActivity {
         regionBusqueda = getIntent().getExtras().getString("regionAnterior");
         estadoBusqueda = getIntent().getExtras().getString("estadoAnterior");
 
+        mRegionesSpinner.setVisibility(View.INVISIBLE);
+        mComunasSpinner.setVisibility(View.INVISIBLE);
         isChecked = mSwitch.isChecked(); //ESTO HAY QUE CAMBIARLO POR EL VALOR DEL SWITCH EN LA BD.
         obtenerValoresSeekbar();
         if(isChecked == false) {
-            mSwitch.setText("Busqueda por Km.");
+            mRegionesSpinner.setVisibility(View.INVISIBLE);
+            mComunasSpinner.setVisibility(View.INVISIBLE);
+            mUbication.setVisibility(View.VISIBLE);
+            mSwitch.setText("Busqueda por Ubicacion Actual.");
             getFiltroInfo();
             getSpinnerDatos();
             llenarComboBoxRegiones();
-            mSeekbar.setVisibility(View.INVISIBLE);
-            KmSeekBar.setVisibility(View.INVISIBLE);
+            mSeekbar.setVisibility(View.VISIBLE);
+            KmSeekBar.setVisibility(View.VISIBLE);
             mTalla.setVisibility(View.VISIBLE);
             mTipoPrenda.setVisibility(View.VISIBLE);
             mEstado.setVisibility(View.VISIBLE);
-            mRegionesSpinner.setVisibility(View.VISIBLE);
-            mComunasSpinner.setVisibility(View.VISIBLE);
+            //mRegionesSpinner.setVisibility(View.VISIBLE);
+            //mComunasSpinner.setVisibility(View.VISIBLE);
+
         }
         else{
-
+            mUbication.setVisibility(View.INVISIBLE);
             mSeekbar.setProgress(0); // esto hay que reemplazarlo por el valor en la bd.
-
-            mSwitch.setText("Busqueda por Ciudad.");
-
+            mSwitch.setText("Busqueda por Ubicacion por Mapa.");
             mSeekbar.setVisibility(View.VISIBLE);
             KmSeekBar.setVisibility(View.VISIBLE);
             mTalla.setVisibility(View.INVISIBLE);
@@ -135,6 +149,20 @@ public class Filtros extends AppCompatActivity {
 */
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
 
+        mUbication.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
+                try {
+                    startActivityForResult(builder.build(Filtros.this),PLACE_PICKER_REQUEST);
+                } catch (GooglePlayServicesRepairableException e) {
+                    e.printStackTrace();
+                } catch (GooglePlayServicesNotAvailableException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
         mSeekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean b) {
@@ -158,34 +186,75 @@ public class Filtros extends AppCompatActivity {
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 isChecked = b;
                 if(isChecked == false){
-                    mSwitch.setText("Busqueda por Km.");
+                    mSwitch.setText("Busqueda por Ubicacion Actual.");
                     Log.d("switchh", "xd");
                     getFiltroInfo();
                     getSpinnerDatos();
                     llenarComboBoxRegiones();
-                    mSeekbar.setVisibility(View.INVISIBLE);
-                    KmSeekBar.setVisibility(View.INVISIBLE);
-
+                    mSeekbar.setVisibility(View.VISIBLE);
+                    KmSeekBar.setVisibility(View.VISIBLE);
+                    mRegionesSpinner.setVisibility(View.INVISIBLE);
+                    mComunasSpinner.setVisibility(View.INVISIBLE);
                     mTalla.setVisibility(View.VISIBLE);
                     mTipoPrenda.setVisibility(View.VISIBLE);
                     mEstado.setVisibility(View.VISIBLE);
-                    mRegionesSpinner.setVisibility(View.VISIBLE);
-                    mComunasSpinner.setVisibility(View.VISIBLE);
+                    mUbication.setVisibility(View.VISIBLE);
+                    //mRegionesSpinner.setVisibility(View.VISIBLE);
+                    //mComunasSpinner.setVisibility(View.VISIBLE);
                 }
                 else{
                      //esto hay que reemplazarlo por el valor en al bd.
+                    //mMapPicker.setVisibility(View.INVISIBLE);
                     mSeekbar.setVisibility(View.VISIBLE);
                     KmSeekBar.setVisibility(View.VISIBLE);
-                    mSwitch.setText("Busqueda por Ciudad.");
+                    mSwitch.setText("Busqueda por Ubicacion por Mapa.");
                     //mTalla.setVisibility(View.INVISIBLE);
                     //mTipoPrenda.setVisibility(View.INVISIBLE);
                     //mEstado.setVisibility(View.INVISIBLE);
+                    mUbication.setVisibility(View.INVISIBLE);
                     mRegionesSpinner.setVisibility(View.INVISIBLE);
                     mComunasSpinner.setVisibility(View.INVISIBLE);
                 }
             }
         });
 
+        mEliminarFiltros.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                childListenerEliminar = usersDb.addChildEventListener(new ChildEventListener() {
+                    @Override
+                    public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                        if(dataSnapshot.exists() && dataSnapshot.getKey().equals(currentUId) && dataSnapshot.hasChild("filtros")){
+                            FirebaseDatabase.getInstance().getReference().child("Users").child(currentUId).child("filtros").removeValue();
+                            Intent intentPaginaPrincipal = new Intent(Filtros.this, PaginaPrincipal.class);
+                            startActivity(intentPaginaPrincipal);
+                            finish();
+                            usersDb.removeEventListener(childListenerEliminar);
+                        }
+                    }
+
+                    @Override
+                    public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+                    }
+
+                    @Override
+                    public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+                    }
+
+                    @Override
+                    public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+            }
+        });
         mRegionesSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -250,8 +319,8 @@ public class Filtros extends AppCompatActivity {
                     @Override
                     public void onClick(View view) {
                         if(isChecked==false) {
-                            String regionGuardar = String.valueOf(mRegionesSpinner.getSelectedItem());
-                            String comunaGuardar = String.valueOf(mComunasSpinner.getSelectedItem());
+                            //String regionGuardar = String.valueOf(mRegionesSpinner.getSelectedItem());
+                            //String comunaGuardar = String.valueOf(mComunasSpinner.getSelectedItem());
                             String tipoPrendaAnterior = String.valueOf(mTipoPrenda.getSelectedItem());
                             String estadoAnterior = String.valueOf(mEstado.getSelectedItem());
                             String tallaAnterior = String.valueOf(mTalla.getSelectedItem());
@@ -265,11 +334,14 @@ public class Filtros extends AppCompatActivity {
                                 tallaAnterior = "";
                             }
                             usersDb.child(mAuth.getCurrentUser().getUid()).child("filtros").child("tipoBusqueda").setValue("0"); //si es 0 busca por comuna y direccion.
-                            usersDb.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("filtros").child("comunaAnterior").setValue(comunaGuardar);
-                            usersDb.child(mAuth.getCurrentUser().getUid()).child("filtros").child("regionAnterior").setValue(regionGuardar);
+                            usersDb.child(mAuth.getCurrentUser().getUid()).child("filtros").child("KMBusqueda").setValue(valorKm);
+                            //usersDb.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("filtros").child("comunaAnterior").setValue(comunaGuardar);
+                            //usersDb.child(mAuth.getCurrentUser().getUid()).child("filtros").child("regionAnterior").setValue(regionGuardar);
                             usersDb.child(mAuth.getCurrentUser().getUid()).child("filtros").child("tipoPrendaAnterior").setValue(tipoPrendaAnterior);
                             usersDb.child(mAuth.getCurrentUser().getUid()).child("filtros").child("estadoAnterior").setValue(estadoAnterior);
                             usersDb.child(mAuth.getCurrentUser().getUid()).child("filtros").child("tallaAnterior").setValue(tallaAnterior);
+                            FirebaseDatabase.getInstance().getReference().child("Users").child(currentUId).child("latitude").setValue(latitude);
+                            FirebaseDatabase.getInstance().getReference().child("Users").child(currentUId).child("longitude").setValue(longitude);
                             Intent intentPaginaPrincipal = new Intent(Filtros.this, PaginaPrincipal.class);/*
                         intentPaginaPrincipal.putExtra("comunaAnterior",comunaGuardar);
                         intentPaginaPrincipal.putExtra("regionAnterior",regionGuardar);
@@ -352,6 +424,20 @@ public class Filtros extends AppCompatActivity {
                 });
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == PLACE_PICKER_REQUEST) {
+            if (resultCode == RESULT_OK) {
+                Place place = PlacePicker.getPlace(data, this);
+                latitude = place.getLatLng().latitude;
+                longitude = place.getLatLng().longitude;
+
+                //mMapPicker.setText(stringBuilder.toString());
+            }
+        }
+    }
+
     private void obtenerValoresSeekbar() {
         Log.d("switchhh","xd'");
         DatabaseReference usersDb2 = FirebaseDatabase.getInstance().getReference().child("Users");
@@ -364,6 +450,10 @@ public class Filtros extends AppCompatActivity {
                     if(dataSnapshot.hasChild("filtros")){
                         Log.d("switchhh","xd1");
                         if(dataSnapshot.child("filtros").hasChild("KMBusqueda") ){
+                            if(dataSnapshot.hasChild("longitude") && dataSnapshot.hasChild("latitude") ){
+                                longitude =  Double.valueOf(dataSnapshot.child("longitude").getValue().toString());
+                                latitude =  Double.valueOf(dataSnapshot.child("latitude").getValue().toString());
+                            }
                             valorKm = Integer.valueOf(dataSnapshot.child("filtros").child("KMBusqueda").getValue().toString());
                             //valorKm = (int) dataSnapshot.child("filtros").child("KMBusqueda").getValue();
                             Log.d("switchhh","xd2");

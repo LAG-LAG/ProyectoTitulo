@@ -82,37 +82,41 @@ public class Valorar extends AppCompatActivity {
                                 if(dataSnapshot.hasChild("puntuacionGeneral") && !dataSnapshot.child("puntuacionGeneral").getValue().toString().equals("-1")){
                                     if(dataSnapshot.hasChild("clothes")){
                                         if(dataSnapshot.child("clothes").hasChild(idPrenda)){
-                                            float puntualidad = 0, estado = 0, trato = 0,puntuacionAnterior = 0,prendasVendidas=0, puntuacionAntEstado, puntuacionAntPuntualidad,puntuacionAntTrato;
-                                            puntuacionAnterior = Float.valueOf(dataSnapshot.child("puntuacionGeneral").getValue().toString());
-                                            //puntuacionAntEstado = Float.valueOf(dataSnapshot.child("puntuacionEstado").getValue().toString());
-                                            //puntuacionAntPuntualidad = Float.valueOf(dataSnapshot.child("puntuacionPuntualidad").getValue().toString());
-                                            //puntuacionAntTrato = Float.valueOf(dataSnapshot.child("puntuacionTrato").getValue().toString());
-                                            if(dataSnapshot.child("clothes").child(idPrenda).hasChild("valoracionPuntualidad")){
-                                                puntualidad = Float.valueOf(dataSnapshot.child("clothes").child(idPrenda).child("valoracionPuntualidad").getValue().toString());
+                                            double puntualidad = 0, estado = 0, trato = 0,puntuacionAnterior = 0,prendasVendidas=0, puntuacionAntEstado, puntuacionAntPuntualidad,puntuacionAntTrato;
+                                            puntuacionAnterior = Double.valueOf(dataSnapshot.child("puntuacionGeneral").getValue().toString());
+                                            puntuacionAntEstado = Double.valueOf(dataSnapshot.child("puntuacionEstado").getValue().toString());
+                                            puntuacionAntPuntualidad = Double.valueOf(dataSnapshot.child("puntuacionPuntualidad").getValue().toString());
+                                            puntuacionAntTrato = Double.valueOf(dataSnapshot.child("puntuacionTrato").getValue().toString());
+
+                                            if(dataSnapshot.hasChild("numeroPrendasVendidas")){
+                                                prendasVendidas = Double.valueOf(dataSnapshot.child("numeroPrendasVendidas").getValue().toString());
+
                                             }
-                                            if(dataSnapshot.child("clothes").child(idPrenda).hasChild("valoracionEstado")) {
-                                                estado = Float.valueOf(dataSnapshot.child("clothes").child(idPrenda).child("valoracionEstado").getValue().toString());
-                                            }
-                                            if(dataSnapshot.child("clothes").child(idPrenda).hasChild("valoracionTrato")) {
-                                                trato = Float.valueOf(dataSnapshot.child("clothes").child(idPrenda).child("valoracionTrato").getValue().toString());
-                                            }
-                                            if(dataSnapshot.hasChild("numeroPrendasVendidas")) {
-                                                prendasVendidas = Float.valueOf(dataSnapshot.child("numeroPrendasVendidas").getValue().toString());
-                                            }
+                                            puntualidad = mRBpuntualidad.getRating();
+                                            estado = mRBestado.getRating();
+                                            trato = mRBtrato.getRating();
+                                            Log.d("puntuacion","puntualidad: "+puntualidad+" estado: "+estado+" trato "+trato);
+                                            Log.d("puntuacion Anterior ","puntualidadA: "+puntuacionAntPuntualidad+" estadoA: "+puntuacionAntEstado+" tratoA "+puntuacionAntTrato);
                                             puntuacionGeneral = (double) Math.round((((trato + puntualidad + estado)/3) + puntuacionAnterior * prendasVendidas) / (prendasVendidas+1) * 10) / 10;
 
                                             //puntuacionGeneral = (((trato + puntualidad + estado)/3) + puntuacionAnterior * prendasVendidas)/(prendasVendidas+1);
 
-                                            //puntuacionGeneralTrato = (double) Math.round((trato + puntuacionAntTrato * prendasVendidas) / (prendasVendidas+1) * 10) / 10;
-                                            //puntuacionGeneralPuntualidad = (double) Math.round((puntualidad + puntuacionAntPuntualidad * prendasVendidas) / (prendasVendidas+1) * 10) / 10;
-                                            //puntuacionGeneralEstado = (double) Math.round((estado + puntuacionAntEstado * prendasVendidas) / (prendasVendidas+1) * 10) / 10;
+                                            puntuacionGeneralTrato = (double) Math.round((trato + puntuacionAntTrato * prendasVendidas) / (prendasVendidas+1) * 10) / 10;
+                                            puntuacionGeneralPuntualidad = (double) Math.round((puntualidad + puntuacionAntPuntualidad * prendasVendidas) / (prendasVendidas+1) * 10) / 10;
+                                            puntuacionGeneralEstado = (double) Math.round((estado + puntuacionAntEstado * prendasVendidas) / (prendasVendidas+1) * 10) / 10;
+
+                                            double sinMath =((((trato + puntualidad + estado)/3) + puntuacionAnterior * prendasVendidas)/(prendasVendidas+1) * 10)/10;
+                                            double conMath =(double) Math.round((((trato + puntualidad + estado)/3) + puntuacionAnterior * prendasVendidas) / (prendasVendidas+1) * 10) / 10;
+
+                                            Log.d("puntuacion","puntuacion con math"+conMath);
+                                            Log.d("puntuacion","puntuacion sin math"+sinMath);
 
                                             FirebaseDatabase.getInstance().getReference().child("Users").child(idVendedor).child("numeroPrendasVendidas").setValue(prendasVendidas+1);
                                             //puntuacionGeneral = (((puntualidad + trato + estado)/3) + puntuacionAnterior)/2;
                                             FirebaseDatabase.getInstance().getReference().child("Users").child(idVendedor).child("puntuacionGeneral").setValue(puntuacionGeneral);
-                                            //FirebaseDatabase.getInstance().getReference().child("Users").child(idVendedor).child("puntuacionEstado").setValue(puntuacionGeneralEstado);
-                                            //FirebaseDatabase.getInstance().getReference().child("Users").child(idVendedor).child("puntuacionPuntualidad").setValue(puntuacionGeneralPuntualidad);
-                                            //FirebaseDatabase.getInstance().getReference().child("Users").child(idVendedor).child("puntuacionTrato").setValue(puntuacionGeneralTrato);
+                                            FirebaseDatabase.getInstance().getReference().child("Users").child(idVendedor).child("puntuacionEstado").setValue(puntuacionGeneralEstado);
+                                            FirebaseDatabase.getInstance().getReference().child("Users").child(idVendedor).child("puntuacionPuntualidad").setValue(puntuacionGeneralPuntualidad);
+                                            FirebaseDatabase.getInstance().getReference().child("Users").child(idVendedor).child("puntuacionTrato").setValue(puntuacionGeneralTrato);
 
                                         }
                                     }
@@ -125,6 +129,8 @@ public class Valorar extends AppCompatActivity {
                                     estado = mRBestado.getRating();
                                     trato = mRBtrato.getRating();
                                     //puntuacionGeneral = (puntualidad + trato + estado)/3;
+                                    Log.d("puntuacion","puntualidad: "+puntualidad+" estado: "+estado+" trato "+trato);
+
                                     puntuacionGeneral = (double) Math.round((((trato + puntualidad + estado)/3)) * 10) / 10;
                                     FirebaseDatabase.getInstance().getReference().child("Users").child(idVendedor).child("numeroPrendasVendidas").setValue("1");
                                     FirebaseDatabase.getInstance().getReference().child("Users").child(idVendedor).child("puntuacionGeneral").setValue(puntuacionGeneral);

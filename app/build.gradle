@@ -42,7 +42,18 @@ dependencies {
     //implementation 'com.google.firebase:firebase-storage:18.0.0'
     implementation 'com.google.firebase:firebase-storage:19.2.0'
 
+    //libreria mapa
+    //implementation 'com.google.android.gms:play-services:12.0.1'
+    //implementation 'com.google.android.gms:play-services-location:17.1.0'
+
+    implementation 'com.google.android.gms:play-services-places:17.0.0'
+    implementation 'com.google.android.gms:play-services-maps:17.0.0'
+
+
+
     implementation 'com.github.denzcoskun:ImageSlideshow:0.0.7'
+
+
     //libreria de glide para mostrar la imagen.
     implementation 'com.github.bumptech.glide:glide:4.11.0'
     implementation 'com.google.android.gms:play-services-location:17.0.0'

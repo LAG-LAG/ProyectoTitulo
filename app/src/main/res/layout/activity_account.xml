@@ -46,13 +46,15 @@
 
     <Button
         android:id="@+id/aplicar"
-        android:layout_width="291dp"
-        android:layout_height="55dp"
-        android:layout_marginTop="40dp"
-        android:text="Aplicar"
+        android:layout_width="290dp"
+        android:layout_height="72dp"
+        android:layout_marginBottom="68dp"
+        android:backgroundTint="#ED7635"
+        android:text="Guardar Cambios"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/comunasSpinner" />
+        app:layout_constraintHorizontal_bias="0.495"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Spinner
         android:id="@+id/regionesSpinner"
@@ -80,17 +82,18 @@
 
     <Button
         android:id="@+id/ubicacionButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="248dp"
+        android:layout_height="43dp"
         android:layout_marginStart="32dp"
-        android:layout_marginTop="56dp"
+        android:layout_marginTop="20dp"
         android:layout_marginEnd="32dp"
-        android:text="Setear Ubicacion"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:text="Cambiar Ubicación en Mapa"
+        app:layout_constraintBottom_toTopOf="@+id/aplicar"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.494"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/aplicar"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toBottomOf="@+id/comunasSpinner"
+        app:layout_constraintVertical_bias="0.05" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
