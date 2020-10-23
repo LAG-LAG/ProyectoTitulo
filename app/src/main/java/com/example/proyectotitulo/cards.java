@@ -5,12 +5,20 @@ public class cards {
     private String name;
     private String profileImageUrl;
     private String ownerId;
+    private double puntuacionGeneral;
 
     public cards (String clothesId, String name, String profileImageUrl,String ownerId){
         this.clothesId = clothesId;
         this.name = name;
         this.profileImageUrl = profileImageUrl;
         this.ownerId = ownerId;
+    }
+    public cards (String clothesId, String name, String profileImageUrl,String ownerId,double puntuacionGeneral){
+        this.clothesId = clothesId;
+        this.name = name;
+        this.profileImageUrl = profileImageUrl;
+        this.ownerId = ownerId;
+        this.puntuacionGeneral = puntuacionGeneral;
     }
 
     public String getClothesId(){
@@ -39,6 +47,14 @@ public class cards {
 
     public String getProfileImageUrl() {
         return profileImageUrl;
+    }
+
+    public double getPuntuacionGeneral() {
+        return puntuacionGeneral;
+    }
+
+    public void setPuntuacionGeneral(double puntuacionGeneral) {
+        this.puntuacionGeneral = puntuacionGeneral;
     }
 
     public void setProfileImageUrl(String profileImageUrl) {
