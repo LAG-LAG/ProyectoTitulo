@@ -15,8 +15,9 @@
         android:id="@+id/TVtituloPublicacionValorar"
         android:layout_width="199dp"
         android:layout_height="0dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="76dp"
+        android:layout_marginStart="61dp"
+        android:layout_marginTop="60dp"
+        android:layout_marginEnd="52dp"
         android:backgroundTint="#FFFFFF"
         android:ems="10"
         android:inputType="textPersonName"
@@ -24,16 +25,16 @@
         android:textColor="#FFFFFF"
         android:textSize="18dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toEndOf="@+id/imageView4"
+        app:layout_constraintHorizontal_bias="0.71"
+        app:layout_constraintStart_toEndOf="@+id/imageViewValorar"
         app:layout_constraintTop_toBottomOf="@+id/toolbar" />
 
     <ImageView
         android:id="@+id/imageViewValorar"
-        android:layout_width="137dp"
-        android:layout_height="120dp"
+        android:layout_width="128dp"
+        android:layout_height="125dp"
         android:layout_marginStart="40dp"
-        android:layout_marginTop="28dp"
+        android:layout_marginTop="8dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbar"
         app:srcCompat="@drawable/ic_launcher_foreground" />
@@ -43,7 +44,7 @@
         android:layout_width="199dp"
         android:layout_height="0dp"
         android:layout_marginStart="40dp"
-        android:layout_marginBottom="8dp"
+        android:layout_marginBottom="12dp"
         android:backgroundTint="#FFFFFF"
         android:ems="10"
         android:inputType="textPersonName"
@@ -53,8 +54,38 @@
         app:layout_constraintBottom_toTopOf="@+id/ratingBar"
         app:layout_constraintStart_toStartOf="parent" />
 
+    <RatingBar
+        android:id="@+id/ratingBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="52dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.502"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageViewValorar" />
+
+    <RatingBar
+        android:id="@+id/ratingBar3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="60dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.502"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ratingBar2" />
+
+    <RatingBar
+        android:id="@+id/ratingBar2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="44dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.502"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ratingBar" />
+
     <TextView
-        android:id="@+id/TVpuntualidadValorar"
+        android:id="@+id/TVtratoPersonalValorar"
         android:layout_width="199dp"
         android:layout_height="0dp"
         android:layout_marginStart="40dp"
@@ -62,55 +93,25 @@
         android:backgroundTint="#FFFFFF"
         android:ems="10"
         android:inputType="textPersonName"
-        android:text="Puntualidad:"
-        android:textColor="#FFFFFF"
-        android:textSize="18dp"
-        app:layout_constraintBottom_toTopOf="@+id/ratingBar3"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <RatingBar
-        android:id="@+id/ratingBar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="100dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.502"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageViewValorar" />
-
-    <RatingBar
-        android:id="@+id/ratingBar2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="48dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.502"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ratingBar" />
-
-    <RatingBar
-        android:id="@+id/ratingBar3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="56dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.502"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ratingBar2" />
-
-    <TextView
-        android:id="@+id/TVtratoPersonalValorar"
-        android:layout_width="199dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="40dp"
-        android:layout_marginBottom="4dp"
-        android:backgroundTint="#FFFFFF"
-        android:ems="10"
-        android:inputType="textPersonName"
         android:text="Trato personal:"
         android:textColor="#FFFFFF"
         android:textSize="18dp"
         app:layout_constraintBottom_toTopOf="@+id/ratingBar2"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/TVpuntualidadValorar"
+        android:layout_width="199dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginBottom="12dp"
+        android:backgroundTint="#FFFFFF"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="Puntualidad:"
+        android:textColor="#FFFFFF"
+        android:textSize="18dp"
+        app:layout_constraintBottom_toTopOf="@+id/ratingBar3"
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button
@@ -123,6 +124,20 @@
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/comentarioText" />
+
+    <EditText
+        android:id="@+id/comentarioText"
+        android:layout_width="369dp"
+        android:layout_height="116dp"
+        android:layout_marginTop="24dp"
+        android:ems="10"
+        android:gravity="start|top"
+        android:hint="Comentario"
+        android:inputType="textMultiLine"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.492"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/ratingBar3" />
 
