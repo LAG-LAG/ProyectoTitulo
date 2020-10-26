@@ -330,9 +330,7 @@ public class EditarPublicacion extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 savePublicacion();
-                Intent intentPublicaciones = new Intent(EditarPublicacion.this, MisPublicaciones.class);
-                startActivity(intentPublicaciones);
-                finish();
+
             }
         });
 
@@ -606,6 +604,7 @@ public class EditarPublicacion extends AppCompatActivity {
 
     private void savePublicacion() {
         if(cantidadFotos>0) {
+        //if(arrayResultUri.isEmpty() && arrayUriString.isEmpty()){
             String userId = mAuth.getCurrentUser().getUid();
             String id = getIntent().getExtras().getString("idClothes");
             DatabaseReference currentUserNamePrenda = FirebaseDatabase.getInstance().getReference().child("Users").child(userId).child("clothes").child(id).child("tituloPublicacion"); //busca al usuario que va a crear y lo guarda como una variable que se le agregan las cosas y se manda al a db de nuevo
@@ -666,6 +665,9 @@ public class EditarPublicacion extends AppCompatActivity {
                     }
                 }
 
+                Intent intentPublicaciones = new Intent(EditarPublicacion.this, MisPublicaciones.class);
+                startActivity(intentPublicaciones);
+                finish();
                 //compactarBorradas();
 /*
                 guardarImagen(resultUri, userId, "1", id);
