@@ -87,7 +87,7 @@ public class chatAdapter extends BaseAdapter{
 
                 new AlertDialog.Builder(context)
                         //.setTitle("")
-                        .setMessage("¿Esta seguro de remover la publicación?")
+                        .setMessage("¿Esta seguro de remover el chat?")
                         .setIcon(android.R.drawable.ic_dialog_alert)
                         .setPositiveButton("si", new DialogInterface.OnClickListener() {
 

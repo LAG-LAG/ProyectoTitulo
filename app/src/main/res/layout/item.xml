@@ -32,6 +32,13 @@
             android:textSize="30sp"
             tools:text="Name" />
 
+        <View
+            android:layout_marginLeft="20sp"
+            android:layout_marginRight="20sp"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/text_shadow_white"/>
+
         <TextView
             android:id="@+id/precio"
             android:layout_width="match_parent"
