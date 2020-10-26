@@ -9,6 +9,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -65,7 +66,9 @@ public class Chat extends AppCompatActivity {
         adapter = new chatAdapter(this, listItems);
         lvItems.setAdapter(adapter);
 
-
+        if(listItems.isEmpty()){
+            Toast.makeText(this, "no hay chats activos", Toast.LENGTH_SHORT).show();
+        }
 
         lvItems.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
