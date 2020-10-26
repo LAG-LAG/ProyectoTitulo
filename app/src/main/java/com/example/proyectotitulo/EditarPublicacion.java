@@ -56,31 +56,35 @@ public class EditarPublicacion extends AppCompatActivity {
     private Spinner mTipoPrendaSpinner;
     private Spinner mTallaSpinner;
     private Spinner mColorSpinner;
+    private int cantidadFotos = 0;
     private Spinner mEstadoPrendaSpinner;
     private EditText mDescripcion;
-    private ArrayList<String> arrayUriString = new ArrayList<>();
-    private int idPrendaFoto = 1;
     private Uri resultUri;
+    private ArrayList<String> arrayUriString = new ArrayList<>();
+    private ArrayList<String> arrayPhotoId = new ArrayList<>();
+
+    private ArrayList<Uri> arrayResultUri = new ArrayList<>();
+
+
+
     private Uri resultUri2;
     private Uri resultUri3;
     private Uri resultUri4;
     private Uri resultUri5;
     private Uri resultUri6;
-    private ArrayList<Uri> arrayUri;
     private String currentUId;
-    private int cantidadFotos = 0;
     private DatabaseReference mClothesDatabase;
     private DatabaseReference usersDb;
     private DatabaseReference photosDb;
     private ImageView mPublicacionImage1;
     private int publicacion;
-    private int borrar1,borrar2,borrar3,borrar4,borrar5,borrar6;
+    private int borrar1 = 0,borrar2 = 0 ,borrar3=0,borrar4=0,borrar5=0,borrar6=0;
     private ImageView mPublicacionImage2;
     private ImageView mPublicacionImage3;
     private ImageView mPublicacionImage4;
     private ImageView mPublicacionImage5;
+    private int eliminoFoto = 0;
     private ImageView mPublicacionImage6;
-    private int borroPrimeraFoto;
     private ImageView mBorrarPublicacion1,mBorrarPublicacion2,mBorrarPublicacion3,mBorrarPublicacion4,mBorrarPublicacion5,mBorrarPublicacion6;
     private int publicacion1,publicacion2,publicacion3,publicacion4,publicacion5,publicacion6;
     private int existoFoto1,existoFoto2,existoFoto3,existoFoto4,existoFoto5,existoFoto6;
@@ -156,6 +160,7 @@ public class EditarPublicacion extends AppCompatActivity {
                     mPublicacionImage1.setImageResource(R.drawable.ic_launcher_foreground);
                     mBorrarPublicacion1.setVisibility(View.INVISIBLE);
                     borrar1 = 1;
+                    cantidadFotos--;
                 }
             }
         });
@@ -175,6 +180,9 @@ public class EditarPublicacion extends AppCompatActivity {
                     mPublicacionImage2.setImageResource(R.drawable.ic_launcher_foreground);
                     mBorrarPublicacion2.setVisibility(View.INVISIBLE);
                     borrar2 = 1;
+                    Log.d("borrarFoto","borarr12");
+                    cantidadFotos--;
+
                 }
             }
         });
@@ -193,6 +201,8 @@ public class EditarPublicacion extends AppCompatActivity {
                     mPublicacionImage3.setImageResource(R.drawable.ic_launcher_foreground);
                     mBorrarPublicacion3.setVisibility(View.INVISIBLE);
                     borrar3 = 1;
+                    cantidadFotos--;
+
                 }
             }
         });
@@ -212,6 +222,8 @@ public class EditarPublicacion extends AppCompatActivity {
                     mPublicacionImage4.setImageResource(R.drawable.ic_launcher_foreground);
                     mBorrarPublicacion4.setVisibility(View.INVISIBLE);
                     borrar4 = 1;
+                    cantidadFotos--;
+
                     Log.d("probanding","se borro foto 4 "+borrar4);
 
                 }
@@ -233,6 +245,8 @@ public class EditarPublicacion extends AppCompatActivity {
                     mPublicacionImage5.setImageResource(R.drawable.ic_launcher_foreground);
                     mBorrarPublicacion5.setVisibility(View.INVISIBLE);
                     borrar5 = 1;
+                    cantidadFotos--;
+
                     Log.d("probanding","se borro foto 5 "+borrar5);
                 }
             }
@@ -252,6 +266,8 @@ public class EditarPublicacion extends AppCompatActivity {
                     mPublicacionImage6.setImageResource(R.drawable.ic_launcher_foreground);
                     mBorrarPublicacion6.setVisibility(View.INVISIBLE);
                     borrar6 = 1;
+                    cantidadFotos--;
+
                 }
             }
         });
@@ -314,9 +330,7 @@ public class EditarPublicacion extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 savePublicacion();
-                Intent intentPublicaciones = new Intent(EditarPublicacion.this, MisPublicaciones.class);
-                startActivity(intentPublicaciones);
-                finish();
+
             }
         });
 
@@ -375,92 +389,67 @@ public class EditarPublicacion extends AppCompatActivity {
                             if(dataSnapshot.exists()){
 
                                 if(dataSnapshot.getKey().equals("photoId1")){
+                                    mBorrarPublicacion1.setVisibility(View.VISIBLE);
+                                    asignarFoto(dataSnapshot.getValue().toString(), mPublicacionImage1);
+                                    publicacion1=1;
                                     existoFoto1=1;
-                                    //asignarFoto(dataSnapshot.getValue().toString(), mPublicacionImage6);
                                     arrayUriString.add(dataSnapshot.getValue().toString());
                                     cantidadFotos++;
+                                    arrayPhotoId.add(dataSnapshot.getKey());
                                 }
                                 if(dataSnapshot.getKey().equals("photoId2")){
                                     arrayUriString.add(dataSnapshot.getValue().toString());
+                                    mBorrarPublicacion2.setVisibility(View.VISIBLE);
+                                    asignarFoto(dataSnapshot.getValue().toString(), mPublicacionImage2);
+                                    publicacion2=1;
                                     cantidadFotos++;
-                                    existoFoto2=1;
 
+                                    existoFoto2=1;
+                                    arrayPhotoId.add(dataSnapshot.getKey());
 
                                 }
                                 if(dataSnapshot.getKey().equals("photoId3")){
 
                                     arrayUriString.add(dataSnapshot.getValue().toString());
+                                    mBorrarPublicacion3.setVisibility(View.VISIBLE);
+                                    asignarFoto(dataSnapshot.getValue().toString(),mPublicacionImage3);
+                                    publicacion3=1;
                                     cantidadFotos++;
+                                    arrayPhotoId.add(dataSnapshot.getKey());
                                     existoFoto3=1;
 
                                 }
                                 if(dataSnapshot.getKey().equals("photoId4")){
 
                                     arrayUriString.add(dataSnapshot.getValue().toString());
-                                    cantidadFotos++;
+                                    mBorrarPublicacion4.setVisibility(View.VISIBLE);
+                                    asignarFoto(dataSnapshot.getValue().toString(), mPublicacionImage4);
+                                    publicacion4=1;
                                     existoFoto4=1;
+                                    cantidadFotos++;
+                                    arrayPhotoId.add(dataSnapshot.getKey());
 
                                 }
                                 if(dataSnapshot.getKey().equals("photoId5")){
 
                                     arrayUriString.add(dataSnapshot.getValue().toString());
+                                    mBorrarPublicacion5.setVisibility(View.VISIBLE);
+                                    asignarFoto(dataSnapshot.getValue().toString(), mPublicacionImage5);
                                     cantidadFotos++;
+                                    publicacion5=1;
                                     existoFoto5=1;
+                                    arrayPhotoId.add(dataSnapshot.getKey());
 
                                 }
                                 if(dataSnapshot.getKey().equals("photoId6")){
 
                                     arrayUriString.add(dataSnapshot.getValue().toString());
+                                    mBorrarPublicacion6.setVisibility(View.VISIBLE);
+                                    asignarFoto(dataSnapshot.getValue().toString(), mPublicacionImage6);
+                                    publicacion6=1;
                                     cantidadFotos++;
+                                    arrayPhotoId.add(dataSnapshot.getKey());
                                     existoFoto6=1;
-
-                                }
-
-
-                                for (int i = 0; i <arrayUriString.size();i++){
-                                    switch(i+1){
-                                        case 1:
-                                            asignarFoto(arrayUriString.get(i), mPublicacionImage1);
-                                            mBorrarPublicacion1.setVisibility(View.VISIBLE);
-                                            publicacion1=1;
-                                            existoFoto1=1;
-                                            break;
-                                        case 2:
-                                            asignarFoto(arrayUriString.get(i), mPublicacionImage2);
-                                            mBorrarPublicacion2.setVisibility(View.VISIBLE);
-                                            publicacion2=1;
-                                            existoFoto2=1;
-                                            break;
-                                        case 3:
-                                            asignarFoto(arrayUriString.get(i), mPublicacionImage3);
-                                            mBorrarPublicacion3.setVisibility(View.VISIBLE);
-                                            publicacion3=1;
-                                            existoFoto3=1;
-                                            break;
-                                        case 4:
-                                            mBorrarPublicacion4.setVisibility(View.VISIBLE);
-                                            publicacion4=1;
-                                            existoFoto4=1;
-                                            asignarFoto(arrayUriString.get(i), mPublicacionImage4);
-
-                                            break;
-                                        case 5:
-                                            mBorrarPublicacion5.setVisibility(View.VISIBLE);
-
-                                            publicacion5=1;
-                                            existoFoto5=1;
-                                            asignarFoto(arrayUriString.get(i), mPublicacionImage5);
-
-                                            break;
-                                        case 6:
-                                            mBorrarPublicacion6.setVisibility(View.VISIBLE);
-                                            //asignarFoto(dataSnapshot.getValue().toString(), mPublicacionImage6);
-                                            publicacion6=1;
-                                            existoFoto6=1;
-                                            asignarFoto(arrayUriString.get(i), mPublicacionImage6);
-                                            break;
-
-                                    }
 
                                 }
                             }
@@ -547,28 +536,34 @@ public class EditarPublicacion extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode==1 && resultCode == Activity.RESULT_OK){
             final Uri imageUri = data.getData();
+            arrayResultUri.add(imageUri);
             switch (publicacion){
                 case 1:
                     resultUri = imageUri;
+
                     mPublicacionImage1.setImageURI(resultUri);
                     publicacion1=0;
                     existoFoto1=1;
                     borrar1 = 0;
                     publicacion=0;
+                    cantidadFotos++;
                     break;
                 case 2:
+                    Log.d("borrarFoto","borar1");
                     resultUri2 = imageUri;
                     mPublicacionImage2.setImageURI(resultUri2);
                     publicacion2=0;
                     existoFoto2=1;
                     borrar2 = 0;
                     publicacion=0;
+                    cantidadFotos++;
                     break;
                 case 3:
                     resultUri3 = imageUri;
                     mPublicacionImage3.setImageURI(resultUri3);
                     publicacion3=0;
                     existoFoto3=1;
+                    cantidadFotos++;
                     borrar3 = 0;
                     publicacion=0;
                     break;
@@ -577,6 +572,7 @@ public class EditarPublicacion extends AppCompatActivity {
                     mPublicacionImage4.setImageURI(resultUri4);
                     publicacion4=0;
                     existoFoto4=1;
+                    cantidadFotos++;
                     borrar4 = 0;
                     publicacion=0;
                     break;
@@ -586,6 +582,7 @@ public class EditarPublicacion extends AppCompatActivity {
                     publicacion5=0;
                     existoFoto5=1;
                     borrar5 = 0;
+                    cantidadFotos++;
                     publicacion=0;
                     break;
                 case 6:
@@ -594,48 +591,20 @@ public class EditarPublicacion extends AppCompatActivity {
                     publicacion6=0;
                     existoFoto5=1;
                     borrar6 = 0;
+                    cantidadFotos++;
                     publicacion=0;
                     break;
                 default:
                     Log.d("gungaginga","gungagigna");
                     break;
             }
-            /*
-            if(publicacion1==1){
-                resultUri = imageUri;
-                mPublicacionImage1.setImageURI(resultUri);
-                publicacion1=0;
-            }
-            else if(publicacion2==1) {
-                resultUri2 = imageUri;
-                mPublicacionImage2.setImageURI(resultUri2);
-                publicacion2=0;
-            }
-            else if(publicacion3==1) {
-                resultUri3 = imageUri;
-                mPublicacionImage3.setImageURI(resultUri3);
-                publicacion3=0;
-            }
-            else if(publicacion4==1) {
-                resultUri4 = imageUri;
-                mPublicacionImage4.setImageURI(resultUri4);
-                publicacion4=0;
-            }
-            else if(publicacion5==1) {
-                resultUri5 = imageUri;
-                mPublicacionImage5.setImageURI(resultUri5);
-                publicacion5=0;
-            }
-            else if(publicacion6==1) {
-                resultUri6 = imageUri;
-                mPublicacionImage6.setImageURI(resultUri6);
-                publicacion6=0;
-            }*/
+
         }
     }
 
     private void savePublicacion() {
         if(cantidadFotos>0) {
+        //if(arrayResultUri.isEmpty() && arrayUriString.isEmpty()){
             String userId = mAuth.getCurrentUser().getUid();
             String id = getIntent().getExtras().getString("idClothes");
             DatabaseReference currentUserNamePrenda = FirebaseDatabase.getInstance().getReference().child("Users").child(userId).child("clothes").child(id).child("tituloPublicacion"); //busca al usuario que va a crear y lo guarda como una variable que se le agregan las cosas y se manda al a db de nuevo
@@ -669,176 +638,158 @@ public class EditarPublicacion extends AppCompatActivity {
             } else {
                 Toast.makeText(EditarPublicacion.this, "Datos Incorrectos.", Toast.LENGTH_SHORT).show();
             }
-            ordenarFotos();
-            borrarImagen(resultUri, userId, "photoId1", id, borrar1);
-            borrarImagen(resultUri2, userId, "photoId2", id, borrar2);
-            borrarImagen(resultUri3, userId, "photoId3", id, borrar3);
-            borrarImagen(resultUri4, userId, "photoId4", id, borrar4);
-            borrarImagen(resultUri5, userId, "photoId5", id, borrar5);
-            borrarImagen(resultUri6, userId, "photoId6", id, borrar6);
+                borrarImagen(resultUri, userId, "photoId1", id, borrar1);
+                borrarImagen(resultUri2, userId, "photoId2", id, borrar2);
+                borrarImagen(resultUri3, userId, "photoId3", id, borrar3);
+                borrarImagen(resultUri4, userId, "photoId4", id, borrar4);
+                borrarImagen(resultUri5, userId, "photoId5", id, borrar5);
+                borrarImagen(resultUri6, userId, "photoId6", id, borrar6);
+
+                if(eliminoFoto == 1){
+                    FirebaseDatabase.getInstance().getReference().child("Users").child(currentUId).child("clothes").child(id).child("clothesPhotos").removeValue();
+                }
+
+                int numero = arrayUriString.size()+1;
+                for(int i = 0; i < arrayUriString.size();i++){
+                    numero = i+1;
+                    FirebaseDatabase.getInstance().getReference().child("Users").child(currentUId).child("clothes").child(id).child("clothesPhotos").child("photoId"+numero).setValue(arrayUriString.get(i));
+                }
+
+                for(int i = 0 ; i < arrayResultUri.size() ;i++){
+                    Log.d("probanding","xdxdxd");
+                    if(numero <= 6) {
+                        numero++;
+                        Log.d("probanding","xdxd333333 "+numero);
+                        guardarImagen(arrayResultUri.get(i), userId, ""+numero, id);
+
+                    }
+                }
+
+                Intent intentPublicaciones = new Intent(EditarPublicacion.this, MisPublicaciones.class);
+                startActivity(intentPublicaciones);
+                finish();
+                //compactarBorradas();
+/*
+                guardarImagen(resultUri, userId, "1", id);
+                guardarImagen(resultUri2, userId, "2", id);
+                guardarImagen(resultUri3, userId, "3", id);
+                guardarImagen(resultUri4, userId, "4", id);
+                guardarImagen(resultUri5, userId, "5", id);
+                guardarImagen(resultUri6, userId, "6", id);*/
 
 
+        }
+        else{
+            Toast.makeText(this, "Debe subir al menos una foto.", Toast.LENGTH_SHORT).show();
 
-            for(int i =0 ; i < arrayUri.size();i++){
-                int numero = i+1;
-                if(borrar1==1){
-                    guardarImagen(arrayUri.get(i),userId,1,id);
-                    borrar1=0;
+        }
+    }
+
+    private void compactarBorradas() {
+        usersDb.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                if(dataSnapshot.exists() && dataSnapshot.getKey().equals(currentUId)){
+                    if(dataSnapshot.hasChild("clothes")){
+                        if(dataSnapshot.child("clothes").hasChild(getIntent().getExtras().getString("idClothes"))) {
+                            if (dataSnapshot.child("clothes").child(getIntent().getExtras().getString("idClothes")).hasChild("clothesPhotos")) {
+                                //if(dataSnapshot.child("clothes").child(getIntent().getExtras().getString("idClothes")).child("clothesPhotos").hasChild())
+                            }
+                        }
+                    }
                 }
-                else if(borrar2==1){
-                    guardarImagen(arrayUri.get(i),userId,2,id);
-                    borrar2=0;
-                }
-                else if(borrar3==1){
-                    guardarImagen(arrayUri.get(i),userId,3,id);
-                    borrar3=0;
-                }
-                else if(borrar4==1){
-                    guardarImagen(arrayUri.get(i),userId,4,id);
-                    borrar4=0;
-                }
-                else if(borrar5==1){
-                    guardarImagen(arrayUri.get(i),userId,5,id);
-                    borrar5=0;
-                }
-                else if(borrar6==1){
-                    guardarImagen(arrayUri.get(i),userId,6,id);
-                    borrar6=0;
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    private void borrarImagen(Uri resultUri, String userId, final String idClotheBorrar, final String photoIdBorrar, int borrar) {
+        if(borrar==1){
+            //eliminoFoto = 1;
+            for(int i =0 ; i < arrayUriString.size();i++){
+                Log.d("probanding","arrayUriString.get(i).equals(idClotheBorrar): "+arrayUriString.get(i)+" idClotheBorrar: "+idClotheBorrar);
+
+                if(idClotheBorrar.equals(arrayPhotoId.get(i))){ // esto es para borrarla del arraylist.
+                    eliminoFoto = 1;
+                    Log.d("probanding","borrado.");
+                    arrayUriString.remove(i);
                 }
             }
 
 
-                usersDb.addChildEventListener(new ChildEventListener() {
-                    @Override
-                    public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                        if(dataSnapshot.exists() && dataSnapshot.getKey().equals(currentUId) && dataSnapshot.hasChild("clothes")){
-                            Log.d("pruebaprueba","xd");
-                            for(int i =0 ; i < arrayUriString.size();i++) {
-                                if (!dataSnapshot.child("clothes").child("clothesPhotos").hasChild("photoId1")) {
-                                    FirebaseDatabase.getInstance().getReference().child("Users").child(currentUId).child("clothes").child("clothesPhotos").child("photoId1").setValue(arrayUriString.get(i));
-                                }
-                                else if (!dataSnapshot.child("clothes").child("clothesPhotos").hasChild("photoId2")) {
-                                    FirebaseDatabase.getInstance().getReference().child("Users").child(currentUId).child("clothes").child("clothesPhotos").child("photoId2").setValue(arrayUriString.get(i));
 
-                                }
-                                else if (!dataSnapshot.child("clothes").child("clothesPhotos").hasChild("photoId3")) {
-                                    FirebaseDatabase.getInstance().getReference().child("Users").child(currentUId).child("clothes").child("clothesPhotos").child("photoId3").setValue(arrayUriString.get(i));
 
-                                }
-                                else if (!dataSnapshot.child("clothes").child("clothesPhotos").hasChild("photoId4")) {
-                                    FirebaseDatabase.getInstance().getReference().child("Users").child(currentUId).child("clothes").child("clothesPhotos").child("photoId4").setValue(arrayUriString.get(i));
+/*
+            usersDb.addChildEventListener(new ChildEventListener() {
+                @Override
+                public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                    if(dataSnapshot.exists() && dataSnapshot.getKey().equals(currentUId)){
+                        if(dataSnapshot.hasChild("clothes")){
+                            if(dataSnapshot.child("clothes").hasChild(getIntent().getExtras().getString("idClothes"))) {
+                                if (dataSnapshot.child("clothes").child(getIntent().getExtras().getString("idClothes")).hasChild("clothesPhotos")) {
+                                    for(int i =0 ; i < arrayUriString.size();i++){
+                                        Log.d("probanding","arrayUriString.get(i).equals(idClotheBorrar): "+arrayUriString.get(i)+" idClotheBorrar: "+idClotheBorrar);
+                                        String UriArray = arrayUriString.get(i);
 
-                                }
-                                else if (!dataSnapshot.child("clothes").child("clothesPhotos").hasChild("photoId5")) {
-                                    FirebaseDatabase.getInstance().getReference().child("Users").child(currentUId).child("clothes").child("clothesPhotos").child("photoId5").setValue(arrayUriString.get(i));
+                                        if(arrayUriString.get(i).equals(dataSnapshot.child("clothes").child(getIntent().getExtras().getString("idClothes")).child("clothesPhotos").child(photoIdBorrar).getValue().toString())){ // esto es para borrarla del arraylist.
+                                            eliminoFoto = 1;
+                                            Log.d("probanding","borrado.");
+                                            arrayUriString.remove(i);
+                                        }
+                                    }
 
-                                }
-                                else if (!dataSnapshot.child("clothes").child("clothesPhotos").hasChild("photoId6")) {
-                                    FirebaseDatabase.getInstance().getReference().child("Users").child(currentUId).child("clothes").child("clothesPhotos").child("photoId6").setValue(arrayUriString.get(i));
 
+                                    //if(dataSnapshot.child("clothes").child(getIntent().getExtras().getString("idClothes")).child("clothesPhotos").hasChild())
                                 }
                             }
                         }
                     }
+                }
 
-                    @Override
-                    public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                @Override
+                public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
 
-                    }
+                }
 
-                    @Override
-                    public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+                @Override
+                public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
 
-                    }
+                }
 
-                    @Override
-                    public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                @Override
+                public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
 
-                    }
+                }
 
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
 
-                    }
-                });
+                }
+            });
 
-            /*
-            guardarImagen(resultUri, userId, idPrendaFoto, id);
-            guardarImagen(resultUri2, userId, idPrendaFoto, id);
-            guardarImagen(resultUri3, userId, idPrendaFoto, id);
-            guardarImagen(resultUri4, userId, idPrendaFoto, id);
-            guardarImagen(resultUri5, userId, idPrendaFoto, id);
-            guardarImagen(resultUri6, userId, idPrendaFoto, id);
 */
+
+
 /*
-        guardarImagen(resultUri,userId,"1",id);
-        guardarImagen(resultUri2,userId,"2",id);
-        guardarImagen(resultUri3,userId,"3",id);
-        guardarImagen(resultUri4,userId,"4",id);
-        guardarImagen(resultUri5,userId,"5",id);
-        guardarImagen(resultUri6,userId,"6",id);
-
-        ordenarFotos();
-        for(int i =0 ; i < arrayUri.size();i++){
-            int numero = i+1;
-            guardarImagen(arrayUri.get(i),userId,""+numero,id);
-        }
-
-
- */
-
-
-
-
-        }
-    }
-
-    private void ordenarFotos() {
-        arrayUri = new ArrayList<>();
-        if(resultUri!=null){
-            arrayUri.add(resultUri);
-            resultUri = null;
-            Log.d("borrarFoto","1");
-        }
-        if(resultUri2!=null){
-            arrayUri.add(resultUri2);
-            resultUri2 = null;
-            Log.d("borrarFoto","2");
-
-        }
-        if(resultUri3!=null){
-            arrayUri.add(resultUri3);
-            resultUri3 = null;
-            Log.d("borrarFoto","3");
-
-        }
-        if(resultUri4!=null){
-            arrayUri.add(resultUri4);
-            resultUri4 = null;
-            Log.d("borrarFoto","4");
-
-        }
-        if(resultUri5!=null){
-            arrayUri.add(resultUri5);
-            resultUri5 = null;
-            Log.d("borrarFoto","5");
-
-        }
-        if(resultUri6!=null){
-            arrayUri.add(resultUri6);
-            resultUri6 = null;
-            Log.d("borrarFoto","6");
-
-        }
-
-
-
-
-    }
-
-    private void borrarImagen(Uri resultUri, String userId, final String idClotheBorrar, final String photoIdBorrar, int borrar) {
-        Log.d("probanding","no entro al correspondiente borrar."+photoIdBorrar);
-        if(borrar==1){
             Log.d("probanding","entro al correspondiente borrar.");
             usersDb = FirebaseDatabase.getInstance().getReference().child("Users").child(currentUId).child("clothes").child(photoIdBorrar).child("clothesPhotos");
             usersDb.addChildEventListener(new ChildEventListener() {
@@ -846,8 +797,20 @@ public class EditarPublicacion extends AppCompatActivity {
                 public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                     if(dataSnapshot.exists()){
                         if(dataSnapshot.getKey().equals(idClotheBorrar)){
+                            for(int i =0 ; i < arrayUriString.size();i++){
+                                Log.d("probanding","arrayUriString.get(i).equals(idClotheBorrar): "+arrayUriString.get(i)+" idClotheBorrar: "+idClotheBorrar);
+                                String UriArray = arrayUriString.get(i);
+
+                                if(arrayUriString.get(i).equals(dataSnapshot.getValue().toString())){ // esto es para borrarla del arraylist.
+                                    eliminoFoto = 1;
+                                    Log.d("probanding","borrado.");
+                                    arrayUriString.remove(i);
+                                }
+                            }
+
                             Log.d("probanding","entro");
                             FirebaseDatabase.getInstance().getReference().child("Users").child(currentUId).child("clothes").child(photoIdBorrar).child("clothesPhotos").child(idClotheBorrar).removeValue();
+
                             //FirebaseStorage.getInstance().getReference().child("profileImages").child(userId).child(map.get("profilesImages").toString()).delete();
                         }
 
@@ -873,18 +836,13 @@ public class EditarPublicacion extends AppCompatActivity {
                 public void onCancelled(@NonNull DatabaseError databaseError) {
 
                 }
-            });
+            });*/
         }
     }
 
-    private void guardarImagen(Uri resultUri, String userId, final int idPrenda,String id) {
-        /*if(idPrenda.equals("1") && resultUri == null){
-            borroPrimeraFoto = 1;
-            Log.d("borrarFoto","entro");
-        }*/
+    private void guardarImagen(Uri resultUri, String userId, final String idPrenda,String id) {
         if (resultUri != null) {
-
-            final StorageReference filepath = FirebaseStorage.getInstance().getReference().child("prendasImages").child(userId).child(id).child(""+idPrendaFoto);
+            final StorageReference filepath = FirebaseStorage.getInstance().getReference().child("prendasImages").child(userId).child(id).child(idPrenda);
             Bitmap bitmap = null;
             mClothesDatabase = FirebaseDatabase.getInstance().getReference().child("Users").child(userId).child("clothes").child(id).child("clothesPhotos");
 
@@ -912,8 +870,7 @@ public class EditarPublicacion extends AppCompatActivity {
                         @Override
                         public void onSuccess(Uri uri) {
                             Map newImage = new HashMap();
-                            newImage.put("photoId" + idPrendaFoto, uri.toString());
-                            idPrendaFoto++;
+                            newImage.put("photoId" + idPrenda, uri.toString());
                             mClothesDatabase.updateChildren(newImage);
                             //finish();
                             //return;
