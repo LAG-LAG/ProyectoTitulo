@@ -6,6 +6,7 @@ public class cards {
     private String profileImageUrl;
     private String ownerId;
     private double puntuacionGeneral;
+    private String precio;
 
     public cards (String clothesId, String name, String profileImageUrl,String ownerId){
         this.clothesId = clothesId;
@@ -19,6 +20,14 @@ public class cards {
         this.profileImageUrl = profileImageUrl;
         this.ownerId = ownerId;
         this.puntuacionGeneral = puntuacionGeneral;
+    }
+    public cards (String clothesId, String name, String profileImageUrl,String ownerId,double puntuacionGeneral,String precio){
+        this.clothesId = clothesId;
+        this.name = name;
+        this.profileImageUrl = profileImageUrl;
+        this.ownerId = ownerId;
+        this.puntuacionGeneral = puntuacionGeneral;
+        this.precio = precio;
     }
 
     public String getClothesId(){
@@ -59,6 +68,14 @@ public class cards {
 
     public void setProfileImageUrl(String profileImageUrl) {
         this.profileImageUrl = profileImageUrl;
+    }
+
+    public String getPrecio() {
+        return precio;
+    }
+
+    public void setPrecio(String precio) {
+        this.precio = precio;
     }
 }
 

@@ -38,8 +38,10 @@ public class arrayAdaptor extends ArrayAdapter<cards>{
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.item,parent,false);
         }
         TextView name = (TextView) convertView.findViewById(R.id.name);
+        TextView precio = (TextView) convertView.findViewById(R.id.precio);
         ImageView image = (ImageView) convertView.findViewById(R.id.image);
         name.setText(card_item.getName());
+        precio.setText("$"+card_item.getPrecio());
         if(card_item.getProfileImageUrl()!="default"||card_item.getProfileImageUrl()!=""){
             Picasso.get().setLoggingEnabled(true);
             //Glide.with(getApplication()).load(card_item.getProfileImageUrl()).into(image);
