@@ -10,7 +10,9 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
@@ -28,6 +30,7 @@ public class MisPublicacionesVendidas extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private DatabaseReference usersDb;
     private DatabaseReference clothesDb;
+    private TextView textView1,textView2;
     //private String currentUId, clothesCurrentUid;
     private ArrayList<publicacion> listItems = new ArrayList<>();
 
@@ -56,6 +59,9 @@ public class MisPublicacionesVendidas extends AppCompatActivity {
         lvItems = (ListView) findViewById(R.id.lvMisPublicacionesVendidas);
         adapter = new misPublicacionVendidasAdapter(this, listItems);
         lvItems.setAdapter(adapter);
+
+        textView1 = (TextView) findViewById(R.id.textView1Misfavoritos);
+        textView2 = (TextView) findViewById(R.id.textView2Misfavoritos);
 
         lvItems.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -96,6 +102,7 @@ public class MisPublicacionesVendidas extends AppCompatActivity {
                                     listItems.add(item);
                                     adapter.notifyDataSetChanged(); //esto se usa cad vez que se añade o se quita un elemetno del arraylist de los items.
                                 }
+                                TieneItems();
                             }
                         }
 
@@ -146,6 +153,18 @@ public class MisPublicacionesVendidas extends AppCompatActivity {
         });
     }
 
+    private void TieneItems()
+    {
+        if(listItems.isEmpty()){
+            textView1.setVisibility(View.VISIBLE);
+            textView2.setVisibility(View.VISIBLE);
+            //Toast.makeText(this, "no hay favoritos", Toast.LENGTH_SHORT).show();
+        }
+        else{
+            textView1.setVisibility(View.INVISIBLE);
+            textView2.setVisibility(View.INVISIBLE);
+        }
+    }
 
     //toolbar
     @Override
