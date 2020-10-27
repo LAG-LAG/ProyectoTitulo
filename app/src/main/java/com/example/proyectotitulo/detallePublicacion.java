@@ -42,6 +42,7 @@ public class detallePublicacion extends AppCompatActivity {
     private ArrayList<String> urlImagenes;
     private ImageSlider mSlider;
     private ArrayList<SlideModel> imageList;
+    private ChildEventListener childEventListener;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -210,8 +211,31 @@ public class detallePublicacion extends AppCompatActivity {
 
 
     private void obtenerDatosPublicacion() {
+
         clothesDb = FirebaseDatabase.getInstance().getReference().child("Users").child(idOwner).child("clothes");
-        clothesDb.addChildEventListener(new ChildEventListener() {
+/*
+        clothesDb.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                mTitulo.setText(dataSnapshot.child("tituloPublicacion").getValue().toString());
+                mPrecio.setText("$"+dataSnapshot.child("ValorPrenda").getValue().toString());
+                mDescripcion.setText(dataSnapshot.child("DescripcionPrenda").getValue().toString());
+                mtipoPrenda.setText(dataSnapshot.child("TipoPrenda").getValue().toString());
+                mColor.setText(dataSnapshot.child("ColorPrenda").getValue().toString());
+                mTalla.setText(dataSnapshot.child("TallaPrenda").getValue().toString());
+                mEstado.setText(dataSnapshot.child("EstadoPrenda").getValue().toString());
+                guardarUrlPhotos();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+*/
+
+        clothesDb = FirebaseDatabase.getInstance().getReference().child("Users").child(idOwner).child("clothes");
+        childEventListener =clothesDb.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                 if(dataSnapshot.exists() && dataSnapshot.getKey().equals(idClothes)){
@@ -248,6 +272,7 @@ public class detallePublicacion extends AppCompatActivity {
 
             }
         });
+
     }
 
     private void mostrarFoto(String urlFotoActual) {
@@ -288,6 +313,7 @@ public class detallePublicacion extends AppCompatActivity {
                         indiceFotoActual++;
                     }
                     tamanoUrlImagenes++;
+                    clothesDb.removeEventListener(childEventListener);
                     //Log.d("weaweawea",dataSnapshot.getKey());
                 }
             }
