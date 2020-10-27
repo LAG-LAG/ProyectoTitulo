@@ -72,6 +72,12 @@ public class MisFavoritos extends AppCompatActivity {
         textView2 = (TextView) findViewById(R.id.textView2Misfavoritos);
         buttonVerAvisos = (Button) findViewById(R.id.VerPublicacionesBtnMisFavoritos);
 
+        if(listItems.isEmpty()){
+            textView1.setVisibility(View.INVISIBLE);
+            textView2.setVisibility(View.INVISIBLE);
+            buttonVerAvisos.setVisibility(View.INVISIBLE);
+        }
+
         lvItems.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
