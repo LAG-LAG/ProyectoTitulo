@@ -9,6 +9,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -33,6 +34,7 @@ public class Chat extends AppCompatActivity {
     private DatabaseReference usersDb,usersDbDos,chatsDb;
     private DatabaseReference clothesDb;
     private String currentUId, clothesCurrentUid, currentOwnerUid,idPrendaChat;
+    private TextView textView1,textView2;
     private ArrayList<chats> listItems = new ArrayList<>();
     private ArrayList<String> idPrendas = new ArrayList<>();
     ChildEventListener childListener;
@@ -66,8 +68,12 @@ public class Chat extends AppCompatActivity {
         adapter = new chatAdapter(this, listItems);
         lvItems.setAdapter(adapter);
 
+        textView1 = (TextView) findViewById(R.id.textView1Misfavoritos);
+        textView2 = (TextView) findViewById(R.id.textView2Misfavoritos);
+
         if(listItems.isEmpty()){
-            Toast.makeText(this, "no hay chats activos", Toast.LENGTH_SHORT).show();
+            textView1.setVisibility(View.INVISIBLE);
+            textView2.setVisibility(View.INVISIBLE);
         }
 
         lvItems.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -161,7 +167,7 @@ public class Chat extends AppCompatActivity {
                                                             chats item = new chats(tituloPublicacion, fotoPublicacionFinal, chatCurrentId, nombreVendedor);
                                                             listItems.add(item);
                                                             adapter.notifyDataSetChanged(); //esto se usa cad vez que se añade o se quita un elemetno del arraylist de los items.
-
+                                                        TieneItems();
                                                     }
                                                 }
 
@@ -272,6 +278,18 @@ public class Chat extends AppCompatActivity {
 
     }
 
+    private void TieneItems()
+    {
+        if(listItems.isEmpty()){
+            textView1.setVisibility(View.VISIBLE);
+            textView2.setVisibility(View.VISIBLE);
+            //Toast.makeText(this, "no hay favoritos", Toast.LENGTH_SHORT).show();
+        }
+        else{
+            textView1.setVisibility(View.INVISIBLE);
+            textView2.setVisibility(View.INVISIBLE);
+        }
+    }
 
     //Crea el menu en la toolbar
     @Override
