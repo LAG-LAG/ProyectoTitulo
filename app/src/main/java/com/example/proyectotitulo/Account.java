@@ -291,9 +291,7 @@ private boolean addLocation;
         String regionGuardar = String.valueOf(mRegionesSpinner.getSelectedItem());
         String comunaGuardar = String.valueOf(mComunasSpinner.getSelectedItem());
 
-        if(puntuacionGeneral.equals("-1")){
-            FirebaseDatabase.getInstance().getReference().child("Users").child(userId).child("puntuacionGeneral").setValue("-1");
-        }
+
         DatabaseReference currentUserName = FirebaseDatabase.getInstance().getReference().child("Users").child(userId).child("nameUser"); //busca al usuario que va a crear y lo guarda como una variable que se le agregan las cosas y se manda al a db de nuevo
         //mRegionesSpinner.getSelectedItem();
         if(regionGuardar != "Seleccione Región" && comunaGuardar != "Seleccione Comuna" && mNombre.getText().toString() != ""){
@@ -303,7 +301,9 @@ private boolean addLocation;
             currentUserComuna.setValue(comunaGuardar);
             currentUserName.setValue(mNombre.getText().toString()); //Aca va y le asigna el nombre al User.
             //aca guarda la latitud y longitud.
-
+            if(puntuacionGeneral.equals("-1")){
+                FirebaseDatabase.getInstance().getReference().child("Users").child(userId).child("puntuacionGeneral").setValue("-1");
+            }
             if(longitudLatitudEstado==1) {
                 DatabaseReference currentUserLatitude = FirebaseDatabase.getInstance().getReference().child("Users").child(userId).child("latitudeVenta");
                 currentUserLatitude.setValue(latitude);
