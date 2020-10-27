@@ -6,7 +6,9 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -29,6 +31,8 @@ public class MisPublicaciones extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private DatabaseReference usersDb;
     private DatabaseReference clothesDb;
+    private TextView textView1,textView2;
+    private Button buttonVerAvisos;
     //private String currentUId, clothesCurrentUid;
     private ArrayList<publicacion> listItems = new ArrayList<>();
 
@@ -58,6 +62,10 @@ public class MisPublicaciones extends AppCompatActivity {
         adapter = new misPublicacionAdapter(this, listItems);
         lvItems.setAdapter(adapter);
 
+        textView1 = (TextView) findViewById(R.id.textView1MisPublicaciones);
+        textView2 = (TextView) findViewById(R.id.textView2MisPublicaciones);
+        buttonVerAvisos = (Button) findViewById(R.id.agregarPublicBtnMisPublicaciones);
+
         lvItems.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -71,6 +79,14 @@ public class MisPublicaciones extends AppCompatActivity {
             }
         });
 
+        buttonVerAvisos.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MisPublicaciones.this, AddPublicaciones.class);
+                startActivity(intent);
+                finish();
+            }
+        });
     }
 
     private void obtenerPublicaciones(){
@@ -97,6 +113,7 @@ public class MisPublicaciones extends AppCompatActivity {
                                     listItems.add(item);
                                     adapter.notifyDataSetChanged(); //esto se usa cad vez que se añade o se quita un elemetno del arraylist de los items.
                                 }
+                                TieneItems();
                             }
                         }
 
@@ -147,7 +164,20 @@ public class MisPublicaciones extends AppCompatActivity {
         });
     }
 
-
+    private void TieneItems()
+    {
+        if(listItems.isEmpty()){
+            textView1.setVisibility(View.VISIBLE);
+            textView2.setVisibility(View.VISIBLE);
+            buttonVerAvisos.setVisibility(View.VISIBLE);
+            //Toast.makeText(this, "no hay favoritos", Toast.LENGTH_SHORT).show();
+        }
+        else{
+            textView1.setVisibility(View.INVISIBLE);
+            textView2.setVisibility(View.INVISIBLE);
+            buttonVerAvisos.setVisibility(View.INVISIBLE);
+        }
+    }
 
     //toolbar
     @Override
