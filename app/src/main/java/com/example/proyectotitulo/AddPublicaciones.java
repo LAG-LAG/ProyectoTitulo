@@ -1,6 +1,7 @@
 package com.example.proyectotitulo;
 
 import android.Manifest;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
@@ -73,7 +74,7 @@ public class AddPublicaciones extends AppCompatActivity {
     private ImageView mPublicacionImage6;
     private ImageView mBorrarPublicacion1,mBorrarPublicacion2,mBorrarPublicacion3,mBorrarPublicacion4,mBorrarPublicacion5,mBorrarPublicacion6;
     private int publicacion1,publicacion2,publicacion3,publicacion4,publicacion5,publicacion6;
-
+    ProgressDialog dialog;
     private StorageReference mStorageRef;
     private static final int IMAGE_CODE = 1;
     private Button selectBtn;
@@ -273,7 +274,9 @@ public class AddPublicaciones extends AppCompatActivity {
             int numero = i+1;
             idPrenda = ""+numero;
             mClothesDatabase = FirebaseDatabase.getInstance().getReference().child("Users").child(userId).child("clothes").child(id).child("clothesPhotos");
-
+            dialog = new ProgressDialog(AddPublicaciones.this);
+            dialog.setMessage("Loading");
+            dialog.show();
 
 
             final StorageReference mRef = mStorageRef.child("prendasImages").child(userId).child(id).child(idPrenda);;
@@ -284,6 +287,7 @@ public class AddPublicaciones extends AppCompatActivity {
                     mRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                         @Override
                         public void onSuccess(Uri uri) {
+                            dialog.dismiss();
                             Map newImage = new HashMap();
                             newImage.put("photoId" + idPrenda, uri.toString());
                             mClothesDatabase.updateChildren(newImage);
@@ -298,7 +302,9 @@ public class AddPublicaciones extends AppCompatActivity {
                             //return;
                         }
                     });
+
                     Toast.makeText(AddPublicaciones.this, "Done", Toast.LENGTH_SHORT).show();
+
                     if(tamanoLogico==posicion){
                         Log.d("verveces","done");
                         Intent intentAccount = new Intent(AddPublicaciones.this, PaginaPrincipal.class);
