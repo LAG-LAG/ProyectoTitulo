@@ -2,6 +2,7 @@ package com.example.proyectotitulo;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -74,6 +75,7 @@ private int tieneFotoDePerfil;
     private Spinner mRegionesSpinner;
     private String comunaAnterior, profileImageUrl;
     private String regionAnterior,puntuacionGeneral;
+    private ProgressDialog dialog;
     private Spinner mComunasSpinner;
     private Uri resultUri;
     private int estadoComunas, borrarFotoPerfil, existeFotoPerfil, longitudLatitudEstado;
@@ -184,10 +186,10 @@ private boolean addLocation;
             @Override
             public void onClick(View view) {
                 saveUserInfo();
-                Toast.makeText(Account.this, "Perfil Editado.", Toast.LENGTH_SHORT).show();
-                Intent intentPublicaciones = new Intent(Account.this, VerMiCuenta.class);
-                startActivity(intentPublicaciones);
-                finish();
+                //Toast.makeText(Account.this, "Perfil Editado.", Toast.LENGTH_SHORT).show();
+                //Intent intentPublicaciones = new Intent(Account.this, VerMiCuenta.class);
+                //startActivity(intentPublicaciones);
+                //finish();
             }
 
         });
@@ -340,6 +342,10 @@ private boolean addLocation;
                 }
             });
 
+            dialog = new ProgressDialog(Account.this);
+            dialog.setMessage("Loading");
+            dialog.show();
+
             uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
@@ -349,14 +355,16 @@ private boolean addLocation;
                             Map newImage = new HashMap();
                             newImage.put("profileImageUrl", uri.toString());
                             mCustomerDatabase.updateChildren(newImage);
-                            finish();
-                            return;
+                            dialog.dismiss();
+                            Toast.makeText(Account.this, "Guardado Con Exito", Toast.LENGTH_SHORT).show();
+                            //finish();
+                            //return;
                         }
                     }).addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception exception) {
-                            finish();
-                            return;
+                            //finish();
+                            //return;
                         }
                     });
                 }
