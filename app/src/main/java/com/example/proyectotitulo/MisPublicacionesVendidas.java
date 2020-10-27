@@ -63,11 +63,6 @@ public class MisPublicacionesVendidas extends AppCompatActivity {
         textView1 = (TextView) findViewById(R.id.textView1Misfavoritos);
         textView2 = (TextView) findViewById(R.id.textView2Misfavoritos);
 
-        if(listItems.isEmpty()){
-            textView1.setVisibility(View.INVISIBLE);
-            textView2.setVisibility(View.INVISIBLE);
-        }
-
         lvItems.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {

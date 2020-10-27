@@ -53,8 +53,6 @@ public class Chat extends AppCompatActivity {
             getSupportActionBar().setTitle("Mis Chats");
         }
 
-
-
         usersDb = FirebaseDatabase.getInstance().getReference().child("Users"); //esto obtiene todos los usuarios de la bd
         usersDbDos = FirebaseDatabase.getInstance().getReference().child("Users");
         chatsDb = FirebaseDatabase.getInstance().getReference().child("chat");
@@ -70,11 +68,6 @@ public class Chat extends AppCompatActivity {
 
         textView1 = (TextView) findViewById(R.id.textView1Misfavoritos);
         textView2 = (TextView) findViewById(R.id.textView2Misfavoritos);
-
-        if(listItems.isEmpty()){
-            textView1.setVisibility(View.INVISIBLE);
-            textView2.setVisibility(View.INVISIBLE);
-        }
 
         lvItems.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
