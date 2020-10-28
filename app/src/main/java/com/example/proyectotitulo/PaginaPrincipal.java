@@ -43,6 +43,7 @@ public class PaginaPrincipal extends AppCompatActivity {
     private Map<String, Object> map;
     private String userId;
     private double longitudUser,latitudeUser;
+    private ChildEventListener childEventListenerClothes;
     private int puedeMostrarCard,noExistenFiltros,kmBusqueda,esBusquedaPorKm;
     private String comunaBusqueda, tallaBusqueda, estadoBusqueda, tipoPrendaBusqueda,regionBusqueda;
     private Button mFiltros;
@@ -85,7 +86,11 @@ public class PaginaPrincipal extends AppCompatActivity {
         if(tallaBusqueda==null) {
             tallaBusqueda = "";
         }
+        obtenerRechazados();
+        obtenerPublicacionesAceptadasyRechazadas();
+
         obtenerFiltros();
+
         //regionBusqueda = "Valparaíso";
         //comunaBusqueda = "Quillota";
         //tipoPrendaBusqueda = "Pantalones";
@@ -93,8 +98,7 @@ public class PaginaPrincipal extends AppCompatActivity {
         //tallaBusqueda = "XS";
 
         SwipeFlingAdapterView flingContainer = (SwipeFlingAdapterView) findViewById(R.id.frame);
-        obtenerRechazados();
-        obtenerPublicacionesAceptadasyRechazadas();
+
         al = new ArrayList<String>();
         bloqueados = new ArrayList<String>();
         //obtenerPublicaciones();
@@ -167,6 +171,8 @@ public class PaginaPrincipal extends AppCompatActivity {
                 String idOwner = obj.getOwnerId();
                 //Toast.makeText(PaginaPrincipal.this,"click", Toast.LENGTH_SHORT).show();
                 Intent intentDetalle = new Intent(PaginaPrincipal.this, detallePublicacion.class);
+                clothesDb.removeEventListener(childEventListenerClothes);
+
                 intentDetalle.putExtra("idClothes",idClothes);
                 intentDetalle.putExtra("idOwner",idOwner);
 
@@ -179,6 +185,8 @@ public class PaginaPrincipal extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intentFiltros = new Intent(PaginaPrincipal.this, Filtros.class);
+                clothesDb.removeEventListener(childEventListenerClothes);
+
                 intentFiltros.putExtra("comunaAnterior",comunaBusqueda);
                 intentFiltros.putExtra("regionAnterior",regionBusqueda);
                 intentFiltros.putExtra("tipoPrendaAnterior",tipoPrendaBusqueda);
@@ -349,7 +357,7 @@ public class PaginaPrincipal extends AppCompatActivity {
                                     String key = dataSnapshot.getKey();
                                     final String currentOwnerUid = key;
                                     clothesDb = usersDb.child(key).child("clothes");
-                                    clothesDb.addChildEventListener(new ChildEventListener() {
+                                    childEventListenerClothes = clothesDb.addChildEventListener(new ChildEventListener() {
                                         @Override
                                         public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) { //aqui ya recorre los productos.
                                             Log.d("pnect","4");
@@ -557,7 +565,7 @@ public class PaginaPrincipal extends AppCompatActivity {
                 });
 
 
-
+                //clothesDb.removeEventListener(childEventListenerClothes);
 
 
             }
@@ -605,7 +613,7 @@ public class PaginaPrincipal extends AppCompatActivity {
                         }
                         final double finalPuntuacionGeneral = puntuacionGeneral;
                         Log.d("puntuacionGeneral",""+puntuacionGeneral);
-                        clothesDb.addChildEventListener(new ChildEventListener() {
+                        childEventListenerClothes = clothesDb.addChildEventListener(new ChildEventListener() {
                             @Override
                             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) { //aqui ya recorre los productos.
                                 currentUId = mAuth.getCurrentUser().getUid();
@@ -662,6 +670,8 @@ public class PaginaPrincipal extends AppCompatActivity {
                                             rowItems.add(Item); //aca añade la persona a la tarjetita.
                                             ordenarPorPuntuacion();
                                             arrayAdapter.notifyDataSetChanged(); //esto se usa cad vez que se añade o se quita un elemetno del arraylist de los items.
+                                            clothesDb.removeEventListener(childEventListenerClothes);
+
                                         }
                                     }
                                 }
@@ -750,6 +760,7 @@ public class PaginaPrincipal extends AppCompatActivity {
 
                 }
             });
+        //clothesDb.removeEventListener(childEventListenerClothes);
 
     }
 
@@ -786,12 +797,12 @@ public class PaginaPrincipal extends AppCompatActivity {
                             Log.d("puntuacionGeneral","UID: "+dataSnapshot.getKey());
                            Log.d("puntuacionGeneral","UID: "+dataSnapshot.getKey()+"Puntuacion: "+finalPuntuacionGeneral);
 
-                            clothesDb.addChildEventListener(new ChildEventListener() {
+                            childEventListenerClothes = clothesDb.addChildEventListener(new ChildEventListener() {
                                 @Override
                                 public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) { //aqui ya recorre los productos.
                                     currentUId = mAuth.getCurrentUser().getUid();
                                     clothesCurrentUid = dataSnapshot.getKey();
-                                    if (!verSiSeEncuentraEnArrayList(clothesCurrentUid) && !estaBloqueado(currentOwnerUid) && !dataSnapshot.hasChild("estaVendida")) {
+                                    if (dataSnapshot.exists() && !verSiSeEncuentraEnArrayList(clothesCurrentUid) && !estaBloqueado(currentOwnerUid) && !dataSnapshot.hasChild("estaVendida")) {
                                         String idPrenda = dataSnapshot.getKey();
                                         String tituloPublicacion = dataSnapshot.child("tituloPublicacion").getValue().toString();
                                         String fotoPublicacion;
@@ -805,7 +816,7 @@ public class PaginaPrincipal extends AppCompatActivity {
                                         rowItems.add(Item); //aca añade la persona a la tarjetita.
                                         ordenarPorPuntuacion();
                                         arrayAdapter.notifyDataSetChanged(); //esto se usa cad vez que se añade o se quita un elemetno del arraylist de los items.
-
+                                        clothesDb.removeEventListener(childEventListenerClothes);
                                     }
                                 }
 
@@ -884,7 +895,7 @@ public class PaginaPrincipal extends AppCompatActivity {
                             Log.d("puntuacionGeneral", "UID: " + dataSnapshot.getKey());
                             Log.d("puntuacionGeneral", "UID: " + dataSnapshot.getKey() + "Puntuacion: " + finalPuntuacionGeneral);
 
-                            clothesDb.addChildEventListener(new ChildEventListener() {
+                            childEventListenerClothes = clothesDb.addChildEventListener(new ChildEventListener() {
                                 @Override
                                 public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) { //aqui ya recorre los productos.
                                     currentUId = mAuth.getCurrentUser().getUid();
@@ -903,6 +914,7 @@ public class PaginaPrincipal extends AppCompatActivity {
                                         rowItems.add(Item); //aca añade la persona a la tarjetita.
                                         ordenarPorPuntuacion();
                                         arrayAdapter.notifyDataSetChanged(); //esto se usa cad vez que se añade o se quita un elemetno del arraylist de los items.
+                                        clothesDb.removeEventListener(childEventListenerClothes);
 
                                     }
                                 }
@@ -980,6 +992,7 @@ public class PaginaPrincipal extends AppCompatActivity {
 
             }
         });
+        //clothesDb.removeEventListener(childEventListenerClothes);
 
     }
 
@@ -1068,6 +1081,7 @@ public class PaginaPrincipal extends AppCompatActivity {
 
             case R.id.accountBtn:
                 Intent intentAccount = new Intent(PaginaPrincipal.this, VerMiCuenta.class);
+                clothesDb.removeEventListener(childEventListenerClothes);
                 startActivity(intentAccount);
                 finish();
                 break;
@@ -1075,16 +1089,22 @@ public class PaginaPrincipal extends AppCompatActivity {
             case R.id.chatBtn:
                 Intent intentChat = new Intent(PaginaPrincipal.this, Chat.class);
                 startActivity(intentChat);
+                clothesDb.removeEventListener(childEventListenerClothes);
+
                 finish();
                 break;
 
             case R.id.addBtn:
                 Intent intentAdd = new Intent(PaginaPrincipal.this, AddPublicaciones.class);
                 startActivity(intentAdd);
+                clothesDb.removeEventListener(childEventListenerClothes);
+
                 finish();
                 break;
 
             case R.id.cerrarSesionBtn:
+                clothesDb.removeEventListener(childEventListenerClothes);
+
                 mAuth.signOut(); //desconecta
                 //las lineas de abajo mandan de la ventana actual(mainactiviy) a la de chooseloginregistration que es la de antes de estar loguado.
                 Intent intent = new Intent(PaginaPrincipal.this,Login.class);
@@ -1096,5 +1116,9 @@ public class PaginaPrincipal extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-
+    @Override
+    protected void onPause() {
+        clothesDb.removeEventListener(childEventListenerClothes);
+        super.onPause();
+    }
 }
