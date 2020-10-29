@@ -32,7 +32,7 @@ import java.util.List;
 import java.util.Map;
 
 public class PaginaPrincipal extends AppCompatActivity {
-    private ArrayList<String> al,bloqueados;
+    private ArrayList<String> al, bloqueados;
     // private ArrayAdapter<String> arrayAdapter;
     private arrayAdaptor arrayAdapter;
     private SwipeFlingAdapterView flingContainer;
@@ -42,15 +42,16 @@ public class PaginaPrincipal extends AppCompatActivity {
     private String currentUId, clothesCurrentUid;
     private Map<String, Object> map;
     private String userId;
-    private double longitudUser,latitudeUser;
+    private double longitudUser, latitudeUser;
     private ChildEventListener childEventListenerClothes;
-    private int puedeMostrarCard,noExistenFiltros,kmBusqueda,esBusquedaPorKm;
-    private String comunaBusqueda, tallaBusqueda, estadoBusqueda, tipoPrendaBusqueda,regionBusqueda;
+    private int puedeMostrarCard, noExistenFiltros, kmBusqueda, esBusquedaPorKm;
+    private String comunaBusqueda, tallaBusqueda, estadoBusqueda, tipoPrendaBusqueda, regionBusqueda;
     private Button mFiltros;
     List<cards> rowItems;
 
 
     private int i;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,7 +63,8 @@ public class PaginaPrincipal extends AppCompatActivity {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         currentUId = user.getUid();
         mFiltros = (Button) findViewById(R.id.filtrosBtn);
-        puedeMostrarCard=1;
+        puedeMostrarCard = 1;
+
         //Toolbar Menu
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -71,19 +73,19 @@ public class PaginaPrincipal extends AppCompatActivity {
         }
 
         //swipecards
-        if(regionBusqueda==null) {
+        if (regionBusqueda == null) {
             regionBusqueda = "";
         }
-        if(comunaBusqueda==null) {
+        if (comunaBusqueda == null) {
             comunaBusqueda = "";
         }
-        if(tipoPrendaBusqueda==null) {
+        if (tipoPrendaBusqueda == null) {
             tipoPrendaBusqueda = "";
         }
-        if(estadoBusqueda==null) {
+        if (estadoBusqueda == null) {
             estadoBusqueda = "";
         }
-        if(tallaBusqueda==null) {
+        if (tallaBusqueda == null) {
             tallaBusqueda = "";
         }
         obtenerRechazados();
@@ -110,8 +112,12 @@ public class PaginaPrincipal extends AppCompatActivity {
          */
         rowItems = new ArrayList<cards>();
         //crea el arrayadapter y le manda los rowitems que es donde se guardaran todas las cartas y le envia el item que es donde se mostraran las cartas.
-        arrayAdapter = new arrayAdaptor(this, R.layout.item, rowItems );
+        arrayAdapter = new arrayAdaptor(this, R.layout.item, rowItems);
         //el r.id.frame es donde se mostrara el item en el mainactivity.
+
+
+
+
 
 
         flingContainer.setAdapter(arrayAdapter);
