@@ -38,6 +38,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.nipunru.nsfwdetector.NSFWDetector;
 import com.squareup.picasso.Picasso;
 
 import java.io.ByteArrayOutputStream;
@@ -278,7 +279,7 @@ public class EditarPublicacion extends AppCompatActivity {
                 publicacion=1;
                 publicacion1=1;
                 comprobarImagen();
-                mBorrarPublicacion1.setVisibility(View.VISIBLE);
+
             }
         });
         mPublicacionImage2.setOnClickListener(new View.OnClickListener() {
@@ -287,7 +288,6 @@ public class EditarPublicacion extends AppCompatActivity {
                 publicacion=2;
                 publicacion2=1;
                 comprobarImagen();
-                mBorrarPublicacion2.setVisibility(View.VISIBLE);
             }
         });
         mPublicacionImage3.setOnClickListener(new View.OnClickListener() {
@@ -296,7 +296,6 @@ public class EditarPublicacion extends AppCompatActivity {
                 publicacion=3;
                 publicacion3=1;
                 comprobarImagen();
-                mBorrarPublicacion3.setVisibility(View.VISIBLE);
             }
         });
         mPublicacionImage4.setOnClickListener(new View.OnClickListener() {
@@ -305,7 +304,6 @@ public class EditarPublicacion extends AppCompatActivity {
                 publicacion=4;
                 publicacion4=1;
                 comprobarImagen();
-                mBorrarPublicacion4.setVisibility(View.VISIBLE);
             }
         });
         mPublicacionImage5.setOnClickListener(new View.OnClickListener() {
@@ -314,7 +312,6 @@ public class EditarPublicacion extends AppCompatActivity {
                 publicacion=5;
                 publicacion5=1;
                 comprobarImagen();
-                mBorrarPublicacion5.setVisibility(View.VISIBLE);
             }
         });
         mPublicacionImage6.setOnClickListener(new View.OnClickListener() {
@@ -323,7 +320,6 @@ public class EditarPublicacion extends AppCompatActivity {
                 publicacion=6;
                 publicacion6=1;
                 comprobarImagen();
-                mBorrarPublicacion6.setVisibility(View.VISIBLE);
             }
         });
         mAplicar.setOnClickListener(new View.OnClickListener() {
@@ -536,68 +532,101 @@ public class EditarPublicacion extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode==1 && resultCode == Activity.RESULT_OK){
             final Uri imageUri = data.getData();
-            arrayResultUri.add(imageUri);
-            switch (publicacion){
-                case 1:
-                    resultUri = imageUri;
 
-                    mPublicacionImage1.setImageURI(resultUri);
-                    publicacion1=0;
-                    existoFoto1=1;
-                    borrar1 = 0;
-                    publicacion=0;
-                    cantidadFotos++;
-                    break;
-                case 2:
-                    Log.d("borrarFoto","borar1");
-                    resultUri2 = imageUri;
-                    mPublicacionImage2.setImageURI(resultUri2);
-                    publicacion2=0;
-                    existoFoto2=1;
-                    borrar2 = 0;
-                    publicacion=0;
-                    cantidadFotos++;
-                    break;
-                case 3:
-                    resultUri3 = imageUri;
-                    mPublicacionImage3.setImageURI(resultUri3);
-                    publicacion3=0;
-                    existoFoto3=1;
-                    cantidadFotos++;
-                    borrar3 = 0;
-                    publicacion=0;
-                    break;
-                case 4:
-                    resultUri4 = imageUri;
-                    mPublicacionImage4.setImageURI(resultUri4);
-                    publicacion4=0;
-                    existoFoto4=1;
-                    cantidadFotos++;
-                    borrar4 = 0;
-                    publicacion=0;
-                    break;
-                case 5:
-                    resultUri5 = imageUri;
-                    mPublicacionImage5.setImageURI(resultUri5);
-                    publicacion5=0;
-                    existoFoto5=1;
-                    borrar5 = 0;
-                    cantidadFotos++;
-                    publicacion=0;
-                    break;
-                case 6:
-                    resultUri6 = imageUri;
-                    mPublicacionImage6.setImageURI(resultUri6);
-                    publicacion6=0;
-                    existoFoto5=1;
-                    borrar6 = 0;
-                    cantidadFotos++;
-                    publicacion=0;
-                    break;
-                default:
-                    Log.d("gungaginga","gungagigna");
-                    break;
+            Bitmap bitmap = null;
+            try {
+                bitmap = MediaStore.Images.Media.getBitmap(getApplication().getContentResolver(), imageUri);
+            } catch (IOException e) {
+                e.printStackTrace();
             }
+
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 20, baos);
+
+
+            float confidenceThreshold = (float) 0.68; //radio de margen, mientras mas cercano al 1 permite foto mas nsfw.
+            NSFWDetector.INSTANCE.isNSFW(bitmap, confidenceThreshold, (isNSFW, confidence, image) -> {
+                if (isNSFW) {
+                    Toast.makeText(this, "FOTO NO PERMITIDA. " + confidence, Toast.LENGTH_SHORT).show();
+                    Log.d("porno", "fotopornoxd");
+                } else {
+                    Toast.makeText(this, "SFW with confidence: " + confidence, Toast.LENGTH_SHORT).show();
+                    Log.d("porno", "fotono pornoxd");
+                    arrayResultUri.add(imageUri);
+                    switch (publicacion){
+                        case 1:
+                            resultUri = imageUri;
+                            mBorrarPublicacion1.setVisibility(View.VISIBLE);
+                            mPublicacionImage1.setImageURI(resultUri);
+                            publicacion1=0;
+                            existoFoto1=1;
+                            borrar1 = 0;
+                            publicacion=0;
+                            cantidadFotos++;
+                            break;
+                        case 2:
+                            Log.d("borrarFoto","borar1");
+                            resultUri2 = imageUri;
+                            mBorrarPublicacion2.setVisibility(View.VISIBLE);
+                            mPublicacionImage2.setImageURI(resultUri2);
+                            publicacion2=0;
+                            existoFoto2=1;
+                            borrar2 = 0;
+                            publicacion=0;
+                            cantidadFotos++;
+                            break;
+                        case 3:
+                            resultUri3 = imageUri;
+                            mBorrarPublicacion3.setVisibility(View.VISIBLE);
+                            mPublicacionImage3.setImageURI(resultUri3);
+                            publicacion3=0;
+                            existoFoto3=1;
+                            cantidadFotos++;
+                            borrar3 = 0;
+                            publicacion=0;
+                            break;
+                        case 4:
+                            resultUri4 = imageUri;
+                            mBorrarPublicacion4.setVisibility(View.VISIBLE);
+                            mPublicacionImage4.setImageURI(resultUri4);
+                            publicacion4=0;
+                            existoFoto4=1;
+                            cantidadFotos++;
+                            borrar4 = 0;
+                            publicacion=0;
+                            break;
+                        case 5:
+                            resultUri5 = imageUri;
+                            mBorrarPublicacion5.setVisibility(View.VISIBLE);
+                            mPublicacionImage5.setImageURI(resultUri5);
+                            publicacion5=0;
+                            existoFoto5=1;
+                            borrar5 = 0;
+                            cantidadFotos++;
+                            publicacion=0;
+                            break;
+                        case 6:
+                            resultUri6 = imageUri;
+                            mBorrarPublicacion6.setVisibility(View.VISIBLE);
+                            mPublicacionImage6.setImageURI(resultUri6);
+                            publicacion6=0;
+                            existoFoto5=1;
+                            borrar6 = 0;
+                            cantidadFotos++;
+                            publicacion=0;
+                            break;
+                        default:
+                            Log.d("gungaginga","gungagigna");
+                            break;
+                    }
+                }
+                return kotlin.Unit.INSTANCE;
+            });
+
+
+
+
+
 
         }
     }

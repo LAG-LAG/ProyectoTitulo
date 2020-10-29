@@ -177,7 +177,6 @@ private boolean addLocation;
                     intent.setType("image/*");
                     startActivityForResult(intent, 1);
                 }
-                mborrarFotoPerfil.setVisibility(View.VISIBLE);
 
             }
         });
@@ -428,6 +427,7 @@ private boolean addLocation;
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode==1 && resultCode == Activity.RESULT_OK){
             final Uri imageUri = data.getData();
+            mborrarFotoPerfil.setVisibility(View.VISIBLE);
             resultUri = imageUri;
             mProfileImage.setImageURI(resultUri);
             if(addLocation == true) {
