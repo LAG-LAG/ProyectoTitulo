@@ -47,7 +47,7 @@ public class MisPublicaciones extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         if (getSupportActionBar() != null) {
-            getSupportActionBar().setTitle("Mis publicaciones");
+            getSupportActionBar().setTitle("Avisos");
         }
 
         usersDb = FirebaseDatabase.getInstance().getReference().child("Users"); //esto obtiene todos los usuarios de la bd

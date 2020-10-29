@@ -23,7 +23,7 @@
         android:inputType="textPersonName"
         android:text="Titulo publicacion"
         android:textColor="#FFFFFF"
-        android:textSize="18dp"
+        android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.71"
         app:layout_constraintStart_toEndOf="@+id/imageViewValorar"
@@ -50,7 +50,7 @@
         android:inputType="textPersonName"
         android:text="Estado del producto:"
         android:textColor="#FFFFFF"
-        android:textSize="18dp"
+        android:textSize="18sp"
         app:layout_constraintBottom_toTopOf="@+id/ratingBar"
         app:layout_constraintStart_toStartOf="parent" />
 
@@ -95,7 +95,7 @@
         android:inputType="textPersonName"
         android:text="Trato personal:"
         android:textColor="#FFFFFF"
-        android:textSize="18dp"
+        android:textSize="18sp"
         app:layout_constraintBottom_toTopOf="@+id/ratingBar2"
         app:layout_constraintStart_toStartOf="parent" />
 
@@ -110,7 +110,7 @@
         android:inputType="textPersonName"
         android:text="Puntualidad:"
         android:textColor="#FFFFFF"
-        android:textSize="18dp"
+        android:textSize="18sp"
         app:layout_constraintBottom_toTopOf="@+id/ratingBar3"
         app:layout_constraintStart_toStartOf="parent" />
 

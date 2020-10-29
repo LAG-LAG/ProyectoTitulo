@@ -122,7 +122,7 @@ public class AddPublicaciones extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) {
-            getSupportActionBar().setTitle("Añadir publicacion");
+            getSupportActionBar().setTitle("Añadir Aviso");
         }
 
 

@@ -13,22 +13,20 @@
 
     <Button
         android:id="@+id/publicarBtnEditar"
-        android:layout_width="0dp"
+        android:layout_width="347dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="32dp"
         android:layout_marginBottom="32dp"
         android:background="@drawable/button_rounded"
         android:text="Editar Publicación"
         android:textColor="#FFFFFF"
-        android:textSize="18sp"
+        android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextDescripcionEditar"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintTop_toBottomOf="@+id/editTextDescripcionEditar" />
 
     <EditText
         android:id="@+id/editTextTituloEditar"
@@ -42,7 +40,7 @@
         android:hint="Título"
         android:inputType="textPersonName"
         android:textColorHint="#FFFFFF"
-        android:textSize="18sp"
+        android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -60,6 +58,7 @@
         android:hint="Precio ($)"
         android:inputType="number"
         android:textColorHint="#FFFFFF"
+        android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -136,6 +135,7 @@
         android:ems="10"
         android:hint="Descripción"
         android:textColorHint="#FFFFFF"
+        android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -195,7 +195,6 @@
         app:layout_constraintStart_toEndOf="@+id/publicacionImageCrear1Editar"
         app:layout_constraintTop_toBottomOf="@+id/toolbar"
         app:layout_constraintVertical_bias="0.0" />
-
 
 
     <ImageView
@@ -281,7 +280,6 @@
         app:layout_constraintTop_toTopOf="@+id/publicacionImageCrear6Editar"
         app:layout_constraintVertical_bias="0.0"
         app:srcCompat="@drawable/close_48dp" />
-
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

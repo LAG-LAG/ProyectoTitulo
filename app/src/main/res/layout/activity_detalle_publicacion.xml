@@ -16,161 +16,183 @@
         android:id="@+id/fotoDetallePublicacion"
         android:layout_width="403dp"
         android:layout_height="283dp"
-        android:layout_marginTop="8dp"
         app:iss_error_image="@mipmap/ic_launcher"
         app:iss_placeholder="@mipmap/ic_launcher"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbar"
         app:srcCompat="@mipmap/ic_launcher" />
 
-    <TextView
-        android:id="@+id/tituloDetallePublicacion"
+    <LinearLayout
+        android:id="@+id/LLPrecioyVendedor"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="28dp"
         android:layout_marginTop="8dp"
-        android:hint="Publicacion"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/fotoDetallePublicacion" />
+        android:layout_marginEnd="16dp"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/fotoDetallePublicacion">
 
-    <TextView
-        android:id="@+id/colorPrendaDetalle"
+        <TextView
+            android:id="@+id/vendedorDetallePublicacion"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Vendedor:"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/nombreVendedorDetallePublicacion"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="nombre"
+            android:textSize="14sp" />
+
+        <Button
+            android:id="@+id/verPerfilBtnPublicacionDetalle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Ver perfil" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/LLDatosPublic"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
-        android:text="color"
-        app:layout_constraintStart_toEndOf="@+id/colorPrenda"
-        app:layout_constraintTop_toBottomOf="@+id/tipoPrendaDetalle" />
-
-    <TextView
-        android:id="@+id/colorPrenda"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="28dp"
-        android:layout_marginTop="8dp"
-        android:text="Color:"
-        android:textStyle="bold"
+        android:orientation="vertical"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tipoPrendaDetalle" />
+        app:layout_constraintTop_toBottomOf="@+id/fotoDetallePublicacion">
 
-    <TextView
-        android:id="@+id/tallaPrendaDetalle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
+        <TextView
+            android:id="@+id/tituloDetallePublicacion"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="Publicacion"
+            android:textSize="24sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/precioDetallePublicacion"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="Precio"
+            android:textSize="24sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tipoPrendaDetalle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingTop="4dp"
+            android:text="tipoPrenda"
+            android:textSize="14sp" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingTop="2dp">
+
+            <TextView
+                android:id="@+id/colorPrenda"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingRight="4dp"
+                android:text="Color:"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/colorPrendaDetalle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="color"
+                android:textSize="14sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingTop="2dp">
+
+            <TextView
+                android:id="@+id/tallaPrenda"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingRight="4dp"
+                android:text="Talla:"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tallaPrendaDetalle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="talla"
+                android:textSize="14sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingTop="2dp">
+
+            <TextView
+                android:id="@+id/estadoPrenda"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingRight="4dp"
+                android:text="Estado:"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/estadoPrendaDetalle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="estado"
+                android:textSize="14sp" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/LLdescripcion"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
-        android:text="talla"
-        app:layout_constraintStart_toEndOf="@+id/tallaPrenda"
-        app:layout_constraintTop_toBottomOf="@+id/colorPrendaDetalle" />
-
-    <TextView
-        android:id="@+id/descripcion"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="28dp"
-        android:layout_marginTop="36dp"
-        android:text="Descripcion:"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tallaPrenda" />
-
-    <TextView
-        android:id="@+id/descripcionPrendaDetalle"
-        android:layout_width="352dp"
-        android:layout_height="136dp"
-        android:text="descripcion"
-        android:textSize="12sp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="8dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toTopOf="@+id/guardarPublicacionDetalle"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/descripcion" />
+        app:layout_constraintTop_toBottomOf="@+id/LLDatosPublic">
 
-    <TextView
-        android:id="@+id/tallaPrenda"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="28dp"
-        android:layout_marginTop="8dp"
-        android:text="Talla:"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/colorPrenda" />
+        <TextView
+            android:id="@+id/descripcion"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Descripcion:"
+            android:textSize="14sp"
+            android:textStyle="bold" />
 
-    <TextView
-        android:id="@+id/tipoPrendaDetalle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="28dp"
-        android:layout_marginTop="4dp"
-        android:text="tipoPrenda"
-        android:textSize="12sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tituloDetallePublicacion" />
-
-    <TextView
-        android:id="@+id/estadoPrenda"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="28dp"
-        android:layout_marginTop="36dp"
-        android:text="Estado:"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/colorPrenda" />
-
-    <TextView
-        android:id="@+id/estadoPrendaDetalle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:text="estado"
-        android:textSize="12sp"
-        app:layout_constraintStart_toEndOf="@+id/estadoPrenda"
-        app:layout_constraintTop_toBottomOf="@+id/tallaPrendaDetalle" />
-
-    <TextView
-        android:id="@+id/precioDetallePublicacion"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="28dp"
-        android:hint="Precio"
-        android:textSize="36sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/fotoDetallePublicacion" />
-
-    <TextView
-        android:id="@+id/vendedorDetallePublicacion"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
-        android:layout_marginEnd="4dp"
-        android:text="Vendedor:"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toStartOf="@+id/nombreVendedorDetallePublicacion"
-        app:layout_constraintTop_toBottomOf="@+id/precioDetallePublicacion" />
-
-    <TextView
-        android:id="@+id/nombreVendedorDetallePublicacion"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
-        android:layout_marginEnd="24dp"
-        android:text="nombre"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/precioDetallePublicacion" />
+        <TextView
+            android:id="@+id/descripcionPrendaDetalle"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="descripcion"
+            android:textSize="14sp" />
+    </LinearLayout>
 
     <Button
         android:id="@+id/guardarPublicacionDetalle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="28dp"
+        android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
         android:text="Guardar"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -180,20 +202,10 @@
         android:id="@+id/descartarPublicacionDetalle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="28dp"
+        android:layout_marginStart="16dp"
         android:layout_marginBottom="16dp"
         android:text="Descartar"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
-
-    <Button
-        android:id="@+id/verPerfilBtnPublicacionDetalle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="32dp"
-        android:text="Ver perfil"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/vendedorDetallePublicacion" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
