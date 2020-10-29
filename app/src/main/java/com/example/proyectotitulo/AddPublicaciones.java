@@ -37,6 +37,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.nipunru.nsfwdetector.NSFWDetector;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -64,7 +65,7 @@ public class AddPublicaciones extends AppCompatActivity {
     private Uri resultUri5;
     private Uri resultUri6;
     private DatabaseReference mClothesDatabase;
-
+    private int puedeSubir;
     private ImageView mPublicacionImage1;
 
     private ImageView mPublicacionImage2;
@@ -143,7 +144,12 @@ public class AddPublicaciones extends AppCompatActivity {
         mAplicar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                savePublicacion();
+                if(!modalClassList.isEmpty()) {
+                    savePublicacion();
+                }
+                else{
+                    Toast.makeText(AddPublicaciones.this, "Debe subir al menos una foto", Toast.LENGTH_SHORT).show();
+                }
                 //Intent intentAccount = new Intent(AddPublicaciones.this, VerMiCuenta.class);
                 //startActivity(intentAccount);
                 //finish();
@@ -179,13 +185,34 @@ public class AddPublicaciones extends AppCompatActivity {
                     Uri imageUri = data.getClipData().getItemAt(i).getUri();
                     String imagename = getFileName(imageUri);
 
-                    ModalClass modalClass = new ModalClass(imagename,imageUri);
-                    modalClassList.add(modalClass);
 
-                    customAdapter = new CustomAdapter(AddPublicaciones.this, modalClassList);
-                    recyclerView.setAdapter(customAdapter);
-//
+                        Bitmap bitmap = null;
+                        try {
+                            bitmap = MediaStore.Images.Media.getBitmap(getApplication().getContentResolver(), imageUri);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
 
+                        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                        bitmap.compress(Bitmap.CompressFormat.JPEG, 20, baos);
+
+
+                        float confidenceThreshold = (float) 0.68; //radio de margen, mientras mas cercano al 1 permite foto mas nsfw.
+                        NSFWDetector.INSTANCE.isNSFW(bitmap, confidenceThreshold, (isNSFW, confidence, image) -> {
+                            if (isNSFW) {
+                                Toast.makeText(this, "FOTO NO PERMITIDA. " + confidence, Toast.LENGTH_SHORT).show();
+                                puedeSubir = 0;
+                                Log.d("porno", "fotopornoxd");
+                            } else {
+                                Toast.makeText(this, "SFW with confidence: " + confidence, Toast.LENGTH_SHORT).show();
+                                Log.d("porno", "fotono pornoxd");
+                                ModalClass modalClass = new ModalClass(imagename,imageUri);
+                                modalClassList.add(modalClass);
+                                customAdapter = new CustomAdapter(AddPublicaciones.this, modalClassList);
+                                recyclerView.setAdapter(customAdapter);
+                            }
+                            return kotlin.Unit.INSTANCE;
+                        });
                 }
 
 
@@ -194,11 +221,35 @@ public class AddPublicaciones extends AppCompatActivity {
                 Uri imageUri = data.getData();
                 String imagename = getFileName(imageUri);
 
-                ModalClass modalClass = new ModalClass(imagename,imageUri);
-                modalClassList.add(modalClass);
 
-                customAdapter = new CustomAdapter(AddPublicaciones.this, modalClassList);
-                recyclerView.setAdapter(customAdapter);
+
+                Bitmap bitmap = null;
+                try {
+                    bitmap = MediaStore.Images.Media.getBitmap(getApplication().getContentResolver(), imageUri);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 20, baos);
+
+                float confidenceThreshold = (float) 0.68; //radio de margen, mientras mas cercano al 1 permite foto mas nsfw.
+                NSFWDetector.INSTANCE.isNSFW(bitmap, confidenceThreshold, (isNSFW, confidence, image) -> {
+                    if (isNSFW) {
+                        Toast.makeText(this, "FOTO NO PERMITIDA. " + confidence, Toast.LENGTH_SHORT).show();
+                        puedeSubir = 0;
+                        Log.d("porno", "fotopornoxd");
+                    } else {
+                        Toast.makeText(this, "SFW with confidence: " + confidence, Toast.LENGTH_SHORT).show();
+                        Log.d("porno", "fotono pornoxd");
+                        ModalClass modalClass = new ModalClass(imagename,imageUri);
+                        modalClassList.add(modalClass);
+                        customAdapter = new CustomAdapter(AddPublicaciones.this, modalClassList);
+                        recyclerView.setAdapter(customAdapter);
+                    }
+                    return kotlin.Unit.INSTANCE;
+                });
+
 //
             }
 
@@ -230,95 +281,104 @@ public class AddPublicaciones extends AppCompatActivity {
 
     private void savePublicacion() {
 
-        String userId = mAuth.getCurrentUser().getUid();
-        String id = FirebaseDatabase.getInstance().getReference().child("Users").child(userId).child("clothes").push().getKey();
-        DatabaseReference currentUserNamePrenda = FirebaseDatabase.getInstance().getReference().child("Users").child(userId).child("clothes").child(id).child("tituloPublicacion"); //busca al usuario que va a crear y lo guarda como una variable que se le agregan las cosas y se manda al a db de nuevo
-        String titulo = mTitulo.getText().toString();
-        String valor = mValor.getText().toString();
-        String tipoPrenda = String.valueOf(mTipoPrendaSpinner.getSelectedItem());
-        String tallaPrenda = String.valueOf(mTallaSpinner.getSelectedItem());
-        String colorPrenda = String.valueOf(mColorSpinner.getSelectedItem());
-        String estadoPrenda = String.valueOf(mEstadoPrendaSpinner.getSelectedItem());
-        String descripcionPrenda = mDescripcion.getText().toString();
-        //DatabaseReference dueño = FirebaseDatabase.getInstance().getReference().child("Users").child(userId).child("clothes").child(id).child("idDueño");
-        //dueño.setValue(userId);
-
-        //mRegionesSpinner.getSelectedItem();
-        if(titulo != "" && valor != "" && tipoPrenda != "Seleccione tipo de prenda" && tallaPrenda != "Seleccione talla" && colorPrenda != "Seleccione color" && estadoPrenda != "Seleccione estado"){
-            currentUserNamePrenda.setValue(mTitulo.getText().toString()); //Aca va y le asigna el nombre al User.
-
-            DatabaseReference currentUserValorPrenda = FirebaseDatabase.getInstance().getReference().child("Users").child(userId).child("clothes").child(id).child("ValorPrenda");
-            currentUserValorPrenda.setValue(valor);
-            DatabaseReference currentUserTipoPrenda = FirebaseDatabase.getInstance().getReference().child("Users").child(userId).child("clothes").child(id).child("TipoPrenda");
-            currentUserTipoPrenda.setValue(tipoPrenda);
-            DatabaseReference currentUserTallaPrenda = FirebaseDatabase.getInstance().getReference().child("Users").child(userId).child("clothes").child(id).child("TallaPrenda");
-            currentUserTallaPrenda.setValue(tallaPrenda);
-            DatabaseReference currentUserColorPrenda = FirebaseDatabase.getInstance().getReference().child("Users").child(userId).child("clothes").child(id).child("ColorPrenda");
-            currentUserColorPrenda.setValue(colorPrenda);
-            DatabaseReference currentUserEstadoPrenda = FirebaseDatabase.getInstance().getReference().child("Users").child(userId).child("clothes").child(id).child("EstadoPrenda");
-            currentUserEstadoPrenda.setValue(estadoPrenda);
-            DatabaseReference currentUserDescripcionPrenda = FirebaseDatabase.getInstance().getReference().child("Users").child(userId).child("clothes").child(id).child("DescripcionPrenda");
-            currentUserDescripcionPrenda.setValue(descripcionPrenda);
-
-        }
-        else{
-            Toast.makeText(AddPublicaciones.this, "Datos Incorrectos.", Toast.LENGTH_SHORT).show();
-        }
-
-        for (int i = 0; i<modalClassList.size();i++) {
-            String imagename = modalClassList.get(i).getImagename();
-            final int tamanoLogico = modalClassList.size()-1;
-            final int posicion = i;
-            Log.d("verveces","tamañoLogico:"+tamanoLogico+" Posicion: "+posicion);
-            final String idPrenda;
-            int numero = i+1;
-            idPrenda = ""+numero;
-            mClothesDatabase = FirebaseDatabase.getInstance().getReference().child("Users").child(userId).child("clothes").child(id).child("clothesPhotos");
-            dialog = new ProgressDialog(AddPublicaciones.this);
-            dialog.setMessage("Loading");
-            dialog.show();
 
 
-            final StorageReference mRef = mStorageRef.child("prendasImages").child(userId).child(id).child(idPrenda);;
-            Uri imageUri = modalClassList.get(i).getImage();
-            mRef.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                @Override
-                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                    mRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                        @Override
-                        public void onSuccess(Uri uri) {
-                            dialog.dismiss();
-                            Map newImage = new HashMap();
-                            newImage.put("photoId" + idPrenda, uri.toString());
-                            mClothesDatabase.updateChildren(newImage);
+            String userId = mAuth.getCurrentUser().getUid();
+            String id = FirebaseDatabase.getInstance().getReference().child("Users").child(userId).child("clothes").push().getKey();
+            DatabaseReference currentUserNamePrenda = FirebaseDatabase.getInstance().getReference().child("Users").child(userId).child("clothes").child(id).child("tituloPublicacion"); //busca al usuario que va a crear y lo guarda como una variable que se le agregan las cosas y se manda al a db de nuevo
+            String titulo = mTitulo.getText().toString();
+            String valor = mValor.getText().toString();
+            String tipoPrenda = String.valueOf(mTipoPrendaSpinner.getSelectedItem());
+            String tallaPrenda = String.valueOf(mTallaSpinner.getSelectedItem());
+            String colorPrenda = String.valueOf(mColorSpinner.getSelectedItem());
+            String estadoPrenda = String.valueOf(mEstadoPrendaSpinner.getSelectedItem());
+            String descripcionPrenda = mDescripcion.getText().toString();
+            //DatabaseReference dueño = FirebaseDatabase.getInstance().getReference().child("Users").child(userId).child("clothes").child(id).child("idDueño");
+            //dueño.setValue(userId);
 
-                            //finish();
-                            //return;
+            //mRegionesSpinner.getSelectedItem();
+            if (titulo != "" && valor != "" && tipoPrenda != "Seleccione tipo de prenda" && tallaPrenda != "Seleccione talla" && colorPrenda != "Seleccione color" && estadoPrenda != "Seleccione estado") {
+                currentUserNamePrenda.setValue(mTitulo.getText().toString()); //Aca va y le asigna el nombre al User.
+
+                DatabaseReference currentUserValorPrenda = FirebaseDatabase.getInstance().getReference().child("Users").child(userId).child("clothes").child(id).child("ValorPrenda");
+                currentUserValorPrenda.setValue(valor);
+                DatabaseReference currentUserTipoPrenda = FirebaseDatabase.getInstance().getReference().child("Users").child(userId).child("clothes").child(id).child("TipoPrenda");
+                currentUserTipoPrenda.setValue(tipoPrenda);
+                DatabaseReference currentUserTallaPrenda = FirebaseDatabase.getInstance().getReference().child("Users").child(userId).child("clothes").child(id).child("TallaPrenda");
+                currentUserTallaPrenda.setValue(tallaPrenda);
+                DatabaseReference currentUserColorPrenda = FirebaseDatabase.getInstance().getReference().child("Users").child(userId).child("clothes").child(id).child("ColorPrenda");
+                currentUserColorPrenda.setValue(colorPrenda);
+                DatabaseReference currentUserEstadoPrenda = FirebaseDatabase.getInstance().getReference().child("Users").child(userId).child("clothes").child(id).child("EstadoPrenda");
+                currentUserEstadoPrenda.setValue(estadoPrenda);
+                DatabaseReference currentUserDescripcionPrenda = FirebaseDatabase.getInstance().getReference().child("Users").child(userId).child("clothes").child(id).child("DescripcionPrenda");
+                currentUserDescripcionPrenda.setValue(descripcionPrenda);
+
+            } else {
+                Toast.makeText(AddPublicaciones.this, "Datos Incorrectos.", Toast.LENGTH_SHORT).show();
+            }
+
+            for (int i = 0; i < modalClassList.size(); i++) {
+                String imagename = modalClassList.get(i).getImagename();
+                final int tamanoLogico = modalClassList.size() - 1;
+                final int posicion = i;
+                Log.d("verveces", "tamañoLogico:" + tamanoLogico + " Posicion: " + posicion);
+                final String idPrenda;
+                int numero = i + 1;
+                idPrenda = "" + numero;
+
+
+                final StorageReference mRef = mStorageRef.child("prendasImages").child(userId).child(id).child(idPrenda);
+                ;
+                Uri imageUri = modalClassList.get(i).getImage();
+
+                mClothesDatabase = FirebaseDatabase.getInstance().getReference().child("Users").child(userId).child("clothes").child(id).child("clothesPhotos");
+
+
+                mClothesDatabase = FirebaseDatabase.getInstance().getReference().child("Users").child(userId).child("clothes").child(id).child("clothesPhotos");
+                dialog = new ProgressDialog(AddPublicaciones.this);
+                dialog.setMessage("Loading");
+                dialog.show();
+
+
+                mRef.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                        mRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                            @Override
+                            public void onSuccess(Uri uri) {
+                                dialog.dismiss();
+                                Map newImage = new HashMap();
+                                newImage.put("photoId" + idPrenda, uri.toString());
+                                mClothesDatabase.updateChildren(newImage);
+
+                                //finish();
+                                //return;
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception exception) {
+                                //finish();
+                                //return;
+                            }
+                        });
+
+                        Toast.makeText(AddPublicaciones.this, "Done", Toast.LENGTH_SHORT).show();
+
+                        if (tamanoLogico == posicion) {
+                            Log.d("verveces", "done");
+                            Intent intentAccount = new Intent(AddPublicaciones.this, PaginaPrincipal.class);
+                            startActivity(intentAccount);
+                            finish();
                         }
-                    }).addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception exception) {
-                            //finish();
-                            //return;
-                        }
-                    });
-
-                    Toast.makeText(AddPublicaciones.this, "Done", Toast.LENGTH_SHORT).show();
-
-                    if(tamanoLogico==posicion){
-                        Log.d("verveces","done");
-                        Intent intentAccount = new Intent(AddPublicaciones.this, PaginaPrincipal.class);
-                        startActivity(intentAccount);
-                        finish();
                     }
-                }
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                    Toast.makeText(AddPublicaciones.this, "Fail" + e.getMessage(), Toast.LENGTH_SHORT).show();
-                }
-            });
-        }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(AddPublicaciones.this, "Fail" + e.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+            }
         /*
         guardarImagen(resultUri,userId,"1",id);
         guardarImagen(resultUri2,userId,"2",id);
@@ -327,8 +387,48 @@ public class AddPublicaciones extends AppCompatActivity {
         guardarImagen(resultUri5,userId,"5",id);
         guardarImagen(resultUri6,userId,"6",id);
 */
+
+            Toast.makeText(AddPublicaciones.this, "Foto no permitida." , Toast.LENGTH_SHORT).show();
+
+    }
+/*
+    private int tieneFotoIndebida() {
+        for (int i = 0; i < modalClassList.size(); i++) {
+            Uri imageUri = modalClassList.get(i).getImage();
+            Bitmap bitmap = null;
+            try {
+                bitmap = MediaStore.Images.Media.getBitmap(getApplication().getContentResolver(), imageUri);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 20, baos);
+
+
+            float confidenceThreshold = (float) 0.68; //radio de margen, mientras mas cercano al 1 permite foto mas nsfw.
+            NSFWDetector.INSTANCE.isNSFW(bitmap, confidenceThreshold, (isNSFW, confidence, image) -> {
+                if (isNSFW) {
+                    Toast.makeText(this, "FOTO NO PERMITIDA. " + confidence, Toast.LENGTH_SHORT).show();
+                    puedeSubir = 0;
+                    Log.d("porno", "fotopornoxd");
+                } else {
+                    Toast.makeText(this, "SFW with confidence: " + confidence, Toast.LENGTH_SHORT).show();
+                    Log.d("porno", "fotono pornoxd");
+
+                }
+                return kotlin.Unit.INSTANCE;
+            });
+        }
+        if(puedeSubir==0){
+            Log.d("porno", "NOOOO se puede subir: ");
+            return 0;
+        }
+        Log.d("porno", "se puede subir: ");
+        return 1;
     }
 
+*/
     private void guardarImagen(Uri resultUri, String userId, final String idPrenda,String id) {
         if (resultUri != null) {
             final StorageReference filepath = FirebaseStorage.getInstance().getReference().child("prendasImages").child(userId).child(id).child(idPrenda);
