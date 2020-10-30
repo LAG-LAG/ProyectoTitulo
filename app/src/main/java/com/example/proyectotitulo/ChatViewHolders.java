@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 public class ChatViewHolders extends RecyclerView.ViewHolder implements View.OnClickListener{
     public TextView mMessage;
+    public TextView mUser;
     public LinearLayout mContainer;
     public ChatViewHolders(View itemView) {
         super(itemView);
