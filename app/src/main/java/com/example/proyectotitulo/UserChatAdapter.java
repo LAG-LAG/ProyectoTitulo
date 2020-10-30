@@ -42,6 +42,7 @@ public class UserChatAdapter extends RecyclerView.Adapter<ChatViewHolders>{
     @Override
     public void onBindViewHolder(ChatViewHolders holder, int position) {
         holder.mMessage.setText(chatList.get(position).getMessage());
+        holder.mUser.setText(chatList.get(position).getNombre());
         if(chatList.get(position).getCurrentUser()){
             holder.mMessage.setGravity(Gravity.END);
             holder.mMessage.setTextColor(Color.parseColor("#404040"));
