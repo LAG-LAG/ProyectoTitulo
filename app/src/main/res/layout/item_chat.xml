@@ -9,16 +9,17 @@
         android:id="@+id/container">
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
             <TextView
                 android:id="@+id/nombreUserMensaje"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/colorPrimary"
-                android:text="Nombre" />
+                android:text="Nombre"
+                android:textSize="14sp"
+                android:textColor="@color/colorPrimary" />
 
             <TextView
                 android:id="@+id/message"
@@ -26,12 +27,14 @@
                 android:layout_height="wrap_content"
                 android:paddingTop="4sp"
                 android:paddingBottom="16sp"
+                android:textSize="14sp"
                 android:text="Text" />
 
             <TextView
                 android:id="@+id/horaMensaje"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:textSize="12sp"
                 android:text="Hora" />
 
         </LinearLayout>
