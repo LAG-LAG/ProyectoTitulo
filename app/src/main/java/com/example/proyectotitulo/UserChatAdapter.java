@@ -2,6 +2,7 @@ package com.example.proyectotitulo;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.text.format.DateFormat;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -43,6 +44,8 @@ public class UserChatAdapter extends RecyclerView.Adapter<ChatViewHolders>{
     public void onBindViewHolder(ChatViewHolders holder, int position) {
         holder.mMessage.setText(chatList.get(position).getMessage());
         holder.mNombre.setText(chatList.get(position).getNombre());
+        holder.mHoraMensaje.setText((DateFormat.format("dd-MM-yyyy (HH:mm:ss)",chatList.get(position).getHora())));
+
         if(chatList.get(position).getCurrentUser()){
             holder.mMessage.setGravity(Gravity.END);
             holder.mNombre.setGravity(Gravity.END);

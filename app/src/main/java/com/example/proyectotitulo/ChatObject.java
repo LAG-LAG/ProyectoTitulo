@@ -12,7 +12,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 public class ChatObject {
-    private String message,UserId,hora,nombre;
+    private String message,UserId,nombre;
+    private long hora;
     private Boolean currentUser;
     private DatabaseReference usersDb;
     private ChildEventListener childEvent;
@@ -20,7 +21,7 @@ public class ChatObject {
         this.message = message;
         this.currentUser = currentUser;
     }
-    public ChatObject(String message, Boolean currentUser,String UserId, String hora, String nombre){
+    public ChatObject(String message, Boolean currentUser,String UserId, long hora, String nombre){
         this.message = message;
         this.currentUser = currentUser;
         this.UserId = UserId;
@@ -96,4 +97,10 @@ public class ChatObject {
     public void setCurrentUser(Boolean currentUser){
         this.currentUser = currentUser;
     }
+
+    public long getHora() {
+        return hora;
+    }
+
+
 }
