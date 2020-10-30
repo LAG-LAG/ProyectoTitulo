@@ -27,6 +27,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -149,7 +150,7 @@ public class ChatUserActivity extends AppCompatActivity {
                 Map newMessage = new HashMap();
                 newMessage.put("createdByUser", currentUserID);
                 newMessage.put("text", sendMessageText);
-                //newMessage.put("hora", ServerValue.TIMESTAMP);
+                newMessage.put("hora", new Date().getTime());
                 newMessageDb.setValue(newMessage);
             }
             mSendEditText.setText(null);
@@ -187,7 +188,7 @@ public class ChatUserActivity extends AppCompatActivity {
 
                     String message = null;
                     String createdByUser = null;
-                    String hora = null;
+                    long hora = 0;
                     if(dataSnapshot.child("text").getValue()!=null){
                         message = dataSnapshot.child("text").getValue().toString();
                     }
@@ -195,7 +196,9 @@ public class ChatUserActivity extends AppCompatActivity {
                         createdByUser = dataSnapshot.child("createdByUser").getValue().toString();
                     }
                     if(dataSnapshot.child("hora").getValue()!=null){
-                        hora = dataSnapshot.child("hora").getValue().toString();
+                        hora = Long.parseLong(dataSnapshot.child("hora").getValue().toString());
+
+                        Log.d("hora", "hora "+hora);
                     }
                     if(message!=null && createdByUser!=null){
                         Boolean currentUserBoolean = false;
@@ -206,7 +209,7 @@ public class ChatUserActivity extends AppCompatActivity {
                         String finalMessage = message;
                         Boolean finalCurrentUserBoolean = currentUserBoolean;
                         String finalCreatedByUser = createdByUser;
-                        String finalHora = hora;
+                        long finalHora = hora;
                         childEvent = usersDb.addChildEventListener(new ChildEventListener() {
                             @Override
                             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
