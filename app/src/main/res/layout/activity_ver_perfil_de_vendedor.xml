@@ -12,106 +12,111 @@
         android:id="@+id/toolbar"
         layout="@layout/toolbar" />
 
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/ImagenPerfilUrlVendedor"
-        android:layout_width="72dp"
-        android:layout_height="72dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="64dp"
-        android:src="@mipmap/ic_launcher"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"></de.hdodenhof.circleimageview.CircleImageView>
-
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/imagenEstrellasVendedor"
-        android:layout_width="41dp"
-        android:layout_height="44dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="20dp"
-        android:src="@drawable/star_48dp"
-        app:layout_constraintStart_toEndOf="@+id/TextViewRegionVendedor"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar"></de.hdodenhof.circleimageview.CircleImageView>
-
-    <TextView
-        android:id="@+id/TextViewNombreVendedor"
-        android:layout_width="218dp"
-        android:layout_height="21dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:backgroundTint="#FFFFFF"
-        android:ems="10"
-        android:hint="Nombre"
-        android:inputType="textPersonName"
-        android:textColorHint="#FFFFFF"
-        android:textSize="18dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/ImagenPerfilUrlVendedor"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar" />
-
-    <TextView
-        android:id="@+id/TextViewComunaVendedor"
-        android:layout_width="219dp"
-        android:layout_height="22dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="4dp"
-        android:layout_marginEnd="8dp"
-        android:backgroundTint="#FFFFFF"
-        android:ems="10"
-        android:hint="Comuna"
-        android:inputType="textPersonName"
-        android:textColorHint="#FFFFFF"
-        android:textSize="18dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/ImagenPerfilUrlVendedor"
-        app:layout_constraintTop_toBottomOf="@+id/TextViewRegionVendedor" />
-
-    <TextView
-        android:id="@+id/TextViewRegionVendedor"
-        android:layout_width="218dp"
-        android:layout_height="22dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="4dp"
-        android:layout_marginEnd="8dp"
-        android:backgroundTint="#FFFFFF"
-        android:ems="10"
-        android:hint="Region"
-        android:inputType="textPersonName"
-        android:textColorHint="#FFFFFF"
-        android:textSize="18dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/ImagenPerfilUrlVendedor"
-        app:layout_constraintTop_toBottomOf="@+id/TextViewNombreVendedor" />
-
-    <TextView
-        android:id="@+id/TextViewPuntacionVendedor"
+    <LinearLayout
+        android:id="@+id/linearLayout4"
         android:layout_width="0dp"
-        android:layout_height="34dp"
-        android:layout_marginStart="4dp"
-        android:layout_marginTop="28dp"
-        android:layout_marginEnd="8dp"
-        android:backgroundTint="#FFFFFF"
-        android:ems="10"
-        android:inputType="text"
-        android:textColorHint="#FFFFFF"
-        android:textSize="24dp"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.2"
-        app:layout_constraintStart_toEndOf="@+id/imagenEstrellasVendedor"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/ImagenPerfilUrlVendedor"
+            android:layout_width="72dp"
+            android:layout_height="72dp"
+            android:paddingRight="8dp"
+            android:src="@mipmap/ic_launcher"></de.hdodenhof.circleimageview.CircleImageView>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:paddingRight="8dp">
+
+            <TextView
+                android:id="@+id/TextViewNombreVendedor"
+                android:layout_width="220dp"
+                android:layout_height="wrap_content"
+                android:backgroundTint="#FFFFFF"
+                android:ems="10"
+                android:hint="Nombre"
+                android:inputType="textPersonName"
+                android:textColorHint="#FFFFFF"
+                android:textSize="18dp" />
+
+            <TextView
+                android:id="@+id/TextViewRegionVendedor"
+                android:layout_width="220dp"
+                android:layout_height="wrap_content"
+                android:backgroundTint="#FFFFFF"
+                android:ems="10"
+                android:hint="Region"
+                android:inputType="textPersonName"
+                android:textColorHint="#FFFFFF"
+                android:textSize="18dp" />
+
+            <TextView
+                android:id="@+id/TextViewComunaVendedor"
+                android:layout_width="220dp"
+                android:layout_height="wrap_content"
+                android:backgroundTint="#FFFFFF"
+                android:ems="10"
+                android:hint="Comuna"
+                android:inputType="textPersonName"
+                android:textColorHint="#FFFFFF"
+                android:textSize="18dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/imagenEstrellasVendedor"
+                android:layout_width="41dp"
+                android:layout_height="44dp"
+                android:src="@drawable/star_48dp"></de.hdodenhof.circleimageview.CircleImageView>
+
+            <TextView
+                android:id="@+id/TextViewPuntacionVendedor"
+                android:layout_width="44dp"
+                android:layout_height="34dp"
+                android:backgroundTint="#FFFFFF"
+                android:ems="10"
+                android:inputType="text"
+                android:textColorHint="#FFFFFF"
+                android:textSize="24dp" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <View
+        android:id="@+id/view"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="32dp"
+        android:background="@color/text_shadow_white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout4" />
 
     <ListView
         android:id="@+id/lvPublicacionesVendidasVendedor"
-        android:layout_width="411dp"
-        android:layout_height="587dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.428"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/TextViewComunaVendedor" />
+        app:layout_constraintTop_toBottomOf="@+id/view" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

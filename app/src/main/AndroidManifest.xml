@@ -57,9 +57,6 @@
             android:name=".detallePublicacion"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".DatosPublicacion"
-            android:screenOrientation="portrait" />
-        <activity
             android:name=".MisFavoritos"
             android:screenOrientation="portrait" />
         <activity

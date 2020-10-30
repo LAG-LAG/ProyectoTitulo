@@ -16,150 +16,159 @@
         android:id="@+id/fotoDetallePublicacionPropia"
         android:layout_width="403dp"
         android:layout_height="283dp"
-        android:layout_marginTop="8dp"
         app:iss_error_image="@mipmap/ic_launcher"
         app:iss_placeholder="@mipmap/ic_launcher"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbar"
         app:srcCompat="@mipmap/ic_launcher" />
 
-    <TextView
-        android:id="@+id/tituloDetallePublicacionPropia"
+    <LinearLayout
+        android:id="@+id/linearLayout3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="28dp"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
-        android:hint="Publicacion"
-        android:textSize="24sp"
-        android:textStyle="bold"
+        android:orientation="vertical"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/fotoDetallePublicacionPropia" />
+        app:layout_constraintTop_toBottomOf="@+id/fotoDetallePublicacionPropia">
 
-    <TextView
-        android:id="@+id/precioDetallePublicacionPropia"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        <TextView
+            android:id="@+id/tituloDetallePublicacionPropia"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="Publicacion"
+            android:textSize="24sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/precioDetallePublicacionPropia"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="Precio"
+            android:textSize="24sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tipoPrendaDetallePropia"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingTop="4dp"
+            android:text="tipoPrenda"
+            android:textSize="14sp" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingTop="2dp">
+
+            <TextView
+                android:id="@+id/colorPrendaPropia"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingRight="4dp"
+                android:text="Color:"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/colorPrendaDetallePropia"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="color"
+                android:textSize="14sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingTop="2dp">
+
+            <TextView
+                android:id="@+id/tallaPrendaPropia"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingRight="4dp"
+                android:text="Talla:"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tallaPrendaDetallePropia"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="talla"
+                android:textSize="14sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingTop="2dp">
+
+            <TextView
+                android:id="@+id/estadoPrendaPropia"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingRight="4dp"
+                android:text="Estado:"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/estadoPrendaDetallePropia"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="estado"
+                android:textSize="14sp" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/LLdescripcion"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
-        android:layout_marginEnd="28dp"
-        android:hint="Precio"
-        android:textSize="36sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/fotoDetallePublicacionPropia" />
-
-    <TextView
-        android:id="@+id/tipoPrendaDetallePropia"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="28dp"
-        android:layout_marginTop="2dp"
-        android:text="tipoPrenda"
-        android:textSize="12sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tituloDetallePublicacionPropia" />
-
-    <TextView
-        android:id="@+id/colorPrendaDetallePropia"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="12dp"
-        android:text="color"
-        app:layout_constraintStart_toEndOf="@+id/colorPrendaPropia"
-        app:layout_constraintTop_toBottomOf="@+id/tipoPrendaDetallePropia" />
-
-    <TextView
-        android:id="@+id/descripcionPropia"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="28dp"
-        android:layout_marginTop="36dp"
-        android:text="Descripcion:"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tallaPrendaPropia" />
-
-    <TextView
-        android:id="@+id/descripcionPrendaDetallePropia"
-        android:layout_width="355dp"
-        android:layout_height="141dp"
-        android:text="descripcion"
-        android:textSize="12sp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="8dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toTopOf="@+id/descartarPublicacionDetallePropia"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/descripcionPropia" />
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout3">
 
-    <TextView
-        android:id="@+id/tallaPrendaDetallePropia"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="12dp"
-        android:layout_marginTop="12dp"
-        android:text="talla"
-        app:layout_constraintStart_toEndOf="@+id/tallaPrendaPropia"
-        app:layout_constraintTop_toBottomOf="@+id/colorPrendaDetallePropia" />
+        <TextView
+            android:id="@+id/descripcionPropia"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Descripcion:"
+            android:textStyle="bold" />
 
-    <TextView
-        android:id="@+id/colorPrendaPropia"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="28dp"
-        android:layout_marginTop="12dp"
-        android:text="Color:"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tipoPrendaDetallePropia" />
-
-    <TextView
-        android:id="@+id/tallaPrendaPropia"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="28dp"
-        android:layout_marginTop="12dp"
-        android:text="Talla:"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/colorPrendaPropia" />
+        <TextView
+            android:id="@+id/descripcionPrendaDetallePropia"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="descripcion"
+            android:textSize="14sp" />
+    </LinearLayout>
 
     <Button
         android:id="@+id/guardarPublicacionDetallePropia"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="28dp"
+        android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
         android:text="Editar"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
-    <TextView
-        android:id="@+id/estadoPrendaPropia"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="28dp"
-        android:layout_marginTop="8dp"
-        android:text="Estado:"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tallaPrendaPropia" />
-
-    <TextView
-        android:id="@+id/estadoPrendaDetallePropia"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="12dp"
-        android:layout_marginTop="8dp"
-        android:text="estado"
-        android:textSize="12sp"
-        app:layout_constraintStart_toEndOf="@+id/estadoPrendaPropia"
-        app:layout_constraintTop_toBottomOf="@+id/tallaPrendaDetallePropia" />
-
     <Button
         android:id="@+id/descartarPublicacionDetallePropia"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="28dp"
+        android:layout_marginStart="16dp"
         android:layout_marginBottom="16dp"
         android:text="Marcar Como Vendido"
         app:layout_constraintBottom_toBottomOf="parent"

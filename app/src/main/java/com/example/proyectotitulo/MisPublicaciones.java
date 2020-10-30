@@ -47,7 +47,7 @@ public class MisPublicaciones extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         if (getSupportActionBar() != null) {
-            getSupportActionBar().setTitle("Mis publicaciones");
+            getSupportActionBar().setTitle("Avisos");
         }
 
         usersDb = FirebaseDatabase.getInstance().getReference().child("Users"); //esto obtiene todos los usuarios de la bd
@@ -65,12 +65,6 @@ public class MisPublicaciones extends AppCompatActivity {
         textView1 = (TextView) findViewById(R.id.textView1MisPublicaciones);
         textView2 = (TextView) findViewById(R.id.textView2MisPublicaciones);
         buttonVerAvisos = (Button) findViewById(R.id.agregarPublicBtnMisPublicaciones);
-
-        if(listItems.isEmpty()){
-            textView1.setVisibility(View.INVISIBLE);
-            textView2.setVisibility(View.INVISIBLE);
-            buttonVerAvisos.setVisibility(View.INVISIBLE);
-        }
 
         lvItems.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
