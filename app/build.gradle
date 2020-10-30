@@ -1,9 +1,14 @@
 apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
 apply plugin: 'com.google.gms.google-services'
 
 android {
     compileSdkVersion 30
     buildToolsVersion "30.0.2"
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
     defaultConfig {
         applicationId "com.example.proyectotitulo"
         minSdkVersion 21
@@ -17,6 +22,9 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
+    }
+    aaptOptions {
+        noCompress "tflite"
     }
 }
 
@@ -49,6 +57,11 @@ dependencies {
     implementation 'com.google.android.gms:play-services-places:17.0.0'
     implementation 'com.google.android.gms:play-services-maps:17.0.0'
 
+    api "com.google.firebase:firebase-ml-vision:<latest_version>"
+    implementation "com.google.firebase:firebase-ml-vision-automl:<latest_version>"
+    implementation "com.google.firebase:firebase-ml-model-interpreter:<latest_version>"
+
+    implementation 'com.github.nipunru:nsfw-detector-android:1.0.0'
 
 
     implementation 'com.github.denzcoskun:ImageSlideshow:0.0.7'
@@ -79,4 +92,9 @@ dependencies {
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test:runner:1.2.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+    implementation "androidx.core:core-ktx:+"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+}
+repositories {
+    mavenCentral()
 }

@@ -51,6 +51,7 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.nipunru.nsfwdetector.NSFWDetector;
 import com.squareup.picasso.Picasso;
 
 import java.io.ByteArrayOutputStream;
@@ -176,7 +177,6 @@ private boolean addLocation;
                     intent.setType("image/*");
                     startActivityForResult(intent, 1);
                 }
-                mborrarFotoPerfil.setVisibility(View.VISIBLE);
 
             }
         });
@@ -331,6 +331,14 @@ private boolean addLocation;
                 e.printStackTrace();
             }
 
+
+//            nsfwDetector.isNSFW(bitmap,confidenceThreshold)
+
+
+
+
+
+
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             bitmap.compress(Bitmap.CompressFormat.JPEG, 20, baos);
             byte[] data = baos.toByteArray();
@@ -342,33 +350,49 @@ private boolean addLocation;
                 }
             });
 
-            dialog = new ProgressDialog(Account.this);
-            dialog.setMessage("Loading");
-            dialog.show();
+            // codigo para detectar fotos sexuales.
+            float confidenceThreshold = (float) 0.68; //radio de margen, mientras mas cercano al 1 permite foto mas nsfw.
+            NSFWDetector.INSTANCE.isNSFW(bitmap,confidenceThreshold, (isNSFW, confidence, image) -> {
+                if (isNSFW){
+                    Toast.makeText(this, "FOTO NO PERMITIDA. "+ confidence, Toast.LENGTH_SHORT).show();
+                    Log.d("porno","fotopornoxd");
+                    borrarFotoPerfil= 0;
+                } else {
+                    Toast.makeText(this, "SFW with confidence: " + confidence, Toast.LENGTH_SHORT).show();
+                    dialog = new ProgressDialog(Account.this);
+                    dialog.setMessage("Loading");
+                    dialog.show();
 
-            uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                @Override
-                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                    filepath.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                    uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                         @Override
-                        public void onSuccess(Uri uri) {
-                            Map newImage = new HashMap();
-                            newImage.put("profileImageUrl", uri.toString());
-                            mCustomerDatabase.updateChildren(newImage);
-                            dialog.dismiss();
-                            Toast.makeText(Account.this, "Guardado Con Exito", Toast.LENGTH_SHORT).show();
-                            //finish();
-                            //return;
-                        }
-                    }).addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception exception) {
-                            //finish();
-                            //return;
+                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                            filepath.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                @Override
+                                public void onSuccess(Uri uri) {
+                                    Map newImage = new HashMap();
+                                    newImage.put("profileImageUrl", uri.toString());
+                                    mCustomerDatabase.updateChildren(newImage);
+                                    dialog.dismiss();
+                                    Toast.makeText(Account.this, "Guardado Con Exito", Toast.LENGTH_SHORT).show();
+                                    //finish();
+                                    //return;
+                                }
+                            }).addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception exception) {
+                                    //finish();
+                                    //return;
+                                }
+                            });
                         }
                     });
                 }
+                return kotlin.Unit.INSTANCE;
             });
+
+
+
+
         }
         else { //este if significa que no subio nada, entonces ve si antes era nulo, si lo era lo borra.
             mCustomerDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -376,7 +400,7 @@ private boolean addLocation;
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     if (dataSnapshot.exists()) { //si existe y tiene algo ya guardado dentro lo muestra, para eso lo trae y lo castea al mapa.
                         Map<String, Object> map = (Map<String, Object>) dataSnapshot.getValue();
-                        if (map.get("profileImages") == null) {
+                        if (map.get("profileImages") == null ) {
                             String userId = mAuth.getCurrentUser().getUid();
                             if(dataSnapshot.hasChild("profileImageUrl")) {
                                 if(borrarFotoPerfil==1) {
@@ -395,6 +419,7 @@ private boolean addLocation;
                 }
             });
         }
+
     }
 
     @Override
@@ -402,6 +427,7 @@ private boolean addLocation;
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode==1 && resultCode == Activity.RESULT_OK){
             final Uri imageUri = data.getData();
+            mborrarFotoPerfil.setVisibility(View.VISIBLE);
             resultUri = imageUri;
             mProfileImage.setImageURI(resultUri);
             if(addLocation == true) {

@@ -36,13 +36,14 @@ public class ChatUserActivity extends AppCompatActivity {
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mChatAdapter;
     private RecyclerView.LayoutManager mChatLayoutManager;
+    private ChildEventListener childEvent;
     private DatabaseReference chatsDb, userDb;
     private EditText mSendEditText;
     private int esComprador,chatBloqueado,chatBloqueadoMsj;
     private Button mSendButton;
     private String currentUserID, matchId, chatId;
     private String idVendedor, idComprador, idUserQueBloqueo;
-    DatabaseReference mDatabaseUser, mDatabaseChat,mDatabaseMessages;
+    DatabaseReference mDatabaseUser, mDatabaseChat,mDatabaseMessages,usersDb;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -148,7 +149,7 @@ public class ChatUserActivity extends AppCompatActivity {
                 Map newMessage = new HashMap();
                 newMessage.put("createdByUser", currentUserID);
                 newMessage.put("text", sendMessageText);
-
+                //newMessage.put("hora", ServerValue.TIMESTAMP);
                 newMessageDb.setValue(newMessage);
             }
             mSendEditText.setText(null);
@@ -186,21 +187,64 @@ public class ChatUserActivity extends AppCompatActivity {
 
                     String message = null;
                     String createdByUser = null;
+                    String hora = null;
                     if(dataSnapshot.child("text").getValue()!=null){
                         message = dataSnapshot.child("text").getValue().toString();
                     }
                     if(dataSnapshot.child("createdByUser").getValue()!=null){
                         createdByUser = dataSnapshot.child("createdByUser").getValue().toString();
                     }
-
+                    if(dataSnapshot.child("hora").getValue()!=null){
+                        hora = dataSnapshot.child("hora").getValue().toString();
+                    }
                     if(message!=null && createdByUser!=null){
                         Boolean currentUserBoolean = false;
                         if(createdByUser.equals(currentUserID)){
                             currentUserBoolean = true;
                         }
-                        ChatObject newMessage = new ChatObject(message, currentUserBoolean);
-                        resultsChat.add(newMessage);
-                        mChatAdapter.notifyDataSetChanged();
+                        usersDb = FirebaseDatabase.getInstance().getReference().child("Users");
+                        String finalMessage = message;
+                        Boolean finalCurrentUserBoolean = currentUserBoolean;
+                        String finalCreatedByUser = createdByUser;
+                        String finalHora = hora;
+                        childEvent = usersDb.addChildEventListener(new ChildEventListener() {
+                            @Override
+                            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                                if(dataSnapshot.exists() && dataSnapshot.getKey().equals(finalCreatedByUser)){
+
+                                    if(dataSnapshot.hasChild("nameUser")) {
+                                        final String nombre = dataSnapshot.child("nameUser").getValue().toString();
+                                        ChatObject newMessage = new ChatObject(finalMessage, finalCurrentUserBoolean, finalCreatedByUser, finalHora,nombre);
+                                        resultsChat.add(newMessage);
+                                        mChatAdapter.notifyDataSetChanged();
+                                        Log.d("nombrex", " "+nombre);
+                                        usersDb.removeEventListener(childEvent);
+
+                                    }
+                                }
+                            }
+
+                            @Override
+                            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+                            }
+
+                            @Override
+                            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+                            }
+
+                            @Override
+                            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                            }
+                        });
+
                     }
                 }
 
