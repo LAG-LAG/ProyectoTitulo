@@ -12,8 +12,9 @@
         layout="@layout/toolbar" />
 
     <LinearLayout
-        android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:id="@+id/linearLayout6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         android:orientation="horizontal"
@@ -23,7 +24,7 @@
         app:layout_constraintTop_toBottomOf="@+id/toolbar">
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="105dp"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
@@ -36,7 +37,7 @@
                 android:inputType="textPersonName"
                 android:text="Trato personal"
                 android:textColorHint="#FFFFFF"
-                android:textSize="16dp" />
+                android:textSize="14dp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -45,8 +46,8 @@
 
                 <de.hdodenhof.circleimageview.CircleImageView
                     android:id="@+id/imagenEstrellasTratoVendedor"
-                    android:layout_width="42dp"
-                    android:layout_height="42dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
 
                     android:src="@drawable/star_48dp"></de.hdodenhof.circleimageview.CircleImageView>
 
@@ -64,7 +65,7 @@
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
@@ -77,7 +78,7 @@
                 android:inputType="textPersonName"
                 android:text="Puntualidad"
                 android:textColorHint="#FFFFFF"
-                android:textSize="16dp" />
+                android:textSize="14dp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -86,8 +87,8 @@
 
                 <de.hdodenhof.circleimageview.CircleImageView
                     android:id="@+id/imagenEstrellasPuntualidadVendedor"
-                    android:layout_width="42dp"
-                    android:layout_height="42dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:src="@drawable/star_48dp"></de.hdodenhof.circleimageview.CircleImageView>
 
                 <TextView
@@ -104,7 +105,7 @@
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="145dp"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
@@ -117,7 +118,7 @@
                 android:inputType="textPersonName"
                 android:text="Estado de productos"
                 android:textColorHint="#FFFFFF"
-                android:textSize="16dp" />
+                android:textSize="14dp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -126,8 +127,8 @@
 
                 <de.hdodenhof.circleimageview.CircleImageView
                     android:id="@+id/imagenEstrellasEstadoVendedor"
-                    android:layout_width="42dp"
-                    android:layout_height="42dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:src="@drawable/star_48dp"></de.hdodenhof.circleimageview.CircleImageView>
 
                 <TextView
@@ -146,12 +147,14 @@
 
     <ListView
         android:id="@+id/lvPublicacionesVendidasVendedorPuntuacion"
-        android:layout_width="379dp"
-        android:layout_height="579dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout6" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
