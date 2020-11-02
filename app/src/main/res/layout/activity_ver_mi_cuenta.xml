@@ -16,7 +16,7 @@
         android:layout_width="155dp"
         android:layout_height="146dp"
         android:layout_marginBottom="32dp"
-        android:src="@mipmap/ic_launcher"
+        android:src="@drawable/sinfotodeperfil"
         app:layout_constraintBottom_toTopOf="@+id/TextViewNombre"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

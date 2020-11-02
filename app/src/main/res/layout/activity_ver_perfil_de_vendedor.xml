@@ -27,7 +27,7 @@
             android:layout_width="72dp"
             android:layout_height="72dp"
             android:paddingRight="8dp"
-            android:src="@mipmap/ic_launcher"></de.hdodenhof.circleimageview.CircleImageView>
+            android:src="@drawable/sinfotodeperfil"></de.hdodenhof.circleimageview.CircleImageView>
 
         <LinearLayout
             android:layout_width="200dp"
