@@ -214,7 +214,7 @@ public class ChatUserActivity extends AppCompatActivity {
 
                                     if(dataSnapshot.hasChild("nameUser")) {
                                         final String nombre = dataSnapshot.child("nameUser").getValue().toString();
-                                        ChatObject newMessage = new ChatObject(finalMessage, finalCurrentUserBoolean, finalCreatedByUser, finalHora,nombre);
+                                        misChatObject newMessage = new misChatObject(finalMessage, finalCurrentUserBoolean, finalCreatedByUser, finalHora,nombre);
                                         resultsChat.add(newMessage);
                                         mChatAdapter.notifyDataSetChanged();
                                         usersDb.removeEventListener(childEvent);
@@ -264,8 +264,8 @@ public class ChatUserActivity extends AppCompatActivity {
     }
 
 
-    private ArrayList<ChatObject> resultsChat = new ArrayList<ChatObject>();
-    private List<ChatObject> getDataSetChat() {
+    private ArrayList<misChatObject> resultsChat = new ArrayList<misChatObject>();
+    private List<misChatObject> getDataSetChat() {
         return resultsChat;
     }
 

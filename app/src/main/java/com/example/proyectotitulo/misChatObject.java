@@ -2,21 +2,19 @@
 package com.example.proyectotitulo;
 
 /* Esta clase corresponde a cada objeto de la vista misChats, cada uno de estos elementos se añade al arrayAdapterr de la clase "chats".
-
-
  */
 import com.google.firebase.database.DatabaseReference;
 
-public class ChatObject {
+public class misChatObject {
     private String message,UserId,nombre;
     private long hora;
     private Boolean currentUser;
     private DatabaseReference usersDb;
-    public ChatObject(String message, Boolean currentUser){
+    public misChatObject(String message, Boolean currentUser){
         this.message = message;
         this.currentUser = currentUser;
     }
-    public ChatObject(String message, Boolean currentUser,String UserId, long hora, String nombre){
+    public misChatObject(String message, Boolean currentUser, String UserId, long hora, String nombre){
         this.message = message;
         this.currentUser = currentUser;
         this.UserId = UserId;

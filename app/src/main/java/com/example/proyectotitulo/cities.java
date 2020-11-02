@@ -1,5 +1,6 @@
 package com.example.proyectotitulo;
-
+/* esta clase se utiliza como traer el gson (json de google) de las ciudades y regiones utilizadas en los spinner de estas mismas.
+ */
 import java.util.List;
 
 public class cities {

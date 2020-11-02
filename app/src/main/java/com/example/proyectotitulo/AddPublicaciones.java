@@ -84,8 +84,8 @@ public class AddPublicaciones extends AppCompatActivity {
     private static final int IMAGE_CODE = 1;
     private Button selectBtn;
     RecyclerView recyclerView;
-    List<ModalClass> modalClassList;
-    CustomAdapter customAdapter;
+    List<Imagen> modalClassList;
+    addImagenesAdapter customAdapter;
 
 
 
@@ -190,9 +190,9 @@ public class AddPublicaciones extends AppCompatActivity {
                                 Toast.makeText(this, "FOTO NO PERMITIDA.", Toast.LENGTH_SHORT).show();
                                 puedeSubir = 0;
                             } else {
-                                ModalClass modalClass = new ModalClass(imagename,imageUri);
+                                Imagen modalClass = new Imagen(imagename,imageUri);
                                 modalClassList.add(modalClass);
-                                customAdapter = new CustomAdapter(AddPublicaciones.this, modalClassList);
+                                customAdapter = new addImagenesAdapter(AddPublicaciones.this, modalClassList);
                                 recyclerView.setAdapter(customAdapter);
                             }
                             return kotlin.Unit.INSTANCE;
@@ -223,9 +223,9 @@ public class AddPublicaciones extends AppCompatActivity {
                         Toast.makeText(this, "FOTO NO PERMITIDA. ", Toast.LENGTH_SHORT).show();
                         puedeSubir = 0;
                     } else {
-                        ModalClass modalClass = new ModalClass(imagename,imageUri);
+                        Imagen modalClass = new Imagen(imagename,imageUri);
                         modalClassList.add(modalClass);
-                        customAdapter = new CustomAdapter(AddPublicaciones.this, modalClassList);
+                        customAdapter = new addImagenesAdapter(AddPublicaciones.this, modalClassList);
                         recyclerView.setAdapter(customAdapter);
                     }
                     return kotlin.Unit.INSTANCE;

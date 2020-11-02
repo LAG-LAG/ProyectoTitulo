@@ -29,8 +29,11 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
-public class detallePublicacion extends AppCompatActivity {
+/*
 
+ */
+
+public class detallePublicacion extends AppCompatActivity {
     private TextView mTitulo,mPrecio,mDescripcion,mColor,mTalla,mtipoPrenda,mVendedor,mNombreVendedor,mEstado;
     private FirebaseAuth mAuth;
     private DatabaseReference clothesDb,photosDb,usersDb;
@@ -213,27 +216,6 @@ public class detallePublicacion extends AppCompatActivity {
     private void obtenerDatosPublicacion() {
 
         clothesDb = FirebaseDatabase.getInstance().getReference().child("Users").child(idOwner).child("clothes");
-/*
-        clothesDb.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                mTitulo.setText(dataSnapshot.child("tituloPublicacion").getValue().toString());
-                mPrecio.setText("$"+dataSnapshot.child("ValorPrenda").getValue().toString());
-                mDescripcion.setText(dataSnapshot.child("DescripcionPrenda").getValue().toString());
-                mtipoPrenda.setText(dataSnapshot.child("TipoPrenda").getValue().toString());
-                mColor.setText(dataSnapshot.child("ColorPrenda").getValue().toString());
-                mTalla.setText(dataSnapshot.child("TallaPrenda").getValue().toString());
-                mEstado.setText(dataSnapshot.child("EstadoPrenda").getValue().toString());
-                guardarUrlPhotos();
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-*/
-
         clothesDb = FirebaseDatabase.getInstance().getReference().child("Users").child(idOwner).child("clothes");
         childEventListener =clothesDb.addChildEventListener(new ChildEventListener() {
             @Override
