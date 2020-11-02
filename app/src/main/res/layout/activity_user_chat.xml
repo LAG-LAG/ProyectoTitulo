@@ -36,14 +36,14 @@ tools:context=".ChatUserActivity">
         android:layout_weight="0.8"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:hint="message..."
+        android:hint="mensaje..."
         android:id="@+id/message"
         />
     <Button
         android:layout_weight="0.2"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Send"
+        android:text="Enviar"
         android:id="@+id/send"/>
 </LinearLayout>
 

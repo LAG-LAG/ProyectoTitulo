@@ -203,10 +203,10 @@ public class ChatUserActivity extends AppCompatActivity {
                             currentUserBoolean = true;
                         }
                         usersDb = FirebaseDatabase.getInstance().getReference().child("Users");
-                        String finalMessage = message;
-                        Boolean finalCurrentUserBoolean = currentUserBoolean;
-                        String finalCreatedByUser = createdByUser;
-                        long finalHora = hora;
+                        final String finalMessage = message;
+                        final Boolean finalCurrentUserBoolean = currentUserBoolean;
+                        final String finalCreatedByUser = createdByUser;
+                        final long finalHora = hora;
                         childEvent = usersDb.addChildEventListener(new ChildEventListener() {
                             @Override
                             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {

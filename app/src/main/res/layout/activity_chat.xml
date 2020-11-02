@@ -13,12 +13,13 @@
 
     <TextView
         android:id="@+id/textView1Misfavoritos"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="64dp"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="32dp"
+        android:gravity="center"
         android:text="No tienes chats activos"
         android:textSize="24sp"
         app:layout_constraintBottom_toTopOf="@+id/textView2Misfavoritos"
@@ -29,14 +30,14 @@
 
     <TextView
         android:id="@+id/textView2Misfavoritos"
-        android:layout_width="242dp"
-        android:layout_height="72dp"
-        android:layout_marginStart="24dp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
         android:layout_marginTop="32dp"
-        android:layout_marginEnd="24dp"
+        android:layout_marginEnd="32dp"
+        android:gravity="center"
         android:text="Cuando inicies una conversacion con otro usuario aparecera aquí!"
         android:textSize="18sp"
-        android:gravity="center"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView1Misfavoritos" />
