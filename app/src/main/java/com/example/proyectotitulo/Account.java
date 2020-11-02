@@ -204,7 +204,7 @@ private boolean addLocation;
                 final String regionAnterior;
                 //txt_region.setText(nombreRegion);
 
-                String jsonFileString = Utils.getJsonFromAssets(getApplicationContext(), "cities.json");
+                String jsonFileString = jsonLector.getJsonFromAssets(getApplicationContext(), "cities.json");
                 Log.i("data", jsonFileString);
 
                 Gson gson = new Gson();
@@ -442,7 +442,7 @@ private boolean addLocation;
     }
 
     private void llenarComboBoxRegiones() {
-        String jsonFileString = Utils.getJsonFromAssets(getApplicationContext(), "cities.json");
+        String jsonFileString = jsonLector.getJsonFromAssets(getApplicationContext(), "cities.json");
         Log.i("data", jsonFileString);
         int posicionRegion = 0;
         Gson gson = new Gson();
@@ -503,7 +503,7 @@ private boolean addLocation;
                         ArrayList<String> regiones = new ArrayList<>();
                         regiones.add(regionAnterior);
 
-                        String jsonFileString = Utils.getJsonFromAssets(getApplicationContext(), "cities.json");
+                        String jsonFileString = jsonLector.getJsonFromAssets(getApplicationContext(), "cities.json");
                         Log.i("data", jsonFileString);
                         int posicionRegion = 0;
                         Gson gson = new Gson();

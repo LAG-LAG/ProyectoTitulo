@@ -266,7 +266,7 @@ public class Filtros extends AppCompatActivity {
                 final String regionAnterior;
                 //txt_region.setText(nombreRegion);
 
-                String jsonFileString = Utils.getJsonFromAssets(getApplicationContext(), "cities.json");
+                String jsonFileString = jsonLector.getJsonFromAssets(getApplicationContext(), "cities.json");
                 Log.i("data", jsonFileString);
 
                 Gson gson = new Gson();
@@ -521,7 +521,7 @@ public class Filtros extends AppCompatActivity {
     }
 
     private void llenarComboBoxRegiones() {
-        String jsonFileString = Utils.getJsonFromAssets(getApplicationContext(), "cities.json");
+        String jsonFileString = jsonLector.getJsonFromAssets(getApplicationContext(), "cities.json");
         Log.i("data", jsonFileString);
         int posicionRegion = 0;
         Log.d("weaweawea",""+posicionRegion);
@@ -550,7 +550,7 @@ public class Filtros extends AppCompatActivity {
         if (!regionBusqueda.equals("")) {
             ArrayList<String> regiones = new ArrayList<>();
             regiones.add(regionBusqueda);
-            String jsonFileString = Utils.getJsonFromAssets(getApplicationContext(), "cities.json");
+            String jsonFileString = jsonLector.getJsonFromAssets(getApplicationContext(), "cities.json");
             Log.i("data", jsonFileString);
             int posicionRegion = 0;
             Gson gson = new Gson();
@@ -574,7 +574,7 @@ public class Filtros extends AppCompatActivity {
         else{
             ArrayList<String> regiones = new ArrayList<>();
             //regiones.add(regionBusqueda);
-            String jsonFileString = Utils.getJsonFromAssets(getApplicationContext(), "cities.json");
+            String jsonFileString = jsonLector.getJsonFromAssets(getApplicationContext(), "cities.json");
             Log.i("data", jsonFileString);
             Gson gson = new Gson();
             Type listUserType = new TypeToken<List<cities>>() {

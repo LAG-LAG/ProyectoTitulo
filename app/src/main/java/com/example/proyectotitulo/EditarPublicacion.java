@@ -1,5 +1,11 @@
 package com.example.proyectotitulo;
 
+/*
+Esta clase se encarga de la vista de editar publicacion, correspondiente a activity_editar_publicacion.xml
+entrada: recibe el id de la prenda y del dueño de la prenda y obtiene estos elementos para rellenar la vista de la prenda a editar mediante obtenerInformacionPublicacion.
+salida: revisa si la publicacion cumple y la sube a la base de datos. utiliza la inteligencia artificial para ver si posees validas.
+ */
+
 import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
@@ -63,11 +69,7 @@ public class EditarPublicacion extends AppCompatActivity {
     private Uri resultUri;
     private ArrayList<String> arrayUriString = new ArrayList<>();
     private ArrayList<String> arrayPhotoId = new ArrayList<>();
-
     private ArrayList<Uri> arrayResultUri = new ArrayList<>();
-
-
-
     private Uri resultUri2;
     private Uri resultUri3;
     private Uri resultUri4;

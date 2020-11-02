@@ -1,5 +1,9 @@
 package com.example.proyectotitulo;
-
+/*
+Esta clase se encarga de mostrar los datos de la publicacion en la vista activity_mi_publicacion_detalle.xml.
+entrada: recibe el id de la prenda y del usuario que publico la prenda y obtiene los datos de esa prenda.
+salida: permite editar la publicacion o eliminarla.
+ */
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;

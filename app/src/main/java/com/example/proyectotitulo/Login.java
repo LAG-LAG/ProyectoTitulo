@@ -1,5 +1,9 @@
 package com.example.proyectotitulo;
-
+/*
+esta clase corresponde al activity_login. es la primera vista que se ve al ingresar a la app si no se esta logueado.
+entrada: revisa si esta logueado, si lo esta se salta esta vista y va a pagina principal.
+salida: al presionar en registrar, se puede crear una cuenta. al presionar en los logos de facebook o google, se registra o se loguea si es necesario mediante esos sistemas.
+ */
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -85,17 +89,24 @@ public class Login extends AppCompatActivity {
         mIngresarBtn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
-                final String email = mEmail.getText().toString();
-                final String password = mPassword.getText().toString();
-                mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(Login.this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if(!task.isSuccessful()){
-                            Toast.makeText(Login.this, "Error en el ingreso", Toast.LENGTH_SHORT).show();
-                        }
+                if (mEmail.getText().toString().trim().length() != 0 && mPassword.getText().toString().trim().length() != 0) {
 
-                    }
-                });
+                    final String email = mEmail.getText().toString();
+                    final String password = mPassword.getText().toString();
+                    mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(Login.this, new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            if (!task.isSuccessful()) {
+                                Toast.makeText(Login.this, "Error en el ingreso", Toast.LENGTH_SHORT).show();
+                            }
+
+                        }
+                    });
+                }
+                else{
+                    Toast.makeText(Login.this, "Debe rellenar los campos de email y contraseña.", Toast.LENGTH_SHORT).show();
+
+                }
             }
         });
 

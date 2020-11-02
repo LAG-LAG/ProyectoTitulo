@@ -1,11 +1,13 @@
 package com.example.proyectotitulo;
-
+/*
+esta clase se utiliza para obtener los nombres de las regiones y comunas provenientes del json de regiones y comunas.
+ */
 import android.content.Context;
 
 import java.io.IOException;
 import java.io.InputStream;
 
-public class Utils {
+public class jsonLector {
 
     static String getJsonFromAssets(Context context, String fileName) {
         String jsonString;

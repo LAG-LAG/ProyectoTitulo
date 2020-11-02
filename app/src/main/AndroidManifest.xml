@@ -28,7 +28,7 @@
 
 
         <activity android:name=".MisPublicacionesVendidas" />
-        <activity android:name=".file" />
+        <activity android:name=".imagenSubidaFile" />
         <activity android:name=".MisFavoritosDetalle" />
         <activity
             android:name=".EditarPublicacion"
