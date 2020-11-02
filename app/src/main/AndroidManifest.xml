@@ -47,11 +47,11 @@
             android:parentActivityName=".ChatUserActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Chat"
+            android:name=".misChats"
             android:screenOrientation="portrait" />
         <activity
             android:name=".ChatUserActivity"
-            android:parentActivityName=".Chat"
+            android:parentActivityName=".misChats"
             android:screenOrientation="portrait" />
         <activity
             android:name=".detallePublicacion"

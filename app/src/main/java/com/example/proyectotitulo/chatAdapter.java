@@ -1,4 +1,9 @@
+
 package com.example.proyectotitulo;
+
+/* Esta clase corresponde a la vista item_chat_lista. se encarga de obtener los items de la lista de chats (provenientes de la clase Chat) y los añade en un recycler view con sus correspondientes atributos.
+
+ */
 
 import android.content.Context;
 import android.content.DialogInterface;
@@ -28,10 +33,10 @@ import java.util.ArrayList;
 
 public class chatAdapter extends BaseAdapter{
     private Context context;
-    private ArrayList<chats> listItems;
+    private ArrayList<Chat> listItems;
     private DatabaseReference chatDb;
 
-    public chatAdapter(Context context, ArrayList<chats> listItems) {
+    public chatAdapter(Context context, ArrayList<Chat> listItems) {
         this.context = context;
         this.listItems = listItems;
     }
@@ -61,7 +66,7 @@ public class chatAdapter extends BaseAdapter{
             view = inflater.inflate(R.layout.item_chat_lista, null);
         }
 
-        final chats item = (chats) getItem(position);
+        final Chat item = (Chat) getItem(position);
         Log.d("positionVector","wea :: "+position);
         //convertView = LayoutInflater.from(context).inflate(R.layout.item_publicacion, null);
         ImageView imgPublicacion = (ImageView) view.findViewById(R.id.imgPublicacionChat);
@@ -107,7 +112,7 @@ public class chatAdapter extends BaseAdapter{
                                             else{
                                                 FirebaseDatabase.getInstance().getReference().child("chat").child(item.getIdClothes()).child("idUserComprador").setValue("");
                                             }
-                                            Intent intent = new Intent(context,Chat.class);
+                                            Intent intent = new Intent(context, misChats.class);
                                             context.startActivity(intent);
                                         }
                                     }

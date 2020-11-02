@@ -1,22 +1,17 @@
+
 package com.example.proyectotitulo;
 
-import android.util.Log;
+/* Esta clase corresponde a cada objeto de la vista misChats, cada uno de estos elementos se añade al arrayAdapterr de la clase "chats".
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 
-import com.google.firebase.database.ChildEventListener;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
+ */
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 
 public class ChatObject {
     private String message,UserId,nombre;
     private long hora;
     private Boolean currentUser;
     private DatabaseReference usersDb;
-    private ChildEventListener childEvent;
     public ChatObject(String message, Boolean currentUser){
         this.message = message;
         this.currentUser = currentUser;
@@ -27,46 +22,8 @@ public class ChatObject {
         this.UserId = UserId;
         this.hora = hora;
         this.nombre = nombre;
-        //getNombreUser();
     }
 
-    private void getNombreUser() {
-        usersDb = FirebaseDatabase.getInstance().getReference().child("Users");
-        childEvent = usersDb.addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                if(dataSnapshot.exists() && dataSnapshot.getKey().equals(UserId)){
-
-                    if(dataSnapshot.hasChild("nameUser")) {
-                        nombre = dataSnapshot.child("nameUser").getValue().toString();
-                        Log.d("nombrex", " "+nombre);
-                        usersDb.removeEventListener(childEvent);
-
-                    }
-                }
-            }
-
-            @Override
-            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-            }
-
-            @Override
-            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-    }
 
     public String getUserId() {
         return UserId;

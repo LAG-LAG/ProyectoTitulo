@@ -1,5 +1,9 @@
 package com.example.proyectotitulo;
 
+/*Clase correspondiente a la activity_add_publicaciones.xml la cual corresponde a la vista para crear publicaciones del usuario..
+Entrada: Esta clase se encarga de traer el UID del usuario actualmente logueado para luego guardar publicacion enlazada a ese usuario.
+Salida: al presionar guardar esta guarda la informacion y la verifica que este correcta, guardandola en la base de datos. Esta clase utiliza una funcion de inteligencia artificial para verificar que una foto no sea sexual.
+*/
 import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -97,25 +101,12 @@ public class AddPublicaciones extends AppCompatActivity {
         mEstadoPrendaSpinner = (Spinner) findViewById(R.id.estadoPrendaSpinner);
         mDescripcion = (EditText) findViewById(R.id.editTextDescripcion);
         mAplicar = (Button) findViewById(R.id.publicarBtn);
-
-/*
-        mBorrarPublicacion1.setVisibility(View.INVISIBLE);
-        mBorrarPublicacion2.setVisibility(View.INVISIBLE);
-        mBorrarPublicacion3.setVisibility(View.INVISIBLE);
-        mBorrarPublicacion4.setVisibility(View.INVISIBLE);
-        mBorrarPublicacion5.setVisibility(View.INVISIBLE);
-        mBorrarPublicacion6.setVisibility(View.INVISIBLE);
-*/
         selectBtn = findViewById(R.id.button2);
         recyclerView = findViewById(R.id.recyclerViewId);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-
         mStorageRef = FirebaseStorage.getInstance().getReference();
-
         modalClassList = new ArrayList<>();
-
-
 
         //if x ispressed then resulturi correspondiente = null y se
         mAuth = FirebaseAuth.getInstance();
@@ -130,13 +121,11 @@ public class AddPublicaciones extends AppCompatActivity {
         selectBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 Intent intent = new Intent();
                 intent.setType("image/*");
                 intent.setAction(Intent.ACTION_GET_CONTENT);
                 intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
                 startActivityForResult(intent, IMAGE_CODE);
-
 
             }
         });
@@ -150,9 +139,7 @@ public class AddPublicaciones extends AppCompatActivity {
                 else{
                     Toast.makeText(AddPublicaciones.this, "Debe subir al menos una foto", Toast.LENGTH_SHORT).show();
                 }
-                //Intent intentAccount = new Intent(AddPublicaciones.this, VerMiCuenta.class);
-                //startActivity(intentAccount);
-                //finish();
+
             }
         });
 
@@ -200,12 +187,9 @@ public class AddPublicaciones extends AppCompatActivity {
                         float confidenceThreshold = (float) 0.68; //radio de margen, mientras mas cercano al 1 permite foto mas nsfw.
                         NSFWDetector.INSTANCE.isNSFW(bitmap, confidenceThreshold, (isNSFW, confidence, image) -> {
                             if (isNSFW) {
-                                Toast.makeText(this, "FOTO NO PERMITIDA. " + confidence, Toast.LENGTH_SHORT).show();
+                                Toast.makeText(this, "FOTO NO PERMITIDA.", Toast.LENGTH_SHORT).show();
                                 puedeSubir = 0;
-                                Log.d("porno", "fotopornoxd");
                             } else {
-                                Toast.makeText(this, "SFW with confidence: " + confidence, Toast.LENGTH_SHORT).show();
-                                Log.d("porno", "fotono pornoxd");
                                 ModalClass modalClass = new ModalClass(imagename,imageUri);
                                 modalClassList.add(modalClass);
                                 customAdapter = new CustomAdapter(AddPublicaciones.this, modalClassList);
@@ -217,7 +201,7 @@ public class AddPublicaciones extends AppCompatActivity {
 
 
             } else if (data.getData() != null) {
-                Toast.makeText(this, "single", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(this, "single", Toast.LENGTH_SHORT).show();
                 Uri imageUri = data.getData();
                 String imagename = getFileName(imageUri);
 
@@ -236,12 +220,9 @@ public class AddPublicaciones extends AppCompatActivity {
                 float confidenceThreshold = (float) 0.68; //radio de margen, mientras mas cercano al 1 permite foto mas nsfw.
                 NSFWDetector.INSTANCE.isNSFW(bitmap, confidenceThreshold, (isNSFW, confidence, image) -> {
                     if (isNSFW) {
-                        Toast.makeText(this, "FOTO NO PERMITIDA. " + confidence, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(this, "FOTO NO PERMITIDA. ", Toast.LENGTH_SHORT).show();
                         puedeSubir = 0;
-                        Log.d("porno", "fotopornoxd");
                     } else {
-                        Toast.makeText(this, "SFW with confidence: " + confidence, Toast.LENGTH_SHORT).show();
-                        Log.d("porno", "fotono pornoxd");
                         ModalClass modalClass = new ModalClass(imagename,imageUri);
                         modalClassList.add(modalClass);
                         customAdapter = new CustomAdapter(AddPublicaciones.this, modalClassList);
@@ -336,7 +317,7 @@ public class AddPublicaciones extends AppCompatActivity {
 
                 mClothesDatabase = FirebaseDatabase.getInstance().getReference().child("Users").child(userId).child("clothes").child(id).child("clothesPhotos");
                 dialog = new ProgressDialog(AddPublicaciones.this);
-                dialog.setMessage("Loading");
+                dialog.setMessage("Cargando");
                 dialog.show();
 
 
@@ -350,22 +331,14 @@ public class AddPublicaciones extends AppCompatActivity {
                                 Map newImage = new HashMap();
                                 newImage.put("photoId" + idPrenda, uri.toString());
                                 mClothesDatabase.updateChildren(newImage);
-
-                                //finish();
-                                //return;
                             }
                         }).addOnFailureListener(new OnFailureListener() {
                             @Override
                             public void onFailure(@NonNull Exception exception) {
-                                //finish();
-                                //return;
                             }
                         });
-
-                        Toast.makeText(AddPublicaciones.this, "Done", Toast.LENGTH_SHORT).show();
-
+                        Toast.makeText(AddPublicaciones.this, "Terminado.", Toast.LENGTH_SHORT).show();
                         if (tamanoLogico == posicion) {
-                            Log.d("verveces", "done");
                             Intent intentAccount = new Intent(AddPublicaciones.this, PaginaPrincipal.class);
                             startActivity(intentAccount);
                             finish();
@@ -374,61 +347,16 @@ public class AddPublicaciones extends AppCompatActivity {
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(AddPublicaciones.this, "Fail" + e.getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(AddPublicaciones.this, "Error" + e.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 });
 
             }
-        /*
-        guardarImagen(resultUri,userId,"1",id);
-        guardarImagen(resultUri2,userId,"2",id);
-        guardarImagen(resultUri3,userId,"3",id);
-        guardarImagen(resultUri4,userId,"4",id);
-        guardarImagen(resultUri5,userId,"5",id);
-        guardarImagen(resultUri6,userId,"6",id);
-*/
 
-            Toast.makeText(AddPublicaciones.this, "Foto no permitida." , Toast.LENGTH_SHORT).show();
+
 
     }
-/*
-    private int tieneFotoIndebida() {
-        for (int i = 0; i < modalClassList.size(); i++) {
-            Uri imageUri = modalClassList.get(i).getImage();
-            Bitmap bitmap = null;
-            try {
-                bitmap = MediaStore.Images.Media.getBitmap(getApplication().getContentResolver(), imageUri);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
 
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 20, baos);
-
-
-            float confidenceThreshold = (float) 0.68; //radio de margen, mientras mas cercano al 1 permite foto mas nsfw.
-            NSFWDetector.INSTANCE.isNSFW(bitmap, confidenceThreshold, (isNSFW, confidence, image) -> {
-                if (isNSFW) {
-                    Toast.makeText(this, "FOTO NO PERMITIDA. " + confidence, Toast.LENGTH_SHORT).show();
-                    puedeSubir = 0;
-                    Log.d("porno", "fotopornoxd");
-                } else {
-                    Toast.makeText(this, "SFW with confidence: " + confidence, Toast.LENGTH_SHORT).show();
-                    Log.d("porno", "fotono pornoxd");
-
-                }
-                return kotlin.Unit.INSTANCE;
-            });
-        }
-        if(puedeSubir==0){
-            Log.d("porno", "NOOOO se puede subir: ");
-            return 0;
-        }
-        Log.d("porno", "se puede subir: ");
-        return 1;
-    }
-
-*/
     private void guardarImagen(Uri resultUri, String userId, final String idPrenda,String id) {
         if (resultUri != null) {
             final StorageReference filepath = FirebaseStorage.getInstance().getReference().child("prendasImages").child(userId).child(id).child(idPrenda);
@@ -495,7 +423,7 @@ public class AddPublicaciones extends AppCompatActivity {
                 break;
 
             case R.id.chatBtn:
-                Intent intentChat = new Intent(AddPublicaciones.this, Chat.class);
+                Intent intentChat = new Intent(AddPublicaciones.this, misChats.class);
                 startActivity(intentChat);
                 finish();
                 break;

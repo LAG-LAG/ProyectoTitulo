@@ -239,7 +239,7 @@ public class VerMiCuenta extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()){
             case R.id.chatBtn:
-                Intent intentChat = new Intent(VerMiCuenta.this, Chat.class);
+                Intent intentChat = new Intent(VerMiCuenta.this, misChats.class);
                 startActivity(intentChat);
                 finish();
                 break;

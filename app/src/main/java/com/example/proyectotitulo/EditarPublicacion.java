@@ -935,7 +935,7 @@ public class EditarPublicacion extends AppCompatActivity {
                 break;
 
             case R.id.chatBtn:
-                Intent intentChat = new Intent(EditarPublicacion.this, Chat.class);
+                Intent intentChat = new Intent(EditarPublicacion.this, misChats.class);
                 startActivity(intentChat);
                 finish();
                 break;

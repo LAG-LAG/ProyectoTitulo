@@ -1,5 +1,11 @@
 package com.example.proyectotitulo;
 
+/*Clase correspondiente a la activity_account.xml la cual corresponde a la vista de edicion de los datos del usuario..
+Entrada: Esta clase se encarga de traer los elementos a la funcion getUserInfo.  entre la informacion que trae se encuentra: ubicacion, ciudad, region, nombre de usuario y foto de perfil.
+Salida: al presionar guardar esta guarda la informacion y la verifica que este correcta, guardandola en la base de datos. Esta clase utiliza una funcion de inteligencia artificial para verificar que una foto no sea sexual.
+*/
+
+
 import android.Manifest;
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -186,10 +192,6 @@ private boolean addLocation;
             @Override
             public void onClick(View view) {
                 saveUserInfo();
-                //Toast.makeText(Account.this, "Perfil Editado.", Toast.LENGTH_SHORT).show();
-                //Intent intentPublicaciones = new Intent(Account.this, VerMiCuenta.class);
-                //startActivity(intentPublicaciones);
-                //finish();
             }
 
         });
@@ -354,13 +356,12 @@ private boolean addLocation;
             float confidenceThreshold = (float) 0.68; //radio de margen, mientras mas cercano al 1 permite foto mas nsfw.
             NSFWDetector.INSTANCE.isNSFW(bitmap,confidenceThreshold, (isNSFW, confidence, image) -> {
                 if (isNSFW){
-                    Toast.makeText(this, "FOTO NO PERMITIDA. "+ confidence, Toast.LENGTH_SHORT).show();
-                    Log.d("porno","fotopornoxd");
+                    Toast.makeText(this, "FOTO NO PERMITIDA.", Toast.LENGTH_SHORT).show();
                     borrarFotoPerfil= 0;
                 } else {
-                    Toast.makeText(this, "SFW with confidence: " + confidence, Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(this, "SFW with confidence: " + confidence, Toast.LENGTH_SHORT).show();
                     dialog = new ProgressDialog(Account.this);
-                    dialog.setMessage("Loading");
+                    dialog.setMessage("Cargando...");
                     dialog.show();
 
                     uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {

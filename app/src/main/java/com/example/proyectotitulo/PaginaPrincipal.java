@@ -1098,7 +1098,7 @@ public class PaginaPrincipal extends AppCompatActivity {
                 break;
 
             case R.id.chatBtn:
-                Intent intentChat = new Intent(PaginaPrincipal.this, Chat.class);
+                Intent intentChat = new Intent(PaginaPrincipal.this, misChats.class);
                 startActivity(intentChat);
                 if(childEventListenerClothes!=null){
                     clothesDb.removeEventListener(childEventListenerClothes);
