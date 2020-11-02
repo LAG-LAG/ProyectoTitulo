@@ -161,12 +161,12 @@ private boolean addLocation;
                     final Uri imageUri = null;
                     resultUri = imageUri;
                     borrarFotoPerfil=1;
-                    mProfileImage.setImageResource(R.drawable.ic_launcher_foreground);
+                    mProfileImage.setImageResource(R.drawable.sinfotodeperfil);
                     mborrarFotoPerfil.setVisibility(View.INVISIBLE);
                 }
                 if (existeFotoPerfil == 1) {
                     borrarFotoPerfil=1;
-                    mProfileImage.setImageResource(R.drawable.ic_launcher_foreground);
+                    mProfileImage.setImageResource(R.drawable.sinfotodeperfil);
                     mborrarFotoPerfil.setVisibility(View.INVISIBLE);
                 }
             }

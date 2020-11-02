@@ -156,11 +156,11 @@ public class EditarPublicacion extends AppCompatActivity {
                     // final Uri imageUri = Uri.parse("android.resource://ProyectoTitulo/drawable/image_name");
                     // resultUri = imageUri;
 
-                    mPublicacionImage1.setImageResource(R.drawable.ic_launcher_foreground);
+                    mPublicacionImage1.setImageResource(R.drawable.sinprenda);
                     mBorrarPublicacion1.setVisibility(View.INVISIBLE);
                 }
                 if(existoFoto1==1){
-                    mPublicacionImage1.setImageResource(R.drawable.ic_launcher_foreground);
+                    mPublicacionImage1.setImageResource(R.drawable.sinprenda);
                     mBorrarPublicacion1.setVisibility(View.INVISIBLE);
                     borrar1 = 1;
                     cantidadFotos--;
@@ -176,11 +176,11 @@ public class EditarPublicacion extends AppCompatActivity {
 
                     // final Uri imageUri = Uri.parse("android.resource://ProyectoTitulo/drawable/image_name");
                     // resultUri2 = imageUri;
-                    mPublicacionImage2.setImageResource(R.drawable.ic_launcher_foreground);
+                    mPublicacionImage2.setImageResource(R.drawable.sinprenda);
                     mBorrarPublicacion2.setVisibility(View.INVISIBLE);
                 }
                 if(existoFoto2==1){
-                    mPublicacionImage2.setImageResource(R.drawable.ic_launcher_foreground);
+                    mPublicacionImage2.setImageResource(R.drawable.sinprenda);
                     mBorrarPublicacion2.setVisibility(View.INVISIBLE);
                     borrar2 = 1;
                     Log.d("borrarFoto","borarr12");
@@ -197,11 +197,11 @@ public class EditarPublicacion extends AppCompatActivity {
                     final Uri imageUri = null;
                     // final Uri imageUri = Uri.parse("android.resource://ProyectoTitulo/drawable/image_name");
                     //resultUri3 = imageUri;
-                    mPublicacionImage3.setImageResource(R.drawable.ic_launcher_foreground);
+                    mPublicacionImage3.setImageResource(R.drawable.sinprenda);
                     mBorrarPublicacion3.setVisibility(View.INVISIBLE);
                 }
                 if(existoFoto3==1){
-                    mPublicacionImage3.setImageResource(R.drawable.ic_launcher_foreground);
+                    mPublicacionImage3.setImageResource(R.drawable.sinprenda);
                     mBorrarPublicacion3.setVisibility(View.INVISIBLE);
                     borrar3 = 1;
                     cantidadFotos--;
@@ -218,11 +218,11 @@ public class EditarPublicacion extends AppCompatActivity {
                     Log.d("probanding","se borro foto 4 "+borrar4);
                     // final Uri imageUri = Uri.parse("android.resource://ProyectoTitulo/drawable/image_name");
                     //resultUri4 = imageUri;
-                    mPublicacionImage4.setImageResource(R.drawable.ic_launcher_foreground);
+                    mPublicacionImage4.setImageResource(R.drawable.sinprenda);
                     mBorrarPublicacion4.setVisibility(View.INVISIBLE);
                 }
                 if(existoFoto4==1){
-                    mPublicacionImage4.setImageResource(R.drawable.ic_launcher_foreground);
+                    mPublicacionImage4.setImageResource(R.drawable.sinprenda);
                     mBorrarPublicacion4.setVisibility(View.INVISIBLE);
                     borrar4 = 1;
                     cantidadFotos--;
@@ -241,11 +241,11 @@ public class EditarPublicacion extends AppCompatActivity {
                     final Uri imageUri = null;
                     // final Uri imageUri = Uri.parse("android.resource://ProyectoTitulo/drawable/image_name");
                     //resultUri5 = imageUri;
-                    mPublicacionImage5.setImageResource(R.drawable.ic_launcher_foreground);
+                    mPublicacionImage5.setImageResource(R.drawable.sinprenda);
                     mBorrarPublicacion5.setVisibility(View.INVISIBLE);
                 }
                 if(existoFoto5==1){
-                    mPublicacionImage5.setImageResource(R.drawable.ic_launcher_foreground);
+                    mPublicacionImage5.setImageResource(R.drawable.sinprenda);
                     mBorrarPublicacion5.setVisibility(View.INVISIBLE);
                     borrar5 = 1;
                     cantidadFotos--;
@@ -262,11 +262,11 @@ public class EditarPublicacion extends AppCompatActivity {
                     final Uri imageUri = null;
                     // final Uri imageUri = Uri.parse("android.resource://ProyectoTitulo/drawable/image_name");
                     //resultUri6 = imageUri;
-                    mPublicacionImage6.setImageResource(R.drawable.ic_launcher_foreground);
+                    mPublicacionImage6.setImageResource(R.drawable.sinprenda);
                     mBorrarPublicacion6.setVisibility(View.INVISIBLE);
                 }
                 if(existoFoto6==1){
-                    mPublicacionImage6.setImageResource(R.drawable.ic_launcher_foreground);
+                    mPublicacionImage6.setImageResource(R.drawable.sinprenda);
                     mBorrarPublicacion6.setVisibility(View.INVISIBLE);
                     borrar6 = 1;
                     cantidadFotos--;
