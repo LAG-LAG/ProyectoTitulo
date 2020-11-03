@@ -12,8 +12,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
-public class UserChatAdapter extends RecyclerView.Adapter<ChatViewHolders>{
-    private List<ChatObject> chatList;
+public class UserChatAdapter extends RecyclerView.Adapter<chatMensaje>{
+    private List<misChatObject> chatList;
     private Context context;
 
 /*
@@ -22,7 +22,7 @@ public class UserChatAdapter extends RecyclerView.Adapter<ChatViewHolders>{
         this.context = context;
     }
 */
-    public UserChatAdapter(List<ChatObject> dataSetChat, ChatUserActivity context) {
+    public UserChatAdapter(List<misChatObject> dataSetChat, ChatUserActivity context) {
         this.chatList = dataSetChat;
         this.context = context;
     }
@@ -30,18 +30,18 @@ public class UserChatAdapter extends RecyclerView.Adapter<ChatViewHolders>{
 
 
     @Override
-    public ChatViewHolders onCreateViewHolder(ViewGroup parent, int viewType) {
+    public chatMensaje onCreateViewHolder(ViewGroup parent, int viewType) {
 
         View layoutView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_chat, null, false);
         RecyclerView.LayoutParams lp = new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         layoutView.setLayoutParams(lp);
-        ChatViewHolders rcv = new ChatViewHolders(layoutView);
+        chatMensaje rcv = new chatMensaje(layoutView);
 
         return rcv;
     }
 
     @Override
-    public void onBindViewHolder(ChatViewHolders holder, int position) {
+    public void onBindViewHolder(chatMensaje holder, int position) {
         holder.mMessage.setText(chatList.get(position).getMessage());
         holder.mNombre.setText(chatList.get(position).getNombre());
         holder.mHoraMensaje.setText((DateFormat.format("dd-MM-yyyy (HH:mm:ss)",chatList.get(position).getHora())));

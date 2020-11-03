@@ -5,9 +5,10 @@
     android:orientation="horizontal">
 
     <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/imgPublicacion"
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:id="@+id/imgPublicacion"/>
+        android:src="@drawable/sinprenda" />
 
     <RelativeLayout
         android:layout_width="match_parent"

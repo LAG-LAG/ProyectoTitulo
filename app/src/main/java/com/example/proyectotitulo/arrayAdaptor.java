@@ -1,6 +1,9 @@
 package com.example.proyectotitulo;
 
-
+/*Esta clase corresponde a un adaptador de arreglos de tipo Card, los usados en la clase PaginaPrincipal.
+esta clase se encarga de recibir los elementos de la clase PaginaPrincipal (una List de Cards, la cual contiene los atributos) y
+asignarlos a un arrayadapter para ser ordenados como tarjetas en la vista principal.
+ */
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,11 +21,6 @@ import java.util.List;
 public class arrayAdaptor extends ArrayAdapter<cards>{
 
     Context context;
-    /*
-        public arrayAdaptor(Context context, int resourceId, List<cards> items){
-            super(context,resourceId,items);
-        }
-    */
     public arrayAdaptor(@NonNull android.content.Context context, int resourceId, @NonNull List<cards> items, Context context1) {
         super(context, resourceId, items);
         this.context = context1;
@@ -44,19 +42,14 @@ public class arrayAdaptor extends ArrayAdapter<cards>{
         precio.setText("$"+card_item.getPrecio());
         if(card_item.getProfileImageUrl()!="default"||card_item.getProfileImageUrl()!=""){
             Picasso.get().setLoggingEnabled(true);
-            //Glide.with(getApplication()).load(card_item.getProfileImageUrl()).into(image);
             Picasso.get().load(card_item.getProfileImageUrl()).into(image);
         }
         else {
             Picasso.get().setLoggingEnabled(true);
-            //Glide.with(getApplication()).load(card_item.getProfileImageUrl()).into(image);
             Picasso.get().load(R.mipmap.ic_launcher).into(image);
         }
 
-        // Picasso.get().setLoggingEnabled(true);
-        //Glide.with(getApplication()).load(card_item.getProfileImageUrl()).into(image);
-        //Picasso.get().load(card_item.getProfileImageUrl()).into(image);
-        // image.setImageResource(R.mipmap.ic_launcher);
+
         return convertView;
     }
 }

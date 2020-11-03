@@ -1,17 +1,19 @@
 package com.example.proyectotitulo;
-
+/*
+esta clase contiene los elementos de cada imagen subida en addpublicaciones. estos elementos se añaden en addImagenesAdapter.
+ */
 import android.net.Uri;
 
-public class ModalClass {
+public class Imagen {
 
     String imagename;
     Uri image;
 
-    public ModalClass() {
+    public Imagen() {
     }
 
 
-    public ModalClass(String imagename, Uri image) {
+    public Imagen(String imagename, Uri image) {
         this.imagename = imagename;
         this.image = image;
     }

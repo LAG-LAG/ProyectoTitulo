@@ -21,7 +21,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/passwordInputRegis" />
+        app:layout_constraintTop_toBottomOf="@+id/passwordInputRegis2" />
 
     <EditText
         android:id="@+id/emailInputRegis"
@@ -55,5 +55,23 @@
         android:hint="Contraseña"
         android:backgroundTint="#FFFFFF"
         android:textColorHint="#FFFFFF"/>
+
+    <EditText
+        android:id="@+id/passwordInputRegis2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="32dp"
+        android:autofillHints=""
+        android:backgroundTint="#FFFFFF"
+        android:ems="10"
+        android:hint="Confirmar Contraseña"
+        android:inputType="textPassword"
+        android:textColorHint="#FFFFFF"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/passwordInputRegis" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

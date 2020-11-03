@@ -1,5 +1,8 @@
 package com.example.proyectotitulo;
-
+/*esta clase corresponde a la vista activity_mis_favoritos.xml.
+entrada: recibe el id del usuario y muestra todas las publicaciones que este usuario ha guardado mediante la funcion obtenerPublicaciones,
+salida: se pueden eliminar publicaciones guardadas o iniciar un chat con el dueño de estas publicaciones.
+ */
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -9,7 +12,6 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;

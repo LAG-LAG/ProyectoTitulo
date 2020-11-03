@@ -1,4 +1,9 @@
+
 package com.example.proyectotitulo;
+
+/* Clase Card correspondiente al contenido de cada card de PaginaPrincipal. esta clase se vincula con arrayAdaptor.
+arrayAdaptor despliega la informacion de estos cards en una view , mediante una lista de cards que se añaden a ese view y generan las tarjetas.
+ */
 
 public class cards {
     private String clothesId;

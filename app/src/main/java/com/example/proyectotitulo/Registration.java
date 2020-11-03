@@ -15,13 +15,12 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DatabaseReference;
 
 public class Registration extends AppCompatActivity {
 
     private Button mRegister;
     private EditText mEmail;
-    private EditText mPassword;
+    private EditText mPassword,mPasswordConfirmation;
 
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener firebaseAuthStateListener;
@@ -34,6 +33,7 @@ public class Registration extends AppCompatActivity {
         mRegister = (Button) findViewById(R.id.registroBtn);
         mPassword = (EditText) findViewById(R.id.passwordInputRegis);
         mEmail = (EditText) findViewById(R.id.emailInputRegis);
+        mPasswordConfirmation = (EditText) findViewById(R.id.passwordInputRegis2);
 
         mAuth = FirebaseAuth.getInstance();
         firebaseAuthStateListener = new FirebaseAuth.AuthStateListener() {
@@ -51,19 +51,30 @@ public class Registration extends AppCompatActivity {
 
         mRegister.setOnClickListener(new View.OnClickListener(){
             @Override
-            public void onClick(View view){
-                final String email = mEmail.getText().toString();
-                final String password = mPassword.getText().toString();
-                mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(Registration.this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if(!task.isSuccessful()){
-                            Toast.makeText(Registration.this, "Error en el registro", Toast.LENGTH_SHORT).show();
-                        }
-                        else{
-                        }
+            public void onClick(View view) {
+                if (mEmail.getText().toString().trim().length() != 0 && mPassword.getText().toString().trim().length() != 0 && mPasswordConfirmation.getText().toString().trim().length() != 0) {
+
+                    final String email = mEmail.getText().toString();
+                    final String password = mPassword.getText().toString();
+                    final String passwordConfirmation = mPasswordConfirmation.getText().toString();
+                    if (password.equals(passwordConfirmation)) {
+                        mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(Registration.this, new OnCompleteListener<AuthResult>() {
+                            @Override
+                            public void onComplete(@NonNull Task<AuthResult> task) {
+                                if (!task.isSuccessful()) {
+                                    Toast.makeText(Registration.this, "Error en el registro.", Toast.LENGTH_SHORT).show();
+                                } else {
+                                }
+                            }
+                        });
+                    } else {
+                        Toast.makeText(Registration.this, "Contraseñas no coinciden.", Toast.LENGTH_SHORT).show();
                     }
-                });
+                }
+                else{
+                    Toast.makeText(Registration.this, "Debe rellenar los campos.", Toast.LENGTH_SHORT).show();
+
+                }
             }
         });
     }

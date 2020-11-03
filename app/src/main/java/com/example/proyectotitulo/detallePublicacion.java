@@ -29,8 +29,13 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
-public class detallePublicacion extends AppCompatActivity {
+/*
+Esta clase se encarga de mostrar los datos de la publicacion en la vista activity_detalle_publicacion.xml.
+entrada: recibe el id de la prenda y del usuario que publico la prenda y obtiene los datos de esa prenda.
+salida: permite ir al detalle del vendedor.
+ */
 
+public class detallePublicacion extends AppCompatActivity {
     private TextView mTitulo,mPrecio,mDescripcion,mColor,mTalla,mtipoPrenda,mVendedor,mNombreVendedor,mEstado;
     private FirebaseAuth mAuth;
     private DatabaseReference clothesDb,photosDb,usersDb;
@@ -61,17 +66,12 @@ public class detallePublicacion extends AppCompatActivity {
             getSupportActionBar().setTitle("Detalle publicacion");
         }
 
-        //mAdelanteButton = (ImageView) findViewById(R.id.adelanteDetalleButton);
-        //mAtrasButton = (ImageView) findViewById(R.id.atrasDetalleButton);
 
         mEditar = (Button) findViewById(R.id.guardarPublicacionDetalle);
         mRechazar = (Button) findViewById(R.id.descartarPublicacionDetalle);
         mVerPerfil = (Button) findViewById(R.id.verPerfilBtnPublicacionDetalle);
-  //      mAdelanteButton.setVisibility(View.INVISIBLE);
-//        mAtrasButton.setVisibility(View.INVISIBLE);
 
         urlImagenes = new ArrayList<String>();
-        //mFotoActual = (ImageView) findViewById(R.id.fotoDetallePublicacion);
 
         mTitulo = (TextView) findViewById(R.id.tituloDetallePublicacion);
         mtipoPrenda = (TextView) findViewById(R.id.tipoPrendaDetalle);
@@ -86,7 +86,6 @@ public class detallePublicacion extends AppCompatActivity {
         indiceFotoActual=0;
         mSlider = (ImageSlider) findViewById(R.id.fotoDetallePublicacion);
         imageList = new ArrayList<SlideModel>();
-        Log.d("weaweawea","1si");
         obtenerDatosPublicacion();
         obtenerNombreDueño();
         mAuth = FirebaseAuth.getInstance();
@@ -95,50 +94,6 @@ public class detallePublicacion extends AppCompatActivity {
 
         usersDb = FirebaseDatabase.getInstance().getReference().child("Users"); //esto obtiene todos los usuarios de la bd
 
-        //mAdelanteButton.setVisibility(View.INVISIBLE);
-
-//        if(indiceFotoActual<tamañoUrlImagenes){
-            //indiceFotoActual++;
-        /*
-            mAdelanteButton.setVisibility(View.VISIBLE);
-            Log.d("weaweawea","xd "+tamanoUrlImagenes);
-            mAdelanteButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Log.d("weaweawea","tamaño "+tamanoUrlImagenes);
-                    Log.d("weaweawea","indice "+indiceFotoActual);
-                    if(tamanoUrlImagenes-1!=0) {
-                        mostrarFoto(urlImagenes.get(indiceFotoActual));
-                    }
-                    if(indiceFotoActual>=tamanoUrlImagenes-1){
-                        Log.d("weaweawea","uno");
-                        indiceFotoActual=0;
-                    }
-                    else {
-                        Log.d("weaweawea","dos");
-                        indiceFotoActual++;
-                    }
-                }
-            });
-        mAtrasButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                Log.d("weaweawea","indice "+indiceFotoActual);
-                if(tamanoUrlImagenes-1!=0) {
-                    mostrarFoto(urlImagenes.get(indiceFotoActual));
-                }
-                if(indiceFotoActual<=0){
-                    Log.d("weaweawea","uno");
-                    indiceFotoActual=tamanoUrlImagenes-1;
-                }
-                else {
-                    Log.d("weaweawea","dos");
-                    indiceFotoActual--;
-                }
-            }
-        });
-*/
         mSlider.setItemClickListener(new ItemClickListener() {
             @Override
             public void onItemSelected(int i) {
@@ -213,27 +168,6 @@ public class detallePublicacion extends AppCompatActivity {
     private void obtenerDatosPublicacion() {
 
         clothesDb = FirebaseDatabase.getInstance().getReference().child("Users").child(idOwner).child("clothes");
-/*
-        clothesDb.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                mTitulo.setText(dataSnapshot.child("tituloPublicacion").getValue().toString());
-                mPrecio.setText("$"+dataSnapshot.child("ValorPrenda").getValue().toString());
-                mDescripcion.setText(dataSnapshot.child("DescripcionPrenda").getValue().toString());
-                mtipoPrenda.setText(dataSnapshot.child("TipoPrenda").getValue().toString());
-                mColor.setText(dataSnapshot.child("ColorPrenda").getValue().toString());
-                mTalla.setText(dataSnapshot.child("TallaPrenda").getValue().toString());
-                mEstado.setText(dataSnapshot.child("EstadoPrenda").getValue().toString());
-                guardarUrlPhotos();
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-*/
-
         clothesDb = FirebaseDatabase.getInstance().getReference().child("Users").child(idOwner).child("clothes");
         childEventListener =clothesDb.addChildEventListener(new ChildEventListener() {
             @Override
@@ -297,7 +231,6 @@ public class detallePublicacion extends AppCompatActivity {
 
 
     private void guardarUrlPhotos() {
-        Log.d("weaweawea","xd");
         photosDb = FirebaseDatabase.getInstance().getReference().child("Users").child(idOwner).child("clothes").child(idClothes).child("clothesPhotos");
 
         photosDb.addChildEventListener(new ChildEventListener() {
@@ -309,12 +242,10 @@ public class detallePublicacion extends AppCompatActivity {
                     imageList.add(aux);
                     mSlider.setImageList(imageList,ScaleTypes.FIT);
                     if(indiceFotoActual==0) {
-                     //   mostrarFoto(urlImagenes.get(0));
                         indiceFotoActual++;
                     }
                     tamanoUrlImagenes++;
                     clothesDb.removeEventListener(childEventListener);
-                    //Log.d("weaweawea",dataSnapshot.getKey());
                 }
             }
 

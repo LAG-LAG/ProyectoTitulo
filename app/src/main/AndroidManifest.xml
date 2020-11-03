@@ -28,7 +28,7 @@
 
 
         <activity android:name=".MisPublicacionesVendidas" />
-        <activity android:name=".file" />
+        <activity android:name=".imagenSubidaFile" />
         <activity android:name=".MisFavoritosDetalle" />
         <activity
             android:name=".EditarPublicacion"
@@ -47,11 +47,11 @@
             android:parentActivityName=".ChatUserActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Chat"
+            android:name=".misChats"
             android:screenOrientation="portrait" />
         <activity
             android:name=".ChatUserActivity"
-            android:parentActivityName=".Chat"
+            android:parentActivityName=".misChats"
             android:screenOrientation="portrait" />
         <activity
             android:name=".detallePublicacion"

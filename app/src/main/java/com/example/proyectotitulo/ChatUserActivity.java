@@ -1,8 +1,13 @@
 package com.example.proyectotitulo;
+/*
+esta clase corresponde a la conversacion entre dos usuarios. su vista correpsonde a activity_user_chat.xml
+entrada: recibe los uid de ambos usuarios, ve cual es el usuario correspondiente al dispositivo actual y lo asigna en una hacia el lado derecho. luego carga los mensajes. ve si esta bloqueado y asigna los permisos correspondientes.
+salida: envia los chats (revisando si no esta bloqueado). bloquea al usuario, dejandolo como bloqueado en la base de datos. si el usuario es vendedor este puede marcar la publicacion como vendida y si el usuario es comprador y la publicaicon
+esta marcada como vendida este puede valorar esta publicacion, pasando a la clase Valorar.
+ */
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -67,20 +72,15 @@ public class ChatUserActivity extends AppCompatActivity {
         chatId = getIntent().getExtras().getString("chatId");
 
         currentUserID = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        Log.d("probanding","1");
         //mDatabaseUser = FirebaseDatabase.getInstance().getReference().child("Users").child(currentUserID).child("connections").child("matches").child(matchId).child("ChatId");
-        Log.d("probanding","CHAT ID "+chatId);
         mDatabaseChat =  FirebaseDatabase.getInstance().getReference().child("chat").child(chatId).child("messages");
-        Log.d("probanding","2");
         //mDatabaseChat = FirebaseDatabase.getInstance().getReference().child("Chat").child(chatId).child("messages");
         mDatabaseUser = FirebaseDatabase.getInstance().getReference().child("chat").child(chatId);
         mDatabaseMessages = FirebaseDatabase.getInstance().getReference().child("chat").child(chatId);
 
-        Log.d("probanding","3");
         //getChatId();
         obtenerIdVendedorEIdComprador();
         getChatMessages();
-        Log.d("probanding","4");
 
 
         mRecyclerView = (RecyclerView) findViewById(R.id.recyclerView);
@@ -179,12 +179,10 @@ public class ChatUserActivity extends AppCompatActivity {
     }
 
     private void getChatMessages() {
-        Log.d("probanding","3.1");
         mDatabaseChat.addChildEventListener(new ChildEventListener() {//RECORREMOS LOS CHATS
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 if(dataSnapshot.exists()){
-                    Log.d("probanding","3.3");
 
                     String message = null;
                     String createdByUser = null;
@@ -198,7 +196,6 @@ public class ChatUserActivity extends AppCompatActivity {
                     if(dataSnapshot.child("hora").getValue()!=null){
                         hora = Long.parseLong(dataSnapshot.child("hora").getValue().toString());
 
-                        Log.d("hora", "hora "+hora);
                     }
                     if(message!=null && createdByUser!=null){
                         Boolean currentUserBoolean = false;
@@ -217,10 +214,9 @@ public class ChatUserActivity extends AppCompatActivity {
 
                                     if(dataSnapshot.hasChild("nameUser")) {
                                         final String nombre = dataSnapshot.child("nameUser").getValue().toString();
-                                        ChatObject newMessage = new ChatObject(finalMessage, finalCurrentUserBoolean, finalCreatedByUser, finalHora,nombre);
+                                        misChatObject newMessage = new misChatObject(finalMessage, finalCurrentUserBoolean, finalCreatedByUser, finalHora,nombre);
                                         resultsChat.add(newMessage);
                                         mChatAdapter.notifyDataSetChanged();
-                                        Log.d("nombrex", " "+nombre);
                                         usersDb.removeEventListener(childEvent);
 
                                     }
@@ -268,8 +264,8 @@ public class ChatUserActivity extends AppCompatActivity {
     }
 
 
-    private ArrayList<ChatObject> resultsChat = new ArrayList<ChatObject>();
-    private List<ChatObject> getDataSetChat() {
+    private ArrayList<misChatObject> resultsChat = new ArrayList<misChatObject>();
+    private List<misChatObject> getDataSetChat() {
         return resultsChat;
     }
 
@@ -284,11 +280,9 @@ public class ChatUserActivity extends AppCompatActivity {
         final MenuItem Bloquear = menu.findItem(R.id.bloquearChatBtn);
 
 
-        Log.d("pruebachat","1");
         chatsDb.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                Log.d("pruebachat","2");
                 if(dataSnapshot.exists() && dataSnapshot.getKey().equals(chatId)){
                     if(!dataSnapshot.hasChild("chatBloqueado")){
                         Bloquear.setTitle("Bloquear");
@@ -296,9 +290,7 @@ public class ChatUserActivity extends AppCompatActivity {
                     else{
                         Bloquear.setTitle("Desbloquear");
                     }
-                    Log.d("pruebachat","3");
                     if(dataSnapshot.child("idUserComprador").getValue().toString().equals(currentUserID)){ //significa que el usuario es comprador.
-                        Log.d("pruebachat","4 es comprador");
                         esComprador=1;
                         valorarOComprar.setTitle("Valorar");
                         if(!dataSnapshot.hasChild("marcadaComoVendida")) {
@@ -310,24 +302,20 @@ public class ChatUserActivity extends AppCompatActivity {
                         }
                     }
                     else{ //significa que el usuario es vendedor.
-                        Log.d("pruebachat","5 es vendedor");
                         esComprador=0;
                         if(dataSnapshot.hasChild("marcadaComoVendida") && !dataSnapshot.hasChild("estadoFinalizado")) {
                             if(dataSnapshot.child("marcadaComoVendida").getValue().equals("1")){
                                 valorarOComprar.setTitle("Marcar Como No Vendida");
-                                Log.d("pruebachat","6");
 
                             }
                             else {
                                 valorarOComprar.setTitle("Marcar Como Vendida");
-                                Log.d("pruebachat","7");
                             }
                         }
                         else if(dataSnapshot.hasChild("estadoFinalizado")){
                             valorarOComprar.setTitle("Vendida.");
                         }
                         else{
-                            Log.d("pruebachat","8");
                             valorarOComprar.setTitle("Marcar Como Vendida");
                             DatabaseReference estadoPrenda = FirebaseDatabase.getInstance().getReference().child("chat").child(chatId).child("marcadaComoVendida");
                             estadoPrenda.setValue("0");
@@ -449,7 +437,6 @@ public class ChatUserActivity extends AppCompatActivity {
                 }
                 else{
 
-                    Log.d("bloqueadito",currentUserID);
 
                     chatsDb.addChildEventListener(new ChildEventListener() {
                         @Override
@@ -572,7 +559,6 @@ public class ChatUserActivity extends AppCompatActivity {
                     else{
                         DatabaseReference guardarBloqueados = FirebaseDatabase.getInstance().getReference().child("Users").child(currentUserID).child("Bloqueados").child(idComprador);
                         guardarBloqueados.setValue("1");
-                        Log.d("zilean2",""+idComprador);
                         DatabaseReference guardarBloqueadosEnOtroUserdos = FirebaseDatabase.getInstance().getReference().child("Users").child(idComprador).child("Bloqueados").child(currentUserID);
                         guardarBloqueadosEnOtroUserdos.setValue("1");
                     }

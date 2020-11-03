@@ -1,5 +1,9 @@
 package com.example.proyectotitulo;
-
+/*
+Esta clase se encarga de mostrar los datos de la publicacion en la vista activity_mis_favoritos_detalle.xml.
+entrada: recibe el id de la prenda y del usuario que publico la prenda y obtiene los datos de esa prenda.
+salida: permite ir al detalle del vendedor o iniciar un chat con este usuario.
+ */
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -164,34 +168,7 @@ public class MisFavoritosDetalle extends AppCompatActivity {
     private void estaBloqueado() {
         bloqueado = false;
 
-        usersDbDos = FirebaseDatabase.getInstance().getReference().child("Users");/*
-        usersDbDos.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if(dataSnapshot.exists() && dataSnapshot.getKey().equals(currentUId) && dataSnapshot.hasChild("Bloqueados")) {
-                    DatabaseReference bloqueadosDb = FirebaseDatabase.getInstance().getReference().child("Users").child(currentUId).child("Bloqueados");
-                    bloqueadosDb.addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                            if(dataSnapshot.exists() && dataSnapshot.getKey().equals(idOwner)){
-                                bloqueado=true;
-                            }
-                        }
-
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                        }
-                    });
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-        */
+        usersDbDos = FirebaseDatabase.getInstance().getReference().child("Users");
 
         usersDbDos.addChildEventListener(new ChildEventListener() {
             @Override
