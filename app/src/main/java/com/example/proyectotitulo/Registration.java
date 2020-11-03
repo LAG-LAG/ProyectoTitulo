@@ -41,11 +41,15 @@ public class Registration extends AppCompatActivity {
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                 if (user != null){
-                    Intent intent = new Intent(Registration.this, PaginaPrincipal.class);
-                    startActivity(intent);
-                    finish();
-                    return;
+                    final FirebaseUser userLog = mAuth.getCurrentUser();
+
+                        //Toast.makeText(Registration.this, "ASDASDASD."+userLog.isEmailVerified(), Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(Registration.this, PaginaPrincipal.class);
+                        startActivity(intent);
+                        finish();
+                       return;
                 }
+
             }
         };
 
@@ -64,6 +68,9 @@ public class Registration extends AppCompatActivity {
                                 if (!task.isSuccessful()) {
                                     Toast.makeText(Registration.this, "Error en el registro.", Toast.LENGTH_SHORT).show();
                                 } else {
+                                    final FirebaseUser user = mAuth.getCurrentUser();
+                                    //user.sendEmailVerification();
+                                    //mRegister.setText("Ya verifique mi correo");
                                 }
                             }
                         });

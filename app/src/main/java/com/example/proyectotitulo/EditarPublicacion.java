@@ -155,11 +155,13 @@ public class EditarPublicacion extends AppCompatActivity {
                     final Uri imageUri = null;
                     // final Uri imageUri = Uri.parse("android.resource://ProyectoTitulo/drawable/image_name");
                     // resultUri = imageUri;
-
+                    publicacion=0;
                     mPublicacionImage1.setImageResource(R.drawable.sinprenda);
                     mBorrarPublicacion1.setVisibility(View.INVISIBLE);
                 }
                 if(existoFoto1==1){
+                    publicacion=0;
+
                     mPublicacionImage1.setImageResource(R.drawable.sinprenda);
                     mBorrarPublicacion1.setVisibility(View.INVISIBLE);
                     borrar1 = 1;
@@ -173,13 +175,14 @@ public class EditarPublicacion extends AppCompatActivity {
             public void onClick(View view) {
                 if(resultUri2!=null) {
                     final Uri imageUri = null;
-
+                    publicacion2=0;
                     // final Uri imageUri = Uri.parse("android.resource://ProyectoTitulo/drawable/image_name");
                     // resultUri2 = imageUri;
                     mPublicacionImage2.setImageResource(R.drawable.sinprenda);
                     mBorrarPublicacion2.setVisibility(View.INVISIBLE);
                 }
                 if(existoFoto2==1){
+                    publicacion2=0;
                     mPublicacionImage2.setImageResource(R.drawable.sinprenda);
                     mBorrarPublicacion2.setVisibility(View.INVISIBLE);
                     borrar2 = 1;
@@ -194,6 +197,7 @@ public class EditarPublicacion extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if(resultUri3!=null) {
+                    publicacion3=0;
                     final Uri imageUri = null;
                     // final Uri imageUri = Uri.parse("android.resource://ProyectoTitulo/drawable/image_name");
                     //resultUri3 = imageUri;
@@ -201,6 +205,7 @@ public class EditarPublicacion extends AppCompatActivity {
                     mBorrarPublicacion3.setVisibility(View.INVISIBLE);
                 }
                 if(existoFoto3==1){
+                    publicacion3=0;
                     mPublicacionImage3.setImageResource(R.drawable.sinprenda);
                     mBorrarPublicacion3.setVisibility(View.INVISIBLE);
                     borrar3 = 1;
@@ -214,6 +219,7 @@ public class EditarPublicacion extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if(resultUri4!=null) {
+                    publicacion4=0;
                     final Uri imageUri = null;
                     Log.d("probanding","se borro foto 4 "+borrar4);
                     // final Uri imageUri = Uri.parse("android.resource://ProyectoTitulo/drawable/image_name");
@@ -222,6 +228,7 @@ public class EditarPublicacion extends AppCompatActivity {
                     mBorrarPublicacion4.setVisibility(View.INVISIBLE);
                 }
                 if(existoFoto4==1){
+                    publicacion4=0;
                     mPublicacionImage4.setImageResource(R.drawable.sinprenda);
                     mBorrarPublicacion4.setVisibility(View.INVISIBLE);
                     borrar4 = 1;
@@ -237,7 +244,7 @@ public class EditarPublicacion extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if(resultUri5!=null) {
-
+                    publicacion5=0;
                     final Uri imageUri = null;
                     // final Uri imageUri = Uri.parse("android.resource://ProyectoTitulo/drawable/image_name");
                     //resultUri5 = imageUri;
@@ -245,6 +252,7 @@ public class EditarPublicacion extends AppCompatActivity {
                     mBorrarPublicacion5.setVisibility(View.INVISIBLE);
                 }
                 if(existoFoto5==1){
+                    publicacion5=0;
                     mPublicacionImage5.setImageResource(R.drawable.sinprenda);
                     mBorrarPublicacion5.setVisibility(View.INVISIBLE);
                     borrar5 = 1;
@@ -259,6 +267,7 @@ public class EditarPublicacion extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if(resultUri6!=null) {
+                    publicacion6=0;
                     final Uri imageUri = null;
                     // final Uri imageUri = Uri.parse("android.resource://ProyectoTitulo/drawable/image_name");
                     //resultUri6 = imageUri;
@@ -266,6 +275,7 @@ public class EditarPublicacion extends AppCompatActivity {
                     mBorrarPublicacion6.setVisibility(View.INVISIBLE);
                 }
                 if(existoFoto6==1){
+                    publicacion6=0;
                     mPublicacionImage6.setImageResource(R.drawable.sinprenda);
                     mBorrarPublicacion6.setVisibility(View.INVISIBLE);
                     borrar6 = 1;
@@ -549,11 +559,9 @@ public class EditarPublicacion extends AppCompatActivity {
             float confidenceThreshold = (float) 0.68; //radio de margen, mientras mas cercano al 1 permite foto mas nsfw.
             NSFWDetector.INSTANCE.isNSFW(bitmap, confidenceThreshold, (isNSFW, confidence, image) -> {
                 if (isNSFW) {
-                    Toast.makeText(this, "FOTO NO PERMITIDA. " + confidence, Toast.LENGTH_SHORT).show();
-                    Log.d("porno", "fotopornoxd");
+                    Toast.makeText(this, "FOTO NO PERMITIDA.", Toast.LENGTH_SHORT).show();
                 } else {
-                    Toast.makeText(this, "SFW with confidence: " + confidence, Toast.LENGTH_SHORT).show();
-                    Log.d("porno", "fotono pornoxd");
+                    //Toast.makeText(this, "SFW with confidence: " + confidence, Toast.LENGTH_SHORT).show();
                     arrayResultUri.add(imageUri);
                     switch (publicacion){
                         case 1:
@@ -680,7 +688,7 @@ public class EditarPublicacion extends AppCompatActivity {
                     FirebaseDatabase.getInstance().getReference().child("Users").child(currentUId).child("clothes").child(id).child("clothesPhotos").removeValue();
                 }
 
-                int numero = arrayUriString.size()+1;
+                int numero = arrayUriString.size();
                 for(int i = 0; i < arrayUriString.size();i++){
                     numero = i+1;
                     FirebaseDatabase.getInstance().getReference().child("Users").child(currentUId).child("clothes").child(id).child("clothesPhotos").child("photoId"+numero).setValue(arrayUriString.get(i));
