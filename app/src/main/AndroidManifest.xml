@@ -20,13 +20,14 @@
         android:roundIcon="@drawable/swapdrobe_icon2"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.NoActionBar">
-        <meta-data android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyAov-A4hAfu7wP76_DpSlA9izVrhVtZMZk"/>
-        <activity android:name=".VerPuntuacionDeVendedor"></activity>
+        <activity android:name=".resetPassword"></activity>
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyAov-A4hAfu7wP76_DpSlA9izVrhVtZMZk" />
+
+        <activity android:name=".VerPuntuacionDeVendedor" />
         <activity android:name=".VerPerfilDeVendedor" />
-
-
-
         <activity android:name=".MisPublicacionesVendidas" />
         <activity android:name=".imagenSubidaFile" />
         <activity android:name=".MisFavoritosDetalle" />

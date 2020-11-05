@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -48,6 +49,7 @@ public class Login extends AppCompatActivity {
     private CallbackManager callbackManager = CallbackManager.Factory.create();
     private EditText mEmail;
     private EditText mPassword;
+    private TextView cambiarContraseña;
     int RC_SIGN_IN = 0;
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener firebaseAuthStateListener;
@@ -62,7 +64,7 @@ public class Login extends AppCompatActivity {
         mGoogleBtn = (ImageView) findViewById(R.id.GoogleBtn);
         mPassword = (EditText) findViewById(R.id.passwordInput);
         mEmail = (EditText) findViewById(R.id.emailInput);
-
+        cambiarContraseña = (TextView) findViewById(R.id.olvidaste);
         //Login de google
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
@@ -85,6 +87,16 @@ public class Login extends AppCompatActivity {
                 }
             }
         };
+
+        cambiarContraseña.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Login.this, resetPassword.class);
+                startActivity(intent);
+                finish();
+                return;
+            }
+        });
 
         mIngresarBtn.setOnClickListener(new View.OnClickListener(){
             @Override
