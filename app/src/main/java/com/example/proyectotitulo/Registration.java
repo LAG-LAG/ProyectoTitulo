@@ -2,6 +2,7 @@ package com.example.proyectotitulo;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -9,6 +10,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -29,6 +31,15 @@ public class Registration extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registration);
+
+        //Toolbar Menu
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setTitle("Registro");
+        }
 
         mRegister = (Button) findViewById(R.id.registroBtn);
         mPassword = (EditText) findViewById(R.id.passwordInputRegis);
@@ -96,5 +107,14 @@ public class Registration extends AppCompatActivity {
     protected void onStop() {
         super.onStop();
         mAuth.addAuthStateListener(firebaseAuthStateListener);
+    }
+
+    //toolbar
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item){
+        Intent myIntent = new Intent(getApplicationContext(), Login.class);
+        startActivity(myIntent);
+        finish();
+        return true;
     }
 }
