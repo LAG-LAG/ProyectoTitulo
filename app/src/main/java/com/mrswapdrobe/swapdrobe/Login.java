@@ -22,6 +22,7 @@ import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
+import com.facebook.login.LoginBehavior;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -152,6 +153,7 @@ public class Login extends AppCompatActivity {
         mFacebookBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                LoginManager.getInstance().setLoginBehavior(LoginBehavior.WEB_ONLY);
                 LoginManager.getInstance().logInWithReadPermissions(Login.this, Arrays.asList("email","public_profile"));
                 LoginManager.getInstance().registerCallback(callbackManager,
                         new FacebookCallback<LoginResult>() {
