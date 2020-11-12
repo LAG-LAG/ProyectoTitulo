@@ -9,6 +9,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -47,6 +48,7 @@ public class PaginaPrincipal extends AppCompatActivity {
     private int puedeMostrarCard, noExistenFiltros, kmBusqueda, esBusquedaPorKm;
     private String comunaBusqueda, tallaBusqueda, estadoBusqueda, tipoPrendaBusqueda, regionBusqueda;
     private Button mFiltros;
+    private TextView perfilEditar;
     List<cards> rowItems;
 
 
@@ -62,9 +64,10 @@ public class PaginaPrincipal extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         currentUId = user.getUid();
+        perfilEditar = (TextView) findViewById(R.id.perfilEditar);
         mFiltros = (Button) findViewById(R.id.filtrosBtn);
         puedeMostrarCard = 1;
-
+        perfilEditar.setVisibility(View.VISIBLE);
         //Toolbar Menu
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -88,6 +91,7 @@ public class PaginaPrincipal extends AppCompatActivity {
         if (tallaBusqueda == null) {
             tallaBusqueda = "";
         }
+        verSiExiste();
         obtenerRechazados();
         obtenerPublicacionesAceptadasyRechazadas();
 
@@ -207,6 +211,37 @@ public class PaginaPrincipal extends AppCompatActivity {
         });
     }
 
+    private void verSiExiste() {
+        usersDb.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                if(dataSnapshot.exists() && dataSnapshot.getKey().equals(currentUId)){
+                    perfilEditar.setVisibility(View.INVISIBLE);
+                }
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
     private void obtenerRechazados() {
         usersDb.addChildEventListener(new ChildEventListener() {
             @Override
@@ -242,6 +277,7 @@ public class PaginaPrincipal extends AppCompatActivity {
                         }
                     });
                 }
+
             }
 
             @Override
@@ -493,6 +529,9 @@ public class PaginaPrincipal extends AppCompatActivity {
 
 
                         }
+                        else{
+                            perfilEditar.setVisibility(View.VISIBLE);
+                        }
                     }
 
                     private boolean estaEnRadioKM(int kmBusqueda, double lat2, double lon2) {
@@ -743,6 +782,9 @@ public class PaginaPrincipal extends AppCompatActivity {
                         });
 
 
+                    }
+                    else{
+                        perfilEditar.setVisibility(View.VISIBLE);
                     }
             }
 

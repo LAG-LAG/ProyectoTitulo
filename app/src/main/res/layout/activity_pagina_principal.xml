@@ -18,8 +18,8 @@
         android:background="@drawable/background_color"
         app:rotation_degrees="15.5"
         tools:context=".MyActivity"
-        tools:layout_editor_absoluteX="0dp"
-        tools:layout_editor_absoluteY="-16dp" />
+        tools:layout_editor_absoluteX="8dp"
+        tools:layout_editor_absoluteY="-295dp" />
 
     <Button
         android:id="@+id/filtrosBtn"
@@ -31,5 +31,18 @@
         android:text="Filtros"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbar" />
+
+    <TextView
+        android:id="@+id/perfilEditar"
+        android:layout_width="236dp"
+        android:layout_height="222dp"
+        android:layout_marginBottom="152dp"
+        android:text="Debe asignar un nombre y ubicacion en Mi Cuenta para ver publicaciones!"
+        app:layout_constraintBottom_toBottomOf="@+id/frame"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar"
+        app:layout_constraintVertical_bias="0.853" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
