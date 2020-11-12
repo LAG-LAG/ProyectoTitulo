@@ -4,6 +4,7 @@ package com.mrswapdrobe.swapdrobe;
 esta clase se encarga de recibir los elementos de la clase PaginaPrincipal (una List de Cards, la cual contiene los atributos) y
 asignarlos a un arrayadapter para ser ordenados como tarjetas en la vista principal.
  */
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 
+import com.bumptech.glide.Glide;
 import com.google.firebase.database.core.Context;
 import com.squareup.picasso.Picasso;
 
@@ -41,8 +43,10 @@ public class arrayAdaptor extends ArrayAdapter<cards>{
         name.setText(card_item.getName());
         precio.setText("$"+card_item.getPrecio());
         if(card_item.getProfileImageUrl()!="default"||card_item.getProfileImageUrl()!=""){
-            Picasso.get().setLoggingEnabled(true);
-            Picasso.get().load(card_item.getProfileImageUrl()).fit().centerCrop().into(image);
+            Glide.with(getContext()).load(card_item.getProfileImageUrl()).centerCrop().into(image);
+
+            //Picasso.get().setLoggingEnabled(true);
+            //Picasso.get().load(card_item.getProfileImageUrl()).fit().centerCrop().into(image);
         }
         else {
             Picasso.get().setLoggingEnabled(true);

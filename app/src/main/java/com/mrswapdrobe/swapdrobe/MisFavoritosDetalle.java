@@ -18,11 +18,10 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.viewpager.widget.ViewPager;
 
 import com.bumptech.glide.Glide;
 import com.denzcoskun.imageslider.ImageSlider;
-import com.denzcoskun.imageslider.constants.ScaleTypes;
-import com.denzcoskun.imageslider.interfaces.ItemClickListener;
 import com.denzcoskun.imageslider.models.SlideModel;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -53,6 +52,8 @@ public class MisFavoritosDetalle extends AppCompatActivity {
     private DatabaseReference usersDbDos,bloqueadosDb;
     private boolean bloqueado;
     ChildEventListener childListener;
+    private ViewPager viewPager;
+    private ViewPagerAdapter adapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -97,7 +98,7 @@ public class MisFavoritosDetalle extends AppCompatActivity {
         mNombreVendedor = (TextView) findViewById(R.id.nombreVendedorFavoritosDetalle);
 
         indiceFotoActual=0;
-        mSlider = (ImageSlider) findViewById(R.id.fotoFavoritosDetalle);
+        //mSlider = (ImageSlider) findViewById(R.id.fotoFavoritosDetalle);
         imageList = new ArrayList<SlideModel>();
         obtenerDatosPublicacion();
         obtenerNombreDueño();
@@ -105,14 +106,21 @@ public class MisFavoritosDetalle extends AppCompatActivity {
         logica = false;
         existeChat();
         estaBloqueado();
+
+
+        viewPager = (ViewPager) findViewById(R.id.fotoFavoritosDetalle);
+        adapter = new ViewPagerAdapter(MisFavoritosDetalle.this, urlImagenes);
+        viewPager.setAdapter(adapter);
         usersDb = FirebaseDatabase.getInstance().getReference().child("Users"); //esto obtiene todos los usuarios de la bd
-        mSlider.setItemClickListener(new ItemClickListener() {
+        /*mSlider.setItemClickListener(new ItemClickListener() {
             @Override
             public void onItemSelected(int i) {
 
             }
         });
 
+
+         */
         mEditar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -371,9 +379,10 @@ public class MisFavoritosDetalle extends AppCompatActivity {
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                 if(dataSnapshot.exists()){
                     urlImagenes.add(dataSnapshot.getValue().toString());
-                    SlideModel aux = new SlideModel(dataSnapshot.getValue().toString(), ScaleTypes.FIT);
-                    imageList.add(aux);
-                    mSlider.setImageList(imageList,ScaleTypes.FIT);
+                   // SlideModel aux = new SlideModel(dataSnapshot.getValue().toString(), ScaleTypes.FIT);
+                    //imageList.add(aux);
+                    //mSlider.setImageList(imageList,ScaleTypes.FIT);
+                    adapter.notifyDataSetChanged();
                     if(indiceFotoActual==0) {
                         //   mostrarFoto(urlImagenes.get(0));
                         indiceFotoActual++;

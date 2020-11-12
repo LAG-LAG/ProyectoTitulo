@@ -13,11 +13,11 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
 
+import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -63,7 +63,9 @@ public class publicacionAdapter extends BaseAdapter{
         TextView tituloPublicacion = (TextView) view.findViewById(R.id.tituloPublicacion);
         TextView valorPublicacion = (TextView) view.findViewById(R.id.valorPublicacion);
 
-        Picasso.get().load(item.getProfileImageUrl()).fit().centerCrop().into(imgPublicacion);
+        //Picasso.get().load(item.getProfileImageUrl()).fit().centerCrop().into(imgPublicacion);
+        Glide.with(view.getContext()).load(item.getProfileImageUrl()).centerCrop().into(imgPublicacion);
+
         tituloPublicacion.setText(item.getTituloPublicacion());
         valorPublicacion.setText(item.getValorPublicacion());
 

@@ -19,7 +19,9 @@
         android:label="@string/app_name"
         android:roundIcon="@drawable/swapdrobe_icon2"
         android:supportsRtl="true"
-        android:theme="@style/Theme.AppCompat.NoActionBar">
+        android:theme="@style/Theme.AppCompat.NoActionBar"
+        android:hardwareAccelerated="true"
+        android:largeHeap="true">
         <activity android:name="com.mrswapdrobe.swapdrobe.resetPassword"></activity>
 
         <meta-data

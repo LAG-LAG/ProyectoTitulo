@@ -209,9 +209,9 @@ public class VerMiCuenta extends AppCompatActivity {
                                 break;
 
                         }
-                        Picasso.get().setLoggingEnabled(true);
-                        //Glide.with(getApplication()).load(profileImageUrl).into(mProfileImage);
-                        Picasso.get().load(profileImageUrl).fit().centerCrop().into(mProfileImage);
+                        //Picasso.get().setLoggingEnabled(true);
+                        Glide.with(getApplication()).load(profileImageUrl).into(mProfileImage);
+                        //Picasso.get().load(profileImageUrl).fit().centerCrop().into(mProfileImage);
                         existeFotoPerfil = 1;
                     }
                 }

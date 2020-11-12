@@ -8,7 +8,7 @@ import android.widget.ImageView;
 import androidx.annotation.NonNull;
 import androidx.viewpager.widget.PagerAdapter;
 
-import com.squareup.picasso.Picasso;
+import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 
@@ -36,13 +36,17 @@ public class ViewPagerAdapter extends PagerAdapter {
     @Override
     public Object instantiateItem(@NonNull ViewGroup container, int position) {
         ImageView imageView = new ImageView(context);
+        Glide.with(context).load(imageUrls.get(position)).centerCrop().into(imageView);
+        container.addView(imageView);
+
+/*
         Picasso.get()
                 .load(imageUrls.get(position))
                 .fit()
                 //.centerCrop()
                 .into(imageView);
         container.addView(imageView);
-
+*/
         return imageView;
     }
 
