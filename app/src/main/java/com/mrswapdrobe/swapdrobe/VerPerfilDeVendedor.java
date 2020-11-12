@@ -143,18 +143,18 @@ public class VerPerfilDeVendedor extends AppCompatActivity {
                             case "default":
                                 Picasso.get().setLoggingEnabled(true);
                                 //Glide.with(getApplication()).load(card_item.getProfileImageUrl()).into(image);
-                                Picasso.get().load(R.mipmap.ic_launcher).into(mProfileImage);
+                                Picasso.get().load(R.mipmap.ic_launcher).fit().centerCrop().into(mProfileImage);
                                 break;
                             default:
                                 Picasso.get().setLoggingEnabled(true);
                                 //Glide.with(getApplication()).load(card_item.getProfileImageUrl()).into(image);
-                                Picasso.get().load(profileImageUrl).into(mProfileImage);
+                                Picasso.get().load(profileImageUrl).fit().centerCrop().into(mProfileImage);
                                 break;
 
                         }
                         Picasso.get().setLoggingEnabled(true);
                         //Glide.with(getApplication()).load(profileImageUrl).into(mProfileImage);
-                        Picasso.get().load(profileImageUrl).into(mProfileImage);
+                        Picasso.get().load(profileImageUrl).fit().centerCrop().into(mProfileImage);
                         existeFotoPerfil = 1;
                     }
                 }

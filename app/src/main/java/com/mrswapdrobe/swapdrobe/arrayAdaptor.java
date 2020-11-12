@@ -42,11 +42,11 @@ public class arrayAdaptor extends ArrayAdapter<cards>{
         precio.setText("$"+card_item.getPrecio());
         if(card_item.getProfileImageUrl()!="default"||card_item.getProfileImageUrl()!=""){
             Picasso.get().setLoggingEnabled(true);
-            Picasso.get().load(card_item.getProfileImageUrl()).into(image);
+            Picasso.get().load(card_item.getProfileImageUrl()).fit().centerCrop().into(image);
         }
         else {
             Picasso.get().setLoggingEnabled(true);
-            Picasso.get().load(R.mipmap.ic_launcher).into(image);
+            Picasso.get().load(R.mipmap.ic_launcher).fit().centerCrop().into(image);
         }
 
 

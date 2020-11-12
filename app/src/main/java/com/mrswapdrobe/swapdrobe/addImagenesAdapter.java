@@ -43,7 +43,7 @@ public class addImagenesAdapter extends RecyclerView.Adapter<addImagenesAdapter.
         Picasso.get().setLoggingEnabled(true);
         //Glide.with(getApplication()).load(card_item.getProfileImageUrl()).into(image);
         //Picasso.get().load(mList.get(position).getImage()).into(holder.imageView);
-        Picasso.get().load(mList.get(position).getImage()).placeholder(R.drawable.image).into(holder.imageView);
+        Picasso.get().load(mList.get(position).getImage()).placeholder(R.drawable.image).fit().centerCrop().into(holder.imageView);
 
 
 

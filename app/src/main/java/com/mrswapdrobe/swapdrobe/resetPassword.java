@@ -40,7 +40,7 @@ public class resetPassword extends AppCompatActivity {
             public void onClick(View v) {
                 if (mEmail.getText().toString().trim().length() != 0) {
                     String email = mEmail.getText().toString();
-                    fAuth.sendPasswordResetEmail(email)
+                    FirebaseAuth.getInstance().sendPasswordResetEmail(email)
                             .addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {

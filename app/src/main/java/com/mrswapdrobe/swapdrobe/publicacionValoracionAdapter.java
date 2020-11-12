@@ -53,7 +53,7 @@ public class publicacionValoracionAdapter extends BaseAdapter{
         TextView valoracionComentario = (TextView) view.findViewById(R.id.valoracionComentario);
         TextView valoracionPublicacion = (TextView) view.findViewById(R.id.valoracionPublicacion);
 
-        Picasso.get().load(item.getProfileImageUrl()).into(imgPublicacion);
+        Picasso.get().load(item.getProfileImageUrl()).fit().centerCrop().into(imgPublicacion);
         nombreValoracionPublicacion.setText(item.getTituloPublicacion());
         valoracionComentario.setText(item.getComentario());
         valoracionPublicacion.setText(Float.toString(item.getValoracion()));

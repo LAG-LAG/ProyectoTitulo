@@ -514,18 +514,18 @@ public class EditarPublicacion extends AppCompatActivity {
             case "default":
                 Picasso.get().setLoggingEnabled(true);
                 //Glide.with(getApplication()).load(card_item.getProfileImageUrl()).into(image);
-                Picasso.get().load(R.mipmap.ic_launcher).into(mPublicacionImage1);
+                Picasso.get().load(R.mipmap.ic_launcher).fit().centerCrop().into(mPublicacionImage1);
                 break;
             default:
                 Picasso.get().setLoggingEnabled(true);
                 //Glide.with(getApplication()).load(card_item.getProfileImageUrl()).into(image);
-                Picasso.get().load(photoId1).into(mPublicacionImage1);
+                Picasso.get().load(photoId1).fit().centerCrop().into(mPublicacionImage1);
                 break;
         }
 
         Picasso.get().setLoggingEnabled(true);
         //Glide.with(getApplication()).load(profileImageUrl).into(mProfileImage);
-        Picasso.get().load(photoId1).into(mPublicacionImage1);
+        Picasso.get().load(photoId1).fit().centerCrop().into(mPublicacionImage1);
     }
 
 

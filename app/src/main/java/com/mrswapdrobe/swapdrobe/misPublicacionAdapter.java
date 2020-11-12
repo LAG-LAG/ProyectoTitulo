@@ -75,7 +75,7 @@ public class misPublicacionAdapter extends BaseAdapter{
         TextView tituloPublicacion = (TextView) view.findViewById(R.id.tituloPublicacion);
         TextView valorPublicacion = (TextView) view.findViewById(R.id.valorPublicacion);
 
-        Picasso.get().load(item.getProfileImageUrl()).into(imgPublicacion);
+        Picasso.get().load(item.getProfileImageUrl()).fit().centerCrop().fit().centerCrop().into(imgPublicacion);
         tituloPublicacion.setText(item.getTituloPublicacion());
         valorPublicacion.setText(item.getValorPublicacion());
 

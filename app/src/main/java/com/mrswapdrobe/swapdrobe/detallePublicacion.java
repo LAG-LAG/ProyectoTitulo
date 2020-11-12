@@ -215,18 +215,18 @@ public class detallePublicacion extends AppCompatActivity {
                 case "default":
                     Picasso.get().setLoggingEnabled(true);
                     //Glide.with(getApplication()).load(card_item.getProfileImageUrl()).into(image);
-                    Picasso.get().load(R.mipmap.ic_launcher).into(mFotoActual);
+                    Picasso.get().load(R.mipmap.ic_launcher).fit().centerCrop().into(mFotoActual);
                     break;
                 default:
                     Picasso.get().setLoggingEnabled(true);
                     //Glide.with(getApplication()).load(card_item.getProfileImageUrl()).into(image);
-                    Picasso.get().load(urlFotoActual).into(mFotoActual);
+                    Picasso.get().load(urlFotoActual).fit().centerCrop().into(mFotoActual);
                     break;
 
             }
             Picasso.get().setLoggingEnabled(true);
             //Glide.with(getApplication()).load(profileImageUrl).into(mProfileImage);
-        Picasso.get().load(urlFotoActual).into(mFotoActual);
+        Picasso.get().load(urlFotoActual).fit().centerCrop().into(mFotoActual);
     }
 
 
