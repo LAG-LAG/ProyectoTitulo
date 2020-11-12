@@ -67,7 +67,7 @@ public class PaginaPrincipal extends AppCompatActivity {
         perfilEditar = (TextView) findViewById(R.id.perfilEditar);
         mFiltros = (Button) findViewById(R.id.filtrosBtn);
         puedeMostrarCard = 1;
-        perfilEditar.setVisibility(View.VISIBLE);
+        perfilEditar.setVisibility(View.INVISIBLE);
         //Toolbar Menu
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -212,12 +212,23 @@ public class PaginaPrincipal extends AppCompatActivity {
     }
 
     private void verSiExiste() {
-        usersDb.addChildEventListener(new ChildEventListener() {
+        DatabaseReference ver = FirebaseDatabase.getInstance().getReference();
+        Log.d("verrr","1");
+
+        ver.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                if(dataSnapshot.exists() && dataSnapshot.getKey().equals(currentUId)){
-                    perfilEditar.setVisibility(View.INVISIBLE);
+                Log.d("verrr","2 ");
+                if(dataSnapshot.exists() && dataSnapshot.getKey().equals("Users")){
+                    Log.d("verrr","3 " + currentUId);
+
+                    if(!dataSnapshot.hasChild(currentUId)){
+                        Log.d("verrr","4");
+                        perfilEditar.setVisibility(View.VISIBLE);
+                    }
+
                 }
+
             }
 
             @Override
