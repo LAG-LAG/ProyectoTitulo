@@ -36,12 +36,8 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 
 import com.bumptech.glide.Glide;
-import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
-import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.location.places.Place;
-import com.google.android.gms.location.places.ui.PlacePicker;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -58,6 +54,7 @@ import com.google.firebase.storage.UploadTask;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.nipunru.nsfwdetector.NSFWDetector;
+import com.rtchagas.pingplacepicker.PingPlacePicker;
 import com.squareup.picasso.Picasso;
 
 import java.io.ByteArrayOutputStream;
@@ -78,7 +75,9 @@ public class Account extends AppCompatActivity {
     private ImageView mProfileImage, mborrarFotoPerfil;
     private String nombreUsuario;
     int PLACE_PICKER_REQUEST = 1;
-private int tieneFotoDePerfil;
+    private final static int REQUEST_PLACE_PICKER =1001;
+
+    private int tieneFotoDePerfil;
     private Spinner mRegionesSpinner;
     private String comunaAnterior, profileImageUrl;
     private String regionAnterior,puntuacionGeneral;
@@ -129,6 +128,9 @@ private boolean addLocation;
         mUbicacion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                addLocation = true;
+                showPlacePicker();
+                /*
                 PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
                 try {
                     addLocation = true;
@@ -139,6 +141,8 @@ private boolean addLocation;
                     e.printStackTrace();
                 }
 
+
+                 */
                 /*
                 if (ActivityCompat.checkSelfPermission(Account.this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
                     getLocation();
@@ -256,6 +260,24 @@ private boolean addLocation;
             }
         });
 
+    }
+
+    private void showPlacePicker() {
+        PingPlacePicker.IntentBuilder builder = new PingPlacePicker.IntentBuilder();
+        builder.setAndroidApiKey("YOUR_ANDROID_API_KEY")
+                .setMapsApiKey("YOUR_MAPS_API_KEY");
+
+        // If you want to set a initial location rather then the current device location.
+        // NOTE: enable_nearby_search MUST be true.
+        // builder.setLatLng(new LatLng(37.4219999, -122.0862462))
+
+        try {
+            Intent placeIntent = builder.build(this);
+            startActivityForResult(placeIntent, REQUEST_PLACE_PICKER);
+        }
+        catch (Exception ex) {
+            // Google Play services is not available...
+        }
     }
 
     private void getLocation() {
@@ -426,16 +448,20 @@ private boolean addLocation;
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode==1 && resultCode == Activity.RESULT_OK){
+
+
+        if(requestCode==REQUEST_PLACE_PICKER && resultCode == Activity.RESULT_OK){
             final Uri imageUri = data.getData();
             mborrarFotoPerfil.setVisibility(View.VISIBLE);
             resultUri = imageUri;
             mProfileImage.setImageURI(resultUri);
             if(addLocation == true) {
-                Place place = PlacePicker.getPlace(data, this);
-                latitude = place.getLatLng().latitude;
-                longitude = place.getLatLng().longitude;
-                longitudLatitudEstado = 1;
+                com.google.android.libraries.places.api.model.Place place = PingPlacePicker.getPlace(data);
+                if(place!=null) {
+                    latitude = place.getLatLng().latitude;
+                    longitude = place.getLatLng().longitude;
+                    longitudLatitudEstado = 1;
+                }
             }
         }
 
