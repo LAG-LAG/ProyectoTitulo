@@ -9,6 +9,13 @@
     <string-array name="comunas">
         <item>Seleccione Comuna</item>
     </string-array>
+    <string-array name="Recuperar">
+        <item>Ultima Hora</item>
+        <item>Ultimo Dia</item>
+        <item>Ultima Semana</item>
+        <item>Ultimo Mes</item>
+        <item>Recuperar todas las publicaciones.</item>
+    </string-array>
 
     <string-array name="tipoPrenda">
         <item>Seleccione tipo de prenda</item>

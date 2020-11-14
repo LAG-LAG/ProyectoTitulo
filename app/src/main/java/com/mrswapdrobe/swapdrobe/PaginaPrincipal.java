@@ -1,5 +1,6 @@
 package com.mrswapdrobe.swapdrobe;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
@@ -9,11 +10,13 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
@@ -29,8 +32,10 @@ import com.lorentzos.flingswipe.SwipeFlingAdapterView;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 public class PaginaPrincipal extends AppCompatActivity {
     private ArrayList<String> al, bloqueados;
@@ -49,6 +54,7 @@ public class PaginaPrincipal extends AppCompatActivity {
     private String comunaBusqueda, tallaBusqueda, estadoBusqueda, tipoPrendaBusqueda, regionBusqueda;
     private Button mFiltros;
     private TextView perfilEditar;
+    private ImageView recuperarBorrados;
     List<cards> rowItems;
 
 
@@ -68,6 +74,7 @@ public class PaginaPrincipal extends AppCompatActivity {
         mFiltros = (Button) findViewById(R.id.filtrosBtn);
         puedeMostrarCard = 1;
         perfilEditar.setVisibility(View.INVISIBLE);
+        recuperarBorrados = (ImageView)  findViewById(R.id.recuperarBorrados);
         //Toolbar Menu
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -122,7 +129,165 @@ public class PaginaPrincipal extends AppCompatActivity {
 
 
 
+        recuperarBorrados.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String[] listItems = getResources().getStringArray(R.array.Recuperar);
+                AlertDialog.Builder mBuilder = new AlertDialog.Builder(PaginaPrincipal.this);
+                mBuilder.setTitle("Seleccione cantidad de tiempo que desea recuperar las publicaciones.");
+                mBuilder.setSingleChoiceItems(listItems, -1, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        //mResult.setText(listItems[i]);
+                        Toast.makeText(PaginaPrincipal.this, ""+listItems[i], Toast.LENGTH_SHORT).show();
+                        Long ahora = new Date().getTime();
 
+                        switch (i){
+                            case 0:
+                                borrarUltimaHora(60);
+                                break;
+                            case 1:
+                                borrarUltimaHora(1440);
+                                break;
+                            case 2:
+                                borrarUltimaHora(10080);
+                                break;
+                            case 3:
+                                borrarUltimaHora(43800);
+                                break;
+                            case 4:
+                                borrarRechazados();
+                                break;
+                        }
+
+
+                        dialogInterface.dismiss();
+                    }
+
+                    private void borrarUltimaHora(int HorasTotales) {
+                        usersDb.addChildEventListener(new ChildEventListener() {
+                            @Override
+                            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                                if(dataSnapshot.exists()  && dataSnapshot.getKey().equals(currentUId)){
+                                    Log.d("entra2","2");
+                                    if(dataSnapshot.hasChild("connections")){
+                                        Log.d("entra2","3");
+                                        if(dataSnapshot.child("connections").hasChild("publicacionesRechazadas")){
+                                            Log.d("entra2","4");
+                                            DatabaseReference borradosDb = FirebaseDatabase.getInstance().getReference().child("Users").child(currentUId).child("connections").child("publicacionesRechazadas");
+                                            borradosDb.addChildEventListener(new ChildEventListener() {
+                                                @Override
+                                                public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                                                    if(dataSnapshot.exists()){
+                                                        Long ahora = new Date().getTime();
+                                                        Long horaBorrado = (Long) dataSnapshot.getValue();
+                                                        Log.d("horas","ahora: "+ahora +" horaBorrado: "+horaBorrado);
+                                                        long diffInMillies = ahora - horaBorrado;
+                                                        TimeUnit diferencia = TimeUnit.MINUTES;
+                                                        Long diferenciaH = diferencia.convert(diffInMillies, TimeUnit.MILLISECONDS);
+                                                        Log.d("horas","diferencia: "+diferencia.convert(diffInMillies, TimeUnit.MILLISECONDS));
+                                                        Log.d("horas","MAXIMO: "+HorasTotales);
+
+                                                        if(diferenciaH <= HorasTotales){
+                                                            dataSnapshot.getRef().removeValue();
+
+                                                        }
+                                                    }
+                                                }
+
+                                                @Override
+                                                public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+                                                }
+
+                                                @Override
+                                                public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+                                                }
+
+                                                @Override
+                                                public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+                                                }
+
+                                                @Override
+                                                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                                }
+                                            });
+
+                                        }
+                                    }
+                                }
+                            }
+
+                            @Override
+                            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+                            }
+
+                            @Override
+                            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+                            }
+
+                            @Override
+                            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                            }
+                        });
+                    }
+
+                    private void borrarRechazados() {
+                        Log.d("entra2","1");
+
+                        usersDb.addChildEventListener(new ChildEventListener() {
+                            @Override
+                            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                                if(dataSnapshot.exists()  && dataSnapshot.getKey().equals(currentUId)){
+                                    Log.d("entra2","2");
+                                    if(dataSnapshot.hasChild("connections")){
+                                        Log.d("entra2","3");
+                                        if(dataSnapshot.child("connections").hasChild("publicacionesRechazadas")){
+                                            Log.d("entra2","4");
+                                            FirebaseDatabase.getInstance().getReference().child("Users").child(currentUId).child("connections").child("publicacionesRechazadas").removeValue();
+                                        }
+                                    }
+                                }
+                            }
+
+                            @Override
+                            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+                            }
+
+                            @Override
+                            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+                            }
+
+                            @Override
+                            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                            }
+                        });
+
+                    }
+                });
+                AlertDialog mDialog = mBuilder.create();
+                mDialog.show();
+            }
+        });
 
         flingContainer.setAdapter(arrayAdapter);
         flingContainer.setFlingListener(new SwipeFlingAdapterView.onFlingListener() {
@@ -138,7 +303,7 @@ public class PaginaPrincipal extends AppCompatActivity {
             public void onLeftCardExit(Object dataObject) {
                 cards obj = (cards) dataObject;
                 String idClothes = obj.getClothesId();
-                usersDb.child(mAuth.getCurrentUser().getUid()).child("connections").child("publicacionesRechazadas").child(idClothes).setValue(true); //esto significa que no le gusto y le dio a la izq
+                usersDb.child(mAuth.getCurrentUser().getUid()).child("connections").child("publicacionesRechazadas").child(idClothes).setValue(new Date().getTime()); //esto significa que no le gusto y le dio a la izq
                 Toast.makeText(PaginaPrincipal.this,"Rechazado!", Toast.LENGTH_SHORT).show();
             }
 
