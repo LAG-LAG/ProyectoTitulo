@@ -2,6 +2,7 @@
     <string name="app_name">Swapdrobe</string>
     <string name="facebook_app_id">973126683132442</string>
     <string name="fb_login_protocol_scheme">fb973126683132442</string>
+    <string name="key_google_map">AIzaSyAov-A4hAfu7wP76_DpSlA9izVrhVtZMZk</string>
     <string-array name="regiones">
         <item>Seleccione Region</item>
     </string-array>

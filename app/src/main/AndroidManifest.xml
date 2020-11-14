@@ -10,6 +10,9 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
@@ -20,95 +23,96 @@
         android:roundIcon="@drawable/swapdrobe_icon2"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.NoActionBar"
-        android:hardwareAccelerated="true"
+        android:hardwareAccelerated="false"
         android:largeHeap="true">
-        <activity android:name="com.mrswapdrobe.swapdrobe.resetPassword"></activity>
 
-        <meta-data
-            android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyAov-A4hAfu7wP76_DpSlA9izVrhVtZMZk" />
+                <meta-data
+                    android:name="com.google.android.geo.API_KEY"
+                    android:value="@string/key_google_map"
+                    />
 
-        <activity android:name="com.mrswapdrobe.swapdrobe.VerPuntuacionDeVendedor" />
-        <activity android:name="com.mrswapdrobe.swapdrobe.VerPerfilDeVendedor" />
-        <activity android:name="com.mrswapdrobe.swapdrobe.MisPublicacionesVendidas" />
-        <activity android:name="com.mrswapdrobe.swapdrobe.imagenSubidaFile" />
-        <activity android:name="com.mrswapdrobe.swapdrobe.MisFavoritosDetalle" />
-        <activity
-            android:name="com.mrswapdrobe.swapdrobe.EditarPublicacion"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name="com.darsh.multipleimageselect.activities.AlbumSelectActivity"
-            android:theme="@style/MultipleImageSelectTheme">
-            <intent-filter>
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-        <activity android:name="com.mrswapdrobe.swapdrobe.MiPublicacionDetalle" />
-        <activity android:name="com.mrswapdrobe.swapdrobe.Filtros" />
-        <activity
-            android:name="com.mrswapdrobe.swapdrobe.Valorar"
-            android:parentActivityName="com.mrswapdrobe.swapdrobe.ChatUserActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name="com.mrswapdrobe.swapdrobe.misChats"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name="com.mrswapdrobe.swapdrobe.ChatUserActivity"
-            android:parentActivityName="com.mrswapdrobe.swapdrobe.misChats"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name="com.mrswapdrobe.swapdrobe.detallePublicacion"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name="com.mrswapdrobe.swapdrobe.MisFavoritos"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name="com.mrswapdrobe.swapdrobe.VerMiCuenta"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name="com.mrswapdrobe.swapdrobe.MisPublicaciones"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name="com.mrswapdrobe.swapdrobe.Account"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name="com.mrswapdrobe.swapdrobe.Registration"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name="com.mrswapdrobe.swapdrobe.PaginaPrincipal"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name="com.mrswapdrobe.swapdrobe.AddPublicaciones"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name="com.mrswapdrobe.swapdrobe.Login"
-            android:screenOrientation="portrait">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+                <activity android:name="com.mrswapdrobe.swapdrobe.resetPassword"></activity>
+                <activity android:name="com.mrswapdrobe.swapdrobe.VerPuntuacionDeVendedor" />
+                <activity android:name="com.mrswapdrobe.swapdrobe.VerPerfilDeVendedor" />
+                <activity android:name="com.mrswapdrobe.swapdrobe.MisPublicacionesVendidas" />
+                <activity android:name="com.mrswapdrobe.swapdrobe.imagenSubidaFile" />
+                <activity android:name="com.mrswapdrobe.swapdrobe.MisFavoritosDetalle" />
+                <activity
+                    android:name="com.mrswapdrobe.swapdrobe.EditarPublicacion"
+                    android:screenOrientation="portrait" />
+                <activity
+                    android:name="com.darsh.multipleimageselect.activities.AlbumSelectActivity"
+                    android:theme="@style/MultipleImageSelectTheme">
+                    <intent-filter>
+                        <category android:name="android.intent.category.DEFAULT" />
+                    </intent-filter>
+                </activity>
+                <activity android:name="com.mrswapdrobe.swapdrobe.MiPublicacionDetalle" />
+                <activity android:name="com.mrswapdrobe.swapdrobe.Filtros" />
+                <activity
+                    android:name="com.mrswapdrobe.swapdrobe.Valorar"
+                    android:parentActivityName="com.mrswapdrobe.swapdrobe.ChatUserActivity"
+                    android:screenOrientation="portrait" />
+                <activity
+                    android:name="com.mrswapdrobe.swapdrobe.misChats"
+                    android:screenOrientation="portrait" />
+                <activity
+                    android:name="com.mrswapdrobe.swapdrobe.ChatUserActivity"
+                    android:parentActivityName="com.mrswapdrobe.swapdrobe.misChats"
+                    android:screenOrientation="portrait" />
+                <activity
+                    android:name="com.mrswapdrobe.swapdrobe.detallePublicacion"
+                    android:screenOrientation="portrait" />
+                <activity
+                    android:name="com.mrswapdrobe.swapdrobe.MisFavoritos"
+                    android:screenOrientation="portrait" />
+                <activity
+                    android:name="com.mrswapdrobe.swapdrobe.VerMiCuenta"
+                    android:screenOrientation="portrait" />
+                <activity
+                    android:name="com.mrswapdrobe.swapdrobe.MisPublicaciones"
+                    android:screenOrientation="portrait" />
+                <activity
+                    android:name="com.mrswapdrobe.swapdrobe.Account"
+                    android:screenOrientation="portrait" />
+                <activity
+                    android:name="com.mrswapdrobe.swapdrobe.Registration"
+                    android:screenOrientation="portrait" />
+                <activity
+                    android:name="com.mrswapdrobe.swapdrobe.PaginaPrincipal"
+                    android:screenOrientation="portrait" />
+                <activity
+                    android:name="com.mrswapdrobe.swapdrobe.AddPublicaciones"
+                    android:screenOrientation="portrait" />
+                <activity
+                    android:name="com.mrswapdrobe.swapdrobe.Login"
+                    android:screenOrientation="portrait">
+                    <intent-filter>
+                        <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:name="com.facebook.FacebookActivity"
-            android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
-            android:label="@string/app_name" />
-        <activity
-            android:name="com.facebook.CustomTabActivity"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
+                        <category android:name="android.intent.category.LAUNCHER" />
+                    </intent-filter>
+                </activity>
+                <activity
+                    android:name="com.facebook.FacebookActivity"
+                    android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+                    android:label="@string/app_name" />
+                <activity
+                    android:name="com.facebook.CustomTabActivity"
+                    android:exported="true">
+                    <intent-filter>
+                        <action android:name="android.intent.action.VIEW" />
 
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
+                        <category android:name="android.intent.category.DEFAULT" />
+                        <category android:name="android.intent.category.BROWSABLE" />
 
-                <data android:scheme="@string/fb_login_protocol_scheme" />
-            </intent-filter>
-        </activity>
+                        <data android:scheme="@string/fb_login_protocol_scheme" />
+                    </intent-filter>
+                </activity>
 
-        <meta-data
-            android:name="com.facebook.sdk.ApplicationId"
-            android:value="@string/facebook_app_id" />
-    </application>
+                <meta-data
+                    android:name="com.facebook.sdk.ApplicationId"
+                    android:value="@string/facebook_app_id" />
+            </application>
 
-</manifest>
+        </manifest>
