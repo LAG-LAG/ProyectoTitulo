@@ -101,6 +101,13 @@ public class MisPublicacionesVendidas extends AppCompatActivity {
                                     listItems.add(item);
                                     adapter.notifyDataSetChanged(); //esto se usa cad vez que se añade o se quita un elemetno del arraylist de los items.
                                 }
+                                else if (dataSnapshot.hasChild("ValorPrenda") && dataSnapshot.hasChild("tituloPublicacion") && dataSnapshot.hasChild("DescripcionPrenda") && dataSnapshot.hasChild("clothesPhotos") && dataSnapshot.hasChild("vendidaTemporal")){
+                                    if(dataSnapshot.child("vendidaTemporal").getValue().toString().equals("1")){
+                                        final publicacion item = new publicacion(dataSnapshot.child("tituloPublicacion").getValue().toString(), fotoPublicacion, "$" + dataSnapshot.child("ValorPrenda").getValue().toString(), clothesCurrentUid);
+                                        listItems.add(item);
+                                        adapter.notifyDataSetChanged(); //esto se usa cad vez que se añade o se quita un elemetno del arraylist de los items.
+                                    }
+                                }
                                 TieneItems();
                             }
                         }
