@@ -426,10 +426,13 @@ private boolean addLocation;
                         if (map.get("profileImages") == null ) {
                             String userId = mAuth.getCurrentUser().getUid();
                             if(dataSnapshot.hasChild("profileImageUrl")) {
+                                //FirebaseStorage.getInstance().getReference().child("profileImages").child(dataSnapshot.child("profileImageUrl").getValue().toString()).delete();
+                                FirebaseStorage mFirebaseStorage = FirebaseStorage.getInstance().getReference().child("profileImages").getStorage();
+                                StorageReference photo = mFirebaseStorage.getReferenceFromUrl(dataSnapshot.child("profileImageUrl").getValue().toString());
+                                photo.delete();
                                 if(borrarFotoPerfil==1) {
                                     FirebaseDatabase.getInstance().getReference().child("Users").child(userId).child("profileImageUrl").removeValue();
                                 }
-                                //FirebaseStorage.getInstance().getReference().child("profileImages").child(userId).child(map.get("profilesImages").toString()).delete();
 
                             }
                         }
@@ -449,12 +452,15 @@ private boolean addLocation;
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-
-        if(requestCode==REQUEST_PLACE_PICKER && resultCode == Activity.RESULT_OK){
+        if(requestCode==1 && resultCode == Activity.RESULT_OK) {
             final Uri imageUri = data.getData();
             mborrarFotoPerfil.setVisibility(View.VISIBLE);
             resultUri = imageUri;
             mProfileImage.setImageURI(resultUri);
+        }
+
+        if(requestCode==REQUEST_PLACE_PICKER && resultCode == Activity.RESULT_OK){
+
             if(addLocation == true) {
                 com.google.android.libraries.places.api.model.Place place = PingPlacePicker.getPlace(data);
                 if(place!=null) {
@@ -587,6 +593,16 @@ private boolean addLocation;
             }
         });
 
+    }
+
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (dialog != null) {
+            dialog.dismiss();
+            dialog = null;
+        }
     }
 
     //toolbar

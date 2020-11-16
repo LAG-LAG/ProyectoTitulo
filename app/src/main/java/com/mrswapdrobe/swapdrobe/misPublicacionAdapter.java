@@ -22,6 +22,8 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -110,6 +112,18 @@ public class misPublicacionAdapter extends BaseAdapter{
                                     @Override
                                     public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                                         if(dataSnapshot.exists() && dataSnapshot.getKey().equals(item.getIdClothes())){
+                                            //StorageReference storageRef = FirebaseStorage.getInstance().getReference().child("prendasImages").child(currentUId).child(item.getIdClothes());
+                                            //storageRef.delete();
+                                            for (DataSnapshot photos : dataSnapshot.child("clothesPhotos").getChildren()) {
+                                                String Url = photos.getValue().toString();
+                                                //FirebaseStorage.getInstance().getReference().child("prendasImages").child(currentUId).child(item.getIdClothes()).child(Url).delete();
+
+                                                FirebaseStorage mFirebaseStorage = FirebaseStorage.getInstance().getReference().child("prendasImages").child(currentUId).child(item.getIdClothes()).getStorage();
+                                                StorageReference photo = mFirebaseStorage.getReferenceFromUrl(Url);
+                                                photo.delete();
+                                            }
+
+
                                             dataSnapshot.getRef().removeValue();
                                             Intent intent = new Intent(context,MisPublicaciones.class);
                                             context.startActivity(intent);
