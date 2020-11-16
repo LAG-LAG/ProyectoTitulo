@@ -4,6 +4,7 @@ esta clase corresponde al activity_login. es la primera vista que se ve al ingre
 entrada: revisa si esta logueado, si lo esta se salta esta vista y va a pagina principal.
 salida: al presionar en registrar, se puede crear una cuenta. al presionar en los logos de facebook o google, se registra o se loguea si es necesario mediante esos sistemas.
  */
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;

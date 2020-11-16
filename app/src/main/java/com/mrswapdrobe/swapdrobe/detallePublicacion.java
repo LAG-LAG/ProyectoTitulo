@@ -13,11 +13,10 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.viewpager.widget.ViewPager;
 
 import com.bumptech.glide.Glide;
 import com.denzcoskun.imageslider.ImageSlider;
-import com.denzcoskun.imageslider.constants.ScaleTypes;
-import com.denzcoskun.imageslider.interfaces.ItemClickListener;
 import com.denzcoskun.imageslider.models.SlideModel;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
@@ -48,6 +47,8 @@ public class detallePublicacion extends AppCompatActivity {
     private ImageSlider mSlider;
     private ArrayList<SlideModel> imageList;
     private ChildEventListener childEventListener;
+    private ViewPager viewPager;
+    private ViewPagerAdapter adapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -84,22 +85,26 @@ public class detallePublicacion extends AppCompatActivity {
         mTalla = (TextView) findViewById(R.id.tallaPrendaDetalle);
         mEstado = (TextView) findViewById(R.id.estadoPrendaDetalle);
         indiceFotoActual=0;
-        mSlider = (ImageSlider) findViewById(R.id.fotoDetallePublicacion);
+        //mSlider = (ImageSlider) findViewById(R.id.fotoDetallePublicacion);
         imageList = new ArrayList<SlideModel>();
         obtenerDatosPublicacion();
         obtenerNombreDueño();
         mAuth = FirebaseAuth.getInstance();
 
-
+        viewPager = (ViewPager) findViewById(R.id.fotoDetallePublicacion);
+        adapter = new ViewPagerAdapter(detallePublicacion.this, urlImagenes);
+        viewPager.setAdapter(adapter);
 
         usersDb = FirebaseDatabase.getInstance().getReference().child("Users"); //esto obtiene todos los usuarios de la bd
-
+/*
         mSlider.setItemClickListener(new ItemClickListener() {
             @Override
             public void onItemSelected(int i) {
 
             }
         });
+
+ */
         mEditar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -215,18 +220,18 @@ public class detallePublicacion extends AppCompatActivity {
                 case "default":
                     Picasso.get().setLoggingEnabled(true);
                     //Glide.with(getApplication()).load(card_item.getProfileImageUrl()).into(image);
-                    Picasso.get().load(R.mipmap.ic_launcher).into(mFotoActual);
+                    Picasso.get().load(R.mipmap.ic_launcher).fit().centerCrop().into(mFotoActual);
                     break;
                 default:
                     Picasso.get().setLoggingEnabled(true);
                     //Glide.with(getApplication()).load(card_item.getProfileImageUrl()).into(image);
-                    Picasso.get().load(urlFotoActual).into(mFotoActual);
+                    Picasso.get().load(urlFotoActual).fit().centerCrop().into(mFotoActual);
                     break;
 
             }
             Picasso.get().setLoggingEnabled(true);
             //Glide.with(getApplication()).load(profileImageUrl).into(mProfileImage);
-        Picasso.get().load(urlFotoActual).into(mFotoActual);
+        Picasso.get().load(urlFotoActual).fit().centerCrop().into(mFotoActual);
     }
 
 
@@ -238,14 +243,20 @@ public class detallePublicacion extends AppCompatActivity {
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                 if(dataSnapshot.exists()){
                     urlImagenes.add(dataSnapshot.getValue().toString());
-                    SlideModel aux = new SlideModel(dataSnapshot.getValue().toString(),ScaleTypes.FIT);
-                    imageList.add(aux);
-                    mSlider.setImageList(imageList,ScaleTypes.FIT);
+                    //SlideModel aux = new SlideModel(dataSnapshot.getValue().toString(),ScaleTypes.FIT);
+                    //imageList.add(aux);
+
+
+
+
+                    adapter.notifyDataSetChanged();
+                    //mSlider.setImageList(imageList,ScaleTypes.FIT);
                     if(indiceFotoActual==0) {
                         indiceFotoActual++;
                     }
                     tamanoUrlImagenes++;
                     clothesDb.removeEventListener(childEventListener);
+
                 }
             }
 

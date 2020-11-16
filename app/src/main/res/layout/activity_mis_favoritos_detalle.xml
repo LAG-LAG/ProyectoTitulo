@@ -12,10 +12,11 @@
         layout="@layout/toolbar" />
 
 
-    <com.denzcoskun.imageslider.ImageSlider
+    <androidx.viewpager.widget.ViewPager
         android:id="@+id/fotoFavoritosDetalle"
-        android:layout_width="403dp"
-        android:layout_height="283dp"
+        android:layout_width="377dp"
+        android:layout_height="371dp"
+        android:layout_marginTop="16dp"
         app:iss_error_image="@drawable/cargando"
         app:iss_placeholder="@drawable/cargando"
         app:layout_constraintEnd_toEndOf="parent"
@@ -23,7 +24,7 @@
         app:layout_constraintTop_toBottomOf="@+id/toolbar"
         app:srcCompat="@drawable/sinprenda">
 
-    </com.denzcoskun.imageslider.ImageSlider>
+    </androidx.viewpager.widget.ViewPager>
 
     <LinearLayout
         android:id="@+id/LLdatospublca"

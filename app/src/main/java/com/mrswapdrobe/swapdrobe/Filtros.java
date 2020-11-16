@@ -1,11 +1,13 @@
 package com.mrswapdrobe.swapdrobe;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
+import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -26,14 +28,17 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 
+import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
+import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlacePicker;
+import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.libraries.places.api.model.Place;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
@@ -43,6 +48,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.rtchagas.pingplacepicker.PingPlacePicker;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
@@ -50,7 +56,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-public class Filtros extends AppCompatActivity {
+public class Filtros extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
     private DatabaseReference mCustomerDatabase;
     private FirebaseAuth mAuth;
     private DatabaseReference usersDb;
@@ -64,7 +70,12 @@ public class Filtros extends AppCompatActivity {
     private ChildEventListener childListenerEliminar;
     private boolean isChecked;
     private SeekBar mSeekbar;
-    int PLACE_PICKER_REQUEST = 1;
+    private final static int PLACE_PICKER_REQUEST = 999;
+    private final static int REQUEST_PLACE_PICKER =1001;
+    GoogleMap gMap;
+    private GoogleApiClient mGoogleApiClient;
+    WifiManager wifiManager;
+
     private FusedLocationProviderClient fusedLocationProviderClient;
 
     @Override
@@ -72,6 +83,20 @@ public class Filtros extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_filtros);
+
+
+
+        wifiManager= (WifiManager) this.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
+
+/*
+        mGoogleApiClient = new GoogleApiClient
+                .Builder(this)
+                .addApi(Places.GEO_DATA_API)
+                .addApi(Places.PLACE_DETECTION_API)
+                .enableAutoManage(this, this)
+                .build();
+*/
+
         mAuth = FirebaseAuth.getInstance();
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         currentUId = user.getUid();
@@ -97,11 +122,23 @@ public class Filtros extends AppCompatActivity {
         tipoPrendaBusqueda = getIntent().getExtras().getString("tipoPrendaAnterior");
         regionBusqueda = getIntent().getExtras().getString("regionAnterior");
         estadoBusqueda = getIntent().getExtras().getString("estadoAnterior");
+//Toolbar Menu
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setTitle("Filtros de Busqueda");
+        }
 
         mRegionesSpinner.setVisibility(View.INVISIBLE);
         mComunasSpinner.setVisibility(View.INVISIBLE);
         isChecked = mSwitch.isChecked(); //ESTO HAY QUE CAMBIARLO POR EL VALOR DEL SWITCH EN LA BD.
         obtenerValoresSeekbar();
+
+
+
+
         if(isChecked == false) {
             mRegionesSpinner.setVisibility(View.INVISIBLE);
             mComunasSpinner.setVisibility(View.INVISIBLE);
@@ -133,14 +170,7 @@ public class Filtros extends AppCompatActivity {
         }
         //Toast.makeText(this, regionBusqueda, Toast.LENGTH_SHORT).show();
 
-        //Toolbar Menu
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setTitle("Filtros de Busqueda");
-        }
+
 /*
         getFiltroInfo();
         getSpinnerDatos();
@@ -152,19 +182,31 @@ public class Filtros extends AppCompatActivity {
         mUbication.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
+                wifiManager.setWifiEnabled(false);
+                //openPlacePicker();
+                showPlacePicker();
+
+
+/*
                 try {
+                    PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
                     startActivityForResult(builder.build(Filtros.this),PLACE_PICKER_REQUEST);
+                    Log.d("kasbo","2");
                     //startActivityForResult(builder.build(Filtros.this),PLACE_PICKER_REQUEST);
 
-                } catch (GooglePlayServicesRepairableException e) {
-                    
-                    e.printStackTrace();
-                } catch (GooglePlayServicesNotAvailableException e) {
+                } catch (GooglePlayServicesRepairableException | GooglePlayServicesNotAvailableException e) {
+                    Log.e("kasbo","1");
+                    Toast.makeText(Filtros.this, "Intente abrir mapa nuevamente.", Toast.LENGTH_SHORT).show();
                     e.printStackTrace();
                 }
+*/
             }
+
+
+
+
         });
+
 
         mSeekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
@@ -427,18 +469,66 @@ public class Filtros extends AppCompatActivity {
                 });
     }
 
+    private void showPlacePicker() {
+        PingPlacePicker.IntentBuilder builder = new PingPlacePicker.IntentBuilder();
+        builder.setAndroidApiKey("YOUR_ANDROID_API_KEY")
+                .setMapsApiKey("YOUR_MAPS_API_KEY");
+
+        // If you want to set a initial location rather then the current device location.
+        // NOTE: enable_nearby_search MUST be true.
+        // builder.setLatLng(new LatLng(37.4219999, -122.0862462))
+
+        try {
+            Intent placeIntent = builder.build(this);
+            startActivityForResult(placeIntent, REQUEST_PLACE_PICKER);
+        }
+        catch (Exception ex) {
+            // Google Play services is not available...
+        }
+    }
+
+    private void openPlacePicker() {
+        PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
+        try {
+            startActivityForResult(builder.build(this), PLACE_PICKER_REQUEST);
+
+            //Enable Wifi
+            wifiManager.setWifiEnabled(true);
+
+        } catch (GooglePlayServicesRepairableException e) {
+            Log.d("Exception",e.getMessage());
+
+            e.printStackTrace();
+        } catch (GooglePlayServicesNotAvailableException e) {
+            Log.d("Exception",e.getMessage());
+
+            e.printStackTrace();
+        }
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        if ((requestCode == REQUEST_PLACE_PICKER) && (resultCode == RESULT_OK)) {
+            Place place = PingPlacePicker.getPlace(data);
+            if (place != null) {
+                latitude = place.getLatLng().latitude;
+                longitude = place.getLatLng().longitude;
+            }
+        }
+        /*
         if (requestCode == PLACE_PICKER_REQUEST) {
             if (resultCode == RESULT_OK) {
-                Place place = PlacePicker.getPlace(data, this);
+                //Place place = PlacePicker.getPlace(data, this);
+                Place place = PlacePicker.getPlace(Filtros.this, data);
+
                 latitude = place.getLatLng().latitude;
                 longitude = place.getLatLng().longitude;
 
                 //mMapPicker.setText(stringBuilder.toString());
             }
         }
+        */
     }
 
     private void obtenerValoresSeekbar() {
@@ -595,10 +685,16 @@ public class Filtros extends AppCompatActivity {
 
 
 
-
     public boolean onOptionsItemSelected(MenuItem item){
         Intent myIntent = new Intent(getApplicationContext(), PaginaPrincipal.class);
         startActivityForResult(myIntent, 0);
         return true;
     }
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+
+    }
+
+
 }
