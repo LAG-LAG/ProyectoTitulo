@@ -224,6 +224,30 @@ public class MiPublicacionDetalle extends AppCompatActivity {
                             mTextViewPuntualidad.setText("S/V");
                         }
                     }
+                    else if(dataSnapshot.hasChild("vendidaTemporal")){
+                        if(dataSnapshot.child("vendidaTemporal").getValue().toString().equals("1")){
+                            mGuardar.setVisibility(View.INVISIBLE);
+                            mRechazar.setVisibility(View.INVISIBLE);
+                            mLinearLayoutValoracion.setVisibility(View.VISIBLE);
+
+                            if(dataSnapshot.hasChild("valoracionTrato") ){
+                                if(dataSnapshot.child("valoracionTrato") != null){
+                                    mTextViewTrato.setText(dataSnapshot.child("valoracionTrato").getValue().toString());
+                                }
+                                if(dataSnapshot.child("valoracionEstado") != null){
+                                    mTextViewEstado.setText(dataSnapshot.child("valoracionEstado").getValue().toString());
+                                }
+                                if(dataSnapshot.child("valoracionPuntualidad") != null){
+                                    mTextViewPuntualidad.setText(dataSnapshot.child("valoracionPuntualidad").getValue().toString());
+                                }
+                            }
+                            else{
+                                mTextViewTrato.setText("S/V");
+                                mTextViewEstado.setText("S/V");
+                                mTextViewPuntualidad.setText("S/V");
+                            }
+                        }
+                    }
                     else{
                         mLinearLayoutValoracion.setVisibility(View.INVISIBLE);
                         mGuardar.setVisibility(View.VISIBLE);
