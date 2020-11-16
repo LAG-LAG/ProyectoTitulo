@@ -327,7 +327,7 @@ public class AddPublicaciones extends AppCompatActivity {
                         mRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                             @Override
                             public void onSuccess(Uri uri) {
-                                dialog.dismiss();
+                                //dialog.dismiss();
                                 Map newImage = new HashMap();
                                 newImage.put("photoId" + idPrenda, uri.toString());
                                 mClothesDatabase.updateChildren(newImage);
@@ -401,6 +401,15 @@ public class AddPublicaciones extends AppCompatActivity {
                     });
                 }
             });
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (dialog != null) {
+            dialog.dismiss();
+            dialog = null;
         }
     }
 

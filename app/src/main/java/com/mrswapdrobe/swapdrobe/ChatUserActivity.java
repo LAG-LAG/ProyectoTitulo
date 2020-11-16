@@ -405,6 +405,8 @@ public class ChatUserActivity extends AppCompatActivity {
                         item.setTitle("Marcar Como Vendida");
                         DatabaseReference estadoPrenda = FirebaseDatabase.getInstance().getReference().child("chat").child(chatId).child("marcadaComoVendida");
                         estadoPrenda.setValue("0");
+                       // DatabaseReference estadoPrenda = FirebaseDatabase.getInstance().getReference().child("Users").child(chatId).child("marcadaComoVendida");
+                        //estadoPrenda.setValue("0");
                     }
                     else if (item.getTitle().equals("Marcar Como Vendida")){
                         item.setTitle("Marcar Como No Vendida");
