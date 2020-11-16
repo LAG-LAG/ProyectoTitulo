@@ -185,21 +185,6 @@ public class Filtros extends AppCompatActivity implements GoogleApiClient.OnConn
                 wifiManager.setWifiEnabled(false);
                 //openPlacePicker();
                 showPlacePicker();
-
-
-/*
-                try {
-                    PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
-                    startActivityForResult(builder.build(Filtros.this),PLACE_PICKER_REQUEST);
-                    Log.d("kasbo","2");
-                    //startActivityForResult(builder.build(Filtros.this),PLACE_PICKER_REQUEST);
-
-                } catch (GooglePlayServicesRepairableException | GooglePlayServicesNotAvailableException e) {
-                    Log.e("kasbo","1");
-                    Toast.makeText(Filtros.this, "Intente abrir mapa nuevamente.", Toast.LENGTH_SHORT).show();
-                    e.printStackTrace();
-                }
-*/
             }
 
 

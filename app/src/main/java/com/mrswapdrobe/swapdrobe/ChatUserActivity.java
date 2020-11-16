@@ -405,11 +405,81 @@ public class ChatUserActivity extends AppCompatActivity {
                         item.setTitle("Marcar Como Vendida");
                         DatabaseReference estadoPrenda = FirebaseDatabase.getInstance().getReference().child("chat").child(chatId).child("marcadaComoVendida");
                         estadoPrenda.setValue("0");
+
+                        chatsDb.addChildEventListener(new ChildEventListener() {
+                            @Override
+                            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                                if(dataSnapshot.exists() && dataSnapshot.getKey().equals(chatId)){
+                                    if(dataSnapshot.hasChild("idPrenda")){
+                                        final String idPrenda = dataSnapshot.child("idPrenda").getValue().toString();
+                                        DatabaseReference estadoPrenda = FirebaseDatabase.getInstance().getReference().child("Users").child(idVendedor).child("clothes").child(idPrenda).child("vendidaTemporal");
+                                        estadoPrenda.setValue("0");
+                                    }
+                                }
+                            }
+
+                            @Override
+                            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+                            }
+
+                            @Override
+                            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+                            }
+
+                            @Override
+                            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                            }
+                        });
+
+
                     }
                     else if (item.getTitle().equals("Marcar Como Vendida")){
                         item.setTitle("Marcar Como No Vendida");
                         DatabaseReference estadoPrenda = FirebaseDatabase.getInstance().getReference().child("chat").child(chatId).child("marcadaComoVendida");
                         estadoPrenda.setValue("1");
+
+                        chatsDb.addChildEventListener(new ChildEventListener() {
+                            @Override
+                            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                                if(dataSnapshot.exists() && dataSnapshot.getKey().equals(chatId)){
+                                    if(dataSnapshot.hasChild("idPrenda")){
+                                        final String idPrenda = dataSnapshot.child("idPrenda").getValue().toString();
+                                        DatabaseReference estadoPrenda = FirebaseDatabase.getInstance().getReference().child("Users").child(idVendedor).child("clothes").child(idPrenda).child("vendidaTemporal");
+                                        estadoPrenda.setValue("1");
+                                    }
+                                }
+                            }
+
+                            @Override
+                            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+                            }
+
+                            @Override
+                            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+                            }
+
+                            @Override
+                            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                            }
+                        });
+
+
                     }
                     else{
                         Toast.makeText(ChatUserActivity.this, "Publicación ya fue vendida.", Toast.LENGTH_SHORT).show();
