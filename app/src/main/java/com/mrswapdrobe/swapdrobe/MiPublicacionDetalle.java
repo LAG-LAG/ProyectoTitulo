@@ -11,6 +11,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -34,7 +35,8 @@ import java.util.ArrayList;
 
 public class MiPublicacionDetalle extends AppCompatActivity {
 
-    private TextView mTitulo,mPrecio,mDescripcion,mColor,mTalla,mtipoPrenda,mEstado;
+    private TextView mTitulo,mPrecio,mDescripcion,mColor,mTalla,mtipoPrenda,mEstado,mTextViewTrato,mTextViewEstado,mTextViewPuntualidad;
+    private LinearLayout mLinearLayoutValoracion;
     private FirebaseAuth mAuth;
     private DatabaseReference clothesDb,photosDb,usersDb;
     private ImageView mAdelanteButton,mAtrasButton;
@@ -87,6 +89,12 @@ public class MiPublicacionDetalle extends AppCompatActivity {
         mColor = (TextView) findViewById(R.id.colorPrendaDetallePropia);
         mTalla = (TextView) findViewById(R.id.tallaPrendaDetallePropia);
         mEstado = (TextView) findViewById(R.id.estadoPrendaDetallePropia);
+
+        mLinearLayoutValoracion = (LinearLayout) findViewById(R.id.linearLayoutValoracion);
+        mTextViewTrato = (TextView) findViewById(R.id.TvValoracionTrato);
+        mTextViewEstado = (TextView) findViewById(R.id.TvValoracionEstado);
+        mTextViewPuntualidad = (TextView) findViewById(R.id.TvValoracionPuntualidad);
+
         indiceFotoActual=0;
         mSlider = (ImageSlider) findViewById(R.id.fotoDetallePublicacionPropia);
         imageList = new ArrayList<SlideModel>();
@@ -197,13 +205,32 @@ public class MiPublicacionDetalle extends AppCompatActivity {
                     if(dataSnapshot.hasChild("estaVendida")){
                         mGuardar.setVisibility(View.INVISIBLE);
                         mRechazar.setVisibility(View.INVISIBLE);
+                        mLinearLayoutValoracion.setVisibility(View.VISIBLE);
+
+                        if(dataSnapshot.hasChild("valoracionTrato") ){
+                            if(dataSnapshot.child("valoracionTrato") != null){
+                                mTextViewTrato.setText(dataSnapshot.child("valoracionTrato").getValue().toString());
+                            }
+                            if(dataSnapshot.child("valoracionEstado") != null){
+                                mTextViewEstado.setText(dataSnapshot.child("valoracionEstado").getValue().toString());
+                            }
+                            if(dataSnapshot.child("valoracionPuntualidad") != null){
+                                mTextViewPuntualidad.setText(dataSnapshot.child("valoracionPuntualidad").getValue().toString());
+                            }
+                        }
+                        else{
+                            mTextViewTrato.setText("S/V");
+                            mTextViewEstado.setText("S/V");
+                            mTextViewPuntualidad.setText("S/V");
+                        }
                     }
                     else{
-                            mGuardar.setVisibility(View.VISIBLE);
-                            mRechazar.setVisibility(View.VISIBLE);
-                            if(verPerfilVendedor==1){
-                                mRechazar.setVisibility(View.INVISIBLE);
-                            }
+                        mLinearLayoutValoracion.setVisibility(View.INVISIBLE);
+                        mGuardar.setVisibility(View.VISIBLE);
+                        mRechazar.setVisibility(View.VISIBLE);
+                        if(verPerfilVendedor==1){
+                            mRechazar.setVisibility(View.INVISIBLE);
+                        }
                     }
                 }
 
