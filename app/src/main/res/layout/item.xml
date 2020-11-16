@@ -3,8 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:card_view="http://schemas.android.com/tools"
 
-    android:layout_marginTop="60dp"
-    android:layout_marginBottom="70dp"
+    android:layout_marginTop="110dp"
+    android:layout_marginBottom="100dp"
     android:layout_marginLeft="35dp"
     android:layout_marginRight="35dp"
     android:layout_width="match_parent"
@@ -21,7 +21,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scaleType="centerCrop"
-        android:src="@drawable/cargando"/>
+        />
 
     <LinearLayout
         android:orientation="vertical"
