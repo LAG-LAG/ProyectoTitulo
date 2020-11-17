@@ -31,12 +31,18 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/key_google_map" />
 
-        <activity android:name="com.mrswapdrobe.swapdrobe.resetPassword"></activity>
-        <activity android:name="com.mrswapdrobe.swapdrobe.VerPuntuacionDeVendedor" />
-        <activity android:name="com.mrswapdrobe.swapdrobe.VerPerfilDeVendedor" />
-        <activity android:name="com.mrswapdrobe.swapdrobe.MisPublicacionesVendidas" />
-        <activity android:name="com.mrswapdrobe.swapdrobe.imagenSubidaFile" />
-        <activity android:name="com.mrswapdrobe.swapdrobe.MisFavoritosDetalle" />
+        <activity android:name="com.mrswapdrobe.swapdrobe.resetPassword"
+            android:screenOrientation="portrait" ></activity>
+        <activity android:name="com.mrswapdrobe.swapdrobe.VerPuntuacionDeVendedor"
+            android:screenOrientation="portrait" />
+        <activity android:name="com.mrswapdrobe.swapdrobe.VerPerfilDeVendedor"
+            android:screenOrientation="portrait" />
+        <activity android:name="com.mrswapdrobe.swapdrobe.MisPublicacionesVendidas"
+            android:screenOrientation="portrait" />
+        <activity android:name="com.mrswapdrobe.swapdrobe.imagenSubidaFile"
+            android:screenOrientation="portrait" />
+        <activity android:name="com.mrswapdrobe.swapdrobe.MisFavoritosDetalle"
+            android:screenOrientation="portrait" />
         <activity
             android:name="com.mrswapdrobe.swapdrobe.EditarPublicacion"
             android:screenOrientation="portrait" />
@@ -74,18 +80,22 @@
             android:screenOrientation="portrait" />
         <activity
             android:name="com.mrswapdrobe.swapdrobe.Account"
+            android:windowSoftInputMode="adjustPan"
             android:screenOrientation="portrait" />
         <activity
             android:name="com.mrswapdrobe.swapdrobe.Registration"
+            android:windowSoftInputMode="adjustPan"
             android:screenOrientation="portrait" />
         <activity
             android:name="com.mrswapdrobe.swapdrobe.PaginaPrincipal"
             android:screenOrientation="portrait" />
         <activity
             android:name="com.mrswapdrobe.swapdrobe.AddPublicaciones"
+            android:windowSoftInputMode="adjustPan"
             android:screenOrientation="portrait" />
         <activity
             android:name="com.mrswapdrobe.swapdrobe.Login"
+            android:windowSoftInputMode="adjustPan"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

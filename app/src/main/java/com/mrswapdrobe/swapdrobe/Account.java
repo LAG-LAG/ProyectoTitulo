@@ -195,7 +195,12 @@ private boolean addLocation;
         mAplicar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                saveUserInfo();
+                if(mNombre.getText().toString().trim().length() <= 20){
+                    saveUserInfo();
+                }
+                else{
+                    Toast.makeText(Account.this, "Nombre sobrepasa el limite de carateres.", Toast.LENGTH_SHORT).show();
+                }
             }
 
         });
