@@ -4,7 +4,7 @@
 
     <item
         android:title="publicaciones"
-        android:icon="@drawable/search_48dp"
+        android:icon="@drawable/card"
         android:id="@+id/publicacionesBtn"
         app:showAsAction="always"/>
 
