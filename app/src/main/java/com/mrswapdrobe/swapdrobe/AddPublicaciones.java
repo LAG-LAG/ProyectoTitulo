@@ -134,7 +134,12 @@ public class AddPublicaciones extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if(!modalClassList.isEmpty()) {
-                    savePublicacion();
+                    if(mTitulo.getText().toString().trim().length() <= 30){
+                        savePublicacion();
+                    }
+                    else{
+                        Toast.makeText(AddPublicaciones.this, "Nombre sobrepasa el limite de carateres.", Toast.LENGTH_SHORT).show();
+                    }
                 }
                 else{
                     Toast.makeText(AddPublicaciones.this, "Debe subir al menos una foto", Toast.LENGTH_SHORT).show();

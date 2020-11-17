@@ -334,11 +334,16 @@ public class EditarPublicacion extends AppCompatActivity {
                 comprobarImagen();
             }
         });
+
         mAplicar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                savePublicacion();
-
+                if(mTitulo.getText().toString().trim().length() <= 30){
+                    savePublicacion();
+                }
+                else{
+                    Toast.makeText(EditarPublicacion.this, "Nombre sobrepasa el limite de carateres.", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
