@@ -51,14 +51,14 @@
         android:layout_marginTop="32dp"
         android:layout_marginEnd="32dp"
         android:autofillHints=""
+        android:backgroundTint="#FFFFFF"
         android:ems="10"
+        android:hint="Contraseña"
         android:inputType="textPassword"
+        android:textColorHint="#FFFFFF"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/emailInputRegis"
-        android:hint="Contraseña"
-        android:backgroundTint="#FFFFFF"
-        android:textColorHint="#FFFFFF"/>
+        app:layout_constraintTop_toBottomOf="@+id/emailInputRegis" />
 
     <EditText
         android:id="@+id/passwordInputRegis2"
@@ -75,6 +75,15 @@
         android:textColorHint="#FFFFFF"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/passwordInputRegis" />
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:text="(min. 6 y max. 20 caracteres)"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/passwordInputRegis" />
 
