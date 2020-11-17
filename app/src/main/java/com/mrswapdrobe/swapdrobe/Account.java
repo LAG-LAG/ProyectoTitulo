@@ -210,49 +210,59 @@ private boolean addLocation;
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
                 String nombreRegion = mRegionesSpinner.getSelectedItem().toString();
-                final String regionAnterior;
-                //txt_region.setText(nombreRegion);
+                if(!nombreRegion.equals("Seleccione Región")) {
 
-                String jsonFileString = jsonLector.getJsonFromAssets(getApplicationContext(), "cities.json");
-                Log.i("data", jsonFileString);
+                    final String regionAnterior;
+                    //txt_region.setText(nombreRegion);
 
-                Gson gson = new Gson();
-                Type listUserType = new TypeToken<List<cities>>() {
-                }.getType();
+                    String jsonFileString = jsonLector.getJsonFromAssets(getApplicationContext(), "cities.json");
+                    Log.i("data", jsonFileString);
 
-                List<cities> cities = gson.fromJson(jsonFileString, listUserType);
+                    Gson gson = new Gson();
+                    Type listUserType = new TypeToken<List<cities>>() {
+                    }.getType();
 
-                List<String> list = new ArrayList<String>();
+                    List<cities> cities = gson.fromJson(jsonFileString, listUserType);
 
-                if (estadoComunas == 1) {
-                    int posicionComuna = 0;
-                    List<String> comunas = cities.get(position - 1).getComunas(); //esto esta bien, lo revise con toast y posicionregion-1 corresponde a lo que buscamos.
-                    //Toast.makeText(Account.this,cities.get(posicionRegion-1).region,Toast.LENGTH_SHORT).show();
+                    List<String> list = new ArrayList<String>();
 
-                    for (int x = 0; x < comunas.size(); x++) {
-                        if (comunas.get(x).equals(comunaAnterior)) {
-                            posicionComuna = x;
-                            break;
+                    if (estadoComunas == 1) {
+                        int posicionComuna = 0;
+                        List<String> comunas = cities.get(position - 1).getComunas(); //esto esta bien, lo revise con toast y posicionregion-1 corresponde a lo que buscamos.
+                        //Toast.makeText(Account.this,cities.get(posicionRegion-1).region,Toast.LENGTH_SHORT).show();
+
+                        for (int x = 0; x < comunas.size(); x++) {
+                            if (comunas.get(x).equals(comunaAnterior)) {
+                                posicionComuna = x;
+                                break;
+                            }
                         }
-                    }
 
-                    //Toast.makeText(Account.this, posicionComuna, Toast.LENGTH_SHORT).show();
-                    ArrayAdapter<String> arrayAdapterComunas = new ArrayAdapter<>(Account.this, android.R.layout.simple_expandable_list_item_1, comunas);
-                    arrayAdapterComunas.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                    mComunasSpinner.setAdapter(arrayAdapterComunas);
-                    mComunasSpinner.setSelection(posicionComuna);
-                } else if (position != 0) {
-                    List<String> comunas = cities.get(position - 1).getComunas();
-                    ArrayAdapter<String> adapter = new ArrayAdapter<String>(view.getContext(), android.R.layout.simple_spinner_item, comunas);
-                    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                    mComunasSpinner.setAdapter(adapter);
-                } else {
+                        //Toast.makeText(Account.this, posicionComuna, Toast.LENGTH_SHORT).show();
+                        ArrayAdapter<String> arrayAdapterComunas = new ArrayAdapter<>(Account.this, android.R.layout.simple_expandable_list_item_1, comunas);
+                        arrayAdapterComunas.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                        mComunasSpinner.setAdapter(arrayAdapterComunas);
+                        mComunasSpinner.setSelection(posicionComuna);
+                    } else if (position != 0) {
+                        List<String> comunas = cities.get(position - 1).getComunas();
+                        ArrayAdapter<String> adapter = new ArrayAdapter<String>(view.getContext(), android.R.layout.simple_spinner_item, comunas);
+                        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                        mComunasSpinner.setAdapter(adapter);
+                    } else {
+                        List<String> listVacia = new ArrayList<String>();
+                        listVacia.add("Seleccione Comuna");
+                        ArrayAdapter<String> adapter = new ArrayAdapter<String>(view.getContext(), android.R.layout.simple_spinner_item, listVacia);
+                        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+
+                        mComunasSpinner.setAdapter(adapter);
+                    }
+                }
+                else{
                     List<String> listVacia = new ArrayList<String>();
                     listVacia.add("Seleccione Comuna");
                     ArrayAdapter<String> adapter = new ArrayAdapter<String>(view.getContext(), android.R.layout.simple_spinner_item, listVacia);
                     adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
-
                     mComunasSpinner.setAdapter(adapter);
                 }
 
@@ -343,22 +353,17 @@ private boolean addLocation;
             }
 
 
-        }
-        else{
-            Toast.makeText(Account.this, "Datos Incorrectos.", Toast.LENGTH_SHORT).show();
-        }
+            //aca lo de la imagen
 
-        //aca lo de la imagen
+            if(resultUri != null){
+                final StorageReference filepath = FirebaseStorage.getInstance().getReference().child("profileImages").child(userId);
+                Bitmap bitmap = null;
 
-        if(resultUri != null){
-            final StorageReference filepath = FirebaseStorage.getInstance().getReference().child("profileImages").child(userId);
-            Bitmap bitmap = null;
-
-            try {
-                bitmap = MediaStore.Images.Media.getBitmap(getApplication().getContentResolver(), resultUri);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+                try {
+                    bitmap = MediaStore.Images.Media.getBitmap(getApplication().getContentResolver(), resultUri);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
 
 
 //            nsfwDetector.isNSFW(bitmap,confidenceThreshold)
@@ -368,85 +373,98 @@ private boolean addLocation;
 
 
 
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 20, baos);
-            byte[] data = baos.toByteArray();
-            UploadTask uploadTask = filepath.putBytes(data);
-            uploadTask.addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                    finish();
-                }
-            });
+                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 20, baos);
+                byte[] data = baos.toByteArray();
+                UploadTask uploadTask = filepath.putBytes(data);
+                uploadTask.addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        finish();
+                    }
+                });
 
-            // codigo para detectar fotos sexuales.
-            float confidenceThreshold = (float) 0.68; //radio de margen, mientras mas cercano al 1 permite foto mas nsfw.
-            NSFWDetector.INSTANCE.isNSFW(bitmap,confidenceThreshold, (isNSFW, confidence, image) -> {
-                if (isNSFW){
-                    Toast.makeText(this, "FOTO NO PERMITIDA.", Toast.LENGTH_SHORT).show();
-                    borrarFotoPerfil= 0;
-                } else {
-                    //Toast.makeText(this, "SFW with confidence: " + confidence, Toast.LENGTH_SHORT).show();
-                    dialog = new ProgressDialog(Account.this);
-                    dialog.setMessage("Cargando...");
-                    dialog.show();
+                // codigo para detectar fotos sexuales.
+                float confidenceThreshold = (float) 0.68; //radio de margen, mientras mas cercano al 1 permite foto mas nsfw.
+                NSFWDetector.INSTANCE.isNSFW(bitmap,confidenceThreshold, (isNSFW, confidence, image) -> {
+                    if (isNSFW){
+                        Toast.makeText(this, "FOTO NO PERMITIDA.", Toast.LENGTH_SHORT).show();
+                        borrarFotoPerfil= 0;
+                    } else {
+                        //Toast.makeText(this, "SFW with confidence: " + confidence, Toast.LENGTH_SHORT).show();
+                        dialog = new ProgressDialog(Account.this);
+                        dialog.setMessage("Cargando...");
+                        dialog.show();
 
-                    uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                            filepath.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                                @Override
-                                public void onSuccess(Uri uri) {
-                                    Map newImage = new HashMap();
-                                    newImage.put("profileImageUrl", uri.toString());
-                                    mCustomerDatabase.updateChildren(newImage);
-                                    dialog.dismiss();
-                                    Toast.makeText(Account.this, "Guardado Con Exito", Toast.LENGTH_SHORT).show();
-                                    //finish();
-                                    //return;
+                        uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                            @Override
+                            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                                filepath.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                    @Override
+                                    public void onSuccess(Uri uri) {
+                                        Map newImage = new HashMap();
+
+                                        newImage.put("profileImageUrl", uri.toString());
+                                        mCustomerDatabase.updateChildren(newImage);
+                                        dialog.dismiss();
+                                        //finish();
+                                        //return;
+                                    }
+                                }).addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception exception) {
+                                        //finish();
+                                        //return;
+                                    }
+                                });
+                            }
+                        });
+                    }
+                    return kotlin.Unit.INSTANCE;
+                });
+
+
+
+
+            }
+            else { //este if significa que no subio nada, entonces ve si antes era nulo, si lo era lo borra.
+                mCustomerDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        if (dataSnapshot.exists()) { //si existe y tiene algo ya guardado dentro lo muestra, para eso lo trae y lo castea al mapa.
+                            Map<String, Object> map = (Map<String, Object>) dataSnapshot.getValue();
+                            if (map.get("profileImages") == null ) {
+                                String userId = mAuth.getCurrentUser().getUid();
+                                if(dataSnapshot.hasChild("profileImageUrl")) {
+                                    //FirebaseStorage.getInstance().getReference().child("profileImages").child(dataSnapshot.child("profileImageUrl").getValue().toString()).delete();
+                                    FirebaseStorage mFirebaseStorage = FirebaseStorage.getInstance().getReference().child("profileImages").getStorage();
+                                    StorageReference photo = mFirebaseStorage.getReferenceFromUrl(dataSnapshot.child("profileImageUrl").getValue().toString());
+                                    photo.delete();
+                                    if(borrarFotoPerfil==1) {
+                                        FirebaseDatabase.getInstance().getReference().child("Users").child(userId).child("profileImageUrl").removeValue();
+                                    }
+
                                 }
-                            }).addOnFailureListener(new OnFailureListener() {
-                                @Override
-                                public void onFailure(@NonNull Exception exception) {
-                                    //finish();
-                                    //return;
-                                }
-                            });
-                        }
-                    });
-                }
-                return kotlin.Unit.INSTANCE;
-            });
-
-
-
-
-        }
-        else { //este if significa que no subio nada, entonces ve si antes era nulo, si lo era lo borra.
-            mCustomerDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    if (dataSnapshot.exists()) { //si existe y tiene algo ya guardado dentro lo muestra, para eso lo trae y lo castea al mapa.
-                        Map<String, Object> map = (Map<String, Object>) dataSnapshot.getValue();
-                        if (map.get("profileImages") == null ) {
-                            String userId = mAuth.getCurrentUser().getUid();
-                            if(dataSnapshot.hasChild("profileImageUrl")) {
-                                if(borrarFotoPerfil==1) {
-                                    FirebaseDatabase.getInstance().getReference().child("Users").child(userId).child("profileImageUrl").removeValue();
-                                }
-                                //FirebaseStorage.getInstance().getReference().child("profileImages").child(userId).child(map.get("profilesImages").toString()).delete();
-
                             }
                         }
                     }
-                }
 
-                @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
 
-                }
-            });
+                    }
+                });
+            }
+
+            Toast.makeText(Account.this, "Guardado Con Exito", Toast.LENGTH_SHORT).show();
+
+
         }
+        else{
+            Toast.makeText(Account.this, "Datos Incorrectos.", Toast.LENGTH_SHORT).show();
+        }
+
+
 
     }
 
@@ -454,12 +472,15 @@ private boolean addLocation;
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-
-        if(requestCode==REQUEST_PLACE_PICKER && resultCode == Activity.RESULT_OK){
+        if(requestCode==1 && resultCode == Activity.RESULT_OK) {
             final Uri imageUri = data.getData();
             mborrarFotoPerfil.setVisibility(View.VISIBLE);
             resultUri = imageUri;
             mProfileImage.setImageURI(resultUri);
+        }
+
+        if(requestCode==REQUEST_PLACE_PICKER && resultCode == Activity.RESULT_OK){
+
             if(addLocation == true) {
                 com.google.android.libraries.places.api.model.Place place = PingPlacePicker.getPlace(data);
                 if(place!=null) {
@@ -592,6 +613,16 @@ private boolean addLocation;
             }
         });
 
+    }
+
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (dialog != null) {
+            dialog.dismiss();
+            dialog = null;
+        }
     }
 
     //toolbar
