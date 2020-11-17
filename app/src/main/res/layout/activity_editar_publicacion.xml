@@ -7,6 +7,15 @@
     android:background="@drawable/background_color"
     tools:context=".EditarPublicacion">
 
+    <TextView
+        android:id="@+id/textView7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:text="(max. 30 caracteres)"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextTituloEditar" />
+
     <include
         android:id="@+id/toolbar"
         layout="@layout/toolbar" />
@@ -51,7 +60,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="24dp"
         android:layout_marginEnd="32dp"
         android:backgroundTint="#FFFFFF"
         android:ems="10"
@@ -151,8 +160,7 @@
         app:layout_constraintBottom_toTopOf="@+id/publicacionImageCrear4Editar"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbar"
-        app:layout_constraintVertical_bias="0.0"
-        />
+        app:layout_constraintVertical_bias="0.0" />
 
     <ImageView
         android:id="@+id/publicacionImageCrear4Editar"
@@ -162,8 +170,7 @@
         android:layout_marginBottom="16dp"
         android:src="@drawable/sinprenda"
         app:layout_constraintBottom_toTopOf="@+id/editTextTituloEditar"
-        app:layout_constraintStart_toStartOf="parent"
-        />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <ImageView
         android:id="@+id/publicacionImageCrear5Editar"
@@ -173,8 +180,7 @@
         android:src="@drawable/sinprenda"
         app:layout_constraintBottom_toTopOf="@+id/editTextTituloEditar"
         app:layout_constraintEnd_toStartOf="@+id/publicacionImageCrear6Editar"
-        app:layout_constraintStart_toEndOf="@+id/publicacionImageCrear4Editar"
-        />
+        app:layout_constraintStart_toEndOf="@+id/publicacionImageCrear4Editar" />
 
     <ImageView
         android:id="@+id/publicacionImageCrear6Editar"
@@ -184,8 +190,7 @@
         android:layout_marginBottom="16dp"
         android:src="@drawable/sinprenda"
         app:layout_constraintBottom_toTopOf="@+id/editTextTituloEditar"
-        app:layout_constraintEnd_toEndOf="parent"
-        />
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <ImageView
         android:id="@+id/publicacionImageCrear2Editar"
@@ -198,8 +203,7 @@
         app:layout_constraintEnd_toStartOf="@+id/publicacionImageCrear3Editar"
         app:layout_constraintStart_toEndOf="@+id/publicacionImageCrear1Editar"
         app:layout_constraintTop_toBottomOf="@+id/toolbar"
-        app:layout_constraintVertical_bias="0.0"
-         />
+        app:layout_constraintVertical_bias="0.0" />
 
 
     <ImageView
@@ -212,8 +216,7 @@
         app:layout_constraintBottom_toTopOf="@+id/publicacionImageCrear6Editar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbar"
-        app:layout_constraintVertical_bias="0.0"
-         />
+        app:layout_constraintVertical_bias="0.0" />
 
     <ImageView
         android:id="@+id/borrarPublicacionCrear1Editar"
