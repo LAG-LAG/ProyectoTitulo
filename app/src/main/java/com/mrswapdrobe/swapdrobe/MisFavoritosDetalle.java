@@ -413,6 +413,11 @@ public class MisFavoritosDetalle extends AppCompatActivity {
         });
     }
 
+    @Override
+    public void onBackPressed()
+    {
+
+    }
     private void obtenerNombreDueño() {
         usersDb = FirebaseDatabase.getInstance().getReference().child("Users");
         usersDb.addChildEventListener(new ChildEventListener() {

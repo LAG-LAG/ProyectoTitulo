@@ -274,6 +274,11 @@ public class misChats extends AppCompatActivity {
         return true;
     }
 
+    @Override
+    public void onBackPressed()
+    {
+
+    }
     //toolbar
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {

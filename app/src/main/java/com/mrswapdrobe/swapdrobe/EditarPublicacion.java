@@ -883,7 +883,11 @@ public class EditarPublicacion extends AppCompatActivity {
             });*/
         }
     }
+    @Override
+    public void onBackPressed()
+    {
 
+    }
     private void guardarImagen(Uri resultUri, String userId, final String idPrenda,String id) {
         if (resultUri != null) {
             final StorageReference filepath = FirebaseStorage.getInstance().getReference().child("prendasImages").child(userId).child(id).child(idPrenda);

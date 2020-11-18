@@ -1,15 +1,15 @@
 package com.mrswapdrobe.swapdrobe;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
@@ -177,6 +177,12 @@ public class VerPuntuacionDeVendedor extends AppCompatActivity {
         });
     }
 
+
+    @Override
+    public void onBackPressed()
+    {
+
+    }
     //toolbar
     public boolean onOptionsItemSelected(MenuItem item){
         finish();
