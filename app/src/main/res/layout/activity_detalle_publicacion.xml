@@ -14,11 +14,15 @@
 
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/fotoDetallePublicacion"
-        android:layout_width="377dp"
-        android:layout_height="371dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="8dp"
         app:iss_error_image="@drawable/cargando"
         app:iss_placeholder="@drawable/cargando"
+        app:layout_constraintBottom_toTopOf="@+id/LLDatosPublic"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.476"
         app:layout_constraintStart_toStartOf="parent"
@@ -63,12 +67,12 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
         android:orientation="vertical"
+        app:layout_constraintBottom_toTopOf="@+id/LLdescripcion"
         app:layout_constraintEnd_toStartOf="@+id/LLPrecioyVendedor"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/fotoDetallePublicacion">
+        app:layout_constraintStart_toStartOf="parent">
 
         <TextView
             android:id="@+id/tituloDetallePublicacion"
@@ -167,16 +171,14 @@
     <LinearLayout
         android:id="@+id/LLdescripcion"
         android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="8dp"
         android:orientation="vertical"
         app:layout_constraintBottom_toTopOf="@+id/guardarPublicacionDetalle"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/LLDatosPublic">
+        app:layout_constraintStart_toStartOf="parent">
 
         <TextView
             android:id="@+id/descripcion"
@@ -211,7 +213,9 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginBottom="16dp"
+        android:backgroundTint="#ff7a55"
         android:text="Descartar"
+        android:textColor="#ffffff"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
