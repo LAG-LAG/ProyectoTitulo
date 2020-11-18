@@ -4,6 +4,7 @@ Esta clase se encarga de mostrar los datos de la publicacion en la vista activit
 entrada: recibe el id de la prenda y del usuario que publico la prenda y obtiene los datos de esa prenda.
 salida: permite editar la publicacion o eliminarla.
  */
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -17,6 +18,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.viewpager.widget.ViewPager;
@@ -24,6 +26,7 @@ import androidx.viewpager.widget.ViewPager;
 import com.denzcoskun.imageslider.ImageSlider;
 import com.denzcoskun.imageslider.models.SlideModel;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -69,13 +72,13 @@ public class MiPublicacionDetalle extends AppCompatActivity {
         //mAtrasButton = (ImageView) findViewById(R.id.atrasDetalleButton);
 
         mGuardar = (Button) findViewById(R.id.guardarPublicacionDetallePropia);
-        mRechazar = (Button) findViewById(R.id.descartarPublicacionDetallePropia);
+        //mRechazar = (Button) findViewById(R.id.descartarPublicacionDetallePropia);
 
         if(getIntent().getExtras().getString("verPerfilVendedor")!=null){
             Log.d("verVendedor","gungaginga");
             verPerfilVendedor = 1;
             mGuardar.setText("Guardar");
-            mRechazar.setVisibility(View.INVISIBLE);
+            //mRechazar.setVisibility(View.INVISIBLE);
         }
         //      mAdelanteButton.setVisibility(View.INVISIBLE);
 //        mAtrasButton.setVisibility(View.INVISIBLE);
@@ -186,17 +189,25 @@ public class MiPublicacionDetalle extends AppCompatActivity {
                 }
             }
         });
-        mRechazar.setOnClickListener(new View.OnClickListener() {
+        /*mRechazar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //usersDb.child(mAuth.getCurrentUser().getUid()).child("connections").child("publicacionesRechazadas").child(idClothes).setValue(true);
-                DatabaseReference estadoPrenda = FirebaseDatabase.getInstance().getReference().child("Users").child(mAuth.getCurrentUser().getUid()).child("clothes").child(idClothes).child("vendidaTemporal");
-                estadoPrenda.setValue("1");
-                Intent intent = new Intent(MiPublicacionDetalle.this,PaginaPrincipal.class);
+                new AlertDialog.Builder(MiPublicacionDetalle.this)
+                        //.setTitle("")
+                        .setMessage("¿Esta seguro de remover la publicación?")
+                        .setIcon(android.R.drawable.ic_dialog_alert)
+                        .setPositiveButton("si", new DialogInterface.OnClickListener() {
 
-                startActivity(intent);
+                            public void onClick(DialogInterface dialog, int whichButton) {
+                                DatabaseReference estadoPrenda = FirebaseDatabase.getInstance().getReference().child("Users").child(mAuth.getCurrentUser().getUid()).child("clothes").child(idClothes).child("vendidaTemporal");
+                                estadoPrenda.setValue("1");
+                                Toast.makeText(MiPublicacionDetalle.this, "Publicacion marcada como vendida", Toast.LENGTH_SHORT).show();
+
+                            }})
+                        .setNegativeButton(android.R.string.no, null).show();
+
             }
-        });
+        });*/
         //hacer boton derecha visible.
         //el onclick del boton y que se cambie la foto
         //      }
@@ -220,7 +231,7 @@ public class MiPublicacionDetalle extends AppCompatActivity {
                     //SUBIR FOTOS.
                     if(dataSnapshot.hasChild("estaVendida")){
                         mGuardar.setVisibility(View.INVISIBLE);
-                        mRechazar.setVisibility(View.INVISIBLE);
+                        //mRechazar.setVisibility(View.INVISIBLE);
                         mLinearLayoutValoracion.setVisibility(View.VISIBLE);
 
                         if(dataSnapshot.hasChild("valoracionTrato") ){
@@ -243,7 +254,7 @@ public class MiPublicacionDetalle extends AppCompatActivity {
                     else if(dataSnapshot.hasChild("vendidaTemporal")){
                         if(dataSnapshot.child("vendidaTemporal").getValue().toString().equals("1")){
                             mGuardar.setVisibility(View.INVISIBLE);
-                            mRechazar.setVisibility(View.INVISIBLE);
+                            //mRechazar.setVisibility(View.INVISIBLE);
                             mLinearLayoutValoracion.setVisibility(View.VISIBLE);
 
                             if(dataSnapshot.hasChild("valoracionTrato") ){
@@ -267,9 +278,9 @@ public class MiPublicacionDetalle extends AppCompatActivity {
                     else{
                         mLinearLayoutValoracion.setVisibility(View.INVISIBLE);
                         mGuardar.setVisibility(View.VISIBLE);
-                        mRechazar.setVisibility(View.VISIBLE);
+                        //mRechazar.setVisibility(View.VISIBLE);
                         if(verPerfilVendedor==1){
-                            mRechazar.setVisibility(View.INVISIBLE);
+                            //mRechazar.setVisibility(View.INVISIBLE);
                         }
                     }
                 }

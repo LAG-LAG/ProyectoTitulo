@@ -141,6 +141,8 @@ public class EditarPublicacion extends AppCompatActivity {
         //Toolbar Menu
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
         if (getSupportActionBar() != null) {
             getSupportActionBar().setTitle("Editar Publicación");
         }
@@ -935,42 +937,10 @@ public class EditarPublicacion extends AppCompatActivity {
         }
     }
 
-    //Crea el menu en la toolbar
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu, menu);
-        return true;
-    }
-
     //Controla los botones del menu
     @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-
-        Intent myIntent = new Intent(getApplicationContext(), MisPublicaciones.class);
-        startActivityForResult(myIntent, 0);
+    public boolean onOptionsItemSelected(MenuItem item){
+        finish();
         return true;
-        /*
-        switch (item.getItemId()){
-            case R.id.accountBtn:
-                Intent intentAccount = new Intent(EditarPublicacion.this, VerMiCuenta.class);
-                startActivity(intentAccount);
-                finish();
-                break;
-
-            case R.id.chatBtn:
-                Intent intentChat = new Intent(EditarPublicacion.this, misChats.class);
-                startActivity(intentChat);
-                finish();
-                break;
-
-            case R.id.publicacionesBtn:
-                Intent intentPublicaciones = new Intent(EditarPublicacion.this, PaginaPrincipal.class);
-                startActivity(intentPublicaciones);
-                finish();
-                break;
-        }
-        */
-        //return super.onOptionsItemSelected(item);
     }
 }
