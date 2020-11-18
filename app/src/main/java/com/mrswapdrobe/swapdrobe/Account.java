@@ -55,7 +55,6 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.nipunru.nsfwdetector.NSFWDetector;
 import com.rtchagas.pingplacepicker.PingPlacePicker;
-import com.squareup.picasso.Picasso;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -588,20 +587,20 @@ private boolean addLocation;
                         profileImageUrl = map.get("profileImageUrl").toString();
                         switch(profileImageUrl){
                             case "default":
-                                Picasso.get().setLoggingEnabled(true);
-                                //Glide.with(getApplication()).load(card_item.getProfileImageUrl()).into(image);
-                                Picasso.get().load(R.mipmap.ic_launcher).fit().centerCrop().into(mProfileImage);
+                                //Picasso.get().setLoggingEnabled(true);
+                                Glide.with(getApplication()).load(R.mipmap.ic_launcher).into(mProfileImage);
+                                //Picasso.get().load(R.mipmap.ic_launcher).fit().centerCrop().into(mProfileImage);
                                 break;
                             default:
-                                Picasso.get().setLoggingEnabled(true);
-                                //Glide.with(getApplication()).load(card_item.getProfileImageUrl()).into(image);
-                                Picasso.get().load(profileImageUrl).fit().centerCrop().into(mProfileImage);
+                                //Picasso.get().setLoggingEnabled(true);
+                                Glide.with(getApplication()).load(profileImageUrl).into(mProfileImage);
+                                //Picasso.get().load(profileImageUrl).fit().centerCrop().into(mProfileImage);
                                 break;
 
                         }
-                        Picasso.get().setLoggingEnabled(true);
-                        //Glide.with(getApplication()).load(profileImageUrl).into(mProfileImage);
-                        Picasso.get().load(profileImageUrl).fit().centerCrop().into(mProfileImage);
+                        //Picasso.get().setLoggingEnabled(true);
+                        Glide.with(getApplication()).load(profileImageUrl).into(mProfileImage);
+                        //Picasso.get().load(profileImageUrl).fit().centerCrop().into(mProfileImage);
                         existeFotoPerfil =1;
                     }
                 }

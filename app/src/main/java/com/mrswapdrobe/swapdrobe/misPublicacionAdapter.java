@@ -15,6 +15,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 
+import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
@@ -24,7 +25,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -77,7 +77,9 @@ public class misPublicacionAdapter extends BaseAdapter{
         TextView tituloPublicacion = (TextView) view.findViewById(R.id.tituloPublicacion);
         TextView valorPublicacion = (TextView) view.findViewById(R.id.valorPublicacion);
 
-        Picasso.get().load(item.getProfileImageUrl()).fit().centerCrop().fit().centerCrop().into(imgPublicacion);
+        //Picasso.get().load(item.getProfileImageUrl()).fit().centerCrop().fit().centerCrop().into(imgPublicacion);
+        Glide.with(this.context).load(item.getProfileImageUrl()).into(imgPublicacion);
+
         tituloPublicacion.setText(item.getTituloPublicacion());
         valorPublicacion.setText(item.getValorPublicacion());
 

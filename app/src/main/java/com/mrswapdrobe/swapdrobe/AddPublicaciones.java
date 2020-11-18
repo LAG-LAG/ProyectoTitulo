@@ -36,6 +36,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
@@ -68,10 +71,10 @@ public class AddPublicaciones extends AppCompatActivity {
     private Uri resultUri4;
     private Uri resultUri5;
     private Uri resultUri6;
-    private DatabaseReference mClothesDatabase;
+    private DatabaseReference mClothesDatabase, usersDb;
     private int puedeSubir;
     private ImageView mPublicacionImage1;
-
+    private int puedeSubirPublicacion;
     private ImageView mPublicacionImage2;
     private ImageView mPublicacionImage3;
     private ImageView mPublicacionImage4;
@@ -86,7 +89,7 @@ public class AddPublicaciones extends AppCompatActivity {
     RecyclerView recyclerView;
     List<Imagen> modalClassList;
     addImagenesAdapter customAdapter;
-
+    ChildEventListener userListener;
 
 
     @Override
@@ -113,9 +116,14 @@ public class AddPublicaciones extends AppCompatActivity {
         //Toolbar Menu
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        getUserInfo();
         if (getSupportActionBar() != null) {
             getSupportActionBar().setTitle("Añadir Aviso");
         }
+
+
+
+
 
 
         selectBtn.setOnClickListener(new View.OnClickListener() {
@@ -133,22 +141,56 @@ public class AddPublicaciones extends AppCompatActivity {
         mAplicar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(!modalClassList.isEmpty()) {
-                    if(mTitulo.getText().toString().trim().length() <= 30){
+                if (puedeSubirPublicacion != 1) {
+                    if (!modalClassList.isEmpty()) {
                         savePublicacion();
+                    } else {
+                        Toast.makeText(AddPublicaciones.this, "Debe subir al menos una foto", Toast.LENGTH_SHORT).show();
                     }
-                    else{
-                        Toast.makeText(AddPublicaciones.this, "Nombre sobrepasa el limite de carateres.", Toast.LENGTH_SHORT).show();
-                    }
+
                 }
                 else{
-                    Toast.makeText(AddPublicaciones.this, "Debe subir al menos una foto", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(AddPublicaciones.this, "Debe seleccionar una ubicacion en Editar Perfil para poder Vender.", Toast.LENGTH_SHORT).show();
                 }
-
             }
         });
 
 
+    }
+
+    private void getUserInfo() {
+         usersDb = FirebaseDatabase.getInstance().getReference().child("Users");
+        userListener =usersDb.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                if(dataSnapshot.exists() && dataSnapshot.getKey().equals(mAuth.getCurrentUser().getUid()) && !dataSnapshot.hasChild("latitudeVenta") && !dataSnapshot.hasChild("longitudeVenta")){
+                    Log.d("lol2","1");
+                    puedeSubirPublicacion = 1;
+                    Toast.makeText(AddPublicaciones.this, "Debe seleccionar una ubicacion en Editar Perfil para poder Vender.", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
 
     private void comprobarImagen() {
@@ -412,6 +454,7 @@ public class AddPublicaciones extends AppCompatActivity {
     @Override
     public void onDestroy() {
         super.onDestroy();
+        usersDb.removeEventListener(userListener);
         if (dialog != null) {
             dialog.dismiss();
             dialog = null;

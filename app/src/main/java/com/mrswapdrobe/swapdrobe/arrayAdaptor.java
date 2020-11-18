@@ -16,7 +16,6 @@ import androidx.annotation.NonNull;
 
 import com.bumptech.glide.Glide;
 import com.google.firebase.database.core.Context;
-import com.squareup.picasso.Picasso;
 
 import java.util.List;
 //esta funcion se encarga de desplegar la lista de cartas en mainactivity.
@@ -49,8 +48,9 @@ public class arrayAdaptor extends ArrayAdapter<cards>{
             //Picasso.get().load(card_item.getProfileImageUrl()).fit().centerCrop().into(image);
         }
         else {
-            Picasso.get().setLoggingEnabled(true);
-            Picasso.get().load(R.mipmap.ic_launcher).fit().centerCrop().into(image);
+            //Picasso.get().setLoggingEnabled(true);
+            Glide.with(getContext()).load(R.mipmap.ic_launcher).centerCrop().into(image);
+            //Picasso.get().load(R.mipmap.ic_launcher).fit().centerCrop().into(image);
         }
 
 

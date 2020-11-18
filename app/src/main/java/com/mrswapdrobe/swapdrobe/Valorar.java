@@ -15,13 +15,13 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.squareup.picasso.Picasso;
 
 public class Valorar extends AppCompatActivity {
     private Button mEnviar;
@@ -88,7 +88,8 @@ public class Valorar extends AppCompatActivity {
                                         mTitulo.setText(dataSnapshot.child("clothes").child(idPrenda).child("tituloPublicacion").getValue().toString());
                                         if(dataSnapshot.child("clothes").child(idPrenda).hasChild("clothesPhotos")){
                                             if(dataSnapshot.child("clothes").child(idPrenda).child("clothesPhotos").hasChild("photoId1")){
-                                                Picasso.get().load(dataSnapshot.child("clothes").child(idPrenda).child("clothesPhotos").child("photoId1").getValue().toString()).into(mImage);
+                                                //Picasso.get().load(dataSnapshot.child("clothes").child(idPrenda).child("clothesPhotos").child("photoId1").getValue().toString()).into(mImage);
+                                                Glide.with(getApplication()).load(dataSnapshot.child("clothes").child(idPrenda).child("clothesPhotos").child("photoId1").getValue().toString()).into(mImage);
                                             }
                                         }
                                         chatsDbCuatro.removeEventListener(childEvent5);

@@ -23,7 +23,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -141,20 +140,20 @@ public class VerPerfilDeVendedor extends AppCompatActivity {
                         profileImageUrl = map.get("profileImageUrl").toString();
                         switch(profileImageUrl){
                             case "default":
-                                Picasso.get().setLoggingEnabled(true);
-                                //Glide.with(getApplication()).load(card_item.getProfileImageUrl()).into(image);
-                                Picasso.get().load(R.mipmap.ic_launcher).fit().centerCrop().into(mProfileImage);
+                                //Picasso.get().setLoggingEnabled(true);
+                                Glide.with(getApplication()).load(R.mipmap.ic_launcher).into(mProfileImage);
+                                //Picasso.get().load(R.mipmap.ic_launcher).fit().centerCrop().into(mProfileImage);
                                 break;
                             default:
-                                Picasso.get().setLoggingEnabled(true);
-                                //Glide.with(getApplication()).load(card_item.getProfileImageUrl()).into(image);
-                                Picasso.get().load(profileImageUrl).fit().centerCrop().into(mProfileImage);
+                                //Picasso.get().setLoggingEnabled(true);
+                                Glide.with(getApplication()).load(profileImageUrl).into(mProfileImage);
+                                //Picasso.get().load(profileImageUrl).fit().centerCrop().into(mProfileImage);
                                 break;
 
                         }
-                        Picasso.get().setLoggingEnabled(true);
-                        //Glide.with(getApplication()).load(profileImageUrl).into(mProfileImage);
-                        Picasso.get().load(profileImageUrl).fit().centerCrop().into(mProfileImage);
+                        //Picasso.get().setLoggingEnabled(true);
+                        Glide.with(getApplication()).load(profileImageUrl).into(mProfileImage);
+                        //Picasso.get().load(profileImageUrl).fit().centerCrop().into(mProfileImage);
                         existeFotoPerfil = 1;
                     }
                 }
