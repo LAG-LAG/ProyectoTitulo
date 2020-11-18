@@ -569,6 +569,11 @@ public class ChatUserActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public void onBackPressed()
+    {
+
+    }
     private void Desbloquear() {
         Toast.makeText(this, "Desbloquear", Toast.LENGTH_SHORT).show();
         chatsDb.addChildEventListener(new ChildEventListener() {

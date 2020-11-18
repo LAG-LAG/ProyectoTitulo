@@ -241,6 +241,11 @@ public class VerPerfilDeVendedor extends AppCompatActivity {
         });
     }
 
+    @Override
+    public void onBackPressed()
+    {
+
+    }
     //toolbar
     public boolean onOptionsItemSelected(MenuItem item){
         finish();

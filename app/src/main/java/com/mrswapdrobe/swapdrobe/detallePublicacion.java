@@ -280,7 +280,11 @@ public class detallePublicacion extends AppCompatActivity {
             }
         });
     }
+    @Override
+    public void onBackPressed()
+    {
 
+    }
     //toolbar
     public boolean onOptionsItemSelected(MenuItem item){
         Intent myIntent = new Intent(getApplicationContext(), PaginaPrincipal.class);

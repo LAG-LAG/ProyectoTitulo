@@ -388,6 +388,12 @@ public class MisFavoritos extends AppCompatActivity {
         });
     }
 
+    @Override
+    public void onBackPressed()
+    {
+
+    }
+
     private void TieneItems()
     {
         if(listItems.isEmpty()){

@@ -104,6 +104,12 @@ public class Registration extends AppCompatActivity {
     }
 
     @Override
+    public void onBackPressed()
+    {
+
+    }
+
+    @Override
     protected void onStart() {
         super.onStart();
         mAuth.addAuthStateListener(firebaseAuthStateListener);

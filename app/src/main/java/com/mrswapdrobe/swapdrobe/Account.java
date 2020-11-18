@@ -614,6 +614,11 @@ private boolean addLocation;
 
     }
 
+    @Override
+    public void onBackPressed()
+    {
+
+    }
 
     @Override
     public void onDestroy() {

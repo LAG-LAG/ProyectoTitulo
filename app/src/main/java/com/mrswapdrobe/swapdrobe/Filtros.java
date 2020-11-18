@@ -669,6 +669,11 @@ public class Filtros extends AppCompatActivity implements GoogleApiClient.OnConn
     }
 
 
+    @Override
+    public void onBackPressed()
+    {
+
+    }
 
     public boolean onOptionsItemSelected(MenuItem item){
         Intent myIntent = new Intent(getApplicationContext(), PaginaPrincipal.class);

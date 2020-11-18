@@ -233,6 +233,11 @@ public class VerMiCuenta extends AppCompatActivity {
         return true;
     }
 
+    @Override
+    public void onBackPressed()
+    {
+
+    }
     //Controla los botones del menu
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {

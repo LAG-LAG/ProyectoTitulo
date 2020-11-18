@@ -272,6 +272,12 @@ public class Login extends AppCompatActivity {
 
         }
     */
+    @Override
+    public void onBackPressed()
+    {
+
+    }
+
     private void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
         try {
             GoogleSignInAccount account = completedTask.getResult(ApiException.class);

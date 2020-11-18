@@ -62,6 +62,13 @@ public class resetPassword extends AppCompatActivity {
 
     }
 
+
+    @Override
+    public void onBackPressed()
+    {
+
+    }
+
     //toolbar
     @Override
     public boolean onOptionsItemSelected(MenuItem item){

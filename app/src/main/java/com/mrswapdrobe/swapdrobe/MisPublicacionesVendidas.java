@@ -1,10 +1,5 @@
 package com.mrswapdrobe.swapdrobe;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -12,6 +7,11 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
@@ -171,7 +171,11 @@ public class MisPublicacionesVendidas extends AppCompatActivity {
             textView2.setVisibility(View.INVISIBLE);
         }
     }
+    @Override
+    public void onBackPressed()
+    {
 
+    }
     //toolbar
     @Override
     public boolean onOptionsItemSelected(MenuItem item){

@@ -354,6 +354,12 @@ public class Valorar extends AppCompatActivity {
         Log.d("rating", "estado producto " + mRBpuntualidad.getRating());
     }
 
+    @Override
+    public void onBackPressed()
+    {
+
+    }
+
     //toolbar
     @Override
     public boolean onOptionsItemSelected(MenuItem item){
