@@ -942,6 +942,11 @@ public class EditarPublicacion extends AppCompatActivity {
     //Controla los botones del menu
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+
+        Intent myIntent = new Intent(getApplicationContext(), MisPublicaciones.class);
+        startActivityForResult(myIntent, 0);
+        return true;
+        /*
         switch (item.getItemId()){
             case R.id.accountBtn:
                 Intent intentAccount = new Intent(EditarPublicacion.this, VerMiCuenta.class);
@@ -961,7 +966,7 @@ public class EditarPublicacion extends AppCompatActivity {
                 finish();
                 break;
         }
-
-        return super.onOptionsItemSelected(item);
+        */
+        //return super.onOptionsItemSelected(item);
     }
 }

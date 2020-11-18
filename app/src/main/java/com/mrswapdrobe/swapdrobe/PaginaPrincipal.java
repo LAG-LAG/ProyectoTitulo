@@ -203,8 +203,11 @@ public class PaginaPrincipal extends AppCompatActivity {
                                 break;
                         }
 
-
                         dialogInterface.dismiss();
+                        finish();
+                        overridePendingTransition(0, 0);
+                        startActivity(getIntent());
+                        overridePendingTransition(0, 0);
                     }
 
                     private void borrarUltimaHora(int HorasTotales) {
