@@ -19,10 +19,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.viewpager.widget.ViewPager;
 
 import com.denzcoskun.imageslider.ImageSlider;
-import com.denzcoskun.imageslider.constants.ScaleTypes;
-import com.denzcoskun.imageslider.interfaces.ItemClickListener;
 import com.denzcoskun.imageslider.models.SlideModel;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
@@ -47,6 +46,9 @@ public class MiPublicacionDetalle extends AppCompatActivity {
     private ArrayList<String> urlImagenes;
     private ImageSlider mSlider;
     private ArrayList<SlideModel> imageList;
+    private ViewPager viewPager;
+    private ViewPagerAdapter adapter;
+
     private int verPerfilVendedor = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,8 +98,15 @@ public class MiPublicacionDetalle extends AppCompatActivity {
         mTextViewPuntualidad = (TextView) findViewById(R.id.TvValoracionPuntualidad);
 
         indiceFotoActual=0;
-        mSlider = (ImageSlider) findViewById(R.id.fotoDetallePublicacionPropia);
-        imageList = new ArrayList<SlideModel>();
+
+        //mSlider = (ImageSlider) findViewById(R.id.fotoDetallePublicacionPropia);
+        //imageList = new ArrayList<SlideModel>();
+
+        viewPager = (ViewPager) findViewById(R.id.fotoDetallePublicacionPropia);
+        adapter = new ViewPagerAdapter(MiPublicacionDetalle.this, urlImagenes);
+        viewPager.setAdapter(adapter);
+
+
         Log.d("weaweawea","1si");
         obtenerDatosPublicacion();
         mAuth = FirebaseAuth.getInstance();
@@ -150,12 +159,16 @@ public class MiPublicacionDetalle extends AppCompatActivity {
             }
         });
 */
+        /*
         mSlider.setItemClickListener(new ItemClickListener() {
             @Override
             public void onItemSelected(int i) {
 
             }
         });
+
+         */
+
         mGuardar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -294,9 +307,10 @@ public class MiPublicacionDetalle extends AppCompatActivity {
                 if(dataSnapshot.exists()){
                     Log.d("weaweawea","datasnapshot exists");
                     urlImagenes.add(dataSnapshot.getValue().toString());
-                    SlideModel aux = new SlideModel(dataSnapshot.getValue().toString(),ScaleTypes.FIT);
-                    imageList.add(aux);
-                    mSlider.setImageList(imageList,ScaleTypes.FIT);
+                   //SlideModel aux = new SlideModel(dataSnapshot.getValue().toString(),ScaleTypes.FIT);
+                    //imageList.add(aux);
+                    //mSlider.setImageList(imageList,ScaleTypes.FIT);
+                    adapter.notifyDataSetChanged();
                     if(indiceFotoActual==0) {
                         Log.d("weaweawea","indice");
 

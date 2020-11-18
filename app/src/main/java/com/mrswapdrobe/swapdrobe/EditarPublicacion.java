@@ -32,6 +32,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 
+import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -45,7 +46,6 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.nipunru.nsfwdetector.NSFWDetector;
-import com.squareup.picasso.Picasso;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -517,20 +517,20 @@ public class EditarPublicacion extends AppCompatActivity {
     private void asignarFoto(String photoId1, ImageView mPublicacionImage1) {
         switch(photoId1) {
             case "default":
-                Picasso.get().setLoggingEnabled(true);
-                //Glide.with(getApplication()).load(card_item.getProfileImageUrl()).into(image);
-                Picasso.get().load(R.mipmap.ic_launcher).fit().centerCrop().into(mPublicacionImage1);
+                //Picasso.get().setLoggingEnabled(true);
+                Glide.with(getApplication()).load(R.mipmap.ic_launcher).into(mPublicacionImage1);
+                //Picasso.get().load(R.mipmap.ic_launcher).fit().centerCrop().into(mPublicacionImage1);
                 break;
             default:
-                Picasso.get().setLoggingEnabled(true);
-                //Glide.with(getApplication()).load(card_item.getProfileImageUrl()).into(image);
-                Picasso.get().load(photoId1).fit().centerCrop().into(mPublicacionImage1);
+                //Picasso.get().setLoggingEnabled(true);
+                Glide.with(getApplication()).load(photoId1).into(mPublicacionImage1);
+               // Picasso.get().load(photoId1).fit().centerCrop().into(mPublicacionImage1);
                 break;
         }
 
-        Picasso.get().setLoggingEnabled(true);
-        //Glide.with(getApplication()).load(profileImageUrl).into(mProfileImage);
-        Picasso.get().load(photoId1).fit().centerCrop().into(mPublicacionImage1);
+        //Picasso.get().setLoggingEnabled(true);
+        Glide.with(getApplication()).load(photoId1).into(mPublicacionImage1);
+        //Picasso.get().load(photoId1).fit().centerCrop().into(mPublicacionImage1);
     }
 
 
@@ -942,6 +942,11 @@ public class EditarPublicacion extends AppCompatActivity {
     //Controla los botones del menu
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+
+        Intent myIntent = new Intent(getApplicationContext(), MisPublicaciones.class);
+        startActivityForResult(myIntent, 0);
+        return true;
+        /*
         switch (item.getItemId()){
             case R.id.accountBtn:
                 Intent intentAccount = new Intent(EditarPublicacion.this, VerMiCuenta.class);
@@ -961,7 +966,7 @@ public class EditarPublicacion extends AppCompatActivity {
                 finish();
                 break;
         }
-
-        return super.onOptionsItemSelected(item);
+        */
+        //return super.onOptionsItemSelected(item);
     }
 }

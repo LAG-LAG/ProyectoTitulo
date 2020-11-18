@@ -8,8 +8,8 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.google.firebase.database.DatabaseReference;
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -52,8 +52,9 @@ public class publicacionValoracionAdapter extends BaseAdapter{
         TextView nombreValoracionPublicacion = (TextView) view.findViewById(R.id.nombreValoracionPublicacion);
         TextView valoracionComentario = (TextView) view.findViewById(R.id.valoracionComentario);
         TextView valoracionPublicacion = (TextView) view.findViewById(R.id.valoracionPublicacion);
+        Glide.with(view.getContext()).load(item.getProfileImageUrl()).centerCrop().into(imgPublicacion);
 
-        Picasso.get().load(item.getProfileImageUrl()).fit().centerCrop().into(imgPublicacion);
+        //Picasso.get().load(item.getProfileImageUrl()).fit().centerCrop().into(imgPublicacion);
         nombreValoracionPublicacion.setText(item.getTituloPublicacion());
         valoracionComentario.setText(item.getComentario());
         valoracionPublicacion.setText(Float.toString(item.getValoracion()));

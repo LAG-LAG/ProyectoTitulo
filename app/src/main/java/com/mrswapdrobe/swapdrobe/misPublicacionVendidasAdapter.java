@@ -8,9 +8,9 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -55,7 +55,10 @@ public class misPublicacionVendidasAdapter extends BaseAdapter {
         TextView tituloPublicacion = (TextView) view.findViewById(R.id.tituloPublicacion);
         TextView valorPublicacion = (TextView) view.findViewById(R.id.valorPublicacion);
 
-        Picasso.get().load(item.getProfileImageUrl()).fit().centerCrop().into(imgPublicacion);
+        Glide.with(this.context).load(item.getProfileImageUrl()).into(imgPublicacion);
+
+        //Picasso.get().load(item.getProfileImageUrl()).fit().centerCrop().into(imgPublicacion);
+
         tituloPublicacion.setText(item.getTituloPublicacion());
         valorPublicacion.setText(item.getValorPublicacion());
 

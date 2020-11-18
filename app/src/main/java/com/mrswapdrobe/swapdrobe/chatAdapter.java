@@ -20,6 +20,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 
+import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
@@ -27,7 +28,6 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -73,8 +73,9 @@ public class chatAdapter extends BaseAdapter{
         TextView tituloPublicacion = (TextView) view.findViewById(R.id.tituloPublicacionChat);
         TextView valorPublicacion = (TextView) view.findViewById(R.id.valorPublicacionChat);
         TextView nombreVendedor = (TextView) view.findViewById(R.id.nombreVendedor);
+        Glide.with(this.context).load(item.getProfileImageUrl()).into(imgPublicacion);
 
-        Picasso.get().load(item.getProfileImageUrl()).into(imgPublicacion);
+        //Picasso.get().load(item.getProfileImageUrl()).into(imgPublicacion);
         tituloPublicacion.setText(item.getTituloPublicacion());
         valorPublicacion.setText(item.getValorPublicacion());
         nombreVendedor.setText(item.getNombreVendedor());

@@ -2,6 +2,7 @@ package com.mrswapdrobe.swapdrobe;
 /*
 esta vista corresponde al adapter utilizado en addPublicaciones. se utiliza al añadir imagenes en una publicacion. esta contiene y añade las publicaciones de la lista de imagenes (de la clase Imagen).
  */
+
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,7 +13,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.squareup.picasso.Picasso;
+import com.bumptech.glide.Glide;
 
 import java.util.List;
 
@@ -40,10 +41,10 @@ public class addImagenesAdapter extends RecyclerView.Adapter<addImagenesAdapter.
     @Override
     public void onBindViewHolder(@NonNull addImagenesAdapter.MyViewHolder holder, int position) {
         holder.textView.setText(mList.get(position).getImagename());
-        Picasso.get().setLoggingEnabled(true);
-        //Glide.with(getApplication()).load(card_item.getProfileImageUrl()).into(image);
+        //Picasso.get().setLoggingEnabled(true);
+        Glide.with(this.context).load(mList.get(position).getImage()).into(holder.imageView);
         //Picasso.get().load(mList.get(position).getImage()).into(holder.imageView);
-        Picasso.get().load(mList.get(position).getImage()).placeholder(R.drawable.image).fit().centerCrop().into(holder.imageView);
+        //Picasso.get().load(mList.get(position).getImage()).placeholder(R.drawable.image).fit().centerCrop().into(holder.imageView);
 
 
 
