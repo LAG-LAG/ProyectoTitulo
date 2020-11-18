@@ -67,6 +67,11 @@ public class PaginaPrincipal extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pagina_principal);
 
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setTitle("Publicaciones");
+        }
         esBusquedaPorKm = 0;
         usersDb = FirebaseDatabase.getInstance().getReference().child("Users"); //esto obtiene todos los usuarios de la bd
         //noExistenFiltros = 0;
@@ -83,11 +88,7 @@ public class PaginaPrincipal extends AppCompatActivity {
         mLike.setVisibility(View.INVISIBLE);
         mDislike.setVisibility(View.INVISIBLE);
         //Toolbar Menu
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setTitle("Publicaciones");
-        }
+
 
         //swipecards
         if (regionBusqueda == null) {
@@ -1431,10 +1432,5 @@ public class PaginaPrincipal extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
-/*
-    @Override
-    protected void onPause() {
-        clothesDb.removeEventListener(childEventListenerClothes);
-        super.onPause();
-    }*/
+
 }

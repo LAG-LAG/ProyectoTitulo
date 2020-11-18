@@ -60,6 +60,22 @@ public class Login extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login);
+
+        mAuth = FirebaseAuth.getInstance();
+        firebaseAuthStateListener = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                if (user != null){
+                    Log.d("gungagingagunga","123");
+                    Intent intent = new Intent(Login.this, PaginaPrincipal.class);
+                    startActivity(intent);
+                    finish();
+                    return;
+                }
+            }
+        };
+
         mIngresarBtn = (Button) findViewById(R.id.ingresarBtn);
         mRregistrarBtn = (Button) findViewById(R.id.registrarBtn);
         mFacebookBtn = (ImageView) findViewById(R.id.FacebookBtn);
@@ -76,19 +92,7 @@ public class Login extends AppCompatActivity {
         GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
 
 
-        mAuth = FirebaseAuth.getInstance();
-        firebaseAuthStateListener = new FirebaseAuth.AuthStateListener() {
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-                if (user != null){
-                    Intent intent = new Intent(Login.this, PaginaPrincipal.class);
-                    startActivity(intent);
-                    finish();
-                    return;
-                }
-            }
-        };
+
 
         cambiarContraseña.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -244,7 +248,14 @@ public class Login extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
-        mAuth.addAuthStateListener(firebaseAuthStateListener);
+        mAuth.removeAuthStateListener(firebaseAuthStateListener);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mAuth.removeAuthStateListener(firebaseAuthStateListener);
+
     }
 
     //sign in de facebook
