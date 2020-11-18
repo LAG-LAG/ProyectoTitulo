@@ -414,7 +414,7 @@ public class PaginaPrincipal extends AppCompatActivity {
                 intentDetalle.putExtra("idOwner",idOwner);
 
                 startActivity(intentDetalle);
-                finish();
+                //finish();
             }
         });
 
