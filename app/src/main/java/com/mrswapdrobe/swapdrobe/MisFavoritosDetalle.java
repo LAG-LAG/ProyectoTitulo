@@ -132,6 +132,8 @@ public class MisFavoritosDetalle extends AppCompatActivity {
                     DatabaseReference messages = FirebaseDatabase.getInstance().getReference().child("chat").child(id).child("messages");
                     //FirebaseDatabase.getInstance().getReference().child("chat").child(id).child("marcadaComoVendida").setValue("0");
                     //FirebaseDatabase.getInstance().getReference().child("Users").child(currentUId).child("connections").child("publicacionesGuardadas").child(idClothes).setValue("Guardado");
+
+
                     currentVendedor.setValue(vendedorUID);
                     currentComprador.setValue(currentUId);
                     currentPrenda.setValue(idClothes);

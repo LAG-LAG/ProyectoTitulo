@@ -190,7 +190,10 @@ public class MiPublicacionDetalle extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 //usersDb.child(mAuth.getCurrentUser().getUid()).child("connections").child("publicacionesRechazadas").child(idClothes).setValue(true);
+                DatabaseReference estadoPrenda = FirebaseDatabase.getInstance().getReference().child("Users").child(mAuth.getCurrentUser().getUid()).child("clothes").child(idClothes).child("vendidaTemporal");
+                estadoPrenda.setValue("1");
                 Intent intent = new Intent(MiPublicacionDetalle.this,PaginaPrincipal.class);
+
                 startActivity(intent);
             }
         });
