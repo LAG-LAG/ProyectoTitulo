@@ -150,7 +150,7 @@ public class AddPublicaciones extends AppCompatActivity {
 
                 }
                 else{
-                    Toast.makeText(AddPublicaciones.this, "Debe seleccionar una ubicacion en Editar Perfil para poder Vender.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(AddPublicaciones.this, "Debe seleccionar una ubicacion de venta en Mapa en Editar Perfil para poder Vender.", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -166,7 +166,7 @@ public class AddPublicaciones extends AppCompatActivity {
                 if(dataSnapshot.exists() && dataSnapshot.getKey().equals(mAuth.getCurrentUser().getUid()) && !dataSnapshot.hasChild("latitudeVenta") && !dataSnapshot.hasChild("longitudeVenta")){
                     Log.d("lol2","1");
                     puedeSubirPublicacion = 1;
-                    Toast.makeText(AddPublicaciones.this, "Debe seleccionar una ubicacion en Editar Perfil para poder Vender.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(AddPublicaciones.this, "Debe seleccionar una ubicacion de venta en Mapa en Editar Perfil para poder Vender.", Toast.LENGTH_SHORT).show();
                 }
             }
 
