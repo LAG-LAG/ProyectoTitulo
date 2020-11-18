@@ -774,9 +774,7 @@ public class PaginaPrincipal extends AppCompatActivity {
 
 
                         }
-                        else{
-                            perfilEditar.setVisibility(View.VISIBLE);
-                        }
+
                     }
 
                     private boolean estaEnRadioKM(int kmBusqueda, double lat2, double lon2) {
@@ -1038,9 +1036,7 @@ public class PaginaPrincipal extends AppCompatActivity {
 
 
                 }
-                else{
-                    perfilEditar.setVisibility(View.VISIBLE);
-                }
+
             }
 
 
