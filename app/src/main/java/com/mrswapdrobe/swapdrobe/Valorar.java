@@ -291,7 +291,6 @@ public class Valorar extends AppCompatActivity {
                         @Override
                         public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                             if(dataSnapshot.exists() && dataSnapshot.child("idPrenda").getValue().toString().equals(idPrenda)){
-                                Log.d("valoracion","weaaaa "+dataSnapshot.getKey());
                                 Log.d("valoracion", "idprenda "+dataSnapshot.child("idPrenda").getValue().toString());
                                 Log.d("valoracion", "idprenda de arriba "+idPrenda);
                                 final DatabaseReference finalizarChats =  FirebaseDatabase.getInstance().getReference().child("chat").child(dataSnapshot.getKey()).child("estadoFinalizado");

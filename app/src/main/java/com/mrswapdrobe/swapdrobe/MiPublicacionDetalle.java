@@ -4,7 +4,6 @@ Esta clase se encarga de mostrar los datos de la publicacion en la vista activit
 entrada: recibe el id de la prenda y del usuario que publico la prenda y obtiene los datos de esa prenda.
 salida: permite editar la publicacion o eliminarla.
  */
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -18,7 +17,6 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.viewpager.widget.ViewPager;
@@ -26,7 +24,6 @@ import androidx.viewpager.widget.ViewPager;
 import com.denzcoskun.imageslider.ImageSlider;
 import com.denzcoskun.imageslider.models.SlideModel;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -110,7 +107,6 @@ public class MiPublicacionDetalle extends AppCompatActivity {
         viewPager.setAdapter(adapter);
 
 
-        Log.d("weaweawea","1si");
         obtenerDatosPublicacion();
         mAuth = FirebaseAuth.getInstance();
 
@@ -124,21 +120,16 @@ public class MiPublicacionDetalle extends AppCompatActivity {
         //indiceFotoActual++;
         /*
             mAdelanteButton.setVisibility(View.VISIBLE);
-            Log.d("weaweawea","xd "+tamanoUrlImagenes);
             mAdelanteButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Log.d("weaweawea","tamaño "+tamanoUrlImagenes);
-                    Log.d("weaweawea","indice "+indiceFotoActual);
                     if(tamanoUrlImagenes-1!=0) {
                         mostrarFoto(urlImagenes.get(indiceFotoActual));
                     }
                     if(indiceFotoActual>=tamanoUrlImagenes-1){
-                        Log.d("weaweawea","uno");
                         indiceFotoActual=0;
                     }
                     else {
-                        Log.d("weaweawea","dos");
                         indiceFotoActual++;
                     }
                 }
@@ -147,16 +138,13 @@ public class MiPublicacionDetalle extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                Log.d("weaweawea","indice "+indiceFotoActual);
                 if(tamanoUrlImagenes-1!=0) {
                     mostrarFoto(urlImagenes.get(indiceFotoActual));
                 }
                 if(indiceFotoActual<=0){
-                    Log.d("weaweawea","uno");
                     indiceFotoActual=tamanoUrlImagenes-1;
                 }
                 else {
-                    Log.d("weaweawea","dos");
                     indiceFotoActual--;
                 }
             }
@@ -311,7 +299,6 @@ public class MiPublicacionDetalle extends AppCompatActivity {
 
 
     private void guardarUrlPhotos() {
-        Log.d("weaweawea","xd");
 
         photosDb = FirebaseDatabase.getInstance().getReference().child("Users").child(idOwner).child("clothes").child(idClothes).child("clothesPhotos");
 
@@ -319,20 +306,17 @@ public class MiPublicacionDetalle extends AppCompatActivity {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                 if(dataSnapshot.exists()){
-                    Log.d("weaweawea","datasnapshot exists");
                     urlImagenes.add(dataSnapshot.getValue().toString());
                    //SlideModel aux = new SlideModel(dataSnapshot.getValue().toString(),ScaleTypes.FIT);
                     //imageList.add(aux);
                     //mSlider.setImageList(imageList,ScaleTypes.FIT);
                     adapter.notifyDataSetChanged();
                     if(indiceFotoActual==0) {
-                        Log.d("weaweawea","indice");
 
                         //   mostrarFoto(urlImagenes.get(0));
                         indiceFotoActual++;
                     }
                     tamanoUrlImagenes++;
-                    //Log.d("weaweawea",dataSnapshot.getKey());
                 }
             }
 

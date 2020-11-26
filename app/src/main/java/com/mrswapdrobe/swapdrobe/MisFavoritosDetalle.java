@@ -370,9 +370,6 @@ public class MisFavoritosDetalle extends AppCompatActivity {
 
 
     private void guardarUrlPhotos(String vendedorId) {
-        Log.d("weaweawea","xd");
-        Log.d("weaweawea","idOwner "+vendedorId);
-        Log.d("weaweawea","idClothes "+idClothes);
         photosDb = FirebaseDatabase.getInstance().getReference().child("Users").child(vendedorId).child("clothes").child(idClothes).child("clothesPhotos");
 
         photosDb.addChildEventListener(new ChildEventListener() {
@@ -389,7 +386,6 @@ public class MisFavoritosDetalle extends AppCompatActivity {
                         indiceFotoActual++;
                     }
                     tamanoUrlImagenes++;
-                    //Log.d("weaweawea",dataSnapshot.getKey());
                 }
             }
 

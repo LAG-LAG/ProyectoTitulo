@@ -599,7 +599,6 @@ public class Filtros extends AppCompatActivity implements GoogleApiClient.OnConn
         String jsonFileString = jsonLector.getJsonFromAssets(getApplicationContext(), "cities.json");
         Log.i("data", jsonFileString);
         int posicionRegion = 0;
-        Log.d("weaweawea",""+posicionRegion);
         Gson gson = new Gson();
         Type listUserType = new TypeToken<List<cities>>() {
         }.getType();

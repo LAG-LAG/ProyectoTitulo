@@ -67,7 +67,6 @@ public class chatAdapter extends BaseAdapter{
         }
 
         final Chat item = (Chat) getItem(position);
-        Log.d("positionVector","wea :: "+position);
         //convertView = LayoutInflater.from(context).inflate(R.layout.item_publicacion, null);
         ImageView imgPublicacion = (ImageView) view.findViewById(R.id.imgPublicacionChat);
         TextView tituloPublicacion = (TextView) view.findViewById(R.id.tituloPublicacionChat);

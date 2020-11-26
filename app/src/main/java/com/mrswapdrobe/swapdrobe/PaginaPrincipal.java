@@ -550,16 +550,13 @@ public class PaginaPrincipal extends AppCompatActivity {
                         kmBusqueda = Integer.valueOf(dataSnapshot.child("filtros").child("KMBusqueda").getValue().toString());
                     }
                     if(dataSnapshot.child("filtros").hasChild("tipoBusqueda")){
-                        Log.d("pnect","weaa3");
                         if(dataSnapshot.child("filtros").child("tipoBusqueda").getValue().toString().equals("1") || dataSnapshot.child("filtros").child("tipoBusqueda").getValue().toString().equals("0")){
                             esBusquedaPorKm = 1;
                             if(dataSnapshot.hasChild("longitude")){
                                 longitudUser = Double.valueOf(dataSnapshot.child("longitude").getValue().toString());
-                                Log.d("pnect","weaa");
                             }
                             if(dataSnapshot.hasChild("latitude")){
                                 latitudeUser = Double.valueOf(dataSnapshot.child("latitude").getValue().toString());
-                                Log.d("pnect","wea2");
 
                             }
                         }
@@ -595,7 +592,6 @@ public class PaginaPrincipal extends AppCompatActivity {
 
             private void obtenerpublicacionesPorKm() {
 
-                Log.d("pnect","1");
 
                 currentUId = mAuth.getCurrentUser().getUid();
                 usersDb.addChildEventListener(new ChildEventListener() {
@@ -604,11 +600,9 @@ public class PaginaPrincipal extends AppCompatActivity {
                         if(dataSnapshot.hasChild("Bloqueados")) {
                             if (!dataSnapshot.child("Bloqueados").hasChild(currentUId) && dataSnapshot.hasChild("puntuacionGeneral")) {
                                 if (dataSnapshot.exists() && dataSnapshot.hasChild("clothes") && !dataSnapshot.getKey().equals(currentUId)) {
-                                    Log.d("pnect","2");
 
                                     if(dataSnapshot.hasChild("latitudeVenta") && dataSnapshot.hasChild("longitudeVenta") || dataSnapshot.hasChild("latitude") && dataSnapshot.hasChild("longitude")){
                                         double latitude,longitude;
-                                        Log.d("pnect","3");
 //esto esta bien
                                         if(dataSnapshot.hasChild("latitudeVenta") && dataSnapshot.hasChild("longitudeVenta")) {
                                             latitude = Double.valueOf(dataSnapshot.child("latitudeVenta").getValue().toString());
@@ -636,14 +630,12 @@ public class PaginaPrincipal extends AppCompatActivity {
                                                 puntuacionGeneral = 3;
                                             }
                                             final double finalPuntuacionGeneral = puntuacionGeneral;
-                                            Log.d("pnect","4");
                                             String key = dataSnapshot.getKey();
                                             final String currentOwnerUid = key;
                                             clothesDb = usersDb.child(key).child("clothes");
                                             childEventListenerClothes = clothesDb.addChildEventListener(new ChildEventListener() {
                                                 @Override
                                                 public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) { //aqui ya recorre los productos.
-                                                    Log.d("pnect","4");
                                                     currentUId = mAuth.getCurrentUser().getUid();
                                                     clothesCurrentUid = dataSnapshot.getKey();
                                                     int puede = 1;
@@ -788,11 +780,9 @@ public class PaginaPrincipal extends AppCompatActivity {
                         }
                         else{
                             if (dataSnapshot.exists() && dataSnapshot.hasChild("clothes") && !dataSnapshot.getKey().equals(currentUId)) {
-                                Log.d("pnect","2");
 
                                 if(dataSnapshot.hasChild("latitudeVenta") && dataSnapshot.hasChild("longitudeVenta") || dataSnapshot.hasChild("latitude") && dataSnapshot.hasChild("longitude")){
                                     double latitude,longitude;
-                                    Log.d("pnect","3");
 //esto esta bien
                                     if(dataSnapshot.hasChild("latitudeVenta") && dataSnapshot.hasChild("longitudeVenta")) {
                                         latitude = Double.valueOf(dataSnapshot.child("latitudeVenta").getValue().toString());
@@ -820,14 +810,12 @@ public class PaginaPrincipal extends AppCompatActivity {
                                             puntuacionGeneral = 3;
                                         }
                                         final double finalPuntuacionGeneral = puntuacionGeneral;
-                                        Log.d("pnect","4");
                                         String key = dataSnapshot.getKey();
                                         final String currentOwnerUid = key;
                                         clothesDb = usersDb.child(key).child("clothes");
                                         childEventListenerClothes = clothesDb.addChildEventListener(new ChildEventListener() {
                                             @Override
                                             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) { //aqui ya recorre los productos.
-                                                Log.d("pnect","4");
                                                 currentUId = mAuth.getCurrentUser().getUid();
                                                 clothesCurrentUid = dataSnapshot.getKey();
                                                 int puede = 1;
@@ -985,22 +973,14 @@ public class PaginaPrincipal extends AppCompatActivity {
 
                         double distance = startPoint.distanceTo(endPoint);
                         kmBusqueda=kmBusqueda*1000;
-                        Log.d("pnect","latitudeUser "+latitudeUser);
-                        Log.d("pnect","longitudUser "+longitudUser);
-                        Log.d("pnect","lon2 "+lon2);
-                        Log.d("pnect","lat2 "+lat2);
 
-                        Log.d("pnect","dist "+distance);
-                        Log.d("pnect","kmBusqueda "+kmBusqueda);
 
                         if(distance<=kmBusqueda){
                             return true;
                         }
                         return false;
                         /*
-                        Log.d("pnect","kmBusqueda "+kmBusqueda);
-                        Log.d("pnect","lon2 "+lon2);
-                        Log.d("pnect","lat2 "+lat2);
+
 
                         double theta = longitudUser - lon2;
                         double dist = Math.sin(deg2rad(latitudeUser))
@@ -1012,7 +992,6 @@ public class PaginaPrincipal extends AppCompatActivity {
                         dist = rad2deg(dist);
                         dist = dist * 60 * 1.1515;
                         dist =dist / 0.62137;
-                        Log.d("pnect","dist "+dist);
 
                         if(dist<=kmBusqueda){
                             return true;

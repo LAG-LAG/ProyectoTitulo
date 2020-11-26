@@ -104,7 +104,6 @@ public class MisFavoritos extends AppCompatActivity {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                 if(dataSnapshot.exists() && dataSnapshot.hasChild("connections") && dataSnapshot.getKey().equals(mAuth.getCurrentUser().getUid())){
-                    Log.d("yunglean","yunglean1");
                     final String key = dataSnapshot.getKey();
                     currentOwnerUid = key;
                     final DatabaseReference clothesDbos = usersDb.child(key).child("connections").child("publicacionesGuardadas");
@@ -112,7 +111,6 @@ public class MisFavoritos extends AppCompatActivity {
                         @Override
                         public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                             if(dataSnapshot.exists() && dataSnapshot.getValue().toString().equals("true")) {
-                                Log.d("yunglean","yunglean1");
                                 currentUId = mAuth.getCurrentUser().getUid();
                                 final String clothesIdGuardado = dataSnapshot.getKey();
 
