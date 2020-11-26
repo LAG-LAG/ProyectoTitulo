@@ -1,0 +1,117 @@
+{
+  "project_info": {
+    "project_number": "405354780218",
+    "firebase_url": "https://swapdrobe-93869.firebaseio.com",
+    "project_id": "swapdrobe-93869",
+    "storage_bucket": "swapdrobe-93869.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:405354780218:android:f2abde974c00850eba8703",
+        "android_client_info": {
+          "package_name": "com.example.proyectotitulo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "405354780218-p2p05g6jruv35v0kmo5f7jo66757a1rt.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.proyectotitulo",
+            "certificate_hash": "b99b79fbf0dfbad67e39542e74ebcb31819b0206"
+          }
+        },
+        {
+          "client_id": "405354780218-7uo72p7i77op4r10auu9st0kam6rrg3g.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.proyectotitulo",
+            "certificate_hash": "852994cc5bbd901c33f7068653de3c0367557317"
+          }
+        },
+        {
+          "client_id": "405354780218-grlamcdaer601krcnavi48vudc9gste7.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.proyectotitulo",
+            "certificate_hash": "a2d587d71b107fbeac6165048891d2e5ddcbf232"
+          }
+        },
+        {
+          "client_id": "405354780218-ijsc2k4iepnj4ehlcugdi2ebquqd9ceh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDu8kFJriMTvXxGqF4xAVAdvs6fz6TwNr0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "405354780218-2ckqpcnkvgrndmfqrcsvfsuk007g521u.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:405354780218:android:c8595865ff07d940ba8703",
+        "android_client_info": {
+          "package_name": "com.mrswapdrobe.swapdrobe"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "405354780218-5q34tm2flke3kmbk2voacr1clptou6f0.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.mrswapdrobe.swapdrobe",
+            "certificate_hash": "852994cc5bbd901c33f7068653de3c0367557317"
+          }
+        },
+        {
+          "client_id": "405354780218-08r4v49cpmnctcoqqho1jae4oj4funk9.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.mrswapdrobe.swapdrobe",
+            "certificate_hash": "a2d587d71b107fbeac6165048891d2e5ddcbf232"
+          }
+        },
+        {
+          "client_id": "405354780218-6o59b79mrktj7bh6he02vupou0ne61qd.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.mrswapdrobe.swapdrobe",
+            "certificate_hash": "b99b79fbf0dfbad67e39542e74ebcb31819b0206"
+          }
+        },
+        {
+          "client_id": "405354780218-ijsc2k4iepnj4ehlcugdi2ebquqd9ceh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDu8kFJriMTvXxGqF4xAVAdvs6fz6TwNr0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "405354780218-2ckqpcnkvgrndmfqrcsvfsuk007g521u.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

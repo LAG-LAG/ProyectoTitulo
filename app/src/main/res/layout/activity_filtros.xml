@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Filtros">
+
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/toolbar" />
+
+    <Spinner
+        android:id="@+id/regionesSpinnerFiltros"
+        android:layout_width="262dp"
+        android:layout_height="41dp"
+        android:layout_marginTop="8dp"
+        android:entries="@array/regiones"
+        android:visibility="visible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.516"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/switch2"
+        tools:visibility="visible" />
+
+    <Spinner
+        android:id="@+id/comunasSpinnerFiltros"
+        android:layout_width="259dp"
+        android:layout_height="37dp"
+        android:layout_marginTop="16dp"
+        android:entries="@array/comunas"
+        android:visibility="visible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.506"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/regionesSpinnerFiltros"
+        tools:visibility="visible" />
+
+    <Spinner
+        android:id="@+id/estadoSpinnerFiltrar"
+        android:layout_width="328dp"
+        android:layout_height="35dp"
+        android:layout_marginTop="16dp"
+        android:entries="@array/estado"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.493"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/comunasSpinnerFiltros" />
+
+    <Spinner
+        android:id="@+id/TallaSpinnerFiltrar"
+        android:layout_width="329dp"
+        android:layout_height="33dp"
+        android:layout_marginTop="16dp"
+        android:entries="@array/talla"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/estadoSpinnerFiltrar" />
+
+    <Spinner
+        android:id="@+id/tipoPrendaSpinnerFiltrar"
+        android:layout_width="329dp"
+        android:layout_height="33dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:entries="@array/tipoPrenda"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/TallaSpinnerFiltrar" />
+
+    <Button
+        android:id="@+id/filtrarDatosBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:backgroundTint="#ED7635"
+        android:text="Filtrar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tipoPrendaSpinnerFiltrar" />
+
+    <Switch
+        android:id="@+id/switch2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="28dp"
+        android:text="Switch"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar" />
+
+    <SeekBar
+        android:id="@+id/seekBar"
+        android:layout_width="282dp"
+        android:layout_height="20dp"
+        android:layout_marginBottom="20dp"
+        app:layout_constraintBottom_toTopOf="@+id/estadoSpinnerFiltrar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/textProgressSeek"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="11dp"
+        android:text="Seleccione Kilometros."
+        app:layout_constraintBottom_toTopOf="@+id/seekBar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/mButtonUbicacion" />
+
+    <Button
+        android:id="@+id/mButtonUbicacion"
+        android:layout_width="183dp"
+        android:layout_height="42dp"
+        android:layout_marginTop="8dp"
+        android:text="Cambiar Ubicación"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/switch2" />
+
+    <Button
+        android:id="@+id/eliminarFiltros"
+        android:layout_width="149dp"
+        android:layout_height="42dp"
+        android:text="Eliminar Filtros"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.49"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/filtrarDatosBtn"
+        app:layout_constraintVertical_bias="0.396" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
