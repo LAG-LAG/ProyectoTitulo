@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.facebook.AccessToken;
@@ -52,6 +53,7 @@ public class Login extends AppCompatActivity {
     private EditText mEmail;
     private EditText mPassword;
     private TextView cambiarContraseña;
+    private TextView mTvPoliticaPrivacidad;
     int RC_SIGN_IN = 0;
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener firebaseAuthStateListener;
@@ -83,6 +85,7 @@ public class Login extends AppCompatActivity {
         mPassword = (EditText) findViewById(R.id.passwordInput);
         mEmail = (EditText) findViewById(R.id.emailInput);
         cambiarContraseña = (TextView) findViewById(R.id.olvidaste);
+        mTvPoliticaPrivacidad = (TextView) findViewById(R.id.TvPoliticaPrivacidad);
         //Login de google
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
@@ -101,6 +104,76 @@ public class Login extends AppCompatActivity {
                 startActivity(intent);
                 finish();
                 return;
+            }
+        });
+
+        mTvPoliticaPrivacidad.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new AlertDialog.Builder(Login.this)
+                        //.setTitle("")
+                        .setMessage("Descargo de responsabilidad\n" +
+                                "\n" +
+                                "Última actualización: 10 de noviembre de 2020\n" +
+                                "\n" +
+                                "Interpretación y definiciones\n" +
+                                "\n" +
+                                "Interpretación\n" +
+                                "Las palabras cuya letra inicial está en mayúscula tienen significados definidos bajo las siguientes condiciones. Las siguientes definiciones tendrán el mismo significado independientemente de que aparezcan en singular o en plural.\n" +
+                                "Definiciones\n" +
+                                "\n" +
+                                "A los efectos de este descargo de responsabilidad:\n" +
+                                "• Compañía (referida como \"la Compañía\", \"Nosotros\", \"Nos\" o \"Nuestro\" en este Aviso Legal) se refiere a Swapdrobe.\n" +
+                                "\n" +
+                                "• Servicio se refiere a la Aplicación.\n" +
+                                "\n" +
+                                "• Usted hace referencia a la persona que accede al Servicio, o la empresa u otra entidad legal en nombre de la cual dicha persona accede o utiliza el Servicio, según corresponda.\n" +
+                                "\n" +
+                                "• Aplicación significa el programa de software proporcionado por la Compañía descargado por Usted en cualquier dispositivo electrónico llamado Swapdrobe.\n" +
+                                "\n" +
+                                "Descargo de responsabilidad\n" +
+                                "La información contenida en el Servicio es solo para fines de información general.\n" +
+                                "\n" +
+                                "La Compañía no asume ninguna responsabilidad por errores u omisiones en el contenido del Servicio.\n" +
+                                "\n" +
+                                "En ningún caso la Compañía será responsable de ningún daño especial, directo, indirecto, consecuente o incidental o cualquier daño de cualquier tipo, ya sea en una acción de contrato, negligencia u otro agravio, que surja de o en conexión con el uso del Servicio. o el contenido del Servicio. La Compañía se reserva el derecho de realizar adiciones, eliminaciones o modificaciones al contenido del Servicio en cualquier momento sin previo aviso. Este descargo de responsabilidad se ha creado con la ayuda del generador de descargo de responsabilidad.\n" +
+                                "\n" +
+                                "La Compañía no garantiza que el Servicio esté libre de virus u otros componentes dañinos.\n" +
+                                "\n" +
+                                "Descargo de responsabilidad de enlaces externos\n" +
+                                "El Servicio puede contener enlaces a sitios web externos que no son proporcionados ni mantenidos por la Compañía ni están afiliados de ninguna manera con ella.\n" +
+                                "\n" +
+                                "Tenga en cuenta que la Compañía no garantiza la precisión, relevancia, puntualidad o integridad de la información en estos sitios web externos.\n" +
+                                "\n" +
+                                "Descargo de responsabilidad por errores y omisiones\n" +
+                                "La información proporcionada por el Servicio es solo para orientación general sobre asuntos de interés. Incluso si la Compañía toma todas las precauciones para asegurarse de que el contenido del Servicio sea actual y preciso, pueden ocurrir errores. Además, dada la naturaleza cambiante de las leyes, reglas y regulaciones, puede haber demoras, omisiones o inexactitudes en la información contenida en el Servicio.\n" +
+                                "La Compañía no se hace responsable de ningún error u omisión, ni de los resultados obtenidos del uso de esta información.\n" +
+                                "\n" +
+                                "Renuncia de responsabilidad por uso legítimo\n" +
+                                "La Compañía puede usar material con derechos de autor que no siempre ha sido autorizado específicamente por el propietario de los derechos de autor. La Compañía pone dicho material a disposición para críticas, comentarios, informes de noticias, enseñanza, becas o investigación.\n" +
+                                "\n" +
+                                "La Compañía cree que esto constituye un \"uso justo\" de cualquier material protegido por derechos de autor según lo dispuesto en la sección 107 de la ley de derechos de autor de los Estados Unidos.\n" +
+                                "\n" +
+                                "Si desea utilizar material protegido por derechos de autor del Servicio para sus propios fines que van más allá del uso justo, debe obtener el permiso del propietario de los derechos de autor.\n" +
+                                "Descargo de responsabilidad de Views Express\n" +
+                                "El Servicio puede contener puntos de vista y opiniones de los autores y no reflejan necesariamente la política oficial o la posición de ningún otro autor, agencia, organización, empleador o empresa, incluida la Compañía.\n" +
+                                "\n" +
+                                "Los comentarios publicados por los usuarios son de su exclusiva responsabilidad y los usuarios asumirán toda la responsabilidad, responsabilidad y culpa por cualquier difamación o litigio que resulte de algo escrito en o como resultado directo de algo escrito en un comentario. La Compañía no es responsable de ningún comentario publicado por los usuarios y se reserva el derecho de eliminar cualquier comentario por cualquier motivo.\n" +
+                                "\n" +
+                                "Descargo de responsabilidad sin responsabilidad\n" +
+                                "La información sobre el Servicio se proporciona en el entendimiento de que la Compañía no se dedica en este documento a brindar asesoramiento y servicios legales, contables, fiscales u otros servicios profesionales. Como tal, no debe utilizarse como sustituto de la consulta con asesores contables, fiscales, legales u otros profesionales competentes.\n" +
+                                "En ningún caso la Compañía o sus proveedores serán responsables de ningún daño especial, incidental, indirecto o consecuente que surja de o en conexión con su acceso o uso o incapacidad para acceder o usar el Servicio.\n" +
+                                "\n" +
+                                "Exención de responsabilidad \"Use bajo su propio riesgo\"\n" +
+                                "Toda la información en el Servicio se proporciona \"tal cual\", sin garantía de integridad, precisión, puntualidad o de los resultados obtenidos del uso de esta información, y sin garantía de ningún tipo, expresa o implícita, que incluye, entre otras, garantías de rendimiento, comerciabilidad e idoneidad para un propósito particular.\n" +
+                                "La Compañía no será responsable ante usted ni ante nadie más por cualquier decisión o acción tomada en base a la información proporcionada por el Servicio o por cualquier daño consecuente, especial o similar, incluso si se le advierte de la posibilidad de tales daños.\n" +
+                                "\n" +
+                                "Contáctenos\n" +
+                                "Si tiene alguna pregunta sobre este descargo de responsabilidad, puede contactarnos:\n" +
+                                "• Por correo electrónico: mrswapdrobe@gmail.com")
+                        .setIcon(android.R.drawable.ic_dialog_alert)
+                        .setPositiveButton("Acepto", null).show();
+
             }
         });
 
