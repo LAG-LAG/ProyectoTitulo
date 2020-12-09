@@ -90,6 +90,7 @@ private boolean addLocation;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        puntuacionGeneral = "-1";
         addLocation = false;
         setContentView(R.layout.activity_account);
         mAplicar = (Button) findViewById(R.id.aplicar);
@@ -341,8 +342,10 @@ private boolean addLocation;
             currentUserComuna.setValue(comunaGuardar);
             currentUserName.setValue(mNombre.getText().toString()); //Aca va y le asigna el nombre al User.
             //aca guarda la latitud y longitud.
-            if(puntuacionGeneral.equals("-1")){
-                FirebaseDatabase.getInstance().getReference().child("Users").child(userId).child("puntuacionGeneral").setValue("-1");
+            if(puntuacionGeneral != null) {
+                if (puntuacionGeneral.equals("-1")) {
+                    FirebaseDatabase.getInstance().getReference().child("Users").child(userId).child("puntuacionGeneral").setValue("-1");
+                }
             }
             if(longitudLatitudEstado==1) {
                 DatabaseReference currentUserLatitude = FirebaseDatabase.getInstance().getReference().child("Users").child(userId).child("latitudeVenta");
